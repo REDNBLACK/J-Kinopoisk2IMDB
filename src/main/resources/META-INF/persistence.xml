@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="K2IDB">
+        <description>Persistence unit for K2IDB</description>
+
+        <class>org.f0w.k2i.console.Models.Movie</class>
+        <class>org.f0w.k2i.console.Models.KinopoiskFile</class>
+        <class>org.f0w.k2i.console.Models.ImportProgress</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/K2IDB" />
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <property name="javax.persistence.jdbc.password" value="root" />
+
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+        </properties>
+    </persistence-unit>
+</persistence>

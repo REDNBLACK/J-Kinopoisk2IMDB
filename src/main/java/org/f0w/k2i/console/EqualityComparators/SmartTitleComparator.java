@@ -1,39 +1,23 @@
 package org.f0w.k2i.console.EqualityComparators;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import com.google.common.collect.ImmutableList;
+import com.google.common.html.HtmlEscapers;
 import org.f0w.k2i.console.Models.Movie;
 
 import java.util.*;
 
 public class SmartTitleComparator implements EqualityComparator<Movie> {
-    @Override
-    public boolean areEqual(Movie obj1, Movie obj2) {
-        boolean result = false;
-
-        for (StringModifier firstModifier : getStringModifiers()) {
-            for (StringModifier secondModifier : getStringModifiers()) {
-                String firstModifiedString = firstModifier.modify(obj1.getTitle());
-                String secondModifiedString = secondModifier.modify(obj2.getTitle());
-
-                if (firstModifiedString.equals(secondModifiedString)) {
-                    result = true;
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
+    private static final List<StringModifier> modifiers;
 
     interface StringModifier {
         String modify(String string);
     }
 
-    protected List<StringModifier> getStringModifiers() {
-        List<StringModifier> modifiers = new ArrayList<>();
+    static {
+        List<StringModifier> list = new ArrayList<>();
 
         // Original string
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
                 return string;
@@ -41,7 +25,7 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
         });
 
         // Original string without commas
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
                 return string.replaceAll(",", "");
@@ -49,7 +33,7 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
         });
 
         // Original string without colon
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
                 return string.replaceAll(":", "");
@@ -57,7 +41,7 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
         });
 
         // Original string without apostrophes
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
                 return string.replaceAll("/([\'\\\\x{0027}]|&#39;|&#x27;)/u", "");
@@ -65,7 +49,7 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
         });
 
         // Original string without special symbols like unicode etc
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
                 return string.replaceAll("/\\\\u([0-9a-z]{4})/", "");
@@ -73,7 +57,7 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
         });
 
         // Original string with part before dash symbol
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
                 String[] parts = string.split("-");
@@ -83,7 +67,7 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
         });
 
         // Original string with part after dash symbol
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
                 String[] parts = string.split("-");
@@ -93,7 +77,7 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
         });
 
         // The + Original string
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
                 return "The " + string;
@@ -101,7 +85,7 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
         });
 
         // Original string with all whitespace characters replaced with plain backspace
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
                 return string.replaceAll("/\\s+/", " ");
@@ -109,18 +93,18 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
         });
 
         // Original string with replaced foreign characters
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
-                return StringEscapeUtils
-                    .escapeHtml4(string)
-                    .replaceAll("~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i", "$1")
+                return HtmlEscapers.htmlEscaper()
+                        .escape(string)
+                        .replaceAll("~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i", "$1")
                 ;
             }
         });
 
         // Original string with XML symbols replaced with backspace
-        modifiers.add(new StringModifier() {
+        list.add(new StringModifier() {
             @Override
             public String modify(String string) {
                 String[] symbols = {"&#xB;", "&#xC;", "&#x1A;", "&#x1B;"};
@@ -141,7 +125,7 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
                     continue;
                 }
 
-                modifiers.add(new StringModifier() {
+                list.add(new StringModifier() {
                     @Override
                     public String modify(String string) {
                         return string.replaceAll(firstSymbol, secondSymbol);
@@ -150,6 +134,25 @@ public class SmartTitleComparator implements EqualityComparator<Movie> {
             }
         }
 
-        return modifiers;
+        modifiers = ImmutableList.copyOf(list);
+    }
+
+    @Override
+    public boolean areEqual(Movie obj1, Movie obj2) {
+        boolean result = false;
+
+        for (StringModifier firstModifier : modifiers) {
+            for (StringModifier secondModifier : modifiers) {
+                String firstModifiedString = firstModifier.modify(obj1.getTitle());
+                String secondModifiedString = secondModifier.modify(obj2.getTitle());
+
+                if (firstModifiedString.equals(secondModifiedString)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+
+        return result;
     }
 }

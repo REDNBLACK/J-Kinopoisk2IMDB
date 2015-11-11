@@ -7,19 +7,19 @@ public class EqualityComparatorsFactory {
         EqualityComparator<Movie> comparator;
 
         switch (equalityComparatorType) {
-            case SMART_TITLE_COMPARATOR:
+            case SMART:
                 comparator = new SmartTitleComparator();
                 break;
-            case EQUALS_TITLE_COMPARATOR:
+            case EQUALS:
                 comparator = new EqualsTitleComparator();
                 break;
-            case CONTAINS_TITLE_COMPARATOR:
+            case CONTAINS:
                 comparator = new ContainsTitleComparator();
                 break;
-            case STARTS_WITH_TITLE_COMPARATOR:
+            case STARTS_WITH:
                 comparator = new StartsWithTitleComparator();
                 break;
-            case ENDS_WITH_TITLE_COMPARATOR:
+            case ENDS_WITH:
                 comparator = new EndsWithTitleComparator();
                 break;
             default:

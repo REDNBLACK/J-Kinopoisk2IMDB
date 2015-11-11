@@ -5,25 +5,29 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-public class Config {
+public class Configuration {
     private final Properties properties = new Properties();
 
-    public Config() {
-        File configFile = new File(getClass().getClassLoader().getResource("config.properties").getFile());
+    public Configuration() {}
 
-        try (FileReader reader = new FileReader(configFile)) {
+    public Configuration(File file) {
+        loadSettings(file);
+    }
+
+    public Configuration(String fileName) {
+        this(new File(fileName));
+    }
+
+    public void loadSettings(File file) {
+        try (FileReader reader = new FileReader(file)) {
             properties.load(reader);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-        File userConfigFile = new File(getClass().getClassLoader().getResource("user_config.properties").getFile());
-
-        try (FileReader reader = new FileReader(userConfigFile)) {
-            properties.load(reader);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void loadSettings(String fileName) {
+        loadSettings(new File(fileName));
     }
 
     public String get(String key, Object defaultValue) {

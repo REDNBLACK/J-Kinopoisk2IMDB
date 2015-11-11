@@ -2,7 +2,10 @@ package org.f0w.k2i.console.Models;
 
 import javax.persistence.*;
 
+import com.google.common.base.MoreObjects;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "MOVIES", uniqueConstraints = @UniqueConstraint(columnNames = {"title", "year"}))
@@ -63,5 +66,33 @@ public class Movie {
 
     public void setImdbId(String imdbId) {
         this.imdbId = imdbId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Movie other = (Movie) obj;
+        return Objects.equals(getTitle(), other.getTitle())
+                && Objects.equals(getYear(), other.getYear())
+        ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTitle(), getYear());
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", getId())
+                .add("title", getTitle())
+                .add("year", getYear())
+                .add("imdb_id", getImdbId())
+                .toString()
+        ;
     }
 }

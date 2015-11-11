@@ -1,9 +1,16 @@
 package org.f0w.k2i.console.Models;
 
 import javax.persistence.*;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
+import com.google.common.io.Files;
 import org.hibernate.annotations.GenericGenerator;
 import java.io.*;
 import java.security.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "KINOPOISK_FILES")
@@ -44,26 +51,32 @@ public class KinopoiskFile {
 
     public void setChecksum(File file) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-            try (InputStream is = new FileInputStream(file);
-                 DigestInputStream dis = new DigestInputStream(is, md)
-            ) {
-                byte[] buffer = new byte[16384];
-                while (dis.read(buffer) != -1) {
-                }
-
-                StringBuilder sb = new StringBuilder(64);
-                for (byte b : md.digest()) {
-                    sb.append(String.format("%02x", b));
-                }
-
-                setChecksum(sb.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (NoSuchAlgorithmException e) {
+            setChecksum(Files.hash(file, Hashing.sha256()).toString());
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        return Objects.equals(getChecksum(), ((KinopoiskFile) obj).getChecksum());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getChecksum());
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", getId())
+                .add("checksum", getChecksum())
+                .toString()
+        ;
     }
 }

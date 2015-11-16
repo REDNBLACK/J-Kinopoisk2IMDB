@@ -1,4 +1,4 @@
-package org.f0w.k2i.console;
+package org.f0w.k2i.core.Components;
 
 import java.io.File;
 import java.io.FileReader;

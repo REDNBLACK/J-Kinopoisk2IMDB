@@ -1,4 +1,4 @@
-package org.f0w.k2i.console.Models;
+package org.f0w.k2i.core.Models;
 
 import javax.persistence.*;
 

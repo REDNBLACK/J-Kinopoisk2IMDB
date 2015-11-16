@@ -1,6 +1,6 @@
-package org.f0w.k2i.console.EqualityComparators;
+package org.f0w.k2i.core.EqualityComparators;
 
-import org.f0w.k2i.console.Models.Movie;
+import org.f0w.k2i.core.Models.Movie;
 
 public class EndsWithTitleComparator implements EqualityComparator<Movie> {
     @Override

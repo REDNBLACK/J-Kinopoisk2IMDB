@@ -1,15 +1,12 @@
-package org.f0w.k2i.console.Models;
+package org.f0w.k2i.core.Models;
 
 import javax.persistence.*;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import org.hibernate.annotations.GenericGenerator;
 import java.io.*;
-import java.security.*;
 import java.util.Objects;
 
 @Entity

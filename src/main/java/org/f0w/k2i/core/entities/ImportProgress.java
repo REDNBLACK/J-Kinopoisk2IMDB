@@ -13,8 +13,8 @@ public class ImportProgress {
     @GenericGenerator(name="increment", strategy = "increment")
     private Long id;
 
-    @Column(name = "KINOPOISK_FILE_ID", nullable = false)
-    private Integer kinopoiskFileId;
+    @Column(name = "FILE_ID", nullable = false)
+    private Integer fileId;
 
     @Column(name = "MOVIE_ID", nullable = false)
     private Integer movieId;
@@ -27,15 +27,15 @@ public class ImportProgress {
 
     public ImportProgress() {}
 
-    public ImportProgress(Integer kinopoiskFileId, Integer movieId, Integer status, String statusData) {
-        setKinopoiskFileId(kinopoiskFileId);
+    public ImportProgress(Integer fileId, Integer movieId, Integer status, String statusData) {
+        setFileId(fileId);
         setMovieId(movieId);
         setStatus(status);
         setStatusData(statusData);
     }
 
-    public ImportProgress(Integer kinopoiskFileId, Integer movieId, Integer status) {
-        this(kinopoiskFileId, movieId, status, null);
+    public ImportProgress(Integer fileId, Integer movieId, Integer status) {
+        this(fileId, movieId, status, null);
     }
 
     public Long getId() {
@@ -46,12 +46,12 @@ public class ImportProgress {
         this.id = id;
     }
 
-    public Integer getKinopoiskFileId() {
-        return kinopoiskFileId;
+    public Integer getFileId() {
+        return fileId;
     }
 
-    public void setKinopoiskFileId(Integer kinopoiskFileId) {
-        this.kinopoiskFileId = Preconditions.checkNotNull(kinopoiskFileId);
+    public void setFileId(Integer fileId) {
+        this.fileId = Preconditions.checkNotNull(fileId);
     }
 
     public Integer getMovieId() {

@@ -12,11 +12,11 @@ import java.util.Objects;
 
 @Entity
 @NamedQuery(
-        name="findKinopoiskFileByChecksum",
-        query="SELECT OBJECT(kf) FROM KinopoiskFile kf WHERE kf.checksum = :checksum"
+        name="findFileByChecksum",
+        query="SELECT OBJECT(kf) FROM File f WHERE f.checksum = :checksum"
 )
-@Table(name = "KINOPOISK_FILES")
-public class KinopoiskFile {
+@Table(name = "FILE")
+public class File {
     @Id
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
@@ -25,13 +25,13 @@ public class KinopoiskFile {
     @Column(name = "CHECKSUM", unique = true, nullable = false)
     private String checksum;
 
-    public KinopoiskFile() {}
+    public File() {}
 
-    public KinopoiskFile(String checksum) {
+    public File(String checksum) {
         setChecksum(checksum);
     }
 
-    public KinopoiskFile(File file) {
+    public File(java.io.File file) {
         setChecksum(file);
     }
 
@@ -51,7 +51,7 @@ public class KinopoiskFile {
         this.checksum = Preconditions.checkNotNull(checksum);
     }
 
-    public void setChecksum(File file) {
+    public void setChecksum(java.io.File file) {
         try {
             setChecksum(Files.hash(file, Hashing.sha256()).toString());
         } catch (IOException e) {
@@ -65,7 +65,7 @@ public class KinopoiskFile {
             return false;
         }
 
-        return Objects.equals(getChecksum(), ((KinopoiskFile) obj).getChecksum());
+        return Objects.equals(getChecksum(), ((File) obj).getChecksum());
     }
 
     @Override

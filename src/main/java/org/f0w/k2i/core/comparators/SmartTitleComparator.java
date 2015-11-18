@@ -1,8 +1,8 @@
-package org.f0w.k2i.core.EqualityComparators;
+package org.f0w.k2i.core.comparators;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
-import org.f0w.k2i.core.Models.Movie;
+import org.f0w.k2i.core.entities.Movie;
 
 import java.util.*;
 

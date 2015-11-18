@@ -1,6 +1,6 @@
-package org.f0w.k2i.core.EqualityComparators;
+package org.f0w.k2i.core.comparators;
 
-import org.f0w.k2i.core.Models.Movie;
+import org.f0w.k2i.core.entities.Movie;
 
 public class EqualityComparatorsFactory {
     public static EqualityComparator<Movie> make(EqualityComparatorType equalityComparatorType) {

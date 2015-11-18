@@ -9,44 +9,44 @@ import java.util.*;
 public class HttpRequest implements Request {
     private HttpURLConnection request;
 
-    private HttpRequest() {}
-
     @Override
-    public void createRequest(final String url) {
+    public Request createRequest(final String url) {
         try {
-            createRequest(new URL(url));
+            return createRequest(new URL(url));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void createRequest(URL url) {
+    public Request createRequest(URL url) {
         try {
             this.request = (HttpURLConnection) url.openConnection();
+
+            return this;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void createRequest(final String url, Map<String, String> query) {
-        createRequest(makeURL(url, query));
+    public Request createRequest(final String url, Map<String, String> query) {
+        return createRequest(makeURL(url, query));
     }
 
     @Override
-    public void createRequest(URL url, Map<String, String> query) {
-        createRequest(url.toExternalForm(), query);
+    public Request createRequest(URL url, Map<String, String> query) {
+        return createRequest(url.toExternalForm(), query);
     }
 
     @Override
-    public void createRequest(URL url, String query) {
-        createRequest(url.toExternalForm(), query);
+    public Request createRequest(URL url, String query) {
+        return createRequest(url.toExternalForm(), query);
     }
 
     @Override
-    public void createRequest(String url, String query) {
-        createRequest(url + query);
+    public Request createRequest(String url, String query) {
+        return createRequest(url + query);
     }
 
     @Override

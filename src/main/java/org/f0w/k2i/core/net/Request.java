@@ -4,17 +4,17 @@ import java.net.URL;
 import java.util.Map;
 
 public interface Request {
-    void createRequest(URL url);
+    Request createRequest(URL url);
 
-    void createRequest(String url);
+    Request createRequest(String url);
 
-    void createRequest(URL url, Map<String, String> query);
+    Request createRequest(URL url, Map<String, String> query);
 
-    void createRequest(URL url, String query);
+    Request createRequest(URL url, String query);
 
-    void createRequest(String url, Map<String, String> query);
+    Request createRequest(String url, Map<String, String> query);
 
-    void createRequest(String url, String query);
+    Request createRequest(String url, String query);
 
     void setUserAgent(String userAgent);
 

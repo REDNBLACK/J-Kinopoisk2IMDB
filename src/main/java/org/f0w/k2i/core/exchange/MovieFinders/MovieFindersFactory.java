@@ -17,6 +17,9 @@ public class MovieFindersFactory {
             case HTML:
                 movieFinder = new HTMLMovieFinder(new HttpRequest(), new Configuration());
                 break;
+            case MIXED:
+                movieFinder = new MixedMovieFinder();
+                break;
             default:
                 throw new IllegalArgumentException("Unexpected MovieFinder type!");
         }

@@ -1,9 +1,9 @@
-package org.f0w.k2i.core.Requests;
+package org.f0w.k2i.core.exchange;
 
 import com.google.common.collect.ImmutableMap;
 import org.f0w.k2i.core.Components.Configuration;
-import org.f0w.k2i.core.Components.HttpRequest;
-import org.f0w.k2i.core.Models.Movie;
+import org.f0w.k2i.core.net.HttpRequest;
+import org.f0w.k2i.core.entities.Movie;
 
 import java.io.IOException;
 import java.util.Map;
@@ -18,7 +18,9 @@ public class MovieWatchlistAssigner {
     }
 
     public int handle(Movie movie) {
-        return sendRequest(movie);
+        int response = sendRequest(movie);
+
+        return handleResponse(response);
     }
 
     private int sendRequest(Movie movie) {
@@ -42,6 +44,10 @@ public class MovieWatchlistAssigner {
             e.printStackTrace();
         }
 
+        return statusCode;
+    }
+
+    protected int handleResponse(int statusCode) {
         return statusCode;
     }
 }

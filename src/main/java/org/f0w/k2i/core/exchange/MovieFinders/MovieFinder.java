@@ -1,6 +1,6 @@
-package org.f0w.k2i.core.Requests.MovieFinders;
+package org.f0w.k2i.core.exchange.MovieFinders;
 
-import org.f0w.k2i.core.Models.Movie;
+import org.f0w.k2i.core.entities.Movie;
 
 import java.util.List;
 

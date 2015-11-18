@@ -1,9 +1,9 @@
-package org.f0w.k2i.core.Requests.MovieFinders;
+package org.f0w.k2i.core.exchange.MovieFinders;
 
 import com.google.common.collect.ImmutableMap;
 import org.f0w.k2i.core.Components.Configuration;
-import org.f0w.k2i.core.Components.HttpRequest;
-import org.f0w.k2i.core.Models.Movie;
+import org.f0w.k2i.core.net.HttpRequest;
+import org.f0w.k2i.core.entities.Movie;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

@@ -1,8 +1,8 @@
-package org.f0w.k2i.core.Requests.MovieFinders;
+package org.f0w.k2i.core.exchange.MovieFinders;
 
 import org.f0w.k2i.core.Components.Configuration;
-import org.f0w.k2i.core.Components.HttpRequest;
-import org.f0w.k2i.core.Models.Movie;
+import org.f0w.k2i.core.net.HttpRequest;
+import org.f0w.k2i.core.entities.Movie;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,14 +20,14 @@ public abstract class BaseMovieFinder implements MovieFinder {
     public List<Movie> find(Movie movie) {
         String response = sendRequest(movie);
 
-        return parseResponse(response);
+        return handleResponse(response);
     }
 
     protected abstract URL buildSearchQuery(Movie movie);
 
     protected abstract List<Movie> parseSearchResult(final String result);
 
-    private String sendRequest(Movie movie) {
+    protected String sendRequest(Movie movie) {
         String response = null;
 
         try {
@@ -42,7 +42,7 @@ public abstract class BaseMovieFinder implements MovieFinder {
         return response;
     }
 
-    private List<Movie> parseResponse(String data) {
+    protected List<Movie> handleResponse(String data) {
         return parseSearchResult(data);
     }
 }

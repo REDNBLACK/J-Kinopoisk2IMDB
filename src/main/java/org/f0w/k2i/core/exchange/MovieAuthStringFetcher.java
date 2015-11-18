@@ -1,9 +1,9 @@
-package org.f0w.k2i.core.Requests;
+package org.f0w.k2i.core.exchange;
 
 import com.google.common.collect.ImmutableMap;
-import org.f0w.k2i.core.Components.HttpRequest;
+import org.f0w.k2i.core.net.HttpRequest;
 import org.f0w.k2i.core.Components.Configuration;
-import org.f0w.k2i.core.Models.Movie;
+import org.f0w.k2i.core.entities.Movie;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
@@ -20,10 +20,10 @@ public class MovieAuthStringFetcher {
     public String fetch(Movie movie) {
         String response = sendRequest(movie);
 
-        return parseResponse(response);
+        return handleResponse(response);
     }
 
-    private String sendRequest(Movie movie) {
+    protected String sendRequest(Movie movie) {
         String response = null;
 
         try {
@@ -39,7 +39,7 @@ public class MovieAuthStringFetcher {
         return response;
     }
 
-    private String parseResponse(String data) {
+    protected String handleResponse(String data) {
         return Jsoup.parse(data, "UTF-8")
             .select("[data-auth]")
             .first()

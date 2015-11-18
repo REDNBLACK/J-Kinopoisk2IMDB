@@ -1,11 +1,10 @@
-package org.f0w.k2i.core.Models;
+package org.f0w.k2i.core.entities;
 
 import javax.persistence.*;
-
-import com.google.common.base.MoreObjects;
-import org.hibernate.annotations.GenericGenerator;
-
 import java.util.Objects;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "MOVIES", uniqueConstraints = @UniqueConstraint(columnNames = {"title", "year"}))
@@ -21,19 +20,31 @@ public class Movie {
     @Column(name = "YEAR", nullable = false)
     private Integer year;
 
+    @Column(name = "RATING", nullable = false)
+    private Integer rating;
+
     @Column(name = "IMDB_ID")
     private String imdbId;
 
     public Movie() {}
 
-    public Movie(String title, Integer year, String imdbId) {
-        this.title = title;
-        this.year = year;
-        this.imdbId = imdbId;
+    public Movie(String title, Integer year, Integer rating, String imdbId) {
+        setTitle(title);
+        setYear(year);
+        setRating(rating);
+        setImdbId(imdbId);
     }
 
     public Movie(String title, Integer year) {
-        this(title, year, null);
+        this(title, year, 0, null);
+    }
+
+    public Movie(String title, Integer year, Integer rating) {
+        this(title, year, rating, null);
+    }
+
+    public Movie(String title, Integer year, String imdbId) {
+        this(title, year, 0, imdbId);
     }
 
     public Long getId() {
@@ -49,7 +60,7 @@ public class Movie {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = Preconditions.checkNotNull(title);
     }
 
     public Integer getYear() {
@@ -57,7 +68,15 @@ public class Movie {
     }
 
     public void setYear(Integer year) {
-        this.year = year;
+        this.year = Preconditions.checkNotNull(year);
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = Preconditions.checkNotNull(rating);
     }
 
     public String getImdbId() {
@@ -91,6 +110,7 @@ public class Movie {
                 .add("id", getId())
                 .add("title", getTitle())
                 .add("year", getYear())
+                .add("rating", getRating())
                 .add("imdb_id", getImdbId())
                 .toString()
         ;

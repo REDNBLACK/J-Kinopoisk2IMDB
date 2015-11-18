@@ -1,8 +1,9 @@
-package org.f0w.k2i.core.Models;
+package org.f0w.k2i.core.entities;
 
 import javax.persistence.*;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,6 +11,10 @@ import java.io.*;
 import java.util.Objects;
 
 @Entity
+@NamedQuery(
+        name="findKinopoiskFileByChecksum",
+        query="SELECT OBJECT(kf) FROM KinopoiskFile kf WHERE kf.checksum = :checksum"
+)
 @Table(name = "KINOPOISK_FILES")
 public class KinopoiskFile {
     @Id
@@ -43,7 +48,7 @@ public class KinopoiskFile {
     }
 
     public void setChecksum(String checksum) {
-        this.checksum = checksum;
+        this.checksum = Preconditions.checkNotNull(checksum);
     }
 
     public void setChecksum(File file) {

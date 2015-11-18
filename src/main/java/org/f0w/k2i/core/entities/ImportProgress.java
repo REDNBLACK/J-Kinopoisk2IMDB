@@ -1,6 +1,8 @@
-package org.f0w.k2i.core.Models;
+package org.f0w.k2i.core.entities;
 
 import javax.persistence.*;
+
+import com.google.common.base.Preconditions;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -25,15 +27,15 @@ public class ImportProgress {
 
     public ImportProgress() {}
 
-    public ImportProgress(Integer kinopoiskFileId, Integer movieId, Integer status) {
-        this(kinopoiskFileId, movieId, status, null);
+    public ImportProgress(Integer kinopoiskFileId, Integer movieId, Integer status, String statusData) {
+        setKinopoiskFileId(kinopoiskFileId);
+        setMovieId(movieId);
+        setStatus(status);
+        setStatusData(statusData);
     }
 
-    public ImportProgress(Integer kinopoiskFileId, Integer movieId, Integer status, String statusData) {
-        this.kinopoiskFileId = kinopoiskFileId;
-        this.movieId = movieId;
-        this.status = status;
-        this.statusData = statusData;
+    public ImportProgress(Integer kinopoiskFileId, Integer movieId, Integer status) {
+        this(kinopoiskFileId, movieId, status, null);
     }
 
     public Long getId() {
@@ -49,7 +51,7 @@ public class ImportProgress {
     }
 
     public void setKinopoiskFileId(Integer kinopoiskFileId) {
-        this.kinopoiskFileId = kinopoiskFileId;
+        this.kinopoiskFileId = Preconditions.checkNotNull(kinopoiskFileId);
     }
 
     public Integer getMovieId() {
@@ -57,7 +59,7 @@ public class ImportProgress {
     }
 
     public void setMovieId(Integer movieId) {
-        this.movieId = movieId;
+        this.movieId = Preconditions.checkNotNull(movieId);
     }
 
     public Integer getStatus() {
@@ -65,7 +67,7 @@ public class ImportProgress {
     }
 
     public void setStatus(Integer status) {
-        this.status = status;
+        this.status = Preconditions.checkNotNull(status);
     }
 
     public String getStatusData() {

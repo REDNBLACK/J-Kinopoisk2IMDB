@@ -1,53 +1,46 @@
 package org.f0w.k2i.core.exchange;
 
 import com.google.common.collect.ImmutableMap;
-import org.f0w.k2i.core.Components.Configuration;
+
+import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.net.HttpRequest;
 import org.f0w.k2i.core.entities.Movie;
+import org.f0w.k2i.core.net.Response;
 
-import java.io.IOException;
 import java.util.Map;
 
 public class MovieWatchlistAssigner {
-    private HttpRequest request;
     private Configuration config;
 
-    public MovieWatchlistAssigner(HttpRequest request, Configuration config) {
-        this.request = request;
+    public MovieWatchlistAssigner(Configuration config) {
         this.config = config;
     }
 
     public int handle(Movie movie) {
-        int response = sendRequest(movie);
+        Response response = sendRequest(movie);
 
         return handleResponse(response);
     }
 
-    private int sendRequest(Movie movie) {
-        int statusCode = 500;
+    private Response sendRequest(Movie movie) {
+        Map<String, String> postData = new ImmutableMap.Builder<String, String>()
+                .put("const", movie.getImdbId())    // ID фильма
+                .put("list_id", config.get("list")) // ID списка для добавления
+                .put("ref_tag", "title")            // Реферер не меняется
+                .build()
+        ;
 
-        try {
-            Map<String, String> postData = new ImmutableMap.Builder<String, String>()
-                    .put("const", movie.getImdbId())    // ID фильма
-                    .put("list_id", config.get("list")) // ID списка для добавления
-                    .put("ref_tag", "title")            // Реферер не меняется
-                    .build()
-            ;
-
-            request.createRequest("http://www.imdb.com/list/_ajax/edit");
-            request.setPOSTData(postData);
-            request.setCookies(ImmutableMap.of("id", config.get("auth")));
-            request.setUserAgent(config.get("user_agent"));
-
-            statusCode = request.getStatusCode();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return statusCode;
+        return new HttpRequest.Builder()
+                .setUrl("http://www.imdb.com/list/_ajax/edit")
+                .setUserAgent(config.get("user_agent"))
+                .addCookie("id", config.get("auth"))
+                .addPOSTData(postData)
+                .build()
+                .getResponse()
+        ;
     }
 
-    protected int handleResponse(int statusCode) {
-        return statusCode;
+    protected int handleResponse(Response response) {
+        return response.getStatusCode();
     }
 }

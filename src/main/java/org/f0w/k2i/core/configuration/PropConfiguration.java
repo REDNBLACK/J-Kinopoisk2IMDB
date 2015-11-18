@@ -1,20 +1,20 @@
-package org.f0w.k2i.core.Components;
+package org.f0w.k2i.core.configuration;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-public class Configuration {
+public class PropConfiguration implements Configuration {
     private final Properties properties = new Properties();
 
-    public Configuration() {}
+    public PropConfiguration() {}
 
-    public Configuration(File file) {
+    public PropConfiguration(File file) {
         loadSettings(file);
     }
 
-    public Configuration(String fileName) {
+    public PropConfiguration(String fileName) {
         this(new File(fileName));
     }
 
@@ -30,8 +30,12 @@ public class Configuration {
         loadSettings(new File(fileName));
     }
 
+    public String get(String key, String defaultValue) {
+        return properties.getProperty(key, defaultValue);
+    }
+
     public String get(String key, Object defaultValue) {
-        return properties.getProperty(key, String.valueOf(defaultValue));
+        return properties.getProperty(key, defaultValue != null ? String.valueOf(defaultValue) : null);
     }
 
     public String get(String key) {

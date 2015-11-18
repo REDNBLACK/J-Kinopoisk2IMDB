@@ -1,23 +1,23 @@
 package org.f0w.k2i.core.exchange.MovieFinders;
 
 import com.google.common.collect.ImmutableMap;
-import org.f0w.k2i.core.Components.Configuration;
-import org.f0w.k2i.core.net.HttpRequest;
+
+import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
+import org.f0w.k2i.core.net.HttpRequest;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
+import java.util.regex.*;
+import java.nio.charset.StandardCharsets;
 
 public class HTMLMovieFinder extends BaseMovieFinder {
-    public HTMLMovieFinder(HttpRequest request, Configuration config) {
-        super(request, config);
+    public HTMLMovieFinder(Configuration config) {
+        super(config);
     }
 
     @Override
@@ -32,13 +32,13 @@ public class HTMLMovieFinder extends BaseMovieFinder {
                 .build()
         ;
 
-        return request.makeURL(url, query);
+        return HttpRequest.makeURL(url, query);
     }
 
     @Override
     protected List<Movie> parseSearchResult(String result) {
         List<Movie> movies = new ArrayList<>();
-        Document document = Jsoup.parse(result, "UTF-8");
+        Document document = Jsoup.parse(result, StandardCharsets.UTF_8.name());
 
         for (Element element : document.select("table.findList tr td.result_text")) {
             Element link = element.getElementsByTag("a").first();

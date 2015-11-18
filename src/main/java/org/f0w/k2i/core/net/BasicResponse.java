@@ -9,9 +9,21 @@ import java.nio.charset.StandardCharsets;
 
 public class BasicResponse implements Response {
     private InputStream stream;
+    private int statusCode;
 
-    public BasicResponse(InputStream stream) {
+    public BasicResponse(InputStream stream, int statusCode) {
         this.stream = stream;
+        this.statusCode = statusCode;
+    }
+
+    @Override
+    public Response getResponse() {
+        return this;
+    }
+
+    @Override
+    public int getStatusCode() {
+        return statusCode;
     }
 
     @Override

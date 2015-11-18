@@ -1,22 +1,20 @@
 package org.f0w.k2i.core.exchange.MovieFinders;
 
 import com.google.common.collect.ImmutableMap;
-import org.f0w.k2i.core.Components.Configuration;
-import org.f0w.k2i.core.net.HttpRequest;
+
+import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
+import org.f0w.k2i.core.net.HttpRequest;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JSONMovieFinder extends BaseMovieFinder {
-    public JSONMovieFinder(HttpRequest request, Configuration config) {
-        super(request, config);
+    public JSONMovieFinder(Configuration config) {
+        super(config);
     }
 
     @Override
@@ -31,7 +29,7 @@ public class JSONMovieFinder extends BaseMovieFinder {
                 .build()
         ;
 
-        return request.makeURL(url, query);
+        return HttpRequest.makeURL(url, query);
     }
 
     @Override

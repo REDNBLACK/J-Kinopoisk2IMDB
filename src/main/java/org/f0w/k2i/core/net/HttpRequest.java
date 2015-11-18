@@ -89,7 +89,7 @@ public class HttpRequest implements Request {
     @Override
     public Response getResponse() {
         try {
-            return new BasicResponse(request.getInputStream());
+            return new BasicResponse(request.getInputStream(), request.getResponseCode());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -5,7 +5,7 @@ import org.f0w.k2i.core.entities.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MixedMovieFinder implements MovieFinder {
+class MixedMovieFinder implements MovieFinder {
     @Override
     public List<Movie> find(Movie movie) {
         MovieFinderType[] usedTypes = {MovieFinderType.XML, MovieFinderType.JSON, MovieFinderType.HTML};

@@ -23,22 +23,23 @@ public class KinopoiskTableParser {
     }
 
     public File parse(java.io.File file) {
-        File kinopoiskFile = null;
-        String hashCode = getFileHashcode(file);
-
-        try {
-            entityManager.getTransaction().begin();
-            Query query = entityManager.createNamedQuery("findKinopoiskFileByChecksum", File.class);
-            query.setParameter("checksum", hashCode);
-
-            kinopoiskFile = (File) query.getSingleResult();
-        } catch (NoResultException e) {
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return kinopoiskFile;
+//        File kinopoiskFile = null;
+//        String hashCode = getFileHashcode(file);
+//
+//        try {
+//            entityManager.getTransaction().begin();
+//            Query query = entityManager.createNamedQuery("findKinopoiskFileByChecksum", File.class);
+//            query.setParameter("checksum", hashCode);
+//
+//            kinopoiskFile = (File) query.getSingleResult();
+//        } catch (NoResultException e) {
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return kinopoiskFile;
+        return null;
     }
 
     private String getFileHashcode(java.io.File file) throws IOException {

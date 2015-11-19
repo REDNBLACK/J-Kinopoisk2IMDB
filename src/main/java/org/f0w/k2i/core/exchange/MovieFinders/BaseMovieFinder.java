@@ -8,7 +8,7 @@ import org.f0w.k2i.core.net.Response;
 import java.net.URL;
 import java.util.List;
 
-public abstract class BaseMovieFinder implements MovieFinder {
+abstract class BaseMovieFinder implements MovieFinder {
     protected Configuration config;
 
     public BaseMovieFinder(Configuration config) {

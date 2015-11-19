@@ -1,9 +1,19 @@
 package org.f0w.k2i.core;
 
-import org.f0w.k2i.core.Components.Configuration;
-import org.f0w.k2i.core.Components.HttpRequest;
-import org.f0w.k2i.core.Requests.MovieAuthStringFetcher;
-import org.f0w.k2i.core.Models.Movie;
+import org.f0w.k2i.core.comparators.EqualityComparator;
+import org.f0w.k2i.core.comparators.EqualityComparatorType;
+import org.f0w.k2i.core.comparators.EqualityComparatorsFactory;
+import org.f0w.k2i.core.configuration.Configuration;
+import org.f0w.k2i.core.configuration.PropConfiguration;
+import org.f0w.k2i.core.exchange.MovieAuthStringFetcher;
+import org.f0w.k2i.core.exchange.MovieFinders.MovieFinder;
+import org.f0w.k2i.core.exchange.MovieFinders.MovieFinderType;
+import org.f0w.k2i.core.exchange.MovieFinders.MovieFindersFactory;
+import org.f0w.k2i.core.entities.Movie;
+import org.f0w.k2i.core.exchange.MovieRatingChanger;
+import org.f0w.k2i.core.exchange.MovieWatchlistAssigner;
+import org.f0w.k2i.core.filters.EmptyMovieInfoFilter;
+import org.f0w.k2i.core.filters.MovieYearDeviationFilter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,36 +24,38 @@ public class Main {
     private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("K2IDB");
 
     public static void main(String[] args) throws Exception {
-        Configuration config = new Configuration();
+        PropConfiguration config = new PropConfiguration();
         config.loadSettings(new Main().getClass().getClassLoader().getResource("config.properties").getFile());
         config.loadSettings(new Main().getClass().getClassLoader().getResource("user_config.properties").getFile());
 
-        MovieAuthStringFetcher handler = new MovieAuthStringFetcher(new HttpRequest(), config);
-        System.out.println(handler.fetch("tt1375666"));
+        Movie movie = new Movie("Inception", 2010, 10);
 
-        // Request
-//        String auth = "BCYuzKtGHqodwCwt7AzY8YtkW_JN65crXSjp0_ZW807AqSkbWfJ1Ng8oGIzCEUpJUo3zhxtfQcYO52KI7dnku1z-8xuG6hVJ4_EBkgHGPZnDpRhpXD_1jKFMuL0mKCg94yOLfemTgqgHfSb9FBOcIM3spafBaoUBFFWZIj7Ijrt3_QsWvg4rhldHvuSQrHU3eDo5j7r_zJt6rxgym--hDjbUaKedpAO5tDETOlhpHNUBFh0";
-//        Request request = new Request(auth, config);
-//
-//        String moviePage = request.downloadMoviePage("tt1375666");
+        MovieFinder movieFinder = MovieFindersFactory.make(MovieFinderType.JSON);
+        List<Movie> movies = new MovieYearDeviationFilter(movie, 1)
+                .filter(new EmptyMovieInfoFilter().filter(movieFinder.find(movie)));
 
-//        String data = request.findMovie("Inception");
-//
+        System.out.println(movies.size());
+        System.out.println(movies);
 
-        // Parser
-//        Parser parser = new Parser(config);
+        System.out.println(movie);
 
-//        System.out.println(parser.parseMovieAuthString(moviePage));
-//        List<Movie> list = parser.parseMovieSearchResult(data, QueryFormat.JSON);
-//        System.out.println(list.size());
-//        System.out.println(list);
-//
+        EqualityComparator<Movie> comparator = EqualityComparatorsFactory.make(EqualityComparatorType.SMART);
+        for (Movie imdbMovie : movies) {
+            if (comparator.areEqual(movie, imdbMovie)) {
+                movie.setImdbId(imdbMovie.getImdbId());
+                break;
+            }
+        }
+
+        System.out.println(movie);
+
+//        int statusCode = new MovieWatchlistAssigner(config).handle(movie);
+        int statusCode = new MovieRatingChanger(config, new MovieAuthStringFetcher(config)).handle(movie);
+
+        System.out.println(statusCode);
 //        String content = Files.toString(new File("/users/RB/Downloads/kinopoisk.ru-Любимые-фильмы.xls"), Charset.forName("windows-1251"));
 
-//        System.out.println(parser.parseKinopoiskList(content));
-
-
-        // Models
+        // Entities
 //        Main main = new Main();
 //        main.save();
 //        main.read();

@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.regex.*;
 import java.nio.charset.StandardCharsets;
 
-public class HTMLMovieFinder extends BaseMovieFinder {
+class HTMLMovieFinder extends BaseMovieFinder {
     public HTMLMovieFinder(Configuration config) {
         super(config);
     }

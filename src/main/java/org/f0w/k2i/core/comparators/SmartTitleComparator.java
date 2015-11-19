@@ -6,7 +6,7 @@ import org.f0w.k2i.core.entities.Movie;
 
 import java.util.*;
 
-public class SmartTitleComparator implements EqualityComparator<Movie> {
+class SmartTitleComparator implements EqualityComparator<Movie> {
     private static final List<StringModifier> modifiers;
 
     interface StringModifier {

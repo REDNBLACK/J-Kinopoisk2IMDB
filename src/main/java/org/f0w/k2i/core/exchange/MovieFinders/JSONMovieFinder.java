@@ -12,7 +12,7 @@ import org.json.simple.parser.ParseException;
 import java.net.URL;
 import java.util.*;
 
-public class JSONMovieFinder extends BaseMovieFinder {
+class JSONMovieFinder extends BaseMovieFinder {
     public JSONMovieFinder(Configuration config) {
         super(config);
     }

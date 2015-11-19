@@ -13,7 +13,7 @@ import org.jsoup.nodes.Element;
 import java.net.URL;
 import java.util.*;
 
-public class XMLMovieFinder extends BaseMovieFinder {
+class XMLMovieFinder extends BaseMovieFinder {
     public XMLMovieFinder(Configuration config) {
         super(config);
     }

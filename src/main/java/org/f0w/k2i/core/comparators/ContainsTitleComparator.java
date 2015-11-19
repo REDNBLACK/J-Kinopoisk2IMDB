@@ -2,7 +2,7 @@ package org.f0w.k2i.core.comparators;
 
 import org.f0w.k2i.core.entities.Movie;
 
-public class ContainsTitleComparator implements EqualityComparator<Movie> {
+class ContainsTitleComparator implements EqualityComparator<Movie> {
     @Override
     public boolean areEqual(Movie movie1, Movie movie2) {
         String title1 = movie1.getTitle();

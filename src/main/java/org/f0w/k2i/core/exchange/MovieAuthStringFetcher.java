@@ -8,7 +8,6 @@ import org.f0w.k2i.core.net.Response;
 import org.jsoup.Jsoup;
 import java.nio.charset.StandardCharsets;
 
-
 public class MovieAuthStringFetcher {
     private Configuration config;
 

@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.net;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.MoreObjects;
 
 import java.io.*;
 import java.net.*;
@@ -69,6 +70,7 @@ public class HttpRequest implements Request {
         try {
             request.setRequestMethod("POST");
             request.setDoOutput(true);
+            request.connect();
 
             DataOutputStream stream = new DataOutputStream(request.getOutputStream());
             stream.writeBytes(postData);
@@ -89,6 +91,7 @@ public class HttpRequest implements Request {
     @Override
     public Response getResponse() {
         try {
+            System.out.println(request.toString());
             return new BasicResponse(request.getInputStream(), request.getResponseCode());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -149,6 +152,18 @@ public class HttpRequest implements Request {
             }
 
             return request;
+        }
+
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this)
+                    .add("url", url)
+                    .add("user_agent", userAgent)
+                    .add("query_params", Joiner.on("&").join(queryParams))
+                    .add("cookies", Joiner.on(";").join(cookies))
+                    .add("post_data", Joiner.on("&").join(postData))
+                    .toString()
+            ;
         }
 
         @Override

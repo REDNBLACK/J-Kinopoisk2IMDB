@@ -25,8 +25,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         PropConfiguration config = new PropConfiguration();
-        config.loadSettings(new Main().getClass().getClassLoader().getResource("config.properties").getFile());
-        config.loadSettings(new Main().getClass().getClassLoader().getResource("user_config.properties").getFile());
+        config.loadSettings(Main.class.getClassLoader().getResource("config.properties").getFile());
+        config.loadSettings(Main.class.getClassLoader().getResource("user_config.properties").getFile());
 
         Movie movie = new Movie("Inception", 2010, 10);
 

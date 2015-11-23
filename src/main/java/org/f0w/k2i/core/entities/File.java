@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @NamedQuery(
         name="findFileByChecksum",
-        query="SELECT OBJECT(kf) FROM File f WHERE f.checksum = :checksum"
+        query="SELECT OBJECT(f) FROM File f WHERE f.checksum = :checksum"
 )
 @Table(name = "FILE")
 public class File {

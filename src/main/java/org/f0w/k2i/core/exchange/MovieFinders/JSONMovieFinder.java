@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 
 import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
-import org.f0w.k2i.core.net.HttpRequest;
+import org.f0w.k2i.core.utils.RequestHelper;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -29,7 +29,7 @@ class JSONMovieFinder extends BaseMovieFinder {
                 .build()
         ;
 
-        return HttpRequest.makeURL(url, query);
+        return RequestHelper.makeURL(url, query);
     }
 
     @Override

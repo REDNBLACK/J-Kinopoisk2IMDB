@@ -4,31 +4,15 @@ import java.net.URL;
 import java.util.Map;
 
 public interface Request {
-    Request createRequest(URL url);
+    HttpMethod getMethod();
 
-    Request createRequest(String url);
+    String getURL();
 
-    Request createRequest(URL url, Map<String, String> query);
+    String getPostData();
 
-    Request createRequest(URL url, String query);
+    String getCookies();
 
-    Request createRequest(String url, Map<String, String> query);
-
-    Request createRequest(String url, String query);
-
-    void setUserAgent(String userAgent);
-
-    void setCookies(String cookies);
-
-    void setCookies(Map<String, String> cookies);
-
-    void setPOSTData(String postData);
-
-    void setPOSTData(Map<String, String> postData);
-
-    Response getResponse();
-
-    int getStatusCode();
+    String getUserAgent();
 
     interface Builder {
         Request build();
@@ -44,6 +28,10 @@ public interface Request {
         Builder addQueryParams(Map<String, String> queryParams);
 
         Builder setUserAgent(String userAgent);
+
+        Builder setMethod(String method);
+
+        Builder setMethod(HttpMethod method);
 
         Builder addCookie(String key, String value);
 

@@ -1,8 +1,10 @@
 package org.f0w.k2i.core.exchange;
 
 import org.f0w.k2i.core.configuration.Configuration;
+import org.f0w.k2i.core.net.HttpClient;
 import org.f0w.k2i.core.net.HttpRequest;
 import org.f0w.k2i.core.entities.Movie;
+import org.f0w.k2i.core.net.Request;
 import org.f0w.k2i.core.net.Response;
 
 import org.jsoup.Jsoup;
@@ -22,13 +24,14 @@ public class MovieAuthStringFetcher {
     }
 
     protected Response sendRequest(Movie movie) {
-        return new HttpRequest.Builder()
+        Request request = HttpRequest.builder()
                 .setUrl("http://www.imdb.com/title/" + movie.getImdbId())
                 .setUserAgent(config.get("user_agent"))
                 .addCookie("id", config.get("auth"))
                 .build()
-                .getResponse()
         ;
+
+        return new HttpClient().sendRequest(request).getResponse();
     }
 
     protected String handleResponse(Response data) {

@@ -2,7 +2,9 @@ package org.f0w.k2i.core.exchange.MovieFinders;
 
 import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
+import org.f0w.k2i.core.net.HttpClient;
 import org.f0w.k2i.core.net.HttpRequest;
+import org.f0w.k2i.core.net.Request;
 import org.f0w.k2i.core.net.Response;
 
 import java.net.URL;
@@ -26,12 +28,16 @@ abstract class BaseMovieFinder implements MovieFinder {
     protected abstract List<Movie> parseSearchResult(final String result);
 
     protected Response sendRequest(Movie movie) {
-        return new HttpRequest.Builder()
+        Request request = HttpRequest.builder()
                 .setUrl(buildSearchQuery(movie))
                 .setUserAgent(config.get("user_agent"))
                 .build()
-                .getResponse()
         ;
+
+        System.out.println(config.get("user_agent"));
+        System.out.println(request);
+
+        return new HttpClient().sendRequest(request).getResponse();
     }
 
     protected List<Movie> handleResponse(Response response) {

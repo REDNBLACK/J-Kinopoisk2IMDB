@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMap;
 
 import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
-import org.f0w.k2i.core.net.HttpRequest;
 
+import org.f0w.k2i.core.utils.RequestHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,7 +32,7 @@ class HTMLMovieFinder extends BaseMovieFinder {
                 .build()
         ;
 
-        return HttpRequest.makeURL(url, query);
+        return RequestHelper.makeURL(url, query);
     }
 
     @Override

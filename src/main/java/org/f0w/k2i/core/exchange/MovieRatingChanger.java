@@ -4,8 +4,7 @@ import com.google.common.collect.ImmutableMap;
 
 import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
-import org.f0w.k2i.core.net.HttpRequest;
-import org.f0w.k2i.core.net.Response;
+import org.f0w.k2i.core.net.*;
 
 import java.util.Map;
 
@@ -37,14 +36,16 @@ public class MovieRatingChanger {
                 .build()
         ;
 
-        return new HttpRequest.Builder()
+        Request request = HttpRequest.builder()
                 .setUrl("http://www.imdb.com/ratings/_ajax/title")
+                .setMethod(HttpMethod.POST)
                 .setUserAgent(config.get("user_agent"))
                 .addCookie("id", config.get("auth"))
                 .addPOSTData(postData)
                 .build()
-                .getResponse()
         ;
+
+        return new HttpClient().sendRequest(request).getResponse();
     }
 
     protected int handleResponse(Response response) {

@@ -22,38 +22,22 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 public class Main {
 //    private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("K2IDB");
 
     public static void main(String[] args) throws Exception {
+        new NativeConfiguration(Main.class.getClassLoader().getResource("config.xml").getFile());
         Injector injector = Guice.createInjector(new ServiceProvider());
         Movie movie = new Movie("Inception", 2010, 10);
 
-        MovieFinder movieFinder = injector.getInstance(MovieFindersFactory.class).make(MovieFinderType.MIXED);
-        List<Movie> movies = new MovieYearDeviationFilter(movie, 1)
-                .filter(new EmptyMovieInfoFilter().filter(movieFinder.find(movie)));
+        MovieManager manager = injector.getInstance(MovieManager.class);
+        manager.setMovie(movie);
+        manager.handleMovie();
 
-        System.out.println(movies.size());
-        System.out.println(movies);
+        System.out.println(manager.isSuccessful());
 
-        System.out.println(movie);
-
-        EqualityComparator<Movie> comparator = EqualityComparatorsFactory.make(EqualityComparatorType.SMART);
-        for (Movie imdbMovie : movies) {
-            if (comparator.areEqual(movie, imdbMovie)) {
-                movie.setImdbId(imdbMovie.getImdbId());
-                break;
-            }
-        }
-
-        System.out.println(movie);
-
-        int statusCode;
-        statusCode = injector.getInstance(MovieWatchlistAssigner.class).handle(movie);
-        statusCode = injector.getInstance(MovieRatingChanger.class).handle(movie);
-
-        System.out.println(statusCode);
 //        String content = Files.toString(new File("/users/RB/Downloads/kinopoisk.ru-Любимые-фильмы.xls"), Charset.forName("windows-1251"));
 
         // Entities

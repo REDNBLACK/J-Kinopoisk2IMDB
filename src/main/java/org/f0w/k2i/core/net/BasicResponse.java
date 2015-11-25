@@ -6,14 +6,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class BasicResponse implements Response {
     private InputStream stream;
     private int statusCode;
+    private Map<String, String> info;
 
-    public BasicResponse(InputStream stream, int statusCode) {
+    public BasicResponse(InputStream stream, int statusCode, Map<String, String> info) {
         this.stream = stream;
         this.statusCode = statusCode;
+        this.info = info;
     }
 
     @Override
@@ -24,6 +27,11 @@ public class BasicResponse implements Response {
     @Override
     public int getStatusCode() {
         return statusCode;
+    }
+
+    @Override
+    public Map<String, String> getInfo() {
+        return info;
     }
 
     @Override

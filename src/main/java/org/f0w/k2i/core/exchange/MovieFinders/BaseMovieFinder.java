@@ -34,9 +34,6 @@ abstract class BaseMovieFinder implements MovieFinder {
                 .build()
         ;
 
-        System.out.println(config.get("user_agent"));
-        System.out.println(request);
-
         return new HttpClient().sendRequest(request).getResponse();
     }
 

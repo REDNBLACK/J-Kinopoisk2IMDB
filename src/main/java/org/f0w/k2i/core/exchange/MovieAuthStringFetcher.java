@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.exchange;
 
+import com.google.inject.Inject;
 import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.net.HttpClient;
 import org.f0w.k2i.core.net.HttpRequest;
@@ -11,13 +12,10 @@ import org.jsoup.Jsoup;
 import java.nio.charset.StandardCharsets;
 
 public class MovieAuthStringFetcher {
+    @Inject
     private Configuration config;
 
-    public MovieAuthStringFetcher(Configuration config) {
-        this.config = config;
-    }
-
-    public String fetch(Movie movie) {
+    public String handle(Movie movie) {
         Response response = sendRequest(movie);
 
         return handleResponse(response);

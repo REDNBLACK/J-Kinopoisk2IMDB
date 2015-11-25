@@ -6,19 +6,22 @@ import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
 import org.f0w.k2i.core.net.*;
 
+import javax.inject.Inject;
 import java.util.Map;
 
 public class MovieRatingChanger {
     private Configuration config;
+
     private MovieAuthStringFetcher fetcher;
 
+    @Inject
     public MovieRatingChanger(Configuration config, MovieAuthStringFetcher fetcher) {
         this.config = config;
         this.fetcher = fetcher;
     }
 
     public int handle(Movie movie) {
-        String movieAuth = fetcher.fetch(movie);
+        String movieAuth = fetcher.handle(movie);
         Response response = sendRequest(movie, movieAuth);
 
         return handleResponse(response);

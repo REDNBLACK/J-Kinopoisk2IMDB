@@ -6,15 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 class MixedMovieFinder implements MovieFinder {
+    private List<MovieFinder> movieFinders;
+
+    public MixedMovieFinder(List<MovieFinder> movieFinders) {
+        this.movieFinders = movieFinders;
+    }
+
     @Override
     public List<Movie> find(Movie movie) {
-        MovieFinderType[] usedTypes = {MovieFinderType.XML, MovieFinderType.JSON, MovieFinderType.HTML};
         List<Movie> movies = new ArrayList<>();
 
-        for (MovieFinderType type : usedTypes) {
-            MovieFinder finder = MovieFindersFactory.make(type);
-
-            movies.addAll(finder.find(movie));
+        for (MovieFinder movieFinder : movieFinders) {
+            movies.addAll(movieFinder.find(movie));
         }
 
         return movies;

@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.exchange;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
 
 import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.net.*;
@@ -9,11 +10,8 @@ import org.f0w.k2i.core.entities.Movie;
 import java.util.Map;
 
 public class MovieWatchlistAssigner {
+    @Inject
     private Configuration config;
-
-    public MovieWatchlistAssigner(Configuration config) {
-        this.config = config;
-    }
 
     public int handle(Movie movie) {
         Response response = sendRequest(movie);

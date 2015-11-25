@@ -1,23 +1,36 @@
 package org.f0w.k2i.core.exchange.MovieFinders;
 
-import org.f0w.k2i.core.configuration.PropConfiguration;
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
+import org.f0w.k2i.core.configuration.Configuration;
+
+import java.util.List;
 
 public class MovieFindersFactory {
-    public static MovieFinder make(MovieFinderType movieFinderType) {
+    @Inject
+    private Configuration configuration;
+
+    public MovieFinder make(MovieFinderType movieFinderType) {
         MovieFinder movieFinder;
 
         switch (movieFinderType) {
             case XML:
-                movieFinder = new XMLMovieFinder(new PropConfiguration());
+                movieFinder = new XMLMovieFinder(configuration);
                 break;
             case JSON:
-                movieFinder = new JSONMovieFinder(new PropConfiguration());
+                movieFinder = new JSONMovieFinder(configuration);
                 break;
             case HTML:
-                movieFinder = new HTMLMovieFinder(new PropConfiguration());
+                movieFinder = new HTMLMovieFinder(configuration);
                 break;
             case MIXED:
-                movieFinder = new MixedMovieFinder();
+                List<MovieFinder> movieFinders = new ImmutableList.Builder<MovieFinder>()
+                        .add(make(MovieFinderType.XML))
+                        .add(make(MovieFinderType.JSON))
+                        .add(make(MovieFinderType.HTML))
+                        .build()
+                ;
+                movieFinder = new MixedMovieFinder(movieFinders);
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected MovieFinder type!");

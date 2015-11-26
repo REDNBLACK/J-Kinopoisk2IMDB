@@ -4,7 +4,6 @@ import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
 import org.f0w.k2i.core.net.*;
 
-import java.net.URL;
 import java.util.List;
 
 abstract class BaseMovieFinder implements MovieFinder {
@@ -15,7 +14,7 @@ abstract class BaseMovieFinder implements MovieFinder {
         this.config = config;
     }
 
-    protected abstract URL buildSearchQuery(Movie movie);
+    protected abstract String buildSearchQuery(Movie movie);
 
     protected abstract List<Movie> parseSearchResult(final String result);
 

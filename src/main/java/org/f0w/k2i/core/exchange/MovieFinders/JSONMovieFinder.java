@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 
 import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
-import org.f0w.k2i.core.utils.RequestHelper;
+import org.f0w.k2i.core.utils.StringHelper;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -13,12 +13,24 @@ import java.net.URL;
 import java.util.*;
 
 class JSONMovieFinder extends BaseMovieFinder {
+    private static final ContainerFactory containerJSONFactory = new ContainerFactory() {
+        @Override
+        public List creatArrayContainer() {
+            return new ArrayList();
+        }
+
+        @Override
+        public Map createObjectContainer() {
+            return new LinkedHashMap();
+        }
+    };
+
     public JSONMovieFinder(Configuration config) {
         super(config);
     }
 
     @Override
-    protected URL buildSearchQuery(Movie movie) {
+    protected String buildSearchQuery(Movie movie) {
         String url = "http://www.imdb.com/xml/find?";
 
         Map<String, String> query = new ImmutableMap.Builder<String, String>()
@@ -29,7 +41,7 @@ class JSONMovieFinder extends BaseMovieFinder {
                 .build()
         ;
 
-        return RequestHelper.makeURL(url, query);
+        return StringHelper.buildHttpQuery(url, query);
     }
 
     @Override
@@ -38,17 +50,7 @@ class JSONMovieFinder extends BaseMovieFinder {
         JSONParser parser = new JSONParser();
 
         try {
-            Map document = (Map) parser.parse(result, new ContainerFactory() {
-                @Override
-                public List creatArrayContainer() {
-                    return new ArrayList();
-                }
-
-                @Override
-                public Map createObjectContainer() {
-                    return new LinkedHashMap();
-                }
-            });
+            Map document = (Map) parser.parse(result, containerJSONFactory);
 
             for (Object categories : document.values()) {
                 for (Object movieInfo : (List) categories) {

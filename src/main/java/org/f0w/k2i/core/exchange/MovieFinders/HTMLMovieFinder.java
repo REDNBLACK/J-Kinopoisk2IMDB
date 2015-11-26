@@ -5,12 +5,11 @@ import com.google.common.collect.ImmutableMap;
 import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
 
-import org.f0w.k2i.core.utils.RequestHelper;
+import org.f0w.k2i.core.utils.StringHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.net.URL;
 import java.util.*;
 import java.util.regex.*;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +20,7 @@ class HTMLMovieFinder extends BaseMovieFinder {
     }
 
     @Override
-    protected URL buildSearchQuery(Movie movie) {
+    protected String buildSearchQuery(Movie movie) {
         String url = "http://www.imdb.com/find?";
 
         Map<String, String> query = new ImmutableMap.Builder<String, String>()
@@ -32,7 +31,7 @@ class HTMLMovieFinder extends BaseMovieFinder {
                 .build()
         ;
 
-        return RequestHelper.makeURL(url, query);
+        return StringHelper.buildHttpQuery(url, query);
     }
 
     @Override

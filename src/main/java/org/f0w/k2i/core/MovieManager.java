@@ -13,13 +13,15 @@ import org.f0w.k2i.core.exchange.MovieRatingChanger;
 import org.f0w.k2i.core.exchange.MovieWatchlistAssigner;
 import org.f0w.k2i.core.filters.EmptyMovieInfoFilter;
 import org.f0w.k2i.core.filters.MovieYearDeviationFilter;
+import org.f0w.k2i.core.net.Response;
 
+import java.net.HttpURLConnection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class MovieManager {
-    private boolean success = true;
+    private Boolean success;
     private Movie movie;
     private Configuration configuration;
     private MovieFinder movieFinder;
@@ -43,9 +45,11 @@ public class MovieManager {
             return;
         }
 
-        List<Movie> movies = new MovieYearDeviationFilter(movie, configuration.getInt("year_deviation"))
-                .filter(new EmptyMovieInfoFilter().filter(movieFinder.find(movie)))
-        ;
+        movieFinder.sendRequest(movie);
+
+        List<Movie> movies = movieFinder.getProcessedResponse();
+        movies = new EmptyMovieInfoFilter().filter(movies);
+        movies = new MovieYearDeviationFilter(movie, configuration.getInt("year_deviation")).filter(movies);
 
         EqualityComparator<Movie> comparator = EqualityComparatorsFactory.make(
                 configuration.getEnum(EqualityComparatorType.class, "comparator")
@@ -58,43 +62,49 @@ public class MovieManager {
             }
         }
 
-        if (!isMovieIMDBIdLoaded()) {
-            success = false;
-        }
+        success = isMovieIMDBIdLoaded();
     }
 
     private boolean isMovieIMDBIdLoaded() {
         return movie.getImdbId() != null;
     }
 
-    private int assignMovieToWatchList() {
-        return watchlistAssigner.handle(movie);
+    private Response assignMovieToWatchList() {
+        watchlistAssigner.sendRequest(movie);
+
+        return watchlistAssigner.getRawResponse();
     }
 
-    private int setMovieRating() {
-        return ratingChanger.handle(movie);
+    private Response setMovieRating() {
+        ratingChanger.sendRequest(movie);
+
+        return ratingChanger.getRawResponse();
     }
 
     public void handleMovie() {
         loadMovieIMDBId();
 
-        Set<Integer> status = new HashSet<>();
+        if (!isSuccessful()) {
+            return;
+        }
+
+        Set<Integer> statusCodes = new HashSet<>();
         switch (configuration.getEnum(WorkingMode.class, "mode")) {
             case ALL:
-                status.add(assignMovieToWatchList());
-                status.add(setMovieRating());
+                statusCodes.add(assignMovieToWatchList().getStatusCode());
+                statusCodes.add(setMovieRating().getStatusCode());
                 break;
             case ONLY_LIST:
-                status.add(assignMovieToWatchList());
+                statusCodes.add(assignMovieToWatchList().getStatusCode());
                 break;
             case ONLY_RATING:
-                status.add(setMovieRating());
+                statusCodes.add(setMovieRating().getStatusCode());
                 break;
         }
 
-        status.remove(200);
+        statusCodes.remove(HttpURLConnection.HTTP_OK);
 
-        success = !status.contains(200);
+        success = !statusCodes.contains(HttpURLConnection.HTTP_OK);
     }
 
     public boolean isSuccessful() {

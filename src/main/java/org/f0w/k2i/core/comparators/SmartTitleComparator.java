@@ -1,8 +1,10 @@
 package org.f0w.k2i.core.comparators;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
 import org.f0w.k2i.core.entities.Movie;
+import org.f0w.k2i.core.utils.NumericToWord;
 
 import java.util.*;
 
@@ -114,6 +116,24 @@ class SmartTitleComparator implements EqualityComparator<Movie> {
                 }
 
                 return string;
+            }
+        });
+
+        // Original string with numeric replaced to text representation
+        list.add(new StringModifier() {
+            @Override
+            public String modify(String string) {
+                String[] words = string.split(" ");
+
+                for (int i = 0; i < words.length; i++) {
+                    try {
+                        words[i] = NumericToWord.convert(Integer.parseInt(words[i]));
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
+                }
+
+                return Joiner.on(" ").join(words);
             }
         });
 

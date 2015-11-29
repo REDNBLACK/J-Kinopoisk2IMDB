@@ -4,9 +4,9 @@ import org.f0w.k2i.core.configuration.Configuration;
 import org.f0w.k2i.core.entities.Movie;
 import org.f0w.k2i.core.net.*;
 
-import com.google.inject.Inject;
 import org.jsoup.Jsoup;
 
+import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 
 public class MovieAuthStringFetcher implements Exchangeable<Movie, String> {

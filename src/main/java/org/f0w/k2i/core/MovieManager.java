@@ -1,6 +1,5 @@
 package org.f0w.k2i.core;
 
-import com.google.inject.Inject;
 import org.f0w.k2i.core.comparators.EqualityComparator;
 import org.f0w.k2i.core.comparators.EqualityComparatorType;
 import org.f0w.k2i.core.comparators.EqualityComparatorsFactory;
@@ -15,6 +14,7 @@ import org.f0w.k2i.core.filters.EmptyMovieInfoFilter;
 import org.f0w.k2i.core.filters.MovieYearDeviationFilter;
 import org.f0w.k2i.core.net.Response;
 
+import javax.inject.Inject;
 import java.net.HttpURLConnection;
 import java.util.HashSet;
 import java.util.List;

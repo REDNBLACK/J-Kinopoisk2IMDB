@@ -5,8 +5,8 @@ import org.f0w.k2i.core.net.*;
 import org.f0w.k2i.core.entities.Movie;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.Inject;
 
+import javax.inject.Inject;
 import java.util.Map;
 
 public class MovieWatchlistAssigner implements Exchangeable<Movie, Response> {

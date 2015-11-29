@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 class XMLMovieFinder extends BaseMovieFinder {
@@ -35,7 +36,7 @@ class XMLMovieFinder extends BaseMovieFinder {
     @Override
     protected List<Movie> parseSearchResult(String result) {
         List<Movie> movies = new ArrayList<>();
-        Document document = Jsoup.parse(result, "UTF-8");
+        Document document = Jsoup.parse(result, StandardCharsets.UTF_8.name());
 
         for (Element element : document.getElementsByTag("ImdbEntity")) {
             Movie movie = new Movie();

@@ -1,7 +1,8 @@
 package org.f0w.k2i.core.exchange.MovieFinders;
 
-import com.google.inject.Inject;
 import org.f0w.k2i.core.configuration.Configuration;
+
+import javax.inject.Inject;
 
 public class MovieFindersFactory {
     @Inject

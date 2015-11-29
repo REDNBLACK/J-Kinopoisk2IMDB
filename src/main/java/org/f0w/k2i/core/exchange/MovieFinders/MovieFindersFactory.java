@@ -1,10 +1,7 @@
 package org.f0w.k2i.core.exchange.MovieFinders;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import org.f0w.k2i.core.configuration.Configuration;
-
-import java.util.List;
 
 public class MovieFindersFactory {
     @Inject
@@ -24,12 +21,11 @@ public class MovieFindersFactory {
                 movieFinder = new HTMLMovieFinder(configuration);
                 break;
             case MIXED:
-                List<MovieFinder> movieFinders = new ImmutableList.Builder<MovieFinder>()
-                        .add(make(MovieFinderType.XML))
-                        .add(make(MovieFinderType.JSON))
-                        .add(make(MovieFinderType.HTML))
-                        .build()
-                ;
+                MovieFinder[] movieFinders = {
+                        make(MovieFinderType.XML),
+                        make(MovieFinderType.JSON),
+                        make(MovieFinderType.HTML)
+                };
                 movieFinder = new MixedMovieFinder(movieFinders);
                 break;
             default:

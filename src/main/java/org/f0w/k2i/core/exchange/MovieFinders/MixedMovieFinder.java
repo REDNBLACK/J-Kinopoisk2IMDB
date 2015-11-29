@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 class MixedMovieFinder implements MovieFinder {
-    private List<MovieFinder> movieFinders;
+    private MovieFinder[] movieFinders;
     private List<Movie> movies = new ArrayList<>();
 
-    public MixedMovieFinder(List<MovieFinder> movieFinders) {
+    public MixedMovieFinder(MovieFinder[] movieFinders) {
         this.movieFinders = movieFinders;
     }
 

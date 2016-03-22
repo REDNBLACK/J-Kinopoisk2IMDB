@@ -7,7 +7,7 @@ import java.util.List;
 public interface ImportProgressRepository {
     ImportProgress save(ImportProgress importProgress);
 
-    List<ImportProgress> findNotImportedByFileId(int listId);
+    List<ImportProgress> findNotImportedByFileId(long kinopoiskFileId);
 
-    List<ImportProgress> findNotRatedByFileId(int listId);
+    List<ImportProgress> findNotRatedByFileId(long kinopoiskFileId);
 }

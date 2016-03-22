@@ -3,26 +3,43 @@ package org.f0w.k2i.core.handler;
 import org.f0w.k2i.core.exchange.MovieRatingChanger;
 
 import com.google.inject.Inject;
+import org.f0w.k2i.core.model.entity.ImportProgress;
+import org.f0w.k2i.core.model.entity.Movie;
+
 import java.io.IOException;
+import java.util.List;
 
 class SetRatingMovieHandler extends AbstractMovieHandler {
     @Inject
     private MovieRatingChanger changer;
 
     @Override
-    public boolean execute() {
-        try {
-            changer.sendRequest(importProgress.getMovie());
+    public int execute() {
+        List<ImportProgress> importProgress = importProgressRepository.findNotRatedByFileId(kinopoiskFile.getId());
 
-            movieRepository.save(importProgress.getMovie());
+        int successCounter = 0;
 
-            importProgress.setRated(true);
+        for (ImportProgress progress : importProgress) {
+            try {
+                successCounter++;
 
-            importProgressRepository.save(importProgress);
+                movieManager.setMovie(progress.getMovie()).prepare();
 
-            return true;
-        } catch (IOException e) {
-            return false;
+                if (movieManager.isMoviePrepared()) {
+                    Movie preparedMovie = movieManager.getMovie();
+
+                    changer.sendRequest(preparedMovie);
+
+                    progress.setImported(true);
+                    progress.setMovie(preparedMovie);
+
+                    importProgressRepository.save(progress);
+                }
+            } catch (IOException e) {
+                successCounter--;
+            }
         }
+
+        return successCounter;
     }
 }

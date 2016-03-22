@@ -1,8 +1,11 @@
 package org.f0w.k2i.core.handler;
 
+import org.f0w.k2i.core.model.entity.KinopoiskFile;
+
 import java.util.List;
 
-class CombinedMovieHandler extends AbstractMovieHandler {
+class CombinedMovieHandler implements MovieHandler {
+    private KinopoiskFile kinopoiskFile;
     private List<MovieHandler> handlers;
 
     public CombinedMovieHandler(List<MovieHandler> handlers) {
@@ -10,13 +13,18 @@ class CombinedMovieHandler extends AbstractMovieHandler {
     }
 
     @Override
-    public boolean execute() {
+    public int execute() {
         return handlers.stream()
-                .map(h -> {
-                    h.setImportProgress(importProgress);
+                .mapToInt(h -> {
+                    h.setKinopoiskFile(kinopoiskFile);
+
                     return h.execute();
                 })
-                .distinct()
-                .noneMatch(h -> false);
+                .sum();
+    }
+
+    @Override
+    public void setKinopoiskFile(KinopoiskFile kinopoiskFile) {
+        this.kinopoiskFile = kinopoiskFile;
     }
 }

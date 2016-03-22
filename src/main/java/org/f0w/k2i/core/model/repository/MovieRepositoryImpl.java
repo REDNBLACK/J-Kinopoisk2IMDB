@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.model.repository;
 
-import com.google.inject.persist.PersistService;
 import com.google.inject.persist.Transactional;
 import org.f0w.k2i.core.model.entity.Movie;
 
@@ -11,11 +10,6 @@ import javax.persistence.TypedQuery;
 public class MovieRepositoryImpl implements MovieRepository {
     @Inject
     private EntityManager em;
-
-    @Inject
-    public MovieRepositoryImpl(PersistService service) {
-        service.start();
-    }
 
     @Override
     @Transactional

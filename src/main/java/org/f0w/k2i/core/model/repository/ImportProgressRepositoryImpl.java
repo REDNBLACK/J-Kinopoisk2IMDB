@@ -1,21 +1,16 @@
 package org.f0w.k2i.core.model.repository;
 
-import com.google.inject.persist.PersistService;
 import com.google.inject.persist.Transactional;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 
 import com.google.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class ImportProgressRepositoryImpl implements ImportProgressRepository {
     @Inject
     private EntityManager em;
-
-    @Inject
-    public ImportProgressRepositoryImpl(PersistService service) {
-        service.start();
-    }
 
     @Override
     @Transactional
@@ -26,12 +21,26 @@ public class ImportProgressRepositoryImpl implements ImportProgressRepository {
     }
 
     @Override
-    public List<ImportProgress> findNotImportedByFileId(int listId) {
-        return null;
+    public List<ImportProgress> findNotImportedByFileId(long kinopoiskFileId) {
+        TypedQuery<ImportProgress> query = em.createQuery(
+                "FROM ImportProgress WHERE imported = :imported AND kinopoiskFileId = :kinopoiskFileId",
+                ImportProgress.class
+        );
+        query.setParameter("imported", false);
+        query.setParameter("kinopoiskFileId", kinopoiskFileId);
+
+        return query.getResultList();
     }
 
     @Override
-    public List<ImportProgress> findNotRatedByFileId(int listId) {
-        return null;
+    public List<ImportProgress> findNotRatedByFileId(long kinopoiskFileId) {
+        TypedQuery<ImportProgress> query = em.createQuery(
+                "FROM ImportProgress WHERE rated = :rated AND kinopoiskFileId = :kinopoiskFileId",
+                ImportProgress.class
+        );
+        query.setParameter("rated", false);
+        query.setParameter("kinopoiskFileId", kinopoiskFileId);
+
+        return query.getResultList();
     }
 }

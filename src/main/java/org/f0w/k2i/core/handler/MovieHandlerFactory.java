@@ -24,7 +24,7 @@ public class MovieHandlerFactory {
         return handler;
     }
 
-    public static MovieHandler makeCombinedHandler() {
+    private static MovieHandler makeCombinedHandler() {
         List<MovieHandler> handlers = Arrays.asList(
             make(MovieHandlerType.ADD_TO_WATCHLIST),
             make(MovieHandlerType.SET_RATING)

@@ -27,7 +27,7 @@ public class MovieFindersFactory {
         return movieFinder;
     }
 
-    public static MovieFinder makeMixedMovieFinder() {
+    private static MovieFinder makeMixedMovieFinder() {
         List<MovieFinder> movieFinders = Arrays.asList(
                 make(MovieFinderType.XML),
                 make(MovieFinderType.JSON),

@@ -3,27 +3,43 @@ package org.f0w.k2i.core.handler;
 import org.f0w.k2i.core.exchange.MovieWatchlistAssigner;
 
 import com.google.inject.Inject;
+import org.f0w.k2i.core.model.entity.ImportProgress;
+import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
+import java.util.List;
 
 class AddToWatchListMovieHandler extends AbstractMovieHandler {
     @Inject
     private MovieWatchlistAssigner assigner;
 
     @Override
-    public boolean execute() {
-        try {
-            assigner.sendRequest(importProgress.getMovie());
+    public int execute() {
+        List<ImportProgress> importProgress = importProgressRepository.findNotImportedByFileId(kinopoiskFile.getId());
 
-            movieRepository.save(importProgress.getMovie());
+        int successCounter = 0;
 
-            importProgress.setImported(true);
+        for (ImportProgress progress : importProgress) {
+            try {
+                successCounter++;
 
-            importProgressRepository.save(importProgress);
+                movieManager.setMovie(progress.getMovie()).prepare();
 
-            return true;
-        } catch (IOException e) {
-            return false;
+                if (movieManager.isMoviePrepared()) {
+                    Movie preparedMovie = movieManager.getMovie();
+
+                    assigner.sendRequest(preparedMovie);
+
+                    progress.setImported(true);
+                    progress.setMovie(preparedMovie);
+
+                    importProgressRepository.save(progress);
+                }
+            } catch (IOException e) {
+                successCounter--;
+            }
         }
+
+        return successCounter;
     }
 }

@@ -42,6 +42,10 @@ public class MovieManager {
         return this;
     }
 
+    public Movie getMovie() {
+        return movie;
+    }
+
     public MovieManager prepare() {
         if (!isMoviePrepared()) {
             MovieFinder movieFinder = MovieFindersFactory.make(movieFinderType);
@@ -58,6 +62,10 @@ public class MovieManager {
         }
 
         return this;
+    }
+
+    public boolean isMoviePrepared() {
+        return movie.getImdbId() != null;
     }
 
     private Optional<Movie> findMatchingMovie(List<Movie> movies) {
@@ -83,9 +91,5 @@ public class MovieManager {
 
     private Predicate<Movie> movieFieldsIsSet() {
         return m -> m.getTitle() != null && m.getYear() != null && m.getImdbId() != null;
-    }
-
-    public boolean isMoviePrepared() {
-        return movie.getImdbId() != null;
     }
 }

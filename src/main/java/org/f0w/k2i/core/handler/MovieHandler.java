@@ -1,9 +1,9 @@
 package org.f0w.k2i.core.handler;
 
-import org.f0w.k2i.core.model.entity.ImportProgress;
+import org.f0w.k2i.core.model.entity.KinopoiskFile;
 
 public interface MovieHandler {
-    boolean execute();
+    int execute();
 
-    void setImportProgress(ImportProgress progress);
+    void setKinopoiskFile(KinopoiskFile kinopoiskFile);
 }

@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    runtime group: 'com.h2database', name: 'h2', version: '1.4+'
+    runtime group: 'com.h2database', name: 'h2', version: '1.3+'
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.0+'
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.0+'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.8+'

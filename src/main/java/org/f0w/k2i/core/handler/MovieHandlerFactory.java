@@ -1,5 +1,8 @@
 package org.f0w.k2i.core.handler;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MovieHandlerFactory {
     public static MovieHandler make(MovieHandlerType movieHandlerType) {
         MovieHandler handler;
@@ -11,13 +14,22 @@ public class MovieHandlerFactory {
             case SET_RATING:
                 handler = new SetRatingMovieHandler();
                 break;
-            case EVERYTHING:
-                handler = new DoEverythingMovieHandler();
+            case COMBINED:
+                handler = makeCombinedHandler();
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected comparator type!");
         }
 
         return handler;
+    }
+
+    public static MovieHandler makeCombinedHandler() {
+        List<MovieHandler> handlers = Arrays.asList(
+            make(MovieHandlerType.ADD_TO_WATCHLIST),
+            make(MovieHandlerType.SET_RATING)
+        );
+
+        return new CombinedMovieHandler(handlers);
     }
 }

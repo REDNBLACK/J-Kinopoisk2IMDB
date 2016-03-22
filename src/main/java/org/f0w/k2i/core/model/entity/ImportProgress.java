@@ -16,10 +16,10 @@ public class ImportProgress {
     private Long id;
 
     @Column(name = "FILE_ID", nullable = false)
-    private Integer fileId;
+    private Long fileId;
 
     @Column(name = "MOVIE_ID", nullable = false)
-    private Integer movieId;
+    private Long movieId;
 
     @Column(name = "IMPORTED", nullable = false)
     private boolean imported;
@@ -27,21 +27,17 @@ public class ImportProgress {
     @Column(name = "RATED", nullable = false)
     private boolean rated;
 
-    @Column(name = "ADDITIONAL_INFO")
-    private String additionalInfo;
+    private Movie movie;
+
+    private KinopoiskFile kinopoiskFile;
 
     public ImportProgress() {}
 
-    public ImportProgress(int fileId, int movieId, boolean imported, boolean rated, String additionalInfo) {
+    public ImportProgress(long fileId, long movieId, boolean imported, boolean rated) {
         setFileId(fileId);
         setMovieId(movieId);
         setImported(imported);
         setRated(rated);
-        setAdditionalInfo(additionalInfo);
-    }
-
-    public ImportProgress(int fileId, int movieId, boolean imported, boolean rated) {
-        this(fileId, movieId, imported, rated, null);
     }
 
     public Long getId() {
@@ -52,19 +48,19 @@ public class ImportProgress {
         this.id = id;
     }
 
-    public int getFileId() {
+    public long getFileId() {
         return fileId;
     }
 
-    public void setFileId(int fileId) {
+    public void setFileId(long fileId) {
         this.fileId = fileId;
     }
 
-    public int getMovieId() {
+    public long getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(int movieId) {
+    public void setMovieId(long movieId) {
         this.movieId = movieId;
     }
 
@@ -84,12 +80,22 @@ public class ImportProgress {
         this.rated = rated;
     }
 
-    public String getAdditionalInfo() {
-        return additionalInfo;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "IMPORT_PROGRESS", cascade = CascadeType.ALL)
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setAdditionalInfo(final String additionalInfo) {
-        this.additionalInfo = additionalInfo;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "IMPORT_PROGRESS", cascade = CascadeType.ALL)
+    public KinopoiskFile getKinopoiskFile() {
+        return kinopoiskFile;
+    }
+
+    public void setKinopoiskFile(KinopoiskFile kinopoiskFile) {
+        this.kinopoiskFile = kinopoiskFile;
     }
 
     @Override
@@ -100,13 +106,12 @@ public class ImportProgress {
         return isImported() == that.isImported() &&
                 isRated() == that.isRated() &&
                 Objects.equals(getFileId(), that.getFileId()) &&
-                Objects.equals(getMovieId(), that.getMovieId()) &&
-                Objects.equals(getAdditionalInfo(), that.getAdditionalInfo());
+                Objects.equals(getMovieId(), that.getMovieId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFileId(), getMovieId(), isImported(), isRated(), getAdditionalInfo());
+        return Objects.hash(getFileId(), getMovieId(), isImported(), isRated());
     }
 
     @Override
@@ -117,7 +122,6 @@ public class ImportProgress {
                 .add("movieId", movieId)
                 .add("imported", imported)
                 .add("rated", rated)
-                .add("additionalInfo", additionalInfo)
                 .toString();
     }
 }

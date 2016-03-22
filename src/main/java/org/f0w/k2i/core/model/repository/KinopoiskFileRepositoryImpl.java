@@ -1,7 +1,6 @@
 package org.f0w.k2i.core.model.repository;
 
 import com.google.inject.persist.PersistService;
-import com.google.inject.persist.Transactional;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 
 import com.google.inject.Inject;

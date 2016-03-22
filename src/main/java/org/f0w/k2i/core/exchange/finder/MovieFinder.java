@@ -1,6 +1,6 @@
-package org.f0w.k2i.core.exchange.MovieFinders;
+package org.f0w.k2i.core.exchange.finder;
 
-import org.f0w.k2i.core.entities.Movie;
+import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.exchange.Exchangeable;
 
 import java.util.List;

@@ -1,11 +1,13 @@
 package org.f0w.k2i.core.exchange;
 
-import org.f0w.k2i.core.net.Response;
+import org.jsoup.Connection;
+
+import java.io.IOException;
 
 public interface Exchangeable<IN, OUT> {
-    void sendRequest(IN param);
+    void sendRequest(IN param) throws IOException;
 
-    Response getRawResponse();
+    Connection.Response getRawResponse();
 
     OUT getProcessedResponse();
 }

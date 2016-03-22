@@ -3,9 +3,9 @@
     <persistence-unit name="K2IDB">
         <description>Persistence unit for K2IDB</description>
 
-        <class>org.f0w.k2i.core.entities.Movie</class>
-        <class>org.f0w.k2i.core.entities.File</class>
-        <class>org.f0w.k2i.core.entities.ImportProgress</class>
+        <class>org.f0w.k2i.core.model.entity.Movie</class>
+        <class>org.f0w.k2i.core.model.entity.KinopoiskFile</class>
+        <class>org.f0w.k2i.core.model.entity.ImportProgress</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />

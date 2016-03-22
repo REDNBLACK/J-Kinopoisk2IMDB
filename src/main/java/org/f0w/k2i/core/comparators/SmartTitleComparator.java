@@ -3,7 +3,7 @@ package org.f0w.k2i.core.comparators;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
-import org.f0w.k2i.core.entities.Movie;
+import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.utils.NumericToWord;
 
 import java.util.*;
@@ -11,6 +11,7 @@ import java.util.*;
 class SmartTitleComparator implements EqualityComparator<Movie> {
     private static final List<StringModifier> modifiers;
 
+    @FunctionalInterface
     interface StringModifier {
         String modify(String string);
     }
@@ -19,122 +20,68 @@ class SmartTitleComparator implements EqualityComparator<Movie> {
         List<StringModifier> list = new ArrayList<>();
 
         // Original string
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                return string;
-            }
-        });
+        list.add(s -> s);
 
         // Original string without commas
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                return string.replaceAll(",", "");
-            }
-        });
+        list.add(s -> s.replaceAll(",", ""));
 
         // Original string without colon
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                return string.replaceAll(":", "");
-            }
-        });
+        list.add(s -> s.replaceAll(":", ""));
 
         // Original string without apostrophes
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                return string.replaceAll("/([\'\\\\x{0027}]|&#39;|&#x27;)/u", "");
-            }
-        });
+        list.add(s -> s.replaceAll("/([\'\\\\x{0027}]|&#39;|&#x27;)/u", ""));
 
         // Original string without special symbols like unicode etc
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                return string.replaceAll("/\\\\u([0-9a-z]{4})/", "");
-            }
-        });
+        list.add(s -> s.replaceAll("/\\\\u([0-9a-z]{4})/", ""));
 
         // Original string with part before dash symbol
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                String[] parts = string.split("-");
+        list.add(s -> {
+            String[] parts = s.split("-");
 
-                return parts[0].trim();
-            }
+            return parts[0].trim();
         });
 
         // Original string with part after dash symbol
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                String[] parts = string.split("-");
+        list.add(s -> {
+            String[] parts = s.split("-");
 
-                return parts.length > 0 ? parts[parts.length - 1].trim() : "";
-            }
+            return parts.length > 0 ? parts[parts.length - 1].trim() : "";
         });
 
         // The + Original string
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                return "The " + string;
-            }
-        });
+        list.add(s -> "The " + s);
 
         // Original string with all whitespace characters replaced with plain backspace
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                return string.replaceAll("/\\s+/", " ");
-            }
-        });
+        list.add(s -> s.replaceAll("/\\s+/", " "));
 
         // Original string with replaced foreign characters
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                return HtmlEscapers.htmlEscaper()
-                        .escape(string)
-                        .replaceAll("~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i", "$1")
-                ;
-            }
-        });
+        list.add(s -> HtmlEscapers.htmlEscaper()
+                .escape(s)
+                .replaceAll("~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i", "$1")
+        );
 
         // Original string with XML symbols replaced with backspace
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                String[] symbols = {"&#xB;", "&#xC;", "&#x1A;", "&#x1B;"};
+        list.add(s -> {
+            String[] symbols = {"&#xB;", "&#xC;", "&#x1A;", "&#x1B;"};
 
-                for (String symbol : symbols) {
-                    string = string.replaceAll(symbol, " ");
-                }
-
-                return string;
+            for (String symbol : symbols) {
+                s = s.replaceAll(symbol, " ");
             }
+
+            return s;
         });
 
         // Original string with numeric replaced to text representation
-        list.add(new StringModifier() {
-            @Override
-            public String modify(String string) {
-                String[] words = string.split(" ");
+        list.add(s -> {
+            String[] words = s.split(" ");
 
-                for (int i = 0; i < words.length; i++) {
-                    try {
-                        words[i] = NumericToWord.convert(Integer.parseInt(words[i]));
-                    } catch (NumberFormatException e) {
-                        continue;
-                    }
-                }
-
-                return Joiner.on(" ").join(words);
+            for (int i = 0; i < words.length; i++) {
+                try {
+                    words[i] = NumericToWord.convert(Integer.parseInt(words[i]));
+                } catch (NumberFormatException e) {}
             }
+
+            return Joiner.on(" ").join(words);
         });
 
         // Modifiers using symbols mix
@@ -145,12 +92,7 @@ class SmartTitleComparator implements EqualityComparator<Movie> {
                     continue;
                 }
 
-                list.add(new StringModifier() {
-                    @Override
-                    public String modify(String string) {
-                        return string.replaceAll(firstSymbol, secondSymbol);
-                    }
-                });
+                list.add(s -> s.replaceAll(firstSymbol, secondSymbol));
             }
         }
 
@@ -161,12 +103,12 @@ class SmartTitleComparator implements EqualityComparator<Movie> {
     public boolean areEqual(Movie obj1, Movie obj2) {
         boolean result = false;
 
-        for (StringModifier firstModifier : modifiers) {
-            for (StringModifier secondModifier : modifiers) {
-                String firstModifiedString = firstModifier.modify(obj1.getTitle());
-                String secondModifiedString = secondModifier.modify(obj2.getTitle());
+        for (StringModifier m1 : modifiers) {
+            for (StringModifier m2 : modifiers) {
+                String m1Title = m1.modify(obj1.getTitle());
+                String m2Title = m2.modify(obj2.getTitle());
 
-                if (firstModifiedString.equals(secondModifiedString)) {
+                if (m1Title.equals(m2Title)) {
                     result = true;
                     break;
                 }

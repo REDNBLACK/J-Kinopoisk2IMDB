@@ -1,18 +1,16 @@
-package org.f0w.k2i.core.exchange.MovieFinders;
+package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ImmutableMap;
 
-import org.f0w.k2i.core.configuration.Configuration;
-import org.f0w.k2i.core.entities.Movie;
-import org.f0w.k2i.core.utils.StringHelper;
+import org.f0w.k2i.core.model.entity.Movie;
+import org.f0w.k2i.core.utils.exception.DomainException;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.net.URL;
 import java.util.*;
 
-class JSONMovieFinder extends BaseMovieFinder {
+class JSONMovieFinder extends AbstractMovieFinder {
     private static final ContainerFactory containerJSONFactory = new ContainerFactory() {
         @Override
         public List creatArrayContainer() {
@@ -25,23 +23,18 @@ class JSONMovieFinder extends BaseMovieFinder {
         }
     };
 
-    public JSONMovieFinder(Configuration config) {
-        super(config);
-    }
-
     @Override
     protected String buildSearchQuery(Movie movie) {
-        String url = "http://www.imdb.com/xml/find?";
+        final String url = "http://www.imdb.com/xml/find?";
 
-        Map<String, String> query = new ImmutableMap.Builder<String, String>()
+        final Map<String, String> query = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle()) // Запрос
                 .put("tt", "on")            // Поиск только по названиям
                 .put("nr", "1")
                 .put("json", "1")           // Вывод в формате JSON
-                .build()
-        ;
+                .build();
 
-        return StringHelper.buildHttpQuery(url, query);
+        return buildHttpQuery(url, query);
     }
 
     @Override
@@ -64,8 +57,8 @@ class JSONMovieFinder extends BaseMovieFinder {
                     movies.add(movie);
                 }
             }
-        } catch (ParseException e){
-            e.printStackTrace();
+        } catch (ParseException e) {
+            throw new DomainException(e);
         }
 
         return movies;

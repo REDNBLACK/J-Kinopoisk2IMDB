@@ -1,22 +1,15 @@
-package org.f0w.k2i.core.entities;
+package org.f0w.k2i.core.model.entity;
 
 import javax.persistence.*;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
-import com.google.common.hash.Hashing;
-import com.google.common.io.Files;
 import org.hibernate.annotations.GenericGenerator;
-import java.io.*;
 import java.util.Objects;
+import static com.google.common.base.Preconditions.*;
 
 @Entity
-@NamedQuery(
-        name="findFileByChecksum",
-        query="SELECT OBJECT(f) FROM File f WHERE f.checksum = :checksum"
-)
-@Table(name = "FILE")
-public class File {
+@Table(name = "KINOPOISK_FILE")
+public class KinopoiskFile {
     @Id
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
@@ -25,14 +18,10 @@ public class File {
     @Column(name = "CHECKSUM", unique = true, nullable = false)
     private String checksum;
 
-    public File() {}
+    public KinopoiskFile() {}
 
-    public File(String checksum) {
+    public KinopoiskFile(String checksum) {
         setChecksum(checksum);
-    }
-
-    public File(java.io.File file) {
-        setChecksum(file);
     }
 
     public Long getId() {
@@ -48,15 +37,7 @@ public class File {
     }
 
     public void setChecksum(String checksum) {
-        this.checksum = Preconditions.checkNotNull(checksum);
-    }
-
-    public void setChecksum(java.io.File file) {
-        try {
-            setChecksum(Files.hash(file, Hashing.sha256()).toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.checksum = checkNotNull(checksum);
     }
 
     @Override
@@ -65,7 +46,7 @@ public class File {
             return false;
         }
 
-        return Objects.equals(getChecksum(), ((File) obj).getChecksum());
+        return Objects.equals(getChecksum(), ((KinopoiskFile) obj).getChecksum());
     }
 
     @Override
@@ -76,9 +57,8 @@ public class File {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", getId())
-                .add("checksum", getChecksum())
-                .toString()
-        ;
+                .add("id", id)
+                .add("checksum", checksum)
+                .toString();
     }
 }

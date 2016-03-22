@@ -1,24 +1,18 @@
-package org.f0w.k2i.core.exchange.MovieFinders;
+package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ImmutableMap;
 
-import org.f0w.k2i.core.configuration.Configuration;
-import org.f0w.k2i.core.entities.Movie;
+import com.typesafe.config.Config;
+import org.f0w.k2i.core.model.entity.Movie;
 
-import org.f0w.k2i.core.utils.StringHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-class XMLMovieFinder extends BaseMovieFinder {
-    public XMLMovieFinder(Configuration config) {
-        super(config);
-    }
-
+class XMLMovieFinder extends AbstractMovieFinder {
     @Override
     protected String buildSearchQuery(Movie movie) {
         String url = "http://www.imdb.com/xml/find?";
@@ -27,10 +21,9 @@ class XMLMovieFinder extends BaseMovieFinder {
                 .put("q", movie.getTitle()) // Запрос
                 .put("tt", "on")            // Поиск только по названиям
                 .put("nr", "1")
-                .build()
-        ;
+                .build();
 
-        return StringHelper.buildHttpQuery(url, query);
+        return buildHttpQuery(url, query);
     }
 
     @Override

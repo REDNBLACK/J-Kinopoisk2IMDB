@@ -1,7 +1,7 @@
 package org.f0w.k2i.core.utils;
 
 import com.google.common.base.Strings;
-import org.f0w.k2i.core.entities.Movie;
+import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

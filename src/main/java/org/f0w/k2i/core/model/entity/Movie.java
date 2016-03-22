@@ -1,13 +1,14 @@
-package org.f0w.k2i.core.entities;
+package org.f0w.k2i.core.model.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
 import org.hibernate.annotations.GenericGenerator;
 
+import static com.google.common.base.Preconditions.*;
+
 @Entity
-@Table(name = "MOVIES", uniqueConstraints = @UniqueConstraint(columnNames = {"title", "year"}))
+@Table(name = "MOVIES", uniqueConstraints = @UniqueConstraint(columnNames = {"TITLE", "YEAR"}))
 public class Movie {
     @Id
     @GeneratedValue(generator="increment")
@@ -60,7 +61,7 @@ public class Movie {
     }
 
     public void setTitle(String title) {
-        this.title = Preconditions.checkNotNull(title);
+        this.title = checkNotNull(title);
     }
 
     public Integer getYear() {
@@ -68,7 +69,7 @@ public class Movie {
     }
 
     public void setYear(Integer year) {
-        this.year = Preconditions.checkNotNull(year);
+        this.year = checkNotNull(year);
     }
 
     public Integer getRating() {
@@ -76,7 +77,7 @@ public class Movie {
     }
 
     public void setRating(Integer rating) {
-        this.rating = Preconditions.checkNotNull(rating);
+        this.rating = checkNotNull(rating);
     }
 
     public String getImdbId() {
@@ -95,8 +96,7 @@ public class Movie {
 
         Movie other = (Movie) obj;
         return Objects.equals(getTitle(), other.getTitle())
-                && Objects.equals(getYear(), other.getYear())
-        ;
+                && Objects.equals(getYear(), other.getYear());
     }
 
     @Override
@@ -112,7 +112,6 @@ public class Movie {
                 .add("year", getYear())
                 .add("rating", getRating())
                 .add("imdb_id", getImdbId())
-                .toString()
-        ;
+                .toString();
     }
 }

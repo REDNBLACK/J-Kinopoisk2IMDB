@@ -41,22 +41,17 @@ public class ConfigValidator {
     private static void checkYearDeviation(final Integer yearDeviation) {
         final String message = "YearDeviation setting is not valid!";
 
-        checkNotNull(yearDeviation, message);
-        checkArgument(String.valueOf(yearDeviation).length() >= 4, message);
-        checkArgument(yearDeviation > 1000, message);
+        checkArgument(yearDeviation > 0, message);
     }
 
     private static void checkTimeout(final Integer timeout) {
         final String message = "TimeOut setting is not valid!";
 
-        checkNotNull(timeout, message);
         checkArgument(timeout >= 1000, message);
     }
 
     private static void checkQueryFormat(final String queryFormat) {
         final String message = "QueryFormat setting is not valid!";
-
-        checkNotNull(queryFormat, message);
 
         try {
             MovieFinderType.valueOf(queryFormat);
@@ -68,8 +63,6 @@ public class ConfigValidator {
     private static void checkComparator(final String comparator) {
         final String message = "Comparator setting is not valid!";
 
-        checkNotNull(comparator);
-
         try {
             TitleComparatorType.valueOf(comparator);
         } catch (IllegalArgumentException e) {
@@ -80,16 +73,13 @@ public class ConfigValidator {
     private static void checkAuth(final String auth) {
         final String message = "Auth setting is not valid!";
 
-        checkNotNull(auth, message);
         checkArgument(auth.length() > 10, message);
     }
 
     private static void checkList(final String list, final String mode) {
         final String message = "List setting is not valid!";
 
-        checkArgument("".equals(list), message);
-
-        if (list == null) {
+        if ("".equals(list)) {
             MovieHandlerType movieHandlerType = MovieHandlerType.valueOf(mode);
 
             if (movieHandlerType.equals(MovieHandlerType.COMBINED)
@@ -105,8 +95,6 @@ public class ConfigValidator {
 
     private static void checkMode(final String mode) {
         final String message = "Mode setting is not valid!";
-
-        checkNotNull(mode, message);
 
         try {
              MovieHandlerType.valueOf(mode);

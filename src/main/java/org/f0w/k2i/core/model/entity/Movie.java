@@ -5,7 +5,7 @@ import java.util.Objects;
 import com.google.common.base.MoreObjects;
 import org.hibernate.annotations.GenericGenerator;
 
-import static com.google.common.base.Preconditions.*;
+import static java.util.Objects.requireNonNull;
 
 @Entity
 @Table(name = "MOVIES", uniqueConstraints = @UniqueConstraint(columnNames = {"TITLE", "YEAR"}))
@@ -61,7 +61,7 @@ public class Movie {
     }
 
     public void setTitle(String title) {
-        this.title = checkNotNull(title);
+        this.title = requireNonNull(title);
     }
 
     public Integer getYear() {
@@ -69,7 +69,7 @@ public class Movie {
     }
 
     public void setYear(Integer year) {
-        this.year = checkNotNull(year);
+        this.year = requireNonNull(year);
     }
 
     public Integer getRating() {

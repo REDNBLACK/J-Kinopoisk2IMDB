@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.google.common.base.Preconditions.*;
+import static java.util.Objects.requireNonNull;
 
 public class MovieManager {
     private static final Logger LOG = LoggerFactory.getLogger(MovieManager.class);
@@ -45,7 +45,7 @@ public class MovieManager {
     }
 
     public MovieManager setMovie(Movie movie) {
-        this.movie = checkNotNull(movie);
+        this.movie = requireNonNull(movie);
 
         return this;
     }

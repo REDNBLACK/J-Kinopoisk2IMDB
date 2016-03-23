@@ -20,15 +20,15 @@ import org.f0w.k2i.core.providers.ConfigurationProvider;
 import org.f0w.k2i.core.providers.JpaRepositoryProvider;
 import org.f0w.k2i.core.utils.ConfigValidator;
 
-import static org.f0w.k2i.core.utils.FileUtils.*;
-import static com.google.common.base.Preconditions.*;
-import static org.f0w.k2i.core.utils.exception.LambdaExceptionUtil.rethrowSupplier;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.requireNonNull;
+import static org.f0w.k2i.core.utils.FileUtils.*;
+import static org.f0w.k2i.core.utils.exception.LambdaExceptionUtil.rethrowSupplier;
 
 public class Client {
     private final Injector injector;
@@ -40,7 +40,7 @@ public class Client {
     private ImportProgressRepository importProgressRepository;
 
     public Client(File file, Config config) {
-        this.file = checkNotNull(file);
+        this.file = requireNonNull(file);
 
         Config configuration = ConfigValidator.checkValid(config.withFallback(ConfigFactory.load()));
 

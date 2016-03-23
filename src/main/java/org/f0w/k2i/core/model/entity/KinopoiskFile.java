@@ -5,7 +5,8 @@ import javax.persistence.*;
 import com.google.common.base.MoreObjects;
 import org.hibernate.annotations.GenericGenerator;
 import java.util.Objects;
-import static com.google.common.base.Preconditions.*;
+
+import static java.util.Objects.requireNonNull;
 
 @Entity
 @Table(name = "KINOPOISK_FILE")
@@ -37,7 +38,7 @@ public class KinopoiskFile {
     }
 
     public void setHashCode(String checksum) {
-        this.hashCode = checkNotNull(checksum);
+        this.hashCode = requireNonNull(checksum);
     }
 
     @Override

@@ -1,12 +1,12 @@
 package org.f0w.k2i.core.utils;
 
-import com.google.common.base.Strings;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.comparators.TitleComparatorType;
 import org.f0w.k2i.core.exchange.finder.MovieFinderType;
 import org.f0w.k2i.core.handler.MovieHandlerType;
 
 import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class ConfigValidator {
     private ConfigValidator() {
@@ -33,9 +33,7 @@ public class ConfigValidator {
     private static void checkUserAgent(final String userAgent) {
         final String message = "UserAgent setting is not valid!";
 
-        if (Strings.isNullOrEmpty(userAgent)) {
-            throw new IllegalArgumentException(message);
-        }
+        checkArgument(isNullOrEmpty(userAgent), message);
     }
 
     private static void checkYearDeviation(final Integer yearDeviation) {

@@ -1,17 +1,28 @@
 package org.f0w.k2i.core.handler;
 
+import org.f0w.k2i.core.MovieManager;
 import org.f0w.k2i.core.exchange.MovieRatingChanger;
 
 import com.google.inject.Inject;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
+import org.f0w.k2i.core.model.repository.ImportProgressRepository;
 
 import java.io.IOException;
 import java.util.List;
 
 class SetRatingMovieHandler extends AbstractMovieHandler {
-    @Inject
     private MovieRatingChanger changer;
+
+    @Inject
+    public SetRatingMovieHandler(
+            ImportProgressRepository importProgressRepository,
+            MovieManager movieManager,
+            MovieRatingChanger changer
+    ) {
+        super(importProgressRepository, movieManager);
+        this.changer = changer;
+    }
 
     @Override
     public int execute() {

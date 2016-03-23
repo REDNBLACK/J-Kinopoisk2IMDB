@@ -31,11 +31,11 @@ public class ImportProgressRepositoryImpl implements ImportProgressRepository {
     @Override
     public List<ImportProgress> findNotImportedByFile(KinopoiskFile kinopoiskFile) {
         TypedQuery<ImportProgress> query = em.createQuery(
-                "FROM ImportProgress WHERE imported = :imported AND kinopoiskFileId = :kinopoiskFileId",
+                "FROM ImportProgress WHERE imported = :imported AND kinopoiskFile = :kinopoiskFile",
                 ImportProgress.class
         );
         query.setParameter("imported", false);
-        query.setParameter("kinopoiskFileId", kinopoiskFile.getId());
+        query.setParameter("kinopoiskFile", kinopoiskFile);
 
         return query.getResultList();
     }
@@ -43,11 +43,11 @@ public class ImportProgressRepositoryImpl implements ImportProgressRepository {
     @Override
     public List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile) {
         TypedQuery<ImportProgress> query = em.createQuery(
-                "FROM ImportProgress WHERE rated = :rated AND kinopoiskFileId = :kinopoiskFileId",
+                "FROM ImportProgress WHERE rated = :rated AND kinopoiskFile = :kinopoiskFile",
                 ImportProgress.class
         );
         query.setParameter("rated", false);
-        query.setParameter("kinopoiskFileId", kinopoiskFile.getId());
+        query.setParameter("kinopoiskFile", kinopoiskFile);
 
         return query.getResultList();
     }

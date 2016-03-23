@@ -8,13 +8,15 @@ import org.f0w.k2i.core.model.repository.ImportProgressRepository;
 import static com.google.common.base.Preconditions.*;
 
 abstract class AbstractMovieHandler implements MovieHandler {
-    @Inject
     protected ImportProgressRepository importProgressRepository;
+    protected MovieManager movieManager;
+    protected KinopoiskFile kinopoiskFile;
 
     @Inject
-    protected MovieManager movieManager;
-
-    protected KinopoiskFile kinopoiskFile;
+    public AbstractMovieHandler(ImportProgressRepository importProgressRepository, MovieManager movieManager) {
+        this.importProgressRepository = importProgressRepository;
+        this.movieManager = movieManager;
+    }
 
     @Override
     public void setKinopoiskFile(KinopoiskFile kinopoiskFile) {

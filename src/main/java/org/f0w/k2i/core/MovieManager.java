@@ -21,14 +21,20 @@ import java.util.stream.Collectors;
 import static com.google.common.base.Preconditions.*;
 
 public class MovieManager {
-    @Inject
     private Config config;
 
     private Movie movie;
 
-    private MovieFinderType movieFinderType = MovieFinderType.valueOf(config.getString("query_format"));
+    private MovieFinderType movieFinderType;
 
-    private TitleComparatorType movieComparatorType = TitleComparatorType.valueOf(config.getString("comparator"));
+    private TitleComparatorType movieComparatorType;
+
+    @Inject
+    public MovieManager(Config config) {
+        this.config = config;
+        movieFinderType = MovieFinderType.valueOf(config.getString("query_format"));
+        movieComparatorType = TitleComparatorType.valueOf(config.getString("comparator"));
+    }
 
     public MovieManager setMovie(Movie movie) {
         this.movie = checkNotNull(movie);

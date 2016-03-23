@@ -54,7 +54,7 @@ public class Client {
                 .ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
                 .orElseGet(rethrowSupplier(() -> importNewFile(fileHashCode)));
 
-        MovieHandler movieHandler = MovieHandlerFactory.make(movieHandlerType);
+        MovieHandler movieHandler = injector.getInstance(MovieHandlerFactory.class).make(movieHandlerType);
         movieHandler.setKinopoiskFile(kinopoiskFile);
         movieHandler.execute();
     }

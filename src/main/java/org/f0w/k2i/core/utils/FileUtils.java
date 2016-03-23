@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtils {
+    public static String getHashCode(File file) throws IOException {
+        return Files.hash(file, Hashing.sha256()).toString();
+    }
+
     public static List<Movie> parseMovies(File file) throws IOException {
         ArrayList<Movie> movies = new ArrayList<>();
         Document document = Jsoup.parse(file, StandardCharsets.UTF_8.name());
@@ -25,21 +29,45 @@ public class FileUtils {
         for (Element entity : content) {
             Elements elements = entity.getElementsByTag("td");
 
-            Movie movie = new Movie();
-            movie.setTitle(elements.get(1).text().trim());
-            if (Strings.isNullOrEmpty(movie.getTitle())) {
-                movie.setTitle(elements.get(0).text().trim());
-            }
-            movie.setYear(Integer.parseInt(elements.get(2).text().trim().substring(0, 4)));
-            movie.setRating(Integer.parseInt(elements.get(9).text().trim()));
-
-            movies.add(movie);
+            movies.add(new Movie(parseTitle(elements), parseYear(elements), parseRating(elements)));
         }
 
         return movies;
     }
 
-    public static String getHashCode(File file) throws IOException {
-        return Files.hash(file, Hashing.sha256()).toString();
+    private static String parseTitle(Elements elements) throws IOException {
+        String title = elements.get(1).text().trim();
+
+        if (Strings.isNullOrEmpty(title)) {
+            title = elements.get(0).text().trim();
+        }
+
+        if (Strings.isNullOrEmpty(title)) {
+            throw new IOException("Error parsing movie title");
+        }
+
+        return title;
+    }
+
+    private static int parseYear(Elements elements) {
+        String yearString = elements.get(2)
+                .text()
+                .trim()
+                .substring(0, 4);
+
+        return Integer.parseInt(yearString);
+    }
+
+    private static Integer parseRating(Elements elements) {
+        String ratingString = elements.get(9).text().trim();
+
+        if (Strings.isNullOrEmpty(ratingString)
+            || "zero".equals(ratingString)
+            || "0".equals(ratingString)
+        ) {
+            return null;
+        }
+
+        return Integer.parseInt(ratingString);
     }
 }

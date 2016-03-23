@@ -21,7 +21,7 @@ public class Movie {
     @Column(name = "YEAR", nullable = false)
     private Integer year;
 
-    @Column(name = "RATING", nullable = false)
+    @Column(name = "RATING")
     private Integer rating;
 
     @Column(name = "IMDB_ID")
@@ -77,7 +77,7 @@ public class Movie {
     }
 
     public void setRating(Integer rating) {
-        this.rating = checkNotNull(rating);
+        this.rating = rating;
     }
 
     public String getImdbId() {

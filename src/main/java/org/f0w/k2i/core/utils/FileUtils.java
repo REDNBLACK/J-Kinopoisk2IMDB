@@ -29,7 +29,7 @@ public class FileUtils {
         for (Element entity : content) {
             Elements elements = entity.getElementsByTag("td");
 
-            movies.add(new Movie(parseTitle(elements), parseYear(elements), parseRating(elements)));
+            movies.add(new Movie(parseMovieTitle(elements), parseMovieYear(elements), parseMovieRating(elements)));
         }
 
         System.out.println(movies);
@@ -37,7 +37,7 @@ public class FileUtils {
         return movies;
     }
 
-    private static String parseTitle(Elements elements) throws IOException {
+    private static String parseMovieTitle(Elements elements) throws IOException {
         String title = elements.get(1).text().trim();
 
         if (Strings.isNullOrEmpty(title)) {
@@ -51,7 +51,7 @@ public class FileUtils {
         return title;
     }
 
-    private static int parseYear(Elements elements) {
+    private static int parseMovieYear(Elements elements) {
         String yearString = elements.get(2)
                 .text()
                 .trim()
@@ -60,7 +60,7 @@ public class FileUtils {
         return Integer.parseInt(yearString);
     }
 
-    private static Integer parseRating(Elements elements) {
+    private static Integer parseMovieRating(Elements elements) {
         String ratingString = elements.get(9).text().trim();
 
         if (Strings.isNullOrEmpty(ratingString)

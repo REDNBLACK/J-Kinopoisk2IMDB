@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.utils;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
@@ -11,7 +12,7 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class FileUtils {
 
     public static List<Movie> parseMovies(File file) throws IOException {
         ArrayList<Movie> movies = new ArrayList<>();
-        Document document = Jsoup.parse(file, StandardCharsets.UTF_8.name());
+        Document document = Jsoup.parse(file, Charset.forName("windows-1251").toString());
         Elements content = document.select("table tr");
         content.remove(0);
 
@@ -31,6 +32,8 @@ public class FileUtils {
 
             movies.add(new Movie(parseTitle(elements), parseYear(elements), parseRating(elements)));
         }
+
+        System.out.println(movies);
 
         return movies;
     }

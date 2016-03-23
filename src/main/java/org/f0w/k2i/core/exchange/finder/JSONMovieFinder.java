@@ -3,7 +3,7 @@ package org.f0w.k2i.core.exchange.finder;
 import com.google.common.collect.ImmutableMap;
 
 import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.utils.exception.DomainException;
+import org.f0w.k2i.core.utils.exception.KinopoiskToIMDBException;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -58,7 +58,7 @@ class JSONMovieFinder extends AbstractMovieFinder {
                 }
             }
         } catch (ParseException e) {
-            throw new DomainException(e);
+            throw new KinopoiskToIMDBException(e);
         }
 
         return movies;

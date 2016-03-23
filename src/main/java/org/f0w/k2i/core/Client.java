@@ -6,6 +6,7 @@ import com.google.inject.Provider;
 import com.google.inject.persist.PersistService;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.handler.MovieHandlerFactory;
 import org.f0w.k2i.core.handler.MovieHandlerType;
@@ -17,6 +18,8 @@ import org.f0w.k2i.core.model.repository.KinopoiskFileRepository;
 import org.f0w.k2i.core.model.repository.MovieRepository;
 import org.f0w.k2i.core.providers.ConfigurationProvider;
 import org.f0w.k2i.core.providers.JpaRepositoryProvider;
+import org.f0w.k2i.core.utils.ConfigValidator;
+
 import static org.f0w.k2i.core.utils.FileUtils.*;
 import static com.google.common.base.Preconditions.*;
 import static org.f0w.k2i.core.utils.exception.LambdaExceptionUtil.rethrowSupplier;
@@ -39,15 +42,17 @@ public class Client {
     public Client(File file, Config config) {
         this.file = checkNotNull(file);
 
+        Config configuration = ConfigValidator.checkValid(config.withFallback(ConfigFactory.load()));
+
         injector = Guice.createInjector(
-                new ConfigurationProvider(checkNotNull(config)),
+                new ConfigurationProvider(configuration),
                 new JpaPersistModule("K2IDB"),
                 new JpaRepositoryProvider()
         );
         injector.getInstance(PersistService.class).start();
 
         movieHandler = injector.getInstance(MovieHandlerFactory.class)
-                .make(MovieHandlerType.valueOf(config.getString("mode")));
+                .make(MovieHandlerType.valueOf(configuration.getString("mode")));
 
         kinopoiskFileRepository = injector.getInstance(KinopoiskFileRepository.class);
         importProgressRepository = injector.getInstance(ImportProgressRepository.class);

@@ -16,7 +16,6 @@ abstract class AbstractMovieFinder implements MovieFinder {
 
     protected Connection.Response response;
 
-    @Inject
     public AbstractMovieFinder(Config config) {
         this.config = config;
     }

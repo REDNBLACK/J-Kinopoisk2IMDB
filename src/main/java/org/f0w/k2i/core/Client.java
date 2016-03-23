@@ -2,6 +2,7 @@ package org.f0w.k2i.core;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.google.inject.persist.PersistService;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.typesafe.config.Config;
@@ -31,6 +32,7 @@ public class Client {
     private final File file;
 
     private MovieHandler movieHandler;
+    private Provider<MovieRepository> movieRepositoryProvider;
     private KinopoiskFileRepository kinopoiskFileRepository;
     private ImportProgressRepository importProgressRepository;
 
@@ -49,6 +51,7 @@ public class Client {
 
         kinopoiskFileRepository = injector.getInstance(KinopoiskFileRepository.class);
         importProgressRepository = injector.getInstance(ImportProgressRepository.class);
+        movieRepositoryProvider = injector.getProvider(MovieRepository.class);
     }
 
     public void run() throws IOException {
@@ -60,19 +63,18 @@ public class Client {
 
         List<ImportProgress> importProgress = importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile);
 
-        movieHandler.execute(importProgress);
+        movieHandler.execute(importProgress, importProgressRepository::save);
     }
 
     private KinopoiskFile importNewFile(String fileHashCode) throws IOException {
         KinopoiskFile newKinopoiskFile = kinopoiskFileRepository.save(new KinopoiskFile(fileHashCode));
 
-        MovieRepository movieRepository = injector.getInstance(MovieRepository.class);
+        MovieRepository movieRepository = movieRepositoryProvider.get();
 
         List<Movie> movies = parseMovies(file).stream()
                     .map(movieRepository::findOrCreate)
                     .collect(Collectors.toList());
 
-        ImportProgressRepository importProgressRepository = injector.getInstance(ImportProgressRepository.class);
         importProgressRepository.saveAll(newKinopoiskFile, movies);
 
         return newKinopoiskFile;

@@ -32,6 +32,7 @@ public class MovieWatchlistAssigner implements Exchangeable<Movie, Connection.Re
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"))
                 .cookie("id", config.getString("auth"))
+                .ignoreContentType(true)
                 .data(postData);
 
         response = request.execute();

@@ -1,9 +1,9 @@
 package org.f0w.k2i.core.handler;
 
 import org.f0w.k2i.core.model.entity.ImportProgress;
-import org.f0w.k2i.core.model.entity.KinopoiskFile;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 class CombinedMovieHandler implements MovieHandler {
     private List<MovieHandler> handlers;
@@ -13,7 +13,7 @@ class CombinedMovieHandler implements MovieHandler {
     }
 
     @Override
-    public void execute(List<ImportProgress> importProgress) {
-        handlers.forEach(h -> h.execute(importProgress));
+    public void execute(List<ImportProgress> importProgress, Consumer<ImportProgress> consumer) {
+        handlers.forEach(h -> h.execute(importProgress, consumer));
     }
 }

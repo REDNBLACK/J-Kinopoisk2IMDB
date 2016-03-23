@@ -4,8 +4,8 @@ import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.comparators.EqualityComparator;
-import org.f0w.k2i.core.comparators.EqualityComparatorType;
-import org.f0w.k2i.core.comparators.EqualityComparatorsFactory;
+import org.f0w.k2i.core.comparators.TitleComparatorType;
+import org.f0w.k2i.core.comparators.TitleComparatorsFactory;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.exchange.finder.MovieFinderType;
 import org.f0w.k2i.core.exchange.finder.MovieFindersFactory;
@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static org.f0w.k2i.core.utils.StringHelper.*;
 import static com.google.common.base.Preconditions.*;
 
 public class MovieManager {
@@ -27,14 +26,9 @@ public class MovieManager {
 
     private Movie movie;
 
-    private MovieFinderType movieFinderType;
+    private MovieFinderType movieFinderType = MovieFinderType.valueOf(config.getString("query_format"));
 
-    private EqualityComparatorType movieComparatorType;
-
-    public MovieManager() {
-        movieFinderType = toEnum(config.getString("query_format"), MovieFinderType.class);
-        movieComparatorType = toEnum(config.getString("comparator"), EqualityComparatorType.class);
-    }
+    private TitleComparatorType movieComparatorType = TitleComparatorType.valueOf(config.getString("comparator"));
 
     public MovieManager setMovie(Movie movie) {
         this.movie = checkNotNull(movie);
@@ -47,7 +41,7 @@ public class MovieManager {
     }
 
     public MovieManager prepare() {
-        if (!isMoviePrepared()) {
+        if (!isPrepared()) {
             MovieFinder movieFinder = MovieFindersFactory.make(movieFinderType);
 
             try {
@@ -64,12 +58,12 @@ public class MovieManager {
         return this;
     }
 
-    public boolean isMoviePrepared() {
+    public boolean isPrepared() {
         return movie.getImdbId() != null;
     }
 
     private Optional<Movie> findMatchingMovie(List<Movie> movies) {
-        EqualityComparator<Movie> comparator = EqualityComparatorsFactory.make(movieComparatorType);
+        EqualityComparator<Movie> comparator = TitleComparatorsFactory.make(movieComparatorType);
 
         return movies.stream()
                 .filter(imdbMovie -> comparator.areEqual(movie, imdbMovie))

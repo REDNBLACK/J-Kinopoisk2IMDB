@@ -25,7 +25,7 @@ class AddToWatchListMovieHandler extends AbstractMovieHandler {
 
                 movieManager.setMovie(progress.getMovie()).prepare();
 
-                if (movieManager.isMoviePrepared()) {
+                if (movieManager.isPrepared()) {
                     Movie preparedMovie = movieManager.getMovie();
 
                     assigner.sendRequest(preparedMovie);

@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MovieFindersFactory {
+    private MovieFindersFactory() {
+        throw new UnsupportedOperationException();
+    }
+
     public static MovieFinder make(MovieFinderType movieFinderType) {
         MovieFinder movieFinder;
 

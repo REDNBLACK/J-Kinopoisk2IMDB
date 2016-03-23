@@ -7,13 +7,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileParser {
-    public static List<Movie> parseMovies(java.io.File file) throws IOException {
+public class FileParsingUtils {
+    public static List<Movie> parseMovies(File file) throws IOException {
         ArrayList<Movie> movies = new ArrayList<>();
         Document document = Jsoup.parse(file, StandardCharsets.UTF_8.name());
         Elements content = document.select("table tr");

@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MovieHandlerFactory {
+    private MovieHandlerFactory() {
+        throw new UnsupportedOperationException();
+    }
+
     public static MovieHandler make(MovieHandlerType movieHandlerType) {
         MovieHandler handler;
 

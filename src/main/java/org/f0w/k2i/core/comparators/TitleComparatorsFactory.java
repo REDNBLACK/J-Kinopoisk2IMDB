@@ -2,11 +2,15 @@ package org.f0w.k2i.core.comparators;
 
 import org.f0w.k2i.core.model.entity.Movie;
 
-public class EqualityComparatorsFactory {
-    public static EqualityComparator<Movie> make(EqualityComparatorType equalityComparatorType) {
+public class TitleComparatorsFactory {
+    private TitleComparatorsFactory() {
+        throw new UnsupportedOperationException();
+    }
+
+    public static EqualityComparator<Movie> make(TitleComparatorType titleComparatorType) {
         EqualityComparator<Movie> comparator;
 
-        switch (equalityComparatorType) {
+        switch (titleComparatorType) {
             case SMART:
                 comparator = new SmartTitleComparator();
                 break;

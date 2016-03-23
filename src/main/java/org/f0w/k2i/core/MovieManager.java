@@ -2,6 +2,7 @@ package org.f0w.k2i.core;
 
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.comparators.EqualityComparator;
 import org.f0w.k2i.core.comparators.TitleComparatorType;
@@ -25,13 +26,16 @@ public class MovieManager {
 
     private Movie movie;
 
+    private Provider<MovieFindersFactory> movieFindersFactoryProvider;
+
     private MovieFinderType movieFinderType;
 
     private TitleComparatorType movieComparatorType;
 
     @Inject
-    public MovieManager(Config config) {
+    public MovieManager(Config config, Provider<MovieFindersFactory> movieFindersFactoryProvider) {
         this.config = config;
+        this.movieFindersFactoryProvider = movieFindersFactoryProvider;
         movieFinderType = MovieFinderType.valueOf(config.getString("query_format"));
         movieComparatorType = TitleComparatorType.valueOf(config.getString("comparator"));
     }
@@ -48,7 +52,7 @@ public class MovieManager {
 
     public MovieManager prepare() {
         if (!isPrepared()) {
-            MovieFinder movieFinder = MovieFindersFactory.make(movieFinderType);
+            MovieFinder movieFinder = movieFindersFactoryProvider.get().make(movieFinderType);
 
             try {
                 movieFinder.sendRequest(movie);

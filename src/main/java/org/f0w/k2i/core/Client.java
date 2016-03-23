@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 public class Client {
     private final Injector injector;
     private final File file;
-    private MovieHandlerType movieHandlerType;
 
+    private MovieHandler movieHandler;
     private KinopoiskFileRepository kinopoiskFileRepository;
 
     public Client(File file, Config config) {
@@ -42,7 +42,8 @@ public class Client {
         );
         injector.getInstance(PersistService.class).start();
 
-        movieHandlerType = MovieHandlerType.valueOf(config.getString("mode"));
+        movieHandler = injector.getInstance(MovieHandlerFactory.class)
+                .make(MovieHandlerType.valueOf(config.getString("mode")));
 
         kinopoiskFileRepository = injector.getInstance(KinopoiskFileRepository.class);
     }
@@ -54,7 +55,6 @@ public class Client {
                 .ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
                 .orElseGet(rethrowSupplier(() -> importNewFile(fileHashCode)));
 
-        MovieHandler movieHandler = injector.getInstance(MovieHandlerFactory.class).make(movieHandlerType);
         movieHandler.setKinopoiskFile(kinopoiskFile);
         movieHandler.execute();
     }

@@ -2,6 +2,8 @@ package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ImmutableMap;
 
+import com.google.inject.Inject;
+import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import org.jsoup.Jsoup;
@@ -12,6 +14,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 class XMLMovieFinder extends AbstractMovieFinder {
+    @Inject
+    public XMLMovieFinder(Config config) {
+        super(config);
+    }
+
     @Override
     protected String buildSearchQuery(Movie movie) {
         String movieSearchLink = "http://www.imdb.com/xml/find?";

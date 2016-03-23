@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 abstract class AbstractMovieFinder implements MovieFinder {
-    @Inject
     protected Config config;
 
     protected Connection.Response response;
+
+    @Inject
+    public AbstractMovieFinder(Config config) {
+        this.config = config;
+    }
 
     @Override
     public void sendRequest(Movie movie) throws IOException {

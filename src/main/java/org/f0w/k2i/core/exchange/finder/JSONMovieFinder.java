@@ -2,6 +2,8 @@ package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ImmutableMap;
 
+import com.google.inject.Inject;
+import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.utils.exception.KinopoiskToIMDBException;
 import org.json.simple.parser.ContainerFactory;
@@ -11,6 +13,11 @@ import org.json.simple.parser.ParseException;
 import java.util.*;
 
 class JSONMovieFinder extends AbstractMovieFinder {
+    @Inject
+    public JSONMovieFinder(Config config) {
+        super(config);
+    }
+
     private static final ContainerFactory containerJSONFactory = new ContainerFactory() {
         @Override
         public List creatArrayContainer() {

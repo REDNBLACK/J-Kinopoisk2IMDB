@@ -2,6 +2,8 @@ package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ImmutableMap;
 
+import com.google.inject.Inject;
+import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import org.jsoup.Jsoup;
@@ -13,6 +15,11 @@ import java.util.regex.*;
 import java.nio.charset.StandardCharsets;
 
 class HTMLMovieFinder extends AbstractMovieFinder {
+    @Inject
+    public HTMLMovieFinder(Config config) {
+        super(config);
+    }
+
     @Override
     protected String buildSearchQuery(Movie movie) {
         final String movieSearchLink = "http://www.imdb.com/find?";

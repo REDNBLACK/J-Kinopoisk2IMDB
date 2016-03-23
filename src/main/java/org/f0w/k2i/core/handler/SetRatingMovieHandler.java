@@ -15,7 +15,7 @@ class SetRatingMovieHandler extends AbstractMovieHandler {
 
     @Override
     public int execute() {
-        List<ImportProgress> importProgress = importProgressRepository.findNotRatedByFileId(kinopoiskFile.getId());
+        List<ImportProgress> importProgress = importProgressRepository.findNotRatedByFile(kinopoiskFile);
 
         int successCounter = 0;
 

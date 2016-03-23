@@ -15,11 +15,13 @@ public class ImportProgress {
     @GenericGenerator(name="increment", strategy = "increment")
     private Long id;
 
-    @Column(name = "KINOPOISK_FILE_ID", nullable = false)
-    private Long kinopoiskFileId;
+    @ManyToOne
+    @JoinColumn(name = "KINOPOISK_FILE_ID", nullable = false)
+    private KinopoiskFile kinopoiskFile;
 
-    @Column(name = "MOVIE_ID", nullable = false)
-    private Long movieId;
+    @ManyToOne
+    @JoinColumn(name = "MOVIE_ID", nullable = false)
+    private Movie movie;
 
     @Column(name = "IMPORTED", nullable = false)
     private boolean imported;
@@ -27,17 +29,11 @@ public class ImportProgress {
     @Column(name = "RATED", nullable = false)
     private boolean rated;
 
-    @ManyToOne
-    private Movie movie;
-
-    @ManyToOne
-    private KinopoiskFile kinopoiskFile;
-
     public ImportProgress() {}
 
-    public ImportProgress(long kinopoiskFileId, long movieId, boolean imported, boolean rated) {
-        setKinopoiskFileId(kinopoiskFileId);
-        setMovieId(movieId);
+    public ImportProgress(KinopoiskFile kinopoiskFile, Movie movie, boolean imported, boolean rated) {
+        setKinopoiskFile(kinopoiskFile);
+        setMovie(movie);
         setImported(imported);
         setRated(rated);
     }
@@ -48,38 +44,6 @@ public class ImportProgress {
 
     private void setId(Long id) {
         this.id = id;
-    }
-
-    public long getKinopoiskFileId() {
-        return kinopoiskFileId;
-    }
-
-    public void setKinopoiskFileId(long kinopoiskFileId) {
-        this.kinopoiskFileId = kinopoiskFileId;
-    }
-
-    public long getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(long movieId) {
-        this.movieId = movieId;
-    }
-
-    public boolean isImported() {
-        return imported;
-    }
-
-    public void setImported(boolean imported) {
-        this.imported = imported;
-    }
-
-    public boolean isRated() {
-        return rated;
-    }
-
-    public void setRated(boolean rated) {
-        this.rated = rated;
     }
 
     public Movie getMovie() {
@@ -98,6 +62,22 @@ public class ImportProgress {
         this.kinopoiskFile = kinopoiskFile;
     }
 
+    public boolean isImported() {
+        return imported;
+    }
+
+    public void setImported(boolean imported) {
+        this.imported = imported;
+    }
+
+    public boolean isRated() {
+        return rated;
+    }
+
+    public void setRated(boolean rated) {
+        this.rated = rated;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,21 +85,21 @@ public class ImportProgress {
         ImportProgress that = (ImportProgress) o;
         return isImported() == that.isImported() &&
                 isRated() == that.isRated() &&
-                Objects.equals(getKinopoiskFileId(), that.getKinopoiskFileId()) &&
-                Objects.equals(getMovieId(), that.getMovieId());
+                Objects.equals(getKinopoiskFile(), that.getKinopoiskFile()) &&
+                Objects.equals(getMovie(), that.getMovie());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getKinopoiskFileId(), getMovieId(), isImported(), isRated());
+        return Objects.hash(getKinopoiskFile(), getMovie(), isImported(), isRated());
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
-                .add("fileId", kinopoiskFileId)
-                .add("movieId", movieId)
+                .add("kinopoiskFile", kinopoiskFile)
+                .add("movie", movie)
                 .add("imported", imported)
                 .add("rated", rated)
                 .toString();

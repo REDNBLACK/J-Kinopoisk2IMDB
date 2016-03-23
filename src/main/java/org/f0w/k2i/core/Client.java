@@ -64,13 +64,12 @@ public class Client {
 
         MovieRepository movieRepository = injector.getInstance(MovieRepository.class);
 
-        List<Long> moviesIds = parseMovies(file).stream()
+        List<Movie> movies = parseMovies(file).stream()
                     .map(movieRepository::findOrCreate)
-                    .map(Movie::getId)
                     .collect(Collectors.toList());
 
         ImportProgressRepository importProgressRepository = injector.getInstance(ImportProgressRepository.class);
-        importProgressRepository.saveAll(newKinopoiskFile.getId(), moviesIds);
+        importProgressRepository.saveAll(newKinopoiskFile, movies);
 
         return newKinopoiskFile;
     }

@@ -33,7 +33,7 @@ public class ConfigValidator {
     private static void checkUserAgent(final String userAgent) {
         final String message = "UserAgent setting is not valid!";
 
-        checkArgument(isNullOrEmpty(userAgent), message);
+        checkArgument(!isNullOrEmpty(userAgent), message);
     }
 
     private static void checkYearDeviation(final Integer yearDeviation) {

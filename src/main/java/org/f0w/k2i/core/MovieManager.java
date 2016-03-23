@@ -56,7 +56,7 @@ public class MovieManager {
 
     public MovieManager prepare() throws IOException {
         if (isPrepared()) {
-            LOG.info("Movie already prepated {}", movie);
+            LOG.info("Movie is already prepared {}", movie);
 
             return this;
         }

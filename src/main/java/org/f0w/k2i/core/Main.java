@@ -20,7 +20,7 @@ public class Main {
                 .put("comparator", TitleComparatorType.SMART.toString())
                 .put("mode", MovieHandlerType.SET_RATING.toString())
                 .put("auth", "BCYnIhDSKm7sIoiawZ6TVKs5htuaGRHpTzwNXSlJ--JlTfh9R68UfgVY0jMJFosYtd_exTGLGOdWhcAYhc3MFTNik6_8pfUeeqPaVG4XbCb43W3BXzPQOAajFGPWusxhkXZNRLBoAZ9cApmLytjy4tnfBMceF0eMIl8mUtdqT-V-KSObD5dKepBNYU81xFHAooVC80VhPr08Q1UxOlM6oCEYSd10mMHsaFY4zMXL2MNXuxE")
-                .put("list", "ls013136398")
+                .put("list", "ls032387067")
                 .build();
 
         Config config = ConfigFactory.parseMap(map);

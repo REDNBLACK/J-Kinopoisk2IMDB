@@ -9,6 +9,8 @@ import org.f0w.k2i.core.utils.exception.KinopoiskToIMDBException;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -58,7 +60,7 @@ class JSONMovieFinder extends AbstractMovieFinder {
 
                     Movie movie = new Movie();
                     movie.setTitle(movieInfoObj.get("title").toString());
-                    movie.setYear(Integer.parseInt(movieInfoObj.get("description").toString().substring(0, 4)));
+                    movie.setYear(parseYear(movieInfoObj));
                     movie.setImdbId(movieInfoObj.get("id").toString());
 
                     movies.add(movie);
@@ -69,5 +71,17 @@ class JSONMovieFinder extends AbstractMovieFinder {
         }
 
         return movies;
+    }
+
+    private int parseYear(Map movieInfo) {
+        try {
+            String yearString = movieInfo.get("description")
+                    .toString()
+                    .substring(0, 4);
+
+            return Integer.parseInt(yearString);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

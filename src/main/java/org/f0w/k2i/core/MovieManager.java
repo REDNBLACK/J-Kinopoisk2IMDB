@@ -11,6 +11,8 @@ import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.exchange.finder.MovieFinderType;
 import org.f0w.k2i.core.exchange.finder.MovieFindersFactory;
 import org.f0w.k2i.core.model.entity.Movie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 import static com.google.common.base.Preconditions.*;
 
 public class MovieManager {
+    private static final Logger LOG = LoggerFactory.getLogger(MovieManager.class);
+
     private Config config;
 
     private Movie movie;
@@ -50,20 +54,26 @@ public class MovieManager {
         return movie;
     }
 
-    public MovieManager prepare() {
-        if (!isPrepared()) {
-            MovieFinder movieFinder = movieFindersFactoryProvider.get().make(movieFinderType);
+    public MovieManager prepare() throws IOException {
+        if (isPrepared()) {
+            LOG.info("Movie already prepated {}", movie);
 
-            try {
-                movieFinder.sendRequest(movie);
-            } catch (IOException e) {
-                return this;
-            }
-
-            List<Movie> movies = filterMovies(movieFinder.getProcessedResponse());
-
-            findMatchingMovie(movies).ifPresent(m -> movie.setImdbId(m.getImdbId()));
+            return this;
         }
+
+        LOG.info("Preparing movie {}", movie);
+
+        MovieFinder movieFinder = movieFindersFactoryProvider.get().make(movieFinderType);
+        movieFinder.sendRequest(movie);
+
+        List<Movie> movies = filterMovies(movieFinder.getProcessedResponse());
+
+        Optional<Movie> matchingMovie = findMatchingMovie(movies);
+        matchingMovie.ifPresent(m -> {
+            movie.setImdbId(m.getImdbId());
+            LOG.info("Movie IMDB id found: {}", m.getImdbId());
+        });
+        matchingMovie.orElseThrow(() -> new IOException("Matching movie not found"));
 
         return this;
     }

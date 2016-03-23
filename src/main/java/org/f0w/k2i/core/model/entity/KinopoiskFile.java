@@ -57,6 +57,7 @@ public class KinopoiskFile {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .omitNullValues()
                 .add("id", id)
                 .add("hashCode", hashCode)
                 .toString();

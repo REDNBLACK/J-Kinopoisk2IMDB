@@ -97,6 +97,7 @@ public class ImportProgress {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .omitNullValues()
                 .add("id", id)
                 .add("kinopoiskFile", kinopoiskFile)
                 .add("movie", movie)

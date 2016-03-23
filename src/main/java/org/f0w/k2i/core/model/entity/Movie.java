@@ -107,6 +107,7 @@ public class Movie {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .omitNullValues()
                 .add("id", getId())
                 .add("title", getTitle())
                 .add("year", getYear())

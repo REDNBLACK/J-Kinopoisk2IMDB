@@ -34,19 +34,22 @@ class SetRatingMovieHandler extends AbstractMovieHandler {
             try {
                 successCounter++;
 
+                LOG.info("Setting rating of movie: {}", progress.getMovie());
+
                 movieManager.setMovie(progress.getMovie()).prepare();
 
-                if (movieManager.isPrepared()) {
-                    Movie preparedMovie = movieManager.getMovie();
+                Movie preparedMovie = movieManager.getMovie();
 
-                    changer.sendRequest(preparedMovie);
+                changer.sendRequest(preparedMovie);
 
-                    progress.setImported(true);
-                    progress.setMovie(preparedMovie);
+                progress.setImported(true);
+                progress.setMovie(preparedMovie);
 
-                    importProgressRepository.save(progress);
-                }
+                importProgressRepository.save(progress);
+
+                LOG.info("Rating was successfuly set");
             } catch (IOException e) {
+                LOG.info("Error setting rating: {}", e.getMessage());
                 successCounter--;
             }
         }

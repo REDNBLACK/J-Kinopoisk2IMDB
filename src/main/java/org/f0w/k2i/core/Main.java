@@ -15,7 +15,7 @@ public class Main {
         Map<String, Object> map = new ImmutableMap.Builder<String, Object>()
                 .put("user_agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36")
                 .put("year_deviation", 1)
-                .put("timeout", 3)
+                .put("timeout", 3000)
                 .put("query_format", MovieFinderType.JSON.toString())
                 .put("comparator", TitleComparatorType.SMART.toString())
                 .put("mode", MovieHandlerType.SET_RATING.toString())

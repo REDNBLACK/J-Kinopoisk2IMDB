@@ -25,15 +25,9 @@ class SetRatingMovieHandler extends AbstractMovieHandler {
     }
 
     @Override
-    public int execute() {
-        List<ImportProgress> importProgress = importProgressRepository.findNotRatedByFile(kinopoiskFile);
-
-        int successCounter = 0;
-
+    public void execute(List<ImportProgress> importProgress) {
         for (ImportProgress progress : importProgress) {
             try {
-                successCounter++;
-
                 LOG.info("Setting rating of movie: {}", progress.getMovie());
 
                 movieManager.setMovie(progress.getMovie()).prepare();
@@ -50,10 +44,7 @@ class SetRatingMovieHandler extends AbstractMovieHandler {
                 LOG.info("Rating was successfuly set");
             } catch (IOException e) {
                 LOG.info("Error setting rating: {}", e.getMessage());
-                successCounter--;
             }
         }
-
-        return successCounter;
     }
 }

@@ -1,9 +1,10 @@
 package org.f0w.k2i.core.handler;
 
-import org.f0w.k2i.core.model.entity.KinopoiskFile;
+import org.f0w.k2i.core.model.entity.ImportProgress;
 
+import java.util.List;
+
+@FunctionalInterface
 public interface MovieHandler {
-    int execute();
-
-    void setKinopoiskFile(KinopoiskFile kinopoiskFile);
+    void execute(List<ImportProgress> importProgressList);
 }

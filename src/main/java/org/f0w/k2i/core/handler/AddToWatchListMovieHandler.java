@@ -25,15 +25,9 @@ class AddToWatchListMovieHandler extends AbstractMovieHandler {
     }
 
     @Override
-    public int execute() {
-        List<ImportProgress> importProgress = importProgressRepository.findNotImportedByFile(kinopoiskFile);
-
-        int successCounter = 0;
-
+    public void execute(List<ImportProgress> importProgress) {
         for (ImportProgress progress : importProgress) {
             try {
-                successCounter++;
-
                 movieManager.setMovie(progress.getMovie()).prepare();
 
                 if (movieManager.isPrepared()) {
@@ -46,11 +40,7 @@ class AddToWatchListMovieHandler extends AbstractMovieHandler {
 
                     importProgressRepository.save(progress);
                 }
-            } catch (IOException e) {
-                successCounter--;
-            }
+            } catch (IOException e) {}
         }
-
-        return successCounter;
     }
 }

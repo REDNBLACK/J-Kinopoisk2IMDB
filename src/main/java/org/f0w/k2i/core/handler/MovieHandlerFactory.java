@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MovieHandlerFactory {
-    private final Provider<ImportProgressRepository> importProgressRepositoryProvider;
     private final Provider<MovieManager> movieManagerProvider;
+    private final Provider<ImportProgressRepository> importProgressRepositoryProvider;
     private final Provider<MovieWatchlistAssigner> movieWatchlistAssignerProvider;
     private final Provider<MovieRatingChanger> movieRatingChangerProvider;
 

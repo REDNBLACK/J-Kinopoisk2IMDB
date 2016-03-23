@@ -8,6 +8,7 @@ import com.typesafe.config.Config;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.handler.MovieHandlerFactory;
 import org.f0w.k2i.core.handler.MovieHandlerType;
+import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.model.repository.ImportProgressRepository;
@@ -31,6 +32,7 @@ public class Client {
 
     private MovieHandler movieHandler;
     private KinopoiskFileRepository kinopoiskFileRepository;
+    private ImportProgressRepository importProgressRepository;
 
     public Client(File file, Config config) {
         this.file = checkNotNull(file);
@@ -46,6 +48,7 @@ public class Client {
                 .make(MovieHandlerType.valueOf(config.getString("mode")));
 
         kinopoiskFileRepository = injector.getInstance(KinopoiskFileRepository.class);
+        importProgressRepository = injector.getInstance(ImportProgressRepository.class);
     }
 
     public void run() throws IOException {
@@ -55,8 +58,9 @@ public class Client {
                 .ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
                 .orElseGet(rethrowSupplier(() -> importNewFile(fileHashCode)));
 
-        movieHandler.setKinopoiskFile(kinopoiskFile);
-        movieHandler.execute();
+        List<ImportProgress> importProgress = importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile);
+
+        movieHandler.execute(importProgress);
     }
 
     private KinopoiskFile importNewFile(String fileHashCode) throws IOException {

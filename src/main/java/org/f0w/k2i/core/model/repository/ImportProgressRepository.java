@@ -11,7 +11,5 @@ public interface ImportProgressRepository {
 
     void saveAll(KinopoiskFile kinopoiskFile, List<Movie> movies);
 
-    List<ImportProgress> findNotImportedByFile(KinopoiskFile kinopoiskFile);
-
-    List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile);
+    List<ImportProgress> findNotImportedOrNotRatedByFile(KinopoiskFile kinopoiskFile);
 }

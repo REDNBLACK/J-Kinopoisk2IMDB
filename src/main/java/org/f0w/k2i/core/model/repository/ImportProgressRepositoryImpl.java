@@ -29,24 +29,13 @@ public class ImportProgressRepositoryImpl implements ImportProgressRepository {
     }
 
     @Override
-    public List<ImportProgress> findNotImportedByFile(KinopoiskFile kinopoiskFile) {
+    public List<ImportProgress> findNotImportedOrNotRatedByFile(KinopoiskFile kinopoiskFile) {
         TypedQuery<ImportProgress> query = em.createQuery(
-                "FROM ImportProgress WHERE imported = :imported AND kinopoiskFile = :kinopoiskFile",
-                ImportProgress.class
-        );
-        query.setParameter("imported", false);
-        query.setParameter("kinopoiskFile", kinopoiskFile);
-
-        return query.getResultList();
-    }
-
-    @Override
-    public List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile) {
-        TypedQuery<ImportProgress> query = em.createQuery(
-                "FROM ImportProgress WHERE rated = :rated AND kinopoiskFile = :kinopoiskFile",
+                "FROM ImportProgress WHERE (imported = :imported OR rated = :rated) AND kinopoiskFile = :kinopoiskFile",
                 ImportProgress.class
         );
         query.setParameter("rated", false);
+        query.setParameter("imported", false);
         query.setParameter("kinopoiskFile", kinopoiskFile);
 
         return query.getResultList();

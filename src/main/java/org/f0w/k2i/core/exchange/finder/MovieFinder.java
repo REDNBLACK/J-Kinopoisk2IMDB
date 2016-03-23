@@ -6,4 +6,10 @@ import org.f0w.k2i.core.exchange.Exchangeable;
 import java.util.List;
 
 public interface MovieFinder extends Exchangeable<Movie, List<Movie>> {
+    enum Type {
+        XML,
+        JSON,
+        HTML,
+        MIXED
+    }
 }

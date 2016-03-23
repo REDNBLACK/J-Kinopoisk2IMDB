@@ -9,7 +9,6 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.handler.MovieHandlerFactory;
-import org.f0w.k2i.core.handler.MovieHandlerType;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -54,7 +53,7 @@ public class Client extends Observable {
         injector.getInstance(PersistService.class).start();
 
         movieHandler = injector.getInstance(MovieHandlerFactory.class)
-                .make(MovieHandlerType.valueOf(configuration.getString("mode")));
+                .make(MovieHandler.Type.valueOf(configuration.getString("mode")));
 
         kinopoiskFileRepository = injector.getInstance(KinopoiskFileRepository.class);
         importProgressRepository = injector.getInstance(ImportProgressRepository.class);

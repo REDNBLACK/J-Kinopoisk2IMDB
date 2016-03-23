@@ -9,18 +9,11 @@ import org.f0w.k2i.core.utils.exception.KinopoiskToIMDBException;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 class JSONMovieFinder extends AbstractMovieFinder {
-    @Inject
-    public JSONMovieFinder(Config config) {
-        super(config);
-    }
-
-    private static final ContainerFactory containerJSONFactory = new ContainerFactory() {
+    private static final ContainerFactory CONTAINER_FACTORY = new ContainerFactory() {
         @Override
         public List creatArrayContainer() {
             return new ArrayList();
@@ -31,6 +24,11 @@ class JSONMovieFinder extends AbstractMovieFinder {
             return new LinkedHashMap();
         }
     };
+
+    @Inject
+    public JSONMovieFinder(Config config) {
+        super(config);
+    }
 
     @Override
     protected String buildSearchQuery(Movie movie) {
@@ -52,7 +50,7 @@ class JSONMovieFinder extends AbstractMovieFinder {
         JSONParser parser = new JSONParser();
 
         try {
-            Map document = (Map) parser.parse(result, containerJSONFactory);
+            Map document = (Map) parser.parse(result, CONTAINER_FACTORY);
 
             for (Object categories : document.values()) {
                 for (Object movieInfo : (List) categories) {

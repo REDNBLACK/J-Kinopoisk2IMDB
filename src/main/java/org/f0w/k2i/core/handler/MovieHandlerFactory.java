@@ -34,7 +34,7 @@ public class MovieHandlerFactory {
         this.movieRatingChangerProvider = movieRatingChangerProvider;
     }
 
-    public MovieHandler make(MovieHandlerType movieHandlerType) {
+    public MovieHandler make(MovieHandler.Type movieHandlerType) {
         switch (movieHandlerType) {
             case ADD_TO_WATCHLIST:
                 return makeAddToWatchListHandler();

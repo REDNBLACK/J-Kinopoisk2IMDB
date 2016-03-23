@@ -14,7 +14,7 @@ public class MovieFindersFactory {
         this.config = config;
     }
 
-    public MovieFinder make(MovieFinderType movieFinderType) {
+    public MovieFinder make(MovieFinder.Type movieFinderType) {
         MovieFinder movieFinder;
 
         switch (movieFinderType) {
@@ -39,9 +39,9 @@ public class MovieFindersFactory {
 
     private MovieFinder makeMixedMovieFinder() {
         List<MovieFinder> movieFinders = Arrays.asList(
-                make(MovieFinderType.XML),
-                make(MovieFinderType.JSON),
-                make(MovieFinderType.HTML)
+                make(MovieFinder.Type.XML),
+                make(MovieFinder.Type.JSON),
+                make(MovieFinder.Type.HTML)
         );
 
         return new MixedMovieFinder(movieFinders);

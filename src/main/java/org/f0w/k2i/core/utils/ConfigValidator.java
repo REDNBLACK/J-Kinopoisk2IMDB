@@ -2,8 +2,8 @@ package org.f0w.k2i.core.utils;
 
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.comparators.TitleComparatorType;
-import org.f0w.k2i.core.exchange.finder.MovieFinderType;
-import org.f0w.k2i.core.handler.MovieHandlerType;
+import org.f0w.k2i.core.exchange.finder.MovieFinder;
+import org.f0w.k2i.core.handler.MovieHandler;
 
 import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -52,7 +52,7 @@ public class ConfigValidator {
         final String message = "QueryFormat setting is not valid!";
 
         try {
-            MovieFinderType.valueOf(queryFormat);
+            MovieFinder.Type.valueOf(queryFormat);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(message);
         }
@@ -78,10 +78,10 @@ public class ConfigValidator {
         final String message = "List setting is not valid!";
 
         if ("".equals(list)) {
-            MovieHandlerType movieHandlerType = MovieHandlerType.valueOf(mode);
+            MovieHandler.Type movieHandlerType = MovieHandler.Type.valueOf(mode);
 
-            if (movieHandlerType.equals(MovieHandlerType.COMBINED)
-                || movieHandlerType.equals(MovieHandlerType.ADD_TO_WATCHLIST)
+            if (movieHandlerType.equals(MovieHandler.Type.COMBINED)
+                || movieHandlerType.equals(MovieHandler.Type.ADD_TO_WATCHLIST)
             ) {
                 throw new IllegalArgumentException(message + " Set to null, but required for current mode setting");
             }
@@ -95,7 +95,7 @@ public class ConfigValidator {
         final String message = "Mode setting is not valid!";
 
         try {
-             MovieHandlerType.valueOf(mode);
+             MovieHandler.Type.valueOf(mode);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(message);
         }

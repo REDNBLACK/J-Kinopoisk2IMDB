@@ -7,7 +7,7 @@ import org.f0w.k2i.core.comparators.EqualityComparator;
 import org.f0w.k2i.core.comparators.TitleComparatorType;
 import org.f0w.k2i.core.comparators.TitleComparatorsFactory;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
-import org.f0w.k2i.core.exchange.finder.MovieFinderType;
+import org.f0w.k2i.core.exchange.finder.MovieFinder.Type;
 import org.f0w.k2i.core.exchange.finder.MovieFindersFactory;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -41,7 +41,7 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
         LOG.info("Preparing movie {}", movie);
 
         try {
-            MovieFinderType movieFinderType = MovieFinderType.valueOf(config.getString("query_format"));
+            MovieFinder.Type movieFinderType = MovieFinder.Type.valueOf(config.getString("query_format"));
 
             MovieFinder movieFinder = movieFindersFactory.make(movieFinderType);
             movieFinder.sendRequest(movie);

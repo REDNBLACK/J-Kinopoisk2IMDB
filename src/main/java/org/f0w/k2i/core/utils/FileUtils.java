@@ -1,6 +1,8 @@
 package org.f0w.k2i.core.utils;
 
 import com.google.common.base.Strings;
+import com.google.common.hash.Hashing;
+import com.google.common.io.Files;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileParsingUtils {
+public class FileUtils {
     public static List<Movie> parseMovies(File file) throws IOException {
         ArrayList<Movie> movies = new ArrayList<>();
         Document document = Jsoup.parse(file, StandardCharsets.UTF_8.name());
@@ -35,5 +37,9 @@ public class FileParsingUtils {
         }
 
         return movies;
+    }
+
+    public static String getHashCode(File file) throws IOException {
+        return Files.hash(file, Hashing.sha256()).toString();
     }
 }

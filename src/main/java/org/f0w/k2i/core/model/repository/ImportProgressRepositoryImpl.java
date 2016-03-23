@@ -21,6 +21,11 @@ public class ImportProgressRepositoryImpl implements ImportProgressRepository {
     }
 
     @Override
+    public void saveAll(long kinopoiskFileId, List<Long> moviesIds) {
+        moviesIds.forEach(mId -> save(new ImportProgress(kinopoiskFileId, mId, false, false)));
+    }
+
+    @Override
     public List<ImportProgress> findNotImportedByFileId(long kinopoiskFileId) {
         TypedQuery<ImportProgress> query = em.createQuery(
                 "FROM ImportProgress WHERE imported = :imported AND kinopoiskFileId = :kinopoiskFileId",

@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.model.repository;
 
+import com.google.inject.persist.Transactional;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 
 import com.google.inject.Inject;
@@ -12,26 +13,25 @@ public class KinopoiskFileRepositoryImpl implements KinopoiskFileRepository {
     private EntityManager em;
 
     @Override
-    public KinopoiskFile findOrCreate(KinopoiskFile file) {
-        try {
-            return findByChecksum(file.getChecksum());
-        } catch (NoResultException e) {
-            em.getTransaction().begin();
-            em.persist(file);
-            em.getTransaction().commit();
+    @Transactional
+    public KinopoiskFile save(KinopoiskFile file) {
+        em.persist(file);
 
-            return file;
-        }
+        return file;
     }
 
     @Override
-    public KinopoiskFile findByChecksum(String checksum) {
+    public KinopoiskFile findByHashCode(final String hashCode) {
         TypedQuery<KinopoiskFile> query = em.createQuery(
-                "FROM KinopoiskFile kf WHERE kf.checksum = :checksum",
+                "FROM KinopoiskFile kf WHERE kf.hashCode = :hashCode",
                 KinopoiskFile.class
         );
-        query.setParameter("checksum", checksum);
+        query.setParameter("hashCode", hashCode);
 
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

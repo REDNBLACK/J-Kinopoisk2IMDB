@@ -15,13 +15,13 @@ public class KinopoiskFile {
     @GenericGenerator(name="increment", strategy = "increment")
     private Long id;
 
-    @Column(name = "CHECKSUM", unique = true, nullable = false)
-    private String checksum;
+    @Column(name = "HASH_CODE", unique = true, nullable = false)
+    private String hashCode;
 
     public KinopoiskFile() {}
 
-    public KinopoiskFile(String checksum) {
-        setChecksum(checksum);
+    public KinopoiskFile(String hashCode) {
+        setHashCode(hashCode);
     }
 
     public Long getId() {
@@ -32,12 +32,12 @@ public class KinopoiskFile {
         this.id = id;
     }
 
-    public String getChecksum() {
-        return checksum;
+    public String getHashCode() {
+        return hashCode;
     }
 
-    public void setChecksum(String checksum) {
-        this.checksum = checkNotNull(checksum);
+    public void setHashCode(String checksum) {
+        this.hashCode = checkNotNull(checksum);
     }
 
     @Override
@@ -46,19 +46,19 @@ public class KinopoiskFile {
             return false;
         }
 
-        return Objects.equals(getChecksum(), ((KinopoiskFile) obj).getChecksum());
+        return Objects.equals(getHashCode(), ((KinopoiskFile) obj).getHashCode());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getChecksum());
+        return Objects.hash(getHashCode());
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
-                .add("checksum", checksum)
+                .add("hashCode", hashCode)
                 .toString();
     }
 }

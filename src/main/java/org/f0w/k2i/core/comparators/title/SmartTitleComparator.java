@@ -1,8 +1,9 @@
-package org.f0w.k2i.core.comparators;
+package org.f0w.k2i.core.comparators.title;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
+import org.f0w.k2i.core.comparators.EqualityComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.utils.NumericToWord;
 

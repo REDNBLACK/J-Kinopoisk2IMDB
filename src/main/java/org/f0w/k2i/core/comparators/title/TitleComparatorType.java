@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.comparators;
+package org.f0w.k2i.core.comparators.title;
 
 public enum TitleComparatorType {
     SMART,

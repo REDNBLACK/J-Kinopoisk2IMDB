@@ -1,5 +1,6 @@
-package org.f0w.k2i.core.comparators;
+package org.f0w.k2i.core.comparators.title;
 
+import org.f0w.k2i.core.comparators.EqualityComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 
 public class TitleComparatorsFactory {

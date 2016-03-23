@@ -1,7 +1,7 @@
 package org.f0w.k2i.core.utils;
 
 import com.typesafe.config.Config;
-import org.f0w.k2i.core.comparators.TitleComparatorType;
+import org.f0w.k2i.core.comparators.title.TitleComparatorType;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.handler.MovieHandler;
 

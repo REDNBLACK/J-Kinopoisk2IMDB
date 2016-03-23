@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.utils;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;

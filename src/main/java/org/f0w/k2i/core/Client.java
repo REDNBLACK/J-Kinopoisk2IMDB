@@ -19,6 +19,7 @@ import org.f0w.k2i.core.model.repository.MovieRepository;
 import org.f0w.k2i.core.providers.ConfigurationProvider;
 import org.f0w.k2i.core.providers.JpaRepositoryProvider;
 import org.f0w.k2i.core.utils.ConfigValidator;
+import org.f0w.k2i.core.utils.exception.KinopoiskToIMDBException;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,13 +30,13 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static org.f0w.k2i.core.utils.FileUtils.*;
-import static org.f0w.k2i.core.utils.exception.LambdaExceptionUtil.rethrowSupplier;
 
 public class Client extends Observable {
     private final Injector injector;
     private final File file;
 
     private MovieHandler movieHandler;
+
     private Provider<MovieRepository> movieRepositoryProvider;
     private KinopoiskFileRepository kinopoiskFileRepository;
     private ImportProgressRepository importProgressRepository;
@@ -60,29 +61,43 @@ public class Client extends Observable {
         movieRepositoryProvider = injector.getProvider(MovieRepository.class);
     }
 
-    public void run() throws IOException {
-        String fileHashCode = getHashCode(file);
+    public void run() {
+        String fileHashCode;
+
+        try {
+            fileHashCode = getHashCode(file);
+        } catch (IOException e) {
+            throw new KinopoiskToIMDBException(e);
+        }
 
         KinopoiskFile kinopoiskFile = Optional
                 .ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
-                .orElseGet(rethrowSupplier(() -> importNewFile(fileHashCode)));
+                .orElseGet(() -> importNewFile(fileHashCode));
 
         List<ImportProgress> importProgress = importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile);
 
-        movieHandler.execute(importProgress, importProgressRepository::save, ip -> {
+        importProgress.forEach(ip -> {
             setChanged();
-            notifyObservers(ip);
+            notifyObservers();
+
+            movieHandler.execute(ip);
+
+            importProgressRepository.save(ip);
         });
     }
 
-    private KinopoiskFile importNewFile(String fileHashCode) throws IOException {
+    private KinopoiskFile importNewFile(String fileHashCode) {
         KinopoiskFile newKinopoiskFile = kinopoiskFileRepository.save(new KinopoiskFile(fileHashCode));
 
-        MovieRepository movieRepository = movieRepositoryProvider.get();
+        List<Movie> movies;
 
-        List<Movie> movies = parseMovies(file).stream()
-                    .map(movieRepository::findOrCreate)
+        try {
+            movies = parseMovies(file).stream()
+                    .map(movieRepositoryProvider.get()::findOrCreate)
                     .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new KinopoiskToIMDBException(e);
+        }
 
         importProgressRepository.saveAll(newKinopoiskFile, movies);
 

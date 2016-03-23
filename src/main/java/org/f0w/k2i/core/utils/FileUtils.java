@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import org.f0w.k2i.core.model.entity.Movie;
+import org.f0w.k2i.core.utils.exception.KinopoiskToIMDBException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,6 +23,7 @@ public class FileUtils {
 
     public static List<Movie> parseMovies(File file) throws IOException {
         ArrayList<Movie> movies = new ArrayList<>();
+
         Document document = Jsoup.parse(file, Charset.forName("windows-1251").toString());
         Elements content = document.select("table tr");
         content.remove(0);
@@ -31,8 +33,6 @@ public class FileUtils {
 
             movies.add(new Movie(parseMovieTitle(elements), parseMovieYear(elements), parseMovieRating(elements)));
         }
-
-        System.out.println(movies);
 
         return movies;
     }

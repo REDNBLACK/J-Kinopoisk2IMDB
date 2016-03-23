@@ -13,7 +13,11 @@ class CombinedMovieHandler implements MovieHandler {
     }
 
     @Override
-    public void execute(List<ImportProgress> importProgress, Consumer<ImportProgress> consumer) {
-        handlers.forEach(h -> h.execute(importProgress, consumer));
+    public void execute(
+            List<ImportProgress> importProgress,
+            Consumer<ImportProgress> onSuccess,
+            Consumer<ImportProgress> everyTime
+    ) {
+        handlers.forEach(h -> h.execute(importProgress, onSuccess, everyTime));
     }
 }

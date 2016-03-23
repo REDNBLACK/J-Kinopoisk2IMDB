@@ -21,7 +21,11 @@ class AddToWatchListMovieHandler extends AbstractMovieHandler {
     }
 
     @Override
-    public void execute(List<ImportProgress> importProgress, Consumer<ImportProgress> consumer) {
+    public void execute(
+            List<ImportProgress> importProgress,
+            Consumer<ImportProgress> onSuccess,
+            Consumer<ImportProgress> everyTime
+    ) {
         for (ImportProgress progress : importProgress) {
             try {
                 LOG.info("Adding movie to watchlist: {}", progress.getMovie());
@@ -40,11 +44,13 @@ class AddToWatchListMovieHandler extends AbstractMovieHandler {
                 progress.setImported(true);
                 progress.setMovie(preparedMovie);
 
-                consumer.accept(progress);
+                onSuccess.accept(progress);
 
                 LOG.info("Movie was successfully added to watchlist");
             } catch (IOException e) {
                 LOG.info("Error adding movie to watchlist: {}", e);
+            } finally {
+                everyTime.accept(progress);
             }
         }
     }

@@ -23,6 +23,7 @@ import org.f0w.k2i.core.utils.ConfigValidator;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Observable;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ import static java.util.Objects.requireNonNull;
 import static org.f0w.k2i.core.utils.FileUtils.*;
 import static org.f0w.k2i.core.utils.exception.LambdaExceptionUtil.rethrowSupplier;
 
-public class Client {
+public class Client extends Observable {
     private final Injector injector;
     private final File file;
 
@@ -68,7 +69,10 @@ public class Client {
 
         List<ImportProgress> importProgress = importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile);
 
-        movieHandler.execute(importProgress, importProgressRepository::save);
+        movieHandler.execute(importProgress, importProgressRepository::save, ip -> {
+            setChanged();
+            notifyObservers(ip);
+        });
     }
 
     private KinopoiskFile importNewFile(String fileHashCode) throws IOException {

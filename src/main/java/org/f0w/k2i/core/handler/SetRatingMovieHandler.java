@@ -21,7 +21,11 @@ class SetRatingMovieHandler extends AbstractMovieHandler {
     }
 
     @Override
-    public void execute(List<ImportProgress> importProgress, Consumer<ImportProgress> consumer) {
+    public void execute(
+            List<ImportProgress> importProgress,
+            Consumer<ImportProgress> onSuccess,
+            Consumer<ImportProgress> everyTime
+    ) {
         for (ImportProgress progress : importProgress) {
             try {
                 LOG.info("Setting rating of movie: {}", progress.getMovie());
@@ -40,11 +44,13 @@ class SetRatingMovieHandler extends AbstractMovieHandler {
                 progress.setRated(true);
                 progress.setMovie(preparedMovie);
 
-                consumer.accept(progress);
+                onSuccess.accept(progress);
 
                 LOG.info("Movie rating was successfully set");
             } catch (IOException e) {
                 LOG.info("Error setting rating of movie: {}", e);
+            } finally {
+                everyTime.accept(progress);
             }
         }
     }

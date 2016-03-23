@@ -7,5 +7,5 @@ import java.util.function.Consumer;
 
 @FunctionalInterface
 public interface MovieHandler {
-    void execute(List<ImportProgress> importProgressList, Consumer<ImportProgress> consumer);
+    void execute(List<ImportProgress> importProgressList, Consumer<ImportProgress> onSuccess, Consumer<ImportProgress> everyTime);
 }

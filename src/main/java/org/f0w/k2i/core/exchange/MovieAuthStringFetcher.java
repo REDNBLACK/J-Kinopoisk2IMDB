@@ -20,8 +20,8 @@ public class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
     public void sendRequest(Movie movie) throws IOException {
         Connection request = Jsoup.connect("http://www.imdb.com/title/" + movie.getImdbId())
                 .userAgent(config.getString("user_agent"))
-                .cookie("id", config.getString("auth"))
-                .timeout(config.getInt("timeout"));
+                .timeout(config.getInt("timeout"))
+                .cookie("id", config.getString("auth"));
 
         response = request.execute();
     }

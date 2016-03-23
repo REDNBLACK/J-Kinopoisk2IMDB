@@ -20,7 +20,8 @@ abstract class AbstractMovieFinder implements MovieFinder {
     @Override
     public void sendRequest(Movie movie) throws IOException {
         Connection request = Jsoup.connect(buildSearchQuery(movie))
-                .userAgent(config.getString("user_agent"));
+                .userAgent(config.getString("user_agent"))
+                .timeout(config.getInt("timeout"));
 
         response = request.execute();
     }

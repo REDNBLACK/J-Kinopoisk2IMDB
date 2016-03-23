@@ -37,6 +37,7 @@ public class MovieRatingChanger implements Exchangeable<Movie, Connection.Respon
         Connection request = Jsoup.connect("http://www.imdb.com/ratings/_ajax/title")
                 .method(Connection.Method.POST)
                 .userAgent(config.getString("user_agent"))
+                .timeout(config.getInt("timeout"))
                 .cookie("id", config.getString("auth"))
                 .data(postData);
 

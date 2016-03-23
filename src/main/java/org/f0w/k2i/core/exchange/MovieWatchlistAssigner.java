@@ -28,6 +28,7 @@ public class MovieWatchlistAssigner implements Exchangeable<Movie, Connection.Re
         Connection request = Jsoup.connect("http://www.imdb.com/list/_ajax/edit")
                 .method(Connection.Method.POST)
                 .userAgent(config.getString("user_agent"))
+                .timeout(config.getInt("timeout"))
                 .cookie("id", config.getString("auth"))
                 .data(postData);
 

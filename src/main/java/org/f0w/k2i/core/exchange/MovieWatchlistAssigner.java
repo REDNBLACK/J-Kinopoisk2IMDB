@@ -19,13 +19,15 @@ public class MovieWatchlistAssigner implements Exchangeable<Movie, Connection.Re
 
     @Override
     public void sendRequest(Movie movie) throws IOException {
+        final String movieAddToWatchlistLink = "http://www.imdb.com/list/_ajax/edit";
+
         Map<String, String> postData = new ImmutableMap.Builder<String, String>()
                 .put("const", movie.getImdbId())          // ID фильма
                 .put("list_id", config.getString("list")) // ID списка для добавления
                 .put("ref_tag", "title")                  // Реферер не меняется
                 .build();
 
-        Connection request = Jsoup.connect("http://www.imdb.com/list/_ajax/edit")
+        Connection request = Jsoup.connect(movieAddToWatchlistLink)
                 .method(Connection.Method.POST)
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"))

@@ -2,7 +2,6 @@ package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ImmutableMap;
 
-import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import org.jsoup.Jsoup;
@@ -15,7 +14,7 @@ import java.util.*;
 class XMLMovieFinder extends AbstractMovieFinder {
     @Override
     protected String buildSearchQuery(Movie movie) {
-        String url = "http://www.imdb.com/xml/find?";
+        String movieSearchLink = "http://www.imdb.com/xml/find?";
 
         Map<String, String> query = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle()) // Запрос
@@ -23,7 +22,7 @@ class XMLMovieFinder extends AbstractMovieFinder {
                 .put("nr", "1")
                 .build();
 
-        return buildHttpQuery(url, query);
+        return buildURL(movieSearchLink, query);
     }
 
     @Override

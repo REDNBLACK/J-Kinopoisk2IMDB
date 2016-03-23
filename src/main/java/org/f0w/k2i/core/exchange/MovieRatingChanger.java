@@ -22,19 +22,21 @@ public class MovieRatingChanger implements Exchangeable<Movie, Connection.Respon
 
     @Override
     public void sendRequest(Movie movie) throws IOException {
-        fetcher.sendRequest(movie);
+        final String movieRatingChangeLink = "http://www.imdb.com/ratings/_ajax/title";
+
+        final String authString = getAuthFetcherResponse(movie);
 
         Map<String, String> postData = new ImmutableMap.Builder<String, String>()
                 .put("tconst", movie.getImdbId())                 // ID фильма
                 .put("rating", String.valueOf(movie.getRating())) // Рейтинг
-                .put("auth", fetcher.getProcessedResponse())      // ID авторизации фильма
+                .put("auth", authString)                          // ID авторизации фильма
                 .put("pageId", movie.getImdbId())                 // ID страницы (совпадает с ID фильма)
                 .put("tracking_tag", "title-maindetails")         // Тэг для трекинга не меняется
                 .put("pageType", "title")                         // Реферер не меняется
                 .put("subpageType", "main")                       // Тип страницы не меняется
                 .build();
 
-        Connection request = Jsoup.connect("http://www.imdb.com/ratings/_ajax/title")
+        Connection request = Jsoup.connect(movieRatingChangeLink)
                 .method(Connection.Method.POST)
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"))
@@ -42,6 +44,12 @@ public class MovieRatingChanger implements Exchangeable<Movie, Connection.Respon
                 .data(postData);
 
         response = request.execute();
+    }
+
+    private String getAuthFetcherResponse(Movie movie) throws IOException {
+        fetcher.sendRequest(movie);
+
+        return fetcher.getProcessedResponse();
     }
 
     @Override

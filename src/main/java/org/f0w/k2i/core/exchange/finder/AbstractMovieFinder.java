@@ -30,8 +30,8 @@ abstract class AbstractMovieFinder implements MovieFinder {
 
     protected abstract List<Movie> parseSearchResult(final String result);
 
-    protected static String buildHttpQuery(final String url, Map<String, String> queryData) {
-        return  url + Joiner.on("&").withKeyValueSeparator("=").join(queryData);
+    protected static String buildURL(final String url, Map<String, String> queryData) {
+        return url + Joiner.on("&").withKeyValueSeparator("=").join(queryData);
     }
 
     @Override

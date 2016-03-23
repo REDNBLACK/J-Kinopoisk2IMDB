@@ -25,7 +25,7 @@ class JSONMovieFinder extends AbstractMovieFinder {
 
     @Override
     protected String buildSearchQuery(Movie movie) {
-        final String url = "http://www.imdb.com/xml/find?";
+        final String movieSearchLink = "http://www.imdb.com/xml/find?";
 
         final Map<String, String> query = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle()) // Запрос
@@ -34,7 +34,7 @@ class JSONMovieFinder extends AbstractMovieFinder {
                 .put("json", "1")           // Вывод в формате JSON
                 .build();
 
-        return buildHttpQuery(url, query);
+        return buildURL(movieSearchLink, query);
     }
 
     @Override

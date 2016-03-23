@@ -2,7 +2,6 @@ package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ImmutableMap;
 
-import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import org.jsoup.Jsoup;
@@ -16,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 class HTMLMovieFinder extends AbstractMovieFinder {
     @Override
     protected String buildSearchQuery(Movie movie) {
-        final String url = "http://www.imdb.com/find?";
+        final String movieSearchLink = "http://www.imdb.com/find?";
 
         final Map<String, String> query = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle()) // Запрос
@@ -25,7 +24,7 @@ class HTMLMovieFinder extends AbstractMovieFinder {
                 .put("ref", "fn_tt_ex")     // Реферер для надежности
                 .build();
 
-        return buildHttpQuery(url, query);
+        return buildURL(movieSearchLink, query);
     }
 
     @Override

@@ -18,7 +18,9 @@ public class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
 
     @Override
     public void sendRequest(Movie movie) throws IOException {
-        Connection request = Jsoup.connect("http://www.imdb.com/title/" + movie.getImdbId())
+        final String moviePageLink = "http://www.imdb.com/title/";
+
+        Connection request = Jsoup.connect(moviePageLink + movie.getImdbId())
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"))
                 .cookie("id", config.getString("auth"));

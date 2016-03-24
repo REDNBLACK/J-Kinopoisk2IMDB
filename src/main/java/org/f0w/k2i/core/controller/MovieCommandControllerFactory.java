@@ -30,17 +30,17 @@ public class MovieCommandControllerFactory {
     public MovieCommandController make(MovieCommandController.Type movieHandlerType) {
         switch (movieHandlerType) {
             case ADD_TO_WATCHLIST:
-                return makeAddToWatchListHandler();
+                return makeAddToWatchListController();
             case SET_RATING:
-                return makeSetRatingHandler();
+                return makeSetRatingController();
             case COMBINED:
-                return makeCombinedHandler();
+                return makeCombinedController();
             default:
                 throw new IllegalArgumentException("Unexpected comparator type!");
         }
     }
 
-    private MovieCommandController makeAddToWatchListHandler() {
+    private MovieCommandController makeAddToWatchListController() {
         List<Command<ImportProgress>> commands = Arrays.asList(
                 parseIMDBMovieIDCommandProvider.get(),
                 addMovieToWatchlistCommandProvider.get()
@@ -49,7 +49,7 @@ public class MovieCommandControllerFactory {
         return new MovieCommandControllerImpl(commands);
     }
 
-    private MovieCommandController makeSetRatingHandler() {
+    private MovieCommandController makeSetRatingController() {
         List<Command<ImportProgress>> commands = Arrays.asList(
                 parseIMDBMovieIDCommandProvider.get(),
                 setMovieRatingCommandProvider.get()
@@ -58,7 +58,7 @@ public class MovieCommandControllerFactory {
         return new MovieCommandControllerImpl(commands);
     }
 
-    private MovieCommandController makeCombinedHandler() {
+    private MovieCommandController makeCombinedController() {
         List<Command<ImportProgress>> commands = Arrays.asList(
                 parseIMDBMovieIDCommandProvider.get(),
                 setMovieRatingCommandProvider.get(),
@@ -66,5 +66,18 @@ public class MovieCommandControllerFactory {
         );
 
         return new MovieCommandControllerImpl(commands);
+    }
+
+    private final class MovieCommandControllerImpl implements MovieCommandController {
+        private final List<Command<ImportProgress>> commands;
+
+        public MovieCommandControllerImpl(List<Command<ImportProgress>> commands) {
+            this.commands = commands;
+        }
+
+        @Override
+        public void execute(ImportProgress importProgress) {
+            commands.forEach(c -> c.execute(importProgress));
+        }
     }
 }

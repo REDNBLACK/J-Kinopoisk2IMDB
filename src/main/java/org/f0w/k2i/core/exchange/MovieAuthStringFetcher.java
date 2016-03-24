@@ -8,7 +8,6 @@ import org.jsoup.Jsoup;
 
 import com.google.inject.Inject;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
     private final Config config;
@@ -39,7 +38,7 @@ public class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
 
     @Override
     public String getProcessedResponse() {
-        return Jsoup.parse(response.body(), StandardCharsets.UTF_8.name())
+        return Jsoup.parse(response.body())
                 .select("[data-auth]")
                 .first()
                 .attr("data-auth");

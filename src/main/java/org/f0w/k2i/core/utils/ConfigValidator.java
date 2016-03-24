@@ -5,6 +5,8 @@ import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.controller.MovieCommandController;
 
+import java.util.List;
+
 import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
@@ -21,7 +23,7 @@ public class ConfigValidator {
         checkList(config.getString("list"), config.getString("mode"));
 
         checkQueryFormat(config.getString("query_format"));
-        checkComparator(config.getString("comparator"));
+        checkComparators(config.getStringList("comparators"));
 
         checkUserAgent(config.getString("user_agent"));
         checkYearDeviation(config.getInt("year_deviation"));
@@ -58,14 +60,14 @@ public class ConfigValidator {
         }
     }
 
-    private static void checkComparator(final String comparator) {
-        final String message = "Comparator setting is not valid!";
+    private static void checkComparators(List<String> comparators) {
+        final String message = "Comparators setting is not valid!";
 
-        try {
-            MovieComparator.Type.valueOf(comparator);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(message);
-        }
+        boolean allOfMovieComparatorType = comparators.stream()
+                .map(c -> InjectorUtils.isOfTargetType(c, MovieComparator.class))
+                .allMatch(c -> true);
+
+        checkArgument(allOfMovieComparatorType, message);
     }
 
     private static void checkAuth(final String auth) {

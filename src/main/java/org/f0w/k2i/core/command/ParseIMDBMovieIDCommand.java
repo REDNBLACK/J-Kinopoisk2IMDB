@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.command;
 
-import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.comparator.MovieComparator;
@@ -76,8 +75,7 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
     }
 
     private Optional<Movie> findMatchingMovie(Movie movie, List<Movie> movies) {
-        MovieComparator.Type titleComparatorType = MovieComparator.Type.valueOf(config.getString("comparator"));
-        MovieComparator comparator = movieComparatorFactory.make(titleComparatorType);
+        MovieComparator comparator = movieComparatorFactory.make(config.getStringList("comparators"));
 
         return movies.stream()
                 .filter(imdbMovie -> comparator.areEqual(movie, imdbMovie))

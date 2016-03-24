@@ -7,6 +7,8 @@ import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
 
+import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
+
 public class AddMovieToWatchlistCommand extends AbstractMovieCommand {
     private final MovieWatchlistAssigner assigner;
 
@@ -20,7 +22,7 @@ public class AddMovieToWatchlistCommand extends AbstractMovieCommand {
         try {
             Movie movie = importProgress.getMovie();
 
-            if (movie.getImdbId() == null) {
+            if (isEmptyIMDBId(movie.getImdbId())) {
                 LOG.info("Can't add movie to watchlist, IMDB ID is not set");
                 return;
             }

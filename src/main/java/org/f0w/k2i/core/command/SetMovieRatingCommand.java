@@ -7,6 +7,8 @@ import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
 
+import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
+
 public class SetMovieRatingCommand extends AbstractMovieCommand {
     private final MovieRatingChanger changer;
 
@@ -20,12 +22,12 @@ public class SetMovieRatingCommand extends AbstractMovieCommand {
         try {
             Movie movie = importProgress.getMovie();
 
-            if (movie.getImdbId() == null) {
+            if (isEmptyIMDBId(movie.getImdbId())) {
                 LOG.info("Can't change movie rating, IMDB ID is not set");
                 return;
             }
 
-            if (movie.getRating() == null) {
+            if (isEmptyRating(movie.getRating())) {
                 LOG.info("Can't change movie rating, rating is empty");
                 return;
             }

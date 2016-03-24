@@ -1,7 +1,9 @@
 package org.f0w.k2i.core.comparator.title;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
+import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.comparator.AbstractMovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.utils.text.NumericToWord;
@@ -74,6 +76,12 @@ public class SmartTitleComparator extends AbstractMovieComparator {
 
         // Transliterated string
         list.add(Translit::toTranslit);
+
+        // Weakly transliterated string
+        list.add(Translit::toWeakerTranslit);
+
+        // Weakly transliterated with lower case and capitalized
+        list.add(s -> Translit.toWeakerTranslit(StringUtils.capitalize(s.toLowerCase())));
 
         // Original string with numeric replaced to text representation
         list.add(s -> {

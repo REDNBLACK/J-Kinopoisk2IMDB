@@ -1,5 +1,7 @@
 package org.f0w.k2i.core.utils.text;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Translit {
     private static final String[] charTable = new String[81];
 
@@ -28,8 +30,8 @@ public class Translit {
         charTable['Т' - START_CHAR] = "T";
         charTable['У' - START_CHAR] = "U";
         charTable['Ф' - START_CHAR] = "F";
-        charTable['Х' - START_CHAR] = "H";
-        charTable['Ц' - START_CHAR] = "C";
+        charTable['Х' - START_CHAR] = "KH";
+        charTable['Ц' - START_CHAR] = "TS";
         charTable['Ч' - START_CHAR] = "CH";
         charTable['Ш' - START_CHAR] = "SH";
         charTable['Щ' - START_CHAR] = "SH";
@@ -70,5 +72,15 @@ public class Translit {
         }
 
         return sb.toString();
+    }
+
+    public static String toWeakerTranslit(String text) {
+        return toTranslit(text).replace("'", "")
+                .replace("KH", "Kh")
+                .replace("CH", "Ch")
+                .replace("ZH", "Zh")
+                .replace("SH", "Sh")
+                .replace("YA", "Ya")
+                .replace("yi", "yy");
     }
 }

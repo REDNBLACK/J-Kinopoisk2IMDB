@@ -40,7 +40,7 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
     public void execute(ImportProgress importProgress) {
         Movie movie = importProgress.getMovie();
 
-        if (movie.getImdbId() != null) {
+        if (!isEmptyIMDBId(movie.getImdbId())) {
             LOG.info("Movie is already prepared {}", movie);
             return;
         }

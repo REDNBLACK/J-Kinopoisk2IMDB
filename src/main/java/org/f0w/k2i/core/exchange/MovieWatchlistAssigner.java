@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.exchange;
 
+import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 
@@ -15,6 +16,7 @@ public class MovieWatchlistAssigner implements Exchangeable<Movie, Connection.Re
 
     private Connection.Response response;
 
+    @Inject
     public MovieWatchlistAssigner(Config config) {
         this.config = config;
     }

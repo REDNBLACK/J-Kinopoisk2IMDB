@@ -1,9 +1,9 @@
-package org.f0w.k2i.core.handler;
+package org.f0w.k2i.core.controller;
 
 import org.f0w.k2i.core.model.entity.ImportProgress;
 
 @FunctionalInterface
-public interface MovieHandler {
+public interface MovieCommandController {
     void execute(ImportProgress importProgress);
 
     enum Type {

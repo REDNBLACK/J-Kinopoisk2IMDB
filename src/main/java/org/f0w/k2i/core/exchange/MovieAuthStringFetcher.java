@@ -11,10 +11,14 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
-    @Inject
-    private Config config;
+    private final Config config;
 
     private Connection.Response response;
+
+    @Inject
+    public MovieAuthStringFetcher(Config config) {
+        this.config = config;
+    }
 
     @Override
     public void sendRequest(Movie movie) throws IOException {

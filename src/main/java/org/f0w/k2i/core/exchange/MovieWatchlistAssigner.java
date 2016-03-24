@@ -7,15 +7,17 @@ import com.google.common.collect.ImmutableMap;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 
 public class MovieWatchlistAssigner implements Exchangeable<Movie, Connection.Response> {
-    @Inject
-    private Config config;
+    private final Config config;
 
     private Connection.Response response;
+
+    public MovieWatchlistAssigner(Config config) {
+        this.config = config;
+    }
 
     @Override
     public void sendRequest(Movie movie) throws IOException {

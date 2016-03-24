@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.handler.command;
+package org.f0w.k2i.core.controller.command;
 
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
 
 public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
-    private Config config;
+    private final Config config;
 
-    private MovieFindersFactory movieFindersFactory;
+    private final MovieFindersFactory movieFindersFactory;
 
     @Inject
     public ParseIMDBMovieIDCommand(Config config, MovieFindersFactory movieFindersFactory) {

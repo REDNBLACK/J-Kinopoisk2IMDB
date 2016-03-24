@@ -12,13 +12,17 @@ import java.io.IOException;
 import java.util.Map;
 
 public class MovieRatingChanger implements Exchangeable<Movie, Connection.Response> {
-    @Inject
-    private Config config;
+    private final Config config;
 
-    @Inject
-    private MovieAuthStringFetcher fetcher;
+    private final MovieAuthStringFetcher fetcher;
 
     private Connection.Response response;
+
+    @Inject
+    public MovieRatingChanger(Config config, MovieAuthStringFetcher fetcher) {
+        this.config = config;
+        this.fetcher = fetcher;
+    }
 
     @Override
     public void sendRequest(Movie movie) throws IOException {

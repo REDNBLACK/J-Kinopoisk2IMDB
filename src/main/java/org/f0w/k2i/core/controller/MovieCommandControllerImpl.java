@@ -1,14 +1,14 @@
-package org.f0w.k2i.core.handler;
+package org.f0w.k2i.core.controller;
 
-import org.f0w.k2i.core.handler.command.Command;
+import org.f0w.k2i.core.controller.command.Command;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 
 import java.util.List;
 
-public class MovieHandlerImpl implements MovieHandler {
+class MovieCommandControllerImpl implements MovieCommandController {
     private final List<Command<ImportProgress>> commands;
 
-    public MovieHandlerImpl(List<Command<ImportProgress>> commands) {
+    public MovieCommandControllerImpl(List<Command<ImportProgress>> commands) {
         this.commands = commands;
     }
 

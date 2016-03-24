@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.handler.command;
+package org.f0w.k2i.core.controller.command;
 
 import com.google.inject.Inject;
 import org.f0w.k2i.core.exchange.MovieRatingChanger;
@@ -8,7 +8,7 @@ import org.f0w.k2i.core.model.entity.Movie;
 import java.io.IOException;
 
 public class SetMovieRatingCommand extends AbstractMovieCommand {
-    private MovieRatingChanger changer;
+    private final MovieRatingChanger changer;
 
     @Inject
     public SetMovieRatingCommand(MovieRatingChanger changer) {

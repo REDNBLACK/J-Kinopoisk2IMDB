@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.handler.command;
+package org.f0w.k2i.core.controller.command;
 
 import com.google.inject.Inject;
 import org.f0w.k2i.core.exchange.MovieWatchlistAssigner;
@@ -8,7 +8,7 @@ import org.f0w.k2i.core.model.entity.Movie;
 import java.io.IOException;
 
 public class AddMovieToWatchlistCommand extends AbstractMovieCommand {
-    private MovieWatchlistAssigner assigner;
+    private final MovieWatchlistAssigner assigner;
 
     @Inject
     public AddMovieToWatchlistCommand(MovieWatchlistAssigner assigner) {

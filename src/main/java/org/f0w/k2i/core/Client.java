@@ -7,8 +7,8 @@ import com.google.inject.persist.PersistService;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import org.f0w.k2i.core.handler.MovieHandler;
-import org.f0w.k2i.core.handler.MovieHandlerFactory;
+import org.f0w.k2i.core.controller.MovieCommandController;
+import org.f0w.k2i.core.controller.MovieCommandControllerFactory;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -34,7 +34,7 @@ public class Client extends Observable {
     private final Injector injector;
     private final File file;
 
-    private MovieHandler movieHandler;
+    private MovieCommandController movieCommandController;
 
     private Provider<MovieRepository> movieRepositoryProvider;
     private KinopoiskFileRepository kinopoiskFileRepository;
@@ -52,8 +52,8 @@ public class Client extends Observable {
         );
         injector.getInstance(PersistService.class).start();
 
-        movieHandler = injector.getInstance(MovieHandlerFactory.class)
-                .make(MovieHandler.Type.valueOf(configuration.getString("mode")));
+        movieCommandController = injector.getInstance(MovieCommandControllerFactory.class)
+                .make(MovieCommandController.Type.valueOf(configuration.getString("mode")));
 
         kinopoiskFileRepository = injector.getInstance(KinopoiskFileRepository.class);
         importProgressRepository = injector.getInstance(ImportProgressRepository.class);
@@ -79,7 +79,7 @@ public class Client extends Observable {
             setChanged();
             notifyObservers();
 
-            movieHandler.execute(ip);
+            movieCommandController.execute(ip);
 
             importProgressRepository.save(ip);
         });

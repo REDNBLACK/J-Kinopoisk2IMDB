@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
-import org.f0w.k2i.core.handler.MovieHandler;
+import org.f0w.k2i.core.controller.MovieCommandController;
 
 import java.io.File;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Map<String, Object> map = new ImmutableMap.Builder<String, Object>()
                 .put("query_format", MovieFinder.Type.JSON.toString())
-                .put("mode", MovieHandler.Type.COMBINED.toString())
+                .put("mode", MovieCommandController.Type.COMBINED.toString())
                 .put("auth", "BCYnIhDSKm7sIoiawZ6TVKs5htuaGRHpTzwNXSlJ--JlTfh9R68UfgVY0jMJFosYtd_exTGLGOdWhcAYhc3MFTNik6_8pfUeeqPaVG4XbCb43W3BXzPQOAajFGPWusxhkXZNRLBoAZ9cApmLytjy4tnfBMceF0eMIl8mUtdqT-V-KSObD5dKepBNYU81xFHAooVC80VhPr08Q1UxOlM6oCEYSd10mMHsaFY4zMXL2MNXuxE")
                 .put("list", "ls032387067")
                 .build();

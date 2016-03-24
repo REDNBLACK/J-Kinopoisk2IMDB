@@ -36,15 +36,15 @@ public class Movie {
         setImdbId(imdbId);
     }
 
-    public Movie(final String title, int year) {
+    public Movie(String title, int year) {
         this(title, year, null, null);
     }
 
-    public Movie(final String title, int year, final Integer rating) {
+    public Movie(String title, int year, Integer rating) {
         this(title, year, rating, null);
     }
 
-    public Movie(final String title, int year, final String imdbId) {
+    public Movie(String title, int year, String imdbId) {
         this(title, year, null, imdbId);
     }
 

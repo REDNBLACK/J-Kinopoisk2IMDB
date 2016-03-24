@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.comparators.title;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
 import org.f0w.k2i.core.comparators.EqualityComparator;
@@ -82,7 +81,7 @@ class SmartTitleComparator implements EqualityComparator<Movie> {
                 } catch (NumberFormatException e) {}
             }
 
-            return Joiner.on(" ").join(words);
+            return String.join(" ", words);
         });
 
         // Modifiers using symbols mix

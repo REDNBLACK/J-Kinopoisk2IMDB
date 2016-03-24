@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
+
 public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
     private Config config;
 
@@ -29,6 +31,7 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
         this.movieFindersFactory = movieFindersFactory;
     }
 
+    @Override
     public void execute(ImportProgress importProgress) {
         Movie movie = importProgress.getMovie();
 
@@ -84,6 +87,6 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
     }
 
     private Predicate<Movie> movieFieldsIsSet() {
-        return m -> m.getTitle() != null && m.getYear() != null && m.getImdbId() != null;
+        return m -> (!isEmptyTitle(m.getTitle()) && !isEmptyYear(m.getYear()) && !isEmptyIMDBId(m.getImdbId()));
     }
 }

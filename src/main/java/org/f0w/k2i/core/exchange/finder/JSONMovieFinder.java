@@ -1,16 +1,18 @@
 package org.f0w.k2i.core.exchange.finder;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
-import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.utils.exception.KinopoiskToIMDBException;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.util.*;
+import org.f0w.k2i.core.model.entity.Movie;
+import org.f0w.k2i.core.utils.exception.KinopoiskToIMDBException;
+import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
 
 class JSONMovieFinder extends AbstractMovieFinder {
     private static final ContainerFactory CONTAINER_FACTORY = new ContainerFactory() {
@@ -56,12 +58,11 @@ class JSONMovieFinder extends AbstractMovieFinder {
                 for (Object movieInfo : (List) categories) {
                     Map movieInfoObj = (Map) movieInfo;
 
-                    Movie movie = new Movie();
-                    movie.setTitle(movieInfoObj.get("title").toString());
-                    movie.setYear(parseYear(movieInfoObj));
-                    movie.setImdbId(movieInfoObj.get("id").toString());
-
-                    movies.add(movie);
+                    movies.add(new Movie(
+                            parseTitle(movieInfoObj.get("title").toString()),
+                            parseYear(movieInfoObj.get("description").toString()),
+                            parseIMDBId(movieInfoObj.get("id").toString())
+                    ));
                 }
             }
         } catch (ParseException e) {
@@ -69,17 +70,5 @@ class JSONMovieFinder extends AbstractMovieFinder {
         }
 
         return movies;
-    }
-
-    private int parseYear(Map movieInfo) {
-        try {
-            String yearString = movieInfo.get("description")
-                    .toString()
-                    .substring(0, 4);
-
-            return Integer.parseInt(yearString);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
     }
 }

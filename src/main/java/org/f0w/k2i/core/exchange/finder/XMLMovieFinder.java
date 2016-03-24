@@ -8,10 +8,11 @@ import org.f0w.k2i.core.model.entity.Movie;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
 
 class XMLMovieFinder extends AbstractMovieFinder {
     @Inject
@@ -34,18 +35,15 @@ class XMLMovieFinder extends AbstractMovieFinder {
 
     @Override
     protected List<Movie> parseSearchResult(String result) {
-        List<Movie> movies = new ArrayList<>();
-        Document document = Jsoup.parse(result, StandardCharsets.UTF_8.name());
+        Document document = Jsoup.parse(result);
 
-        for (Element element : document.getElementsByTag("ImdbEntity")) {
-            Movie movie = new Movie();
-            movie.setTitle(element.ownText());
-            movie.setYear(Integer.parseInt(element.getElementsByTag("Description").first().text().substring(0, 4)));
-            movie.setImdbId(element.attr("id"));
-
-            movies.add(movie);
-        }
-
-        return movies;
+        return document.getElementsByTag("ImdbEntity")
+                .stream()
+                .map(e -> new Movie(
+                        parseTitle(e.ownText()),
+                        parseYear(e.getElementsByTag("Description").first().text()),
+                        parseIMDBId(e.attr("id"))
+                ))
+                .collect(Collectors.toList());
     }
 }

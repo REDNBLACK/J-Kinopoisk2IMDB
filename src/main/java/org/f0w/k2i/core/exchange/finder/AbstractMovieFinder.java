@@ -6,7 +6,6 @@ import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;

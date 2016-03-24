@@ -8,11 +8,12 @@ import org.f0w.k2i.core.model.entity.Movie;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.util.*;
 import java.util.regex.*;
-import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
+
+import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
 
 class HTMLMovieFinder extends AbstractMovieFinder {
     @Inject
@@ -36,23 +37,26 @@ class HTMLMovieFinder extends AbstractMovieFinder {
 
     @Override
     protected List<Movie> parseSearchResult(String result) {
-        List<Movie> movies = new ArrayList<>();
-        Document document = Jsoup.parse(result, StandardCharsets.UTF_8.name());
+        Document document = Jsoup.parse(result);
 
-        for (Element element : document.select("table.findList tr td.result_text")) {
-            Element link = element.getElementsByTag("a").first();
+        return document.select("table.findList tr td.result_text")
+                .stream()
+                .map(e -> new Movie(
+                        parseTitle(e.getElementsByTag("a").first().text()),
+                        parseYear(prepareYear(e.text())),
+                        parseIMDBId(e.getElementsByTag("a").first().attr("href").split("/")[2])
+                ))
+                .collect(Collectors.toList());
+    }
 
-            Movie movie = new Movie();
-            movie.setTitle(link.text());
-            movie.setImdbId(link.attr("href").split("/")[2]);
-            Matcher m = Pattern.compile("\\(([0-9]{4})\\)").matcher(element.text());
-            while (m.find()) {
-                movie.setYear(Integer.parseInt(m.group(1)));
-            }
+    private static String prepareYear(String year) {
+        String preparedYear = year;
 
-            movies.add(movie);
+        Matcher m = Pattern.compile("\\(([0-9]{4})\\)").matcher(year);
+        while (m.find()) {
+            preparedYear = m.group(1);
         }
 
-        return movies;
+        return preparedYear;
     }
 }

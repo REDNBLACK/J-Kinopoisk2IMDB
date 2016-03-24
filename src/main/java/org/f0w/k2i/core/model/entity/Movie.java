@@ -19,7 +19,7 @@ public class Movie {
     private String title;
 
     @Column(name = "YEAR", nullable = false)
-    private Integer year;
+    private int year;
 
     @Column(name = "RATING")
     private Integer rating;
@@ -29,23 +29,23 @@ public class Movie {
 
     public Movie() {}
 
-    public Movie(String title, Integer year, Integer rating, String imdbId) {
+    public Movie(String title, int year, Integer rating, String imdbId) {
         setTitle(title);
         setYear(year);
         setRating(rating);
         setImdbId(imdbId);
     }
 
-    public Movie(String title, Integer year) {
-        this(title, year, 0, null);
+    public Movie(final String title, int year) {
+        this(title, year, null, null);
     }
 
-    public Movie(String title, Integer year, Integer rating) {
+    public Movie(final String title, int year, final Integer rating) {
         this(title, year, rating, null);
     }
 
-    public Movie(String title, Integer year, String imdbId) {
-        this(title, year, 0, imdbId);
+    public Movie(final String title, int year, final String imdbId) {
+        this(title, year, null, imdbId);
     }
 
     public Long getId() {
@@ -64,12 +64,12 @@ public class Movie {
         this.title = requireNonNull(title);
     }
 
-    public Integer getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
-        this.year = requireNonNull(year);
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public Integer getRating() {

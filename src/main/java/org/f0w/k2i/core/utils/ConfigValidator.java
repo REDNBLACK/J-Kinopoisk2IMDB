@@ -6,6 +6,7 @@ import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.controller.MovieCommandController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -65,7 +66,7 @@ public class ConfigValidator {
 
         boolean allOfMovieComparatorType = comparators.stream()
                 .map(c -> InjectorUtils.isOfTargetType(c, MovieComparator.class))
-                .allMatch(c -> true);
+                .allMatch(c -> c == true);
 
         checkArgument(allOfMovieComparatorType, message);
     }

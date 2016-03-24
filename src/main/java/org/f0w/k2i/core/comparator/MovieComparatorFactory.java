@@ -35,7 +35,7 @@ public class MovieComparatorFactory {
         public boolean areEqual(Movie movie1, Movie movie2) {
             return comparators.stream()
                     .map(c -> c.areEqual(movie1, movie2))
-                    .noneMatch(c -> false);
+                    .allMatch(c -> c == true);
         }
     }
 }

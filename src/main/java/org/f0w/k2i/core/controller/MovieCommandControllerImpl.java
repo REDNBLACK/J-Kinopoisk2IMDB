@@ -1,6 +1,6 @@
 package org.f0w.k2i.core.controller;
 
-import org.f0w.k2i.core.controller.command.Command;
+import org.f0w.k2i.core.command.Command;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 
 import java.util.List;

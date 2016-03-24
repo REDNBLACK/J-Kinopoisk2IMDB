@@ -2,10 +2,10 @@ package org.f0w.k2i.core.controller;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.f0w.k2i.core.controller.command.AddMovieToWatchlistCommand;
-import org.f0w.k2i.core.controller.command.Command;
-import org.f0w.k2i.core.controller.command.ParseIMDBMovieIDCommand;
-import org.f0w.k2i.core.controller.command.SetMovieRatingCommand;
+import org.f0w.k2i.core.command.AddMovieToWatchlistCommand;
+import org.f0w.k2i.core.command.Command;
+import org.f0w.k2i.core.command.ParseIMDBMovieIDCommand;
+import org.f0w.k2i.core.command.SetMovieRatingCommand;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.controller.command;
+package org.f0w.k2i.core.command;
 
 import com.google.inject.Inject;
 import org.f0w.k2i.core.exchange.MovieRatingChanger;
@@ -22,6 +22,11 @@ public class SetMovieRatingCommand extends AbstractMovieCommand {
 
             if (movie.getImdbId() == null) {
                 LOG.info("Can't change movie rating, IMDB ID is not set");
+                return;
+            }
+
+            if (movie.getRating() == null) {
+                LOG.info("Can't change movie rating, rating is empty");
                 return;
             }
 

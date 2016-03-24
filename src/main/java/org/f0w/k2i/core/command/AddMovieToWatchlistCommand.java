@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.controller.command;
+package org.f0w.k2i.core.command;
 
 import com.google.inject.Inject;
 import org.f0w.k2i.core.exchange.MovieWatchlistAssigner;

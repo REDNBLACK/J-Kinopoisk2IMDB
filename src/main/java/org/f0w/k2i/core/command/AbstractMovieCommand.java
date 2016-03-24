@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.controller.command;
+package org.f0w.k2i.core.command;
 
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.slf4j.Logger;

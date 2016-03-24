@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.controller.command;
+package org.f0w.k2i.core.command;
 
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
@@ -51,6 +51,12 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
             List<Movie> movies = filterMovies(movie, movieFinder.getProcessedResponse());
 
             Optional<Movie> matchingMovie = findMatchingMovie(movie, movies);
+
+            if (!matchingMovie.isPresent()) {
+                LOG.info("Matching movie not found");
+                return;
+            }
+
             matchingMovie.ifPresent(m -> {
                 movie.setImdbId(m.getImdbId());
 
@@ -58,7 +64,6 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
 
                 LOG.info("Movie IMDB id found: {}", m.getImdbId());
             });
-            matchingMovie.orElseThrow(() -> new IOException("Matching movie not found"));
         } catch (IOException e) {
             LOG.info("Can't prepare movie: {}", e);
         }

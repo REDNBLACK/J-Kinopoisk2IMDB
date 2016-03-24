@@ -65,8 +65,7 @@ public class ConfigValidator {
         final String message = "Comparators setting is not valid!";
 
         boolean allOfMovieComparatorType = comparators.stream()
-                .map(c -> InjectorUtils.isOfTargetType(c, MovieComparator.class))
-                .allMatch(c -> c == true);
+                .allMatch(c -> InjectorUtils.isOfTargetType(c, MovieComparator.class));
 
         checkArgument(allOfMovieComparatorType, message);
     }

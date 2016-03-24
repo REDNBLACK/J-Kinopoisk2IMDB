@@ -2,13 +2,13 @@ package org.f0w.k2i.core.comparator.title;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
-import org.f0w.k2i.core.comparator.MovieComparator;
+import org.f0w.k2i.core.comparator.AbstractMovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.utils.NumericToWord;
 
 import java.util.*;
 
-public class SmartTitleComparator implements MovieComparator {
+public class SmartTitleComparator extends AbstractMovieComparator {
     private static final List<StringModifier> modifiers;
 
     @FunctionalInterface
@@ -101,20 +101,24 @@ public class SmartTitleComparator implements MovieComparator {
 
     @Override
     public boolean areEqual(Movie movie1, Movie movie2) {
-        boolean result = false;
-
         for (StringModifier m1 : modifiers) {
             for (StringModifier m2 : modifiers) {
                 String m1Title = m1.modify(movie1.getTitle());
                 String m2Title = m2.modify(movie2.getTitle());
 
+                LOG.debug(
+                        "Comparing title '{}' with title '{}', matches = '{}'",
+                        m1Title,
+                        m2Title,
+                        m1Title.equals(m2Title)
+                );
+
                 if (m1Title.equals(m2Title)) {
-                    result = true;
-                    break;
+                    return true;
                 }
             }
         }
 
-        return result;
+        return false;
     }
 }

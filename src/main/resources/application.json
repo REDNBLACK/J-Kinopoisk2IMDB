@@ -3,10 +3,10 @@
   "year_deviation": 1,
   "timeout": 3000,
   "query_format": "XML",
-  "comparators": [
-    "org.f0w.k2i.core.comparator.title.SmartTitleComparator",
-    "org.f0w.k2i.core.comparator.year.DeviationYearComparator"
-  ],
   "mode": "COMBINED",
+  "comparators": [
+    "org.f0w.k2i.core.comparator.year.DeviationYearComparator",
+    "org.f0w.k2i.core.comparator.title.SmartTitleComparator"
+  ],
   "list": ""
 }

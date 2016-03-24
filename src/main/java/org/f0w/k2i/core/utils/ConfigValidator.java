@@ -1,7 +1,7 @@
 package org.f0w.k2i.core.utils;
 
 import com.typesafe.config.Config;
-import org.f0w.k2i.core.comparators.title.TitleComparatorType;
+import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.controller.MovieCommandController;
 
@@ -62,7 +62,7 @@ public class ConfigValidator {
         final String message = "Comparator setting is not valid!";
 
         try {
-            TitleComparatorType.valueOf(comparator);
+            MovieComparator.Type.valueOf(comparator);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(message);
         }

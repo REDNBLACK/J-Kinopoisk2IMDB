@@ -3,9 +3,8 @@ package org.f0w.k2i.core.command;
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
-import org.f0w.k2i.core.comparators.EqualityComparator;
-import org.f0w.k2i.core.comparators.title.TitleComparatorType;
-import org.f0w.k2i.core.comparators.title.TitleComparatorsFactory;
+import org.f0w.k2i.core.comparator.MovieComparator;
+import org.f0w.k2i.core.comparator.MovieComparatorFactory;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.exchange.finder.MovieFindersFactory;
 import org.f0w.k2i.core.model.entity.ImportProgress;
@@ -25,10 +24,17 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
 
     private final MovieFindersFactory movieFindersFactory;
 
+    private final MovieComparatorFactory movieComparatorFactory;
+
     @Inject
-    public ParseIMDBMovieIDCommand(Config config, MovieFindersFactory movieFindersFactory) {
+    public ParseIMDBMovieIDCommand(
+            Config config,
+            MovieFindersFactory movieFindersFactory,
+            MovieComparatorFactory movieComparatorFactory
+    ) {
         this.config = config;
         this.movieFindersFactory = movieFindersFactory;
+        this.movieComparatorFactory = movieComparatorFactory;
     }
 
     @Override
@@ -48,7 +54,7 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
             MovieFinder movieFinder = movieFindersFactory.make(movieFinderType);
             movieFinder.sendRequest(movie);
 
-            List<Movie> movies = filterMovies(movie, movieFinder.getProcessedResponse());
+            List<Movie> movies = filterMovies(movieFinder.getProcessedResponse());
 
             Optional<Movie> matchingMovie = findMatchingMovie(movie, movies);
 
@@ -70,25 +76,19 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
     }
 
     private Optional<Movie> findMatchingMovie(Movie movie, List<Movie> movies) {
-        TitleComparatorType titleComparatorType = TitleComparatorType.valueOf(config.getString("comparator"));
-        EqualityComparator<Movie> comparator = TitleComparatorsFactory.make(titleComparatorType);
+        MovieComparator.Type titleComparatorType = MovieComparator.Type.valueOf(config.getString("comparator"));
+        MovieComparator comparator = movieComparatorFactory.make(titleComparatorType);
 
         return movies.stream()
                 .filter(imdbMovie -> comparator.areEqual(movie, imdbMovie))
                 .findFirst();
     }
 
-    private List<Movie> filterMovies(Movie movie, List<Movie> movies) {
+    private List<Movie> filterMovies(List<Movie> movies) {
         return movies.stream()
                 .filter(Objects::nonNull)
                 .filter(movieFieldsIsSet())
-                .filter(isBetweenYearDeviation(movie, config.getInt("year_deviation")))
                 .collect(Collectors.toList());
-    }
-
-    private Predicate<Movie> isBetweenYearDeviation(Movie movie, int deviation) {
-        return imdbMovie -> Range.closed(imdbMovie.getYear() - deviation, imdbMovie.getYear() + deviation)
-                .contains(movie.getYear());
     }
 
     private Predicate<Movie> movieFieldsIsSet() {

@@ -1,9 +1,9 @@
-package org.f0w.k2i.core.comparators.title;
+package org.f0w.k2i.core.comparator.title;
 
-import org.f0w.k2i.core.comparators.EqualityComparator;
+import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 
-class EndsWithTitleComparator implements EqualityComparator<Movie> {
+public class EndsWithTitleComparator implements MovieComparator {
     @Override
     public boolean areEqual(Movie movie1, Movie movie2) {
         String title1 = movie1.getTitle();

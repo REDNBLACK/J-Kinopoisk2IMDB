@@ -1,14 +1,14 @@
-package org.f0w.k2i.core.comparators.title;
+package org.f0w.k2i.core.comparator.title;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
-import org.f0w.k2i.core.comparators.EqualityComparator;
+import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.utils.NumericToWord;
 
 import java.util.*;
 
-class SmartTitleComparator implements EqualityComparator<Movie> {
+public class SmartTitleComparator implements MovieComparator {
     private static final List<StringModifier> modifiers;
 
     @FunctionalInterface
@@ -100,13 +100,13 @@ class SmartTitleComparator implements EqualityComparator<Movie> {
     }
 
     @Override
-    public boolean areEqual(Movie obj1, Movie obj2) {
+    public boolean areEqual(Movie movie1, Movie movie2) {
         boolean result = false;
 
         for (StringModifier m1 : modifiers) {
             for (StringModifier m2 : modifiers) {
-                String m1Title = m1.modify(obj1.getTitle());
-                String m2Title = m2.modify(obj2.getTitle());
+                String m1Title = m1.modify(movie1.getTitle());
+                String m2Title = m2.modify(movie2.getTitle());
 
                 if (m1Title.equals(m2Title)) {
                     result = true;

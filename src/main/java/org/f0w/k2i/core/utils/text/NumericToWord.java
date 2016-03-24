@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.utils;
+package org.f0w.k2i.core.utils.text;
 
 public class NumericToWord {
     private static final String[] units = {
@@ -36,6 +36,10 @@ public class NumericToWord {
             "Eigthy",
             "Ninety"
     };
+
+    private NumericToWord() {
+        throw new UnsupportedOperationException();
+    }
 
     public static String convert(Integer n) {
         if (n < 0) {

@@ -15,8 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Main {
     public static void main(String[] args) throws Exception {
         Map<String, Object> map = new ImmutableMap.Builder<String, Object>()
-                .put("query_format", MovieFinder.Type.JSON.toString())
-                .put("mode", MovieCommandController.Type.COMBINED.toString())
+                .put("query_format", MovieFinder.Type.MIXED.toString())
+                .put("mode", MovieCommandController.Type.ADD_TO_WATCHLIST.toString())
                 .put("auth", "BCYnIhDSKm7sIoiawZ6TVKs5htuaGRHpTzwNXSlJ--JlTfh9R68UfgVY0jMJFosYtd_exTGLGOdWhcAYhc3MFTNik6_8pfUeeqPaVG4XbCb43W3BXzPQOAajFGPWusxhkXZNRLBoAZ9cApmLytjy4tnfBMceF0eMIl8mUtdqT-V-KSObD5dKepBNYU81xFHAooVC80VhPr08Q1UxOlM6oCEYSd10mMHsaFY4zMXL2MNXuxE")
                 .put("list", "ls032387067")
                 .build();

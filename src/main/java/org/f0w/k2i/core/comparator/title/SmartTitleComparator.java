@@ -4,7 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
 import org.f0w.k2i.core.comparator.AbstractMovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.utils.NumericToWord;
+import org.f0w.k2i.core.utils.text.NumericToWord;
+import org.f0w.k2i.core.utils.text.Translit;
 
 import java.util.*;
 
@@ -70,6 +71,9 @@ public class SmartTitleComparator extends AbstractMovieComparator {
 
             return s;
         });
+
+        // Transliterated string
+        list.add(Translit::toTranslit);
 
         // Original string with numeric replaced to text representation
         list.add(s -> {

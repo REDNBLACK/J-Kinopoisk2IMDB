@@ -18,8 +18,10 @@ class MixedMovieFinder implements MovieFinder {
     @Override
     public void sendRequest(Movie movie) throws IOException {
         for (MovieFinder finder : movieFinders) {
-            finder.sendRequest(movie);
-            movies.addAll(finder.getProcessedResponse());
+            try {
+                finder.sendRequest(movie);
+                movies.addAll(finder.getProcessedResponse());
+            } catch (IOException e) {}
         }
     }
 

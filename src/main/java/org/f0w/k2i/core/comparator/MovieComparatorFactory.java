@@ -2,7 +2,7 @@ package org.f0w.k2i.core.comparator;
 
 import com.google.inject.Inject;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.utils.InjectorUtils;
+import org.f0w.k2i.core.util.InjectorUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;

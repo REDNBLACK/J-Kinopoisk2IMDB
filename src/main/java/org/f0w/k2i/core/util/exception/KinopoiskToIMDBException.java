@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.utils.exception;
+package org.f0w.k2i.core.util.exception;
 
 public class KinopoiskToIMDBException extends RuntimeException {
     public KinopoiskToIMDBException() {}

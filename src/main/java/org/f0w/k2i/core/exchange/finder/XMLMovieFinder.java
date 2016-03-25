@@ -12,7 +12,7 @@ import org.jsoup.nodes.Document;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
+import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
 
 class XMLMovieFinder extends AbstractMovieFinder {
     @Inject

@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.utils;
+package org.f0w.k2i.core.util;
 
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.comparator.MovieComparator;
@@ -6,7 +6,6 @@ import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.controller.MovieCommandController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Strings.isNullOrEmpty;

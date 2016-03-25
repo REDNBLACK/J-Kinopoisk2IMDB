@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.utils;
+package org.f0w.k2i.core.util;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;

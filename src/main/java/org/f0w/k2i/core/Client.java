@@ -17,8 +17,8 @@ import org.f0w.k2i.core.model.repository.KinopoiskFileRepository;
 import org.f0w.k2i.core.model.repository.MovieRepository;
 import org.f0w.k2i.core.providers.ConfigurationProvider;
 import org.f0w.k2i.core.providers.JpaRepositoryProvider;
-import org.f0w.k2i.core.utils.ConfigValidator;
-import org.f0w.k2i.core.utils.exception.KinopoiskToIMDBException;
+import org.f0w.k2i.core.util.ConfigValidator;
+import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,9 +28,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
-import static org.f0w.k2i.core.utils.FileUtils.*;
+import static org.f0w.k2i.core.util.FileUtils.*;
 
-public class Client extends Observable {
+public class Client {
     private final Injector injector;
     private final File file;
 
@@ -76,9 +76,6 @@ public class Client extends Observable {
         List<ImportProgress> importProgress = importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile);
 
         importProgress.forEach(ip -> {
-            setChanged();
-            notifyObservers();
-
             movieCommandController.execute(ip);
 
             importProgressRepository.save(ip);
@@ -90,9 +87,11 @@ public class Client extends Observable {
 
         List<Movie> movies;
 
+        MovieRepository movieRepository = movieRepositoryProvider.get();
+
         try {
             movies = parseMovies(file).stream()
-                    .map(movieRepositoryProvider.get()::findOrCreate)
+                    .map(movieRepository::findOrCreate)
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new KinopoiskToIMDBException(e);

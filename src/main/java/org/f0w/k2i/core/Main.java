@@ -8,9 +8,6 @@ import org.f0w.k2i.core.controller.MovieCommandController;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -25,17 +22,7 @@ public class Main {
 
         File file = new File("/Users/RB/Downloads/test-kp.xls");
 
-        AtomicInteger integer = new AtomicInteger(0);
-
-        Observer observer = new Observer() {
-            @Override
-            public void update(Observable o, Object arg) {
-                System.out.println(integer.incrementAndGet());
-            }
-        };
-
         Client client = new Client(file, config);
-        client.addObserver(observer);
         client.run();
     }
 }

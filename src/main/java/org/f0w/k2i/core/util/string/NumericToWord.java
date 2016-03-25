@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.utils.text;
+package org.f0w.k2i.core.util.string;
 
 public class NumericToWord {
     private static final String[] units = {

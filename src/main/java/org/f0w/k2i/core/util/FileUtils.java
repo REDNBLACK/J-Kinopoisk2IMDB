@@ -1,6 +1,5 @@
-package org.f0w.k2i.core.utils;
+package org.f0w.k2i.core.util;
 
-import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -15,7 +14,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
+import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
 
 public class FileUtils {
     public static String getHashCode(File file) throws IOException {

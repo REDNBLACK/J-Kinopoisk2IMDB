@@ -1,13 +1,12 @@
 package org.f0w.k2i.core.comparator.title;
 
-import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
 import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.comparator.AbstractMovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.utils.text.NumericToWord;
-import org.f0w.k2i.core.utils.text.Translit;
+import org.f0w.k2i.core.util.string.NumericToWord;
+import org.f0w.k2i.core.util.string.Translit;
 
 import java.util.*;
 

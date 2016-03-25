@@ -10,13 +10,9 @@ import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.*;
 
-import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
+import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
 
 public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
     private final Config config;
@@ -47,15 +43,12 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
 
         LOG.info("Preparing movie {}", movie);
 
-        try {
-            MovieFinder.Type movieFinderType = MovieFinder.Type.valueOf(config.getString("query_format"));
+        MovieFinder movieFinder = movieFindersFactory.make(MovieFinder.Type.valueOf(config.getString("query_format")));
 
-            MovieFinder movieFinder = movieFindersFactory.make(movieFinderType);
+        try {
             movieFinder.sendRequest(movie);
 
-            List<Movie> movies = filterMovies(movieFinder.getProcessedResponse());
-
-            Optional<Movie> matchingMovie = findMatchingMovie(movie, movies);
+            Optional<Movie> matchingMovie = findMatchingMovie(movie, movieFinder.getProcessedResponse());
 
             if (!matchingMovie.isPresent()) {
                 LOG.info("Matching movie not found");
@@ -74,22 +67,17 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
         }
     }
 
-    private Optional<Movie> findMatchingMovie(Movie movie, List<Movie> movies) {
+    private Optional<Movie> findMatchingMovie(Movie movie, Deque<Movie> movies) {
         MovieComparator comparator = movieComparatorFactory.make(config.getStringList("comparators"));
 
-        return movies.stream()
-                .filter(imdbMovie -> comparator.areEqual(movie, imdbMovie))
-                .findFirst();
-    }
+        while (!movies.isEmpty()) {
+            Movie imdbMovie = movies.poll();
 
-    private List<Movie> filterMovies(List<Movie> movies) {
-        return movies.stream()
-                .filter(Objects::nonNull)
-                .filter(movieFieldsIsSet())
-                .collect(Collectors.toList());
-    }
+            if (comparator.areEqual(movie, imdbMovie)) {
+                return Optional.of(imdbMovie);
+            }
+        }
 
-    private Predicate<Movie> movieFieldsIsSet() {
-        return m -> (!isEmptyTitle(m.getTitle()) && !isEmptyYear(m.getYear()) && !isEmptyIMDBId(m.getImdbId()));
+        return Optional.empty();
     }
 }

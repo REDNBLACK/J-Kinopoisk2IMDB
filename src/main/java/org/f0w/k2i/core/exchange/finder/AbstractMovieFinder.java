@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
 import com.google.common.net.UrlEscapers;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -8,6 +9,8 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +46,7 @@ abstract class AbstractMovieFinder implements MovieFinder {
     }
 
     @Override
-    public List<Movie> getProcessedResponse() {
-        return parseSearchResult(response.body());
+    public Deque<Movie> getProcessedResponse() {
+        return new LinkedList<>(parseSearchResult(response.body()));
     }
 }

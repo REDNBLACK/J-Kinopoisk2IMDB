@@ -1,6 +1,4 @@
-package org.f0w.k2i.core.utils.text;
-
-import org.apache.commons.lang3.StringUtils;
+package org.f0w.k2i.core.util.string;
 
 public class Translit {
     private static final String[] charTable = new String[81];

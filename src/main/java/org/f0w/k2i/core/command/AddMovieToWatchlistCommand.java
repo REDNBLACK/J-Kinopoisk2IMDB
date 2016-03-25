@@ -7,7 +7,7 @@ import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
 
-import static org.f0w.k2i.core.utils.MovieFieldsUtils.*;
+import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
 
 public class AddMovieToWatchlistCommand extends AbstractMovieCommand {
     private final MovieWatchlistAssigner assigner;

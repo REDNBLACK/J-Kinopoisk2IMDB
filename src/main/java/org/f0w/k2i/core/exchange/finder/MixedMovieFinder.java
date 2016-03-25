@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ForwardingDeque;
+import com.google.inject.Inject;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ class MixedMovieFinder implements MovieFinder {
     private final Deque<MovieFinder> movieFinders;
     private Movie movie;
 
+    @Inject
     public MixedMovieFinder(List<MovieFinder> movieFinders) {
         this.movieFinders = new LinkedList<>(movieFinders);
     }

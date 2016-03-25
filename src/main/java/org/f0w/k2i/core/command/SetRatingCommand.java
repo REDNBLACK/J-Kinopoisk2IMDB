@@ -9,11 +9,11 @@ import java.io.IOException;
 
 import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
 
-public class SetMovieRatingCommand extends AbstractMovieCommand {
+class SetRatingCommand extends AbstractMovieCommand {
     private final MovieRatingChanger changer;
 
     @Inject
-    public SetMovieRatingCommand(MovieRatingChanger changer) {
+    public SetRatingCommand(MovieRatingChanger changer) {
         this.changer = changer;
     }
 

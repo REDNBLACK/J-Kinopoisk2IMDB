@@ -1,11 +1,9 @@
 package org.f0w.k2i.core.command;
 
 import com.google.inject.Inject;
-import com.typesafe.config.Config;
+import com.google.inject.Provider;
 import org.f0w.k2i.core.comparator.MovieComparator;
-import org.f0w.k2i.core.comparator.MovieComparatorFactory;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
-import org.f0w.k2i.core.exchange.finder.MovieFindersFactory;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 
@@ -14,22 +12,15 @@ import java.util.*;
 
 import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
 
-public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
-    private final Config config;
+class ParseIDCommand extends AbstractMovieCommand {
+    private final Provider<MovieFinder> movieFinderProvider;
 
-    private final MovieFindersFactory movieFindersFactory;
-
-    private final MovieComparatorFactory movieComparatorFactory;
+    private final MovieComparator movieComparator;
 
     @Inject
-    public ParseIMDBMovieIDCommand(
-            Config config,
-            MovieFindersFactory movieFindersFactory,
-            MovieComparatorFactory movieComparatorFactory
-    ) {
-        this.config = config;
-        this.movieFindersFactory = movieFindersFactory;
-        this.movieComparatorFactory = movieComparatorFactory;
+    public ParseIDCommand(Provider<MovieFinder> movieFinderProvider, MovieComparator movieComparator) {
+        this.movieFinderProvider = movieFinderProvider;
+        this.movieComparator = movieComparator;
     }
 
     @Override
@@ -43,9 +34,9 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
 
         LOG.info("Preparing movie {}", movie);
 
-        MovieFinder movieFinder = movieFindersFactory.make(MovieFinder.Type.valueOf(config.getString("query_format")));
-
         try {
+            MovieFinder movieFinder = movieFinderProvider.get();
+
             movieFinder.sendRequest(movie);
 
             Optional<Movie> matchingMovie = findMatchingMovie(movie, movieFinder.getProcessedResponse());
@@ -68,12 +59,10 @@ public class ParseIMDBMovieIDCommand extends AbstractMovieCommand {
     }
 
     private Optional<Movie> findMatchingMovie(Movie movie, Deque<Movie> movies) {
-        MovieComparator comparator = movieComparatorFactory.make(config.getStringList("comparators"));
-
         while (!movies.isEmpty()) {
             Movie imdbMovie = movies.poll();
 
-            if (comparator.areEqual(movie, imdbMovie)) {
+            if (movieComparator.areEqual(movie, imdbMovie)) {
                 return Optional.of(imdbMovie);
             }
         }

@@ -1,9 +1,9 @@
 package org.f0w.k2i.core.util;
 
 import com.typesafe.config.Config;
+import org.f0w.k2i.core.command.MovieCommand;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
-import org.f0w.k2i.core.controller.MovieCommandController;
 
 import java.util.List;
 
@@ -18,6 +18,8 @@ public class ConfigValidator {
     public static Config checkValid(Config config) {
         checkNotNull(config);
 
+        checkLogLevel(config.getString("log_level"));
+
         checkAuth(config.getString("auth"));
         checkMode(config.getString("mode"));
         checkList(config.getString("list"), config.getString("mode"));
@@ -30,6 +32,16 @@ public class ConfigValidator {
         checkTimeout(config.getInt("timeout"));
 
         return config;
+    }
+
+    private static void checkLogLevel(final String logLevel) {
+        final String message = "LogLevel setting is not valid!";
+
+        try {
+
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(message);
+        }
     }
 
     private static void checkUserAgent(final String userAgent) {
@@ -64,7 +76,7 @@ public class ConfigValidator {
         final String message = "Comparators setting is not valid!";
 
         boolean allOfMovieComparatorType = comparators.stream()
-                .allMatch(c -> InjectorUtils.isOfTargetType(c, MovieComparator.class));
+                .allMatch(c -> ReflectionUtils.isOfTargetType(c, MovieComparator.class));
 
         checkArgument(allOfMovieComparatorType, message);
     }
@@ -79,10 +91,10 @@ public class ConfigValidator {
         final String message = "List setting is not valid!";
 
         if ("".equals(list)) {
-            MovieCommandController.Type movieHandlerType = MovieCommandController.Type.valueOf(mode);
+            MovieCommand.Type commandType = MovieCommand.Type.valueOf(mode);
 
-            if (movieHandlerType.equals(MovieCommandController.Type.COMBINED)
-                || movieHandlerType.equals(MovieCommandController.Type.ADD_TO_WATCHLIST)
+            if (commandType.equals(MovieCommand.Type.COMBINED)
+                || commandType.equals(MovieCommand.Type.ADD_TO_WATCHLIST)
             ) {
                 throw new IllegalArgumentException(message + " Set to null, but required for current mode setting");
             }
@@ -96,7 +108,7 @@ public class ConfigValidator {
         final String message = "Mode setting is not valid!";
 
         try {
-             MovieCommandController.Type.valueOf(mode);
+             MovieCommand.Type.valueOf(mode);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(message);
         }

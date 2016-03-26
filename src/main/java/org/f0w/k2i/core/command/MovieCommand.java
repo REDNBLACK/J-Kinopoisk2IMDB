@@ -1,10 +1,10 @@
-package org.f0w.k2i.core.controller;
+package org.f0w.k2i.core.command;
 
 import org.f0w.k2i.core.model.entity.ImportProgress;
 
 @FunctionalInterface
-public interface MovieCommandController {
-    void execute(ImportProgress importProgress);
+public interface MovieCommand {
+    void execute(ImportProgress value);
 
     enum Type {
         ADD_TO_WATCHLIST,

@@ -1,21 +1,11 @@
 package org.f0w.k2i.core.util;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-
-public class InjectorUtils {
-    private final Injector injector;
-
-    @Inject
-    public InjectorUtils(Injector injector) {
-        this.injector = injector;
+public class ReflectionUtils {
+    private ReflectionUtils() {
+        throw new UnsupportedOperationException();
     }
 
-    public <T> T getInstance(Class<T> type) {
-        return injector.getInstance(type);
-    }
-
-    public static <T> Class<T> getClassFromString(String className, Class<? extends T> targetType) {
+    public static <T> Class<T> stringToClass(String className, Class<? extends T> targetType) {
         try {
             Class<?> targetClass = Class.forName(className);
 

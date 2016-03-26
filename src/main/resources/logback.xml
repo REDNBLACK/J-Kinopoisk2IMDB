@@ -5,9 +5,6 @@
         <resetJUL>true</resetJUL>
     </contextListener>
 
-    <!-- To enable JMX Management -->
-    <jmxConfigurator/>
-
     <appender name="file" class="ch.qos.logback.core.FileAppender">
         <file>${HOME:-${USERPROFILE}}/K2IDB/logs/K2IDB.log</file>
 
@@ -26,7 +23,7 @@
 
     <logger name="org.hibernate" level="error"/>
 
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="file"/>
         <appender-ref ref="console"/>
     </root>

@@ -9,11 +9,11 @@ import java.io.IOException;
 
 import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
 
-public class AddMovieToWatchlistCommand extends AbstractMovieCommand {
+class AddToWatchlistCommand extends AbstractMovieCommand {
     private final MovieWatchlistAssigner assigner;
 
     @Inject
-    public AddMovieToWatchlistCommand(MovieWatchlistAssigner assigner) {
+    public AddToWatchlistCommand(MovieWatchlistAssigner assigner) {
         this.assigner = assigner;
     }
 

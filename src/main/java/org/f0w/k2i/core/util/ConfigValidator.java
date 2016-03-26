@@ -18,6 +18,8 @@ public class ConfigValidator {
     public static Config checkValid(Config config) {
         checkNotNull(config);
 
+        checkLogLevel(config.getString("log_level"));
+
         checkAuth(config.getString("auth"));
         checkMode(config.getString("mode"));
         checkList(config.getString("list"), config.getString("mode"));
@@ -30,6 +32,16 @@ public class ConfigValidator {
         checkTimeout(config.getInt("timeout"));
 
         return config;
+    }
+
+    private static void checkLogLevel(final String logLevel) {
+        final String message = "LogLevel setting is not valid!";
+
+        try {
+
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(message);
+        }
     }
 
     private static void checkUserAgent(final String userAgent) {

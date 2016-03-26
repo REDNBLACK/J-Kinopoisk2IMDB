@@ -1,5 +1,6 @@
 package org.f0w.k2i.core;
 
+import ch.qos.logback.classic.Level;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -22,8 +23,8 @@ import org.f0w.k2i.core.providers.JpaRepositoryProvider;
 import org.f0w.k2i.core.providers.SystemProvider;
 import org.f0w.k2i.core.util.ConfigValidator;
 import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ch.qos.logback.classic.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +46,9 @@ public class Client {
         this.file = requireNonNull(file);
 
         Config configuration = ConfigValidator.checkValid(config.withFallback(ConfigFactory.load()));
+
+        Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        root.setLevel(Level.toLevel(configuration.getString("log_level")));
 
         Injector injector = Guice.createInjector(
                 new ConfigurationProvider(configuration),

@@ -12,7 +12,7 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.0+'
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.0+'
 
-    runtime group: 'ch.qos.logback', name: 'logback-classic', version: '1.1+'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1+'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7+'
 
     compile group: 'org.jsoup', name: 'jsoup', version: '1.8+'

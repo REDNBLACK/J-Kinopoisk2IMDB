@@ -11,16 +11,19 @@ public class CompositeCommandFactory {
     private final Provider<ParseIDCommand> parseIDCommandProvider;
     private final Provider<AddToWatchlistCommand> addToWatchlistCommandProvider;
     private final Provider<SetRatingCommand> setRatingCommandProvider;
+    private final Provider<SaveChangesCommand> saveChangesCommandProvider;
 
     @Inject
     public CompositeCommandFactory(
             Provider<ParseIDCommand> parseIDCommandProvider,
             Provider<AddToWatchlistCommand> addToWatchlistCommandProvider,
-            Provider<SetRatingCommand> setRatingCommandProvider
+            Provider<SetRatingCommand> setRatingCommandProvider,
+            Provider<SaveChangesCommand> saveChangesCommandProvider
     ) {
         this.parseIDCommandProvider = parseIDCommandProvider;
         this.addToWatchlistCommandProvider = addToWatchlistCommandProvider;
         this.setRatingCommandProvider = setRatingCommandProvider;
+        this.saveChangesCommandProvider = saveChangesCommandProvider;
     }
 
     public MovieCommand make(MovieCommand.Type commandType) {
@@ -39,14 +42,16 @@ public class CompositeCommandFactory {
     private MovieCommand makeAddToWatchListCommand() {
         return getCompositeCommand(Arrays.asList(
                 parseIDCommandProvider.get(),
-                addToWatchlistCommandProvider.get()
+                addToWatchlistCommandProvider.get(),
+                saveChangesCommandProvider.get()
         ));
     }
 
     private MovieCommand makeSetRatingCommand() {
         return getCompositeCommand(Arrays.asList(
                 parseIDCommandProvider.get(),
-                setRatingCommandProvider.get()
+                setRatingCommandProvider.get(),
+                saveChangesCommandProvider.get()
         ));
     }
 
@@ -54,7 +59,8 @@ public class CompositeCommandFactory {
         return getCompositeCommand(Arrays.asList(
                 parseIDCommandProvider.get(),
                 setRatingCommandProvider.get(),
-                addToWatchlistCommandProvider.get()
+                addToWatchlistCommandProvider.get(),
+                saveChangesCommandProvider.get()
         ));
     }
 

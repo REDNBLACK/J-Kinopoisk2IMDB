@@ -5,39 +5,84 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.collections.*?>
+<?import javafx.collections.*?>
+<?import java.lang.String?>
 
 <GridPane fx:controller="org.f0w.k2i.gui.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10"
           styleClass="root">
     <padding><Insets top="25" right="25" bottom="10" left="25" /></padding>
 
-    <Text id="welcome-text" text="Welcome"
-          GridPane.columnIndex="0" GridPane.rowIndex="0"
-          GridPane.columnSpan="2"/>
+    <!--Styles-->
+    <stylesheets>
+        <URL value="@main.css" />
+    </stylesheets>
+    <!--Styles-->
 
-    <Label text="User Name:"
+    <!--Start file row-->
+    <Label text="Файл с кинопоиска:"
            GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <Button text="Выберите файл..."
+            GridPane.columnIndex="1" GridPane.rowIndex="1"
+            onAction="#handleFileChoseAction" />
+    <!--End file row-->
 
-    <TextField
-            GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-    <Label text="Password:"
+    <!--Start auth row-->
+    <Label text="Строка авторизации:"
            GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <TextField
+            GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <!--End auth row-->
 
-    <PasswordField fx:id="passwordField"
-                   GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <!--Start mode row-->
+    <Label text="Режим работы:"
+           GridPane.columnIndex="0" GridPane.rowIndex="3" />
+    <ChoiceBox fx:id="modeChoiceBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Выставить рейтинг" />
+                <String fx:value="Добавить в список" />
+                <String fx:value="Добавить в список и выставить рейтинг" />
+            </FXCollections>
+        </items>
+        <value>
+            <String fx:value="Выставить рейтинг" />
+        </value>
+    </ChoiceBox>
+    <!--End mode row-->
+
+    <!--Start list row-->
+    <Label text="ID спиcка:"
+           GridPane.columnIndex="0" GridPane.rowIndex="4" />
+    <TextField
+            GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <!--End list row-->
+
+    <!--Start queryFormat row-->
+    <Label text="Тип запроса:"
+           GridPane.columnIndex="0" GridPane.rowIndex="5" />
+    <ChoiceBox fx:id="queryFormatChoiceBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="XML" />
+                <String fx:value="JSON" />
+                <String fx:value="HTML" />
+                <String fx:value="Смешанный" />
+            </FXCollections>
+        </items>
+        <value>
+            <String fx:value="XML" />
+        </value>
+    </ChoiceBox>
+    <!--End queryFormat row-->
 
     <HBox spacing="10" alignment="bottom_right"
-          GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <Button text="Sign In"
+          GridPane.columnIndex="1" GridPane.rowIndex="6">
+        <Button text="Запустить"
                 onAction="#handleSubmitButtonAction" />
     </HBox>
 
     <Text fx:id="actiontarget"
           GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-
-    <stylesheets>
-        <URL value="@main.css" />
-    </stylesheets>
-
 </GridPane>

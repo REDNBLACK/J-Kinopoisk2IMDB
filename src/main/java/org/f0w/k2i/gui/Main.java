@@ -13,10 +13,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        Parent root = loader.load();
+
+        Controller controller = loader.getController();
+        controller.setStage(stage);
 
         stage.setTitle("Kinopoisk2IMDB GUI");
-        stage.setScene(new Scene(root, 300, 275));
+        stage.setScene(new Scene(root, 500, 275));
         stage.show();
     }
 }

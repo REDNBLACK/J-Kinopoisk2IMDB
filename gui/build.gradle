@@ -1,0 +1,7 @@
+apply plugin: 'application'
+
+dependencies {
+    compile project(':core')
+}
+
+mainClassName = 'org.f0w.k2i.gui.Main'

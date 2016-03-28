@@ -5,3 +5,13 @@ dependencies {
 }
 
 mainClassName = 'org.f0w.k2i.gui.Main'
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    manifest {
+        attributes 'Implementation-Title': 'Kinopoisk2IMDB GUI', 'Implementation-Version': '0.7.0'
+        attributes 'Main-Class': mainClassName
+    }
+}

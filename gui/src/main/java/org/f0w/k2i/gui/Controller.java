@@ -191,6 +191,13 @@ public class Controller {
             Platform.runLater(() -> {
                 startBtn.setText("Запустить заново");
                 startBtn.setDisable(false);
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Обработка завершена");
+                alert.setHeaderText("Обработка фильмов была успешно завершена.");
+                alert.setContentText("Было обработано " + max.get() + " фильмов");
+
+                alert.showAndWait();
             });
         }
     }

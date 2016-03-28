@@ -20,7 +20,7 @@ public class Main extends Application {
         controller.init(stage);
 
         stage.setTitle("Kinopoisk2IMDB GUI");
-        stage.setScene(new Scene(root, 500, 275));
+        stage.setScene(new Scene(root, 500, 300));
         stage.show();
     }
 }

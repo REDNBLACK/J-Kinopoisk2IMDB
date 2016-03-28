@@ -5,9 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.persist.PersistService;
-import com.google.inject.persist.jpa.JpaPersistModule;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import org.f0w.k2i.core.command.MovieCommand;
 import org.f0w.k2i.core.event.ImportListInitializedEvent;
 import org.f0w.k2i.core.event.ImportListProgressAdvancedEvent;
@@ -19,6 +17,7 @@ import org.f0w.k2i.core.model.repository.KinopoiskFileRepository;
 import org.f0w.k2i.core.model.repository.MovieRepository;
 import org.f0w.k2i.core.providers.ConfigurationProvider;
 import org.f0w.k2i.core.providers.JpaRepositoryProvider;
+import org.f0w.k2i.core.providers.SystemProvider;
 import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
 
 import java.io.File;
@@ -38,11 +37,12 @@ public class Client {
     private final EventBus eventBus;
 
     public Client(File file, Config config) {
-        this.file = requireNonNull(file);
+        this.file = requireNonNull(file, "File is not set!");
 
         Injector injector = Guice.createInjector(
                 new ConfigurationProvider(config),
-                new JpaRepositoryProvider()
+                new JpaRepositoryProvider(),
+                new SystemProvider()
         );
         injector.getInstance(PersistService.class).start();
 

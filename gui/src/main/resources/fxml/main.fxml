@@ -5,9 +5,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.collections.*?>
-<?import javafx.collections.*?>
-<?import java.lang.String?>
 
 <GridPane fx:controller="org.f0w.k2i.gui.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10"
@@ -58,8 +55,10 @@
     <ChoiceBox fx:id="queryFormatChoiceBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
     <!--End queryFormat row-->
 
+    <ProgressBar fx:id="progressBar" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6" progress="0.0" />
+
     <HBox spacing="10" alignment="bottom_right"
-          GridPane.columnIndex="1" GridPane.rowIndex="6">
+          GridPane.columnIndex="1" GridPane.rowIndex="7">
         <Button text="Запустить" onAction="#handleStartAction"/>
     </HBox>
 </GridPane>

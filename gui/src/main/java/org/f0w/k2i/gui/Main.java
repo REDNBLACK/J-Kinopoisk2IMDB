@@ -1,6 +1,7 @@
 package org.f0w.k2i.gui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ public class Main extends Application {
 
         stage.setTitle("Kinopoisk2IMDB GUI");
         stage.setScene(new Scene(root, 500, 300));
+        stage.setOnCloseRequest(e -> Platform.exit());
         stage.show();
     }
 }

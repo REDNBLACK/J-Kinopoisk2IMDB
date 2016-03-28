@@ -3,6 +3,7 @@ package org.f0w.k2i.gui;
 import com.google.common.eventbus.Subscribe;
 import com.typesafe.config.ConfigException;
 import com.typesafe.config.ConfigFactory;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,8 +13,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.f0w.k2i.core.Client;
 import org.f0w.k2i.core.command.MovieCommand;
-import org.f0w.k2i.core.event.ImportListInitializedEvent;
-import org.f0w.k2i.core.event.ImportListProgressAdvancedEvent;
+import org.f0w.k2i.core.event.ImportFinishedEvent;
+import org.f0w.k2i.core.event.ImportStartedEvent;
+import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 
 import java.io.File;
@@ -51,6 +53,9 @@ public class Controller {
 
     @FXML
     private Button selectFileBtn;
+
+    @FXML
+    private Button startBtn;
 
     @FXML
     private javafx.scene.control.ProgressBar progressBar;
@@ -133,11 +138,15 @@ public class Controller {
             selectFileBtn.setText("Выбрать другой файл...");
             titleText.setText(file.getPath());
             kpFile = file;
+            progressBar.setProgress(0.0);
+            startBtn.setText("Запустить");
         }
     }
 
     @FXML
     protected void handleStartAction(ActionEvent event) {
+        progressBar.setProgress(0.0);
+
         try {
             Client client = new Client(kpFile, ConfigFactory.parseMap(configMap));
             client.registerListener(new ProgressListener());
@@ -160,16 +169,29 @@ public class Controller {
         final AtomicInteger current = new AtomicInteger(0);
 
         @Subscribe
-        public void handleProgressSetUpEvent(ImportListInitializedEvent event) {
+        public void handleStart(ImportStartedEvent event) {
             max.set(event.listSize);
+
+            Platform.runLater(() -> {
+                startBtn.setText("В процессе...");
+                startBtn.setDisable(true);
+            });
         }
 
         @Subscribe
-        public void handleProgressAdvanceEvent(ImportListProgressAdvancedEvent event) {
+        public void handleAdvance(ImportProgressAdvancedEvent event) {
             int maximum = max.get();
             int cur = current.incrementAndGet();
 
             progressBar.setProgress((cur * 100 / maximum) * 0.01);
+        }
+
+        @Subscribe
+        public void handleEnd(ImportFinishedEvent event) {
+            Platform.runLater(() -> {
+                startBtn.setText("Запустить заново");
+                startBtn.setDisable(false);
+            });
         }
     }
 

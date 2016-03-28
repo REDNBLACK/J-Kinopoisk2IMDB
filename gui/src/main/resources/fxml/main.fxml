@@ -59,6 +59,6 @@
 
     <HBox spacing="10" alignment="bottom_right"
           GridPane.columnIndex="1" GridPane.rowIndex="7">
-        <Button text="Запустить" onAction="#handleStartAction"/>
+        <Button fx:id="startBtn" text="Запустить" onAction="#handleStartAction"/>
     </HBox>
 </GridPane>

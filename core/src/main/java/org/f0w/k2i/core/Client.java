@@ -7,8 +7,9 @@ import com.google.inject.Provider;
 import com.google.inject.persist.PersistService;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.command.MovieCommand;
-import org.f0w.k2i.core.event.ImportListInitializedEvent;
-import org.f0w.k2i.core.event.ImportListProgressAdvancedEvent;
+import org.f0w.k2i.core.event.ImportFinishedEvent;
+import org.f0w.k2i.core.event.ImportStartedEvent;
+import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -70,19 +71,21 @@ public class Client {
             throw new KinopoiskToIMDBException(e);
         }
 
-        KinopoiskFile kinopoiskFile = Optional
-                .ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
-                .orElseGet(() -> importNewFile(fileHashCode));
+        KinopoiskFile kinopoiskFile  = Optional
+                    .ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
+                    .orElseGet(() -> importNewFile(fileHashCode));
 
         List<ImportProgress> importProgress = importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile);
 
-        eventBus.post(new ImportListInitializedEvent(importProgress.size()));
+        eventBus.post(new ImportStartedEvent(importProgress.size()));
 
         importProgress.forEach(ip -> {
             movieCommand.execute(ip);
 
-            eventBus.post(new ImportListProgressAdvancedEvent());
+            eventBus.post(new ImportProgressAdvancedEvent());
         });
+
+        eventBus.post(new ImportFinishedEvent());
     }
 
     private KinopoiskFile importNewFile(String fileHashCode) {

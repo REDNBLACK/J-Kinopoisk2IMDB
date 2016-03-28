@@ -15,7 +15,9 @@ public class KinopoiskFileRepositoryImpl implements KinopoiskFileRepository {
     @Override
     @Transactional
     public KinopoiskFile save(KinopoiskFile file) {
+        em.getTransaction().begin();
         em.persist(file);
+        em.getTransaction().commit();
 
         return file;
     }

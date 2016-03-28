@@ -18,14 +18,18 @@ public class ImportProgressRepositoryImpl implements ImportProgressRepository {
     @Override
     @Transactional
     public ImportProgress save(ImportProgress importProgress) {
+        em.getTransaction().begin();
         em.persist(importProgress);
+        em.getTransaction().commit();
 
         return importProgress;
     }
 
     @Override
     public void saveAll(KinopoiskFile kinopoiskFile, List<Movie> movies) {
-        movies.forEach(m -> save(new ImportProgress(kinopoiskFile, m, false, false)));
+        em.getTransaction().begin();
+        movies.forEach(m -> em.persist(new ImportProgress(kinopoiskFile, m, false, false)));
+        em.getTransaction().commit();
     }
 
     @Override

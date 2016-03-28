@@ -6,8 +6,17 @@
   "query_format": "XML",
   "mode": "COMBINED",
   "comparators": [
-    "org.f0w.k2i.core.comparator.year.DeviationYearComparator",
-    "org.f0w.k2i.core.comparator.title.SmartTitleComparator"
+      "org.f0w.k2i.core.comparator.year.DeviationYearComparator",
+      "org.f0w.k2i.core.comparator.title.SmartTitleComparator"
   ],
-  "list": ""
+  "list": "",
+  "db": {
+      "driver": "org.h2.Driver",
+      "url": "jdbc:h2:~/K2IDB/db/K2IDB",
+      "user": "root",
+      "password": "root",
+      "additional": {
+        "hibernate.hbm2ddl.auto": "update"
+      }
+  }
 }

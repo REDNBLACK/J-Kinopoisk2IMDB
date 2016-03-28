@@ -6,14 +6,5 @@
         <class>org.f0w.k2i.core.model.entity.Movie</class>
         <class>org.f0w.k2i.core.model.entity.KinopoiskFile</class>
         <class>org.f0w.k2i.core.model.entity.ImportProgress</class>
-
-        <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/K2IDB/db/K2IDB" />
-            <property name="javax.persistence.jdbc.user" value="root" />
-            <property name="javax.persistence.jdbc.password" value="root" />
-
-            <property name="hibernate.hbm2ddl.auto" value="update" />
-        </properties>
     </persistence-unit>
 </persistence>

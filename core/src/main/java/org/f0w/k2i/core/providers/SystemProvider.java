@@ -4,11 +4,11 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.typesafe.config.Config;
-import org.f0w.k2i.core.command.MovieCommand;
 import org.f0w.k2i.core.command.CompositeCommandFactory;
+import org.f0w.k2i.core.command.MovieCommand;
 import org.f0w.k2i.core.comparator.MovieComparator;
-import org.f0w.k2i.core.exchange.finder.*;
-import org.f0w.k2i.core.model.entity.Movie;
+import org.f0w.k2i.core.exchange.finder.MovieFinder;
+import org.f0w.k2i.core.exchange.finder.MovieFinderFactory;
 import org.f0w.k2i.core.util.ReflectionUtils;
 
 import java.util.List;

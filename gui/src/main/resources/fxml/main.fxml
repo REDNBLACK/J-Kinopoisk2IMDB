@@ -20,10 +20,14 @@
     </stylesheets>
     <!--Styles-->
 
+    <Text fx:id="titleText"
+          GridPane.columnIndex="0" GridPane.rowIndex="0"
+          GridPane.columnSpan="2"/>
+
     <!--Start file row-->
     <Label text="Файл с кинопоиска:"
            GridPane.columnIndex="0" GridPane.rowIndex="1" />
-    <Button text="Выберите файл..."
+    <Button fx:id="selectFileBtn" text="Выберите файл..."
             GridPane.columnIndex="1" GridPane.rowIndex="1"
             onAction="#handleFileChoseAction" />
     <!--End file row-->
@@ -31,58 +35,31 @@
     <!--Start auth row-->
     <Label text="Строка авторизации:"
            GridPane.columnIndex="0" GridPane.rowIndex="2" />
-    <TextField
+    <TextField fx:id="authId"
             GridPane.columnIndex="1" GridPane.rowIndex="2" />
     <!--End auth row-->
 
     <!--Start mode row-->
     <Label text="Режим работы:"
            GridPane.columnIndex="0" GridPane.rowIndex="3" />
-    <ChoiceBox fx:id="modeChoiceBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Выставить рейтинг" />
-                <String fx:value="Добавить в список" />
-                <String fx:value="Добавить в список и выставить рейтинг" />
-            </FXCollections>
-        </items>
-        <value>
-            <String fx:value="Выставить рейтинг" />
-        </value>
-    </ChoiceBox>
+    <ChoiceBox fx:id="modeChoiceBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     <!--End mode row-->
 
     <!--Start list row-->
     <Label text="ID спиcка:"
            GridPane.columnIndex="0" GridPane.rowIndex="4" />
-    <TextField
+    <TextField fx:id="listId"
             GridPane.columnIndex="1" GridPane.rowIndex="4" />
     <!--End list row-->
 
     <!--Start queryFormat row-->
     <Label text="Тип запроса:"
            GridPane.columnIndex="0" GridPane.rowIndex="5" />
-    <ChoiceBox fx:id="queryFormatChoiceBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="XML" />
-                <String fx:value="JSON" />
-                <String fx:value="HTML" />
-                <String fx:value="Смешанный" />
-            </FXCollections>
-        </items>
-        <value>
-            <String fx:value="XML" />
-        </value>
-    </ChoiceBox>
+    <ChoiceBox fx:id="queryFormatChoiceBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
     <!--End queryFormat row-->
 
     <HBox spacing="10" alignment="bottom_right"
           GridPane.columnIndex="1" GridPane.rowIndex="6">
-        <Button text="Запустить"
-                onAction="#handleSubmitButtonAction" />
+        <Button text="Запустить" onAction="#handleStartAction"/>
     </HBox>
-
-    <Text fx:id="actiontarget"
-          GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
 </GridPane>

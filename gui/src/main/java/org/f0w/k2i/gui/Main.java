@@ -17,7 +17,7 @@ public class Main extends Application {
         Parent root = loader.load();
 
         Controller controller = loader.getController();
-        controller.setStage(stage);
+        controller.init(stage);
 
         stage.setTitle("Kinopoisk2IMDB GUI");
         stage.setScene(new Scene(root, 500, 275));

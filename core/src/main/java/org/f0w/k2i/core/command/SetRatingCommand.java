@@ -6,10 +6,11 @@ import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
 
-class SetRatingCommand extends AbstractMovieCommand {
+public class SetRatingCommand extends AbstractMovieCommand {
     private final MovieRatingChanger changer;
 
     @Inject
@@ -18,25 +19,20 @@ class SetRatingCommand extends AbstractMovieCommand {
     }
 
     @Override
-    public void execute(ImportProgress importProgress) {
+    public Optional<MovieError> execute(ImportProgress importProgress) {
+        Movie movie = importProgress.getMovie();
+
+        LOG.info("Setting rating of movie: {}", movie);
+
         try {
-            Movie movie = importProgress.getMovie();
-
             if (isEmptyIMDBId(movie.getImdbId())) {
-                LOG.info("Can't change movie rating, IMDB ID is not set");
-                return;
+                throw new IOException("Can't change movie rating, IMDB ID is not set");
             }
-
-            if (isEmptyRating(movie.getRating())) {
-                LOG.info("Can't change movie rating, rating is empty");
-                return;
-            }
-
-            LOG.info("Setting rating of movie: {}", movie);
 
             if (importProgress.isRated()) {
                 LOG.info("Movie rating is already set!");
-                return;
+
+                return Optional.empty();
             }
 
             changer.sendRequest(movie);
@@ -44,8 +40,12 @@ class SetRatingCommand extends AbstractMovieCommand {
             importProgress.setRated(true);
 
             LOG.info("Movie rating was successfully set");
+
+            return Optional.empty();
         } catch (IOException e) {
             LOG.info("Error setting rating of movie: {}", e);
+
+            return Optional.of(new MovieError(importProgress.getMovie(), e.getMessage()));
         }
     }
 }

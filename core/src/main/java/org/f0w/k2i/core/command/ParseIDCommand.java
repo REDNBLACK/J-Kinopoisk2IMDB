@@ -12,7 +12,7 @@ import java.util.*;
 
 import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
 
-class ParseIDCommand extends AbstractMovieCommand {
+public class ParseIDCommand extends AbstractMovieCommand {
     private final Provider<MovieFinder> movieFinderProvider;
 
     private final MovieComparator movieComparator;
@@ -24,15 +24,16 @@ class ParseIDCommand extends AbstractMovieCommand {
     }
 
     @Override
-    public void execute(ImportProgress importProgress) {
+    public Optional<MovieError> execute(ImportProgress importProgress) {
         Movie movie = importProgress.getMovie();
+
+        LOG.info("Preparing movie {}", movie);
 
         if (!isEmptyIMDBId(movie.getImdbId())) {
             LOG.info("Movie is already prepared {}", movie);
-            return;
-        }
 
-        LOG.info("Preparing movie {}", movie);
+            return Optional.empty();
+        }
 
         try {
             MovieFinder movieFinder = movieFinderProvider.get();
@@ -42,8 +43,7 @@ class ParseIDCommand extends AbstractMovieCommand {
             Optional<Movie> matchingMovie = findMatchingMovie(movie, movieFinder.getProcessedResponse());
 
             if (!matchingMovie.isPresent()) {
-                LOG.info("Matching movie not found");
-                return;
+                throw new IOException("Matching movie not found");
             }
 
             matchingMovie.ifPresent(m -> {
@@ -51,10 +51,14 @@ class ParseIDCommand extends AbstractMovieCommand {
 
                 importProgress.setMovie(movie);
 
-                LOG.info("Movie IMDB id found: {}", m.getImdbId());
+                LOG.info("Movie IMDB id successfully found: {}", m.getImdbId());
             });
+
+            return Optional.empty();
         } catch (IOException e) {
             LOG.info("Can't prepare movie: {}", e);
+
+            return Optional.of(new MovieError(importProgress.getMovie(), e.getMessage()));
         }
     }
 

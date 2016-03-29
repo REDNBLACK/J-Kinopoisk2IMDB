@@ -1,7 +1,6 @@
 package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
 import com.google.common.net.UrlEscapers;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;

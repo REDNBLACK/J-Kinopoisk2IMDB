@@ -4,7 +4,9 @@ import com.google.inject.Inject;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.repository.ImportProgressRepository;
 
-class SaveChangesCommand extends AbstractMovieCommand {
+import java.util.Optional;
+
+public class SaveChangesCommand extends AbstractMovieCommand {
     private final ImportProgressRepository importProgressRepository;
 
     @Inject
@@ -13,9 +15,11 @@ class SaveChangesCommand extends AbstractMovieCommand {
     }
 
     @Override
-    public void execute(ImportProgress importProgress) {
+    public Optional<MovieError> execute(ImportProgress importProgress) {
         importProgressRepository.save(importProgress);
 
         LOG.info("Changes were successfully saved to storage");
+
+        return Optional.empty();
     }
 }

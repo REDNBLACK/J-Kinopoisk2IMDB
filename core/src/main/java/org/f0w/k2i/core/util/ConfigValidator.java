@@ -38,7 +38,7 @@ public class ConfigValidator {
         final String message = "LogLevel setting is not valid!";
 
         try {
-
+            
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(message);
         }

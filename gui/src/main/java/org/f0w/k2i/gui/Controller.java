@@ -165,8 +165,9 @@ public class Controller {
     }
 
     private class ProgressListener {
-        final AtomicInteger max = new AtomicInteger(0);
-        final AtomicInteger current = new AtomicInteger(0);
+        private final AtomicInteger max = new AtomicInteger(0);
+        private final AtomicInteger current = new AtomicInteger(0);
+        private final AtomicInteger successfulCount = new AtomicInteger(0);
 
         @Subscribe
         public void handleStart(ImportStartedEvent event) {
@@ -182,6 +183,9 @@ public class Controller {
         public void handleAdvance(ImportProgressAdvancedEvent event) {
             int maximum = max.get();
             int cur = current.incrementAndGet();
+            if (event.successful) {
+                successfulCount.incrementAndGet();
+            }
 
             progressBar.setProgress((cur * 100 / maximum) * 0.01);
         }
@@ -192,10 +196,21 @@ public class Controller {
                 startBtn.setText("Запустить заново");
                 startBtn.setDisable(false);
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Обработка завершена");
-                alert.setHeaderText("Обработка фильмов была успешно завершена.");
-                alert.setContentText("Было обработано " + max.get() + " фильмов");
+                Alert alert = new Alert(Alert.AlertType.NONE);
+
+                if (event.errors.isEmpty()) {
+                    alert.setAlertType(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Обработка успешно завершена");
+                    alert.setHeaderText("Обработка фильмов была успешно завершена.");
+                    alert.setContentText("Были обработаны все " + max.get() + " фильмов, без ошибок");
+                } else {
+                    alert.setAlertType(Alert.AlertType.WARNING);
+                    alert.setTitle("Обработка завершена c ошибками");
+                    alert.setHeaderText("Обработка фильмов была завершена с ошибками.");
+
+                    final TableView<String> table = new TableView<>();
+                    table.getColumns().addAll(new TableColumn<>("Фильмы"), new TableColumn<>("Ошибки"));
+                }
 
                 alert.showAndWait();
             });

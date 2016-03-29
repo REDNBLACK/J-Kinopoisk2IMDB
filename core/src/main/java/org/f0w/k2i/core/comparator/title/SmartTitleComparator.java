@@ -89,7 +89,9 @@ public class SmartTitleComparator extends AbstractMovieComparator {
             for (int i = 0; i < words.length; i++) {
                 try {
                     words[i] = NumericToWord.convert(Integer.parseInt(words[i]));
-                } catch (NumberFormatException e) {}
+                } catch (NumberFormatException ignored) {
+                    // Ignore
+                }
             }
 
             return String.join(" ", words);

@@ -208,8 +208,13 @@ public class Controller {
                     alert.setTitle("Обработка завершена c ошибками");
                     alert.setHeaderText("Обработка фильмов была завершена с ошибками.");
 
-                    final TableView<String> table = new TableView<>();
-                    table.getColumns().addAll(new TableColumn<>("Фильмы"), new TableColumn<>("Ошибки"));
+                    alert.setContentText(
+                            "Было обработаны " + successfulCount.get() + " из " + max.get() + " фильмов, без ошибок" + "\r\n"
+                            + event.errors.toString()
+                    );
+
+//                    final TableView<String> table = new TableView<>();
+//                    table.getColumns().addAll(new TableColumn<>("Фильмы"), new TableColumn<>("Ошибки"));
                 }
 
                 alert.showAndWait();

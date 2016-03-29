@@ -1,30 +1,31 @@
-package org.f0w.k2i.core.model.repository;
+package org.f0w.k2i.core.model.repository.jpa;
 
+import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 
 import com.google.inject.Inject;
+import org.f0w.k2i.core.model.repository.KinopoiskFileRepository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-public class KinopoiskFileRepositoryImpl implements KinopoiskFileRepository {
+public class JpaKinopoiskFileRepositoryImpl implements KinopoiskFileRepository {
     @Inject
-    private EntityManager em;
+    private Provider<EntityManager> emProvider;
 
     @Override
     @Transactional
     public KinopoiskFile save(KinopoiskFile file) {
-        em.getTransaction().begin();
-        em.persist(file);
-        em.getTransaction().commit();
+        emProvider.get().persist(file);
 
         return file;
     }
 
     @Override
     public KinopoiskFile findByHashCode(final String hashCode) {
-        TypedQuery<KinopoiskFile> query = em.createQuery(
+        TypedQuery<KinopoiskFile> query = emProvider.get().createQuery(
                 "FROM KinopoiskFile kf WHERE kf.hashCode = :hashCode",
                 KinopoiskFile.class
         );

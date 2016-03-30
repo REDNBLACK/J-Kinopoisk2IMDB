@@ -8,22 +8,30 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.f0w.k2i.core.Client;
 import org.f0w.k2i.core.command.MovieCommand;
+import org.f0w.k2i.core.command.MovieError;
 import org.f0w.k2i.core.event.ImportFinishedEvent;
 import org.f0w.k2i.core.event.ImportStartedEvent;
 import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
+import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.command.MovieCommand.Type.*;
 import static org.f0w.k2i.core.exchange.finder.MovieFinder.Type.*;
@@ -209,12 +217,49 @@ public class Controller {
                     alert.setHeaderText("Обработка фильмов была завершена с ошибками.");
 
                     alert.setContentText(
-                            "Было обработаны " + successfulCount.get() + " из " + max.get() + " фильмов, без ошибок" + "\r\n"
-                            + event.errors.toString()
+                            "Было обработаны " + successfulCount.get() + " из " + max.get() + " фильмов, без ошибок"
                     );
 
-//                    final TableView<String> table = new TableView<>();
-//                    table.getColumns().addAll(new TableColumn<>("Фильмы"), new TableColumn<>("Ошибки"));
+                    // Create expandable Exception.
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+
+                    Map<Movie, List<String>> errors = event.errors.stream()
+                            .collect(Collectors.groupingBy(
+                                    MovieError::getMovie,
+                                    Collectors.mapping(MovieError::getError, Collectors.toList())
+                            ));
+
+                    errors.entrySet().forEach(e -> {
+                        Movie movie = e.getKey();
+
+                        pw.println(movie.getTitle() + "(" + movie.getYear() + "):");
+
+                        e.getValue().forEach(pw::println);
+
+                        pw.println();
+                        pw.println();
+                    });
+
+                    String exceptionText = sw.toString();
+
+                    Label label = new Label("Произошли ошибки с " + (max.get() - successfulCount.get()) + " фильмами:");
+
+                    TextArea textArea = new TextArea(exceptionText);
+                    textArea.setEditable(false);
+                    textArea.setWrapText(true);
+
+                    textArea.setMaxWidth(Double.MAX_VALUE);
+                    textArea.setMaxHeight(Double.MAX_VALUE);
+                    GridPane.setVgrow(textArea, Priority.ALWAYS);
+                    GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+                    GridPane expContent = new GridPane();
+                    expContent.setMaxWidth(Double.MAX_VALUE);
+                    expContent.add(label, 0, 0);
+                    expContent.add(textArea, 0, 1);
+
+                    alert.getDialogPane().setExpandableContent(expContent);
                 }
 
                 alert.showAndWait();

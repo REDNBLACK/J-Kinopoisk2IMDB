@@ -29,6 +29,12 @@ public class SetRatingCommand extends AbstractMovieCommand {
                 throw new IOException("Can't change movie rating, IMDB ID is not set");
             }
 
+            if (isEmptyRating(movie.getRating())) {
+                LOG.info("Movie doesn't have rating!");
+
+                return Optional.empty();
+            }
+
             if (importProgress.isRated()) {
                 LOG.info("Movie rating is already set!");
 

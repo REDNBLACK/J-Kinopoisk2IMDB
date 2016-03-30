@@ -56,7 +56,7 @@ class HTMLMovieFinder extends AbstractMovieFinder {
         if (elementText.contains("(TV Episode)")) {
             String title = elementText;
 
-            Matcher m = Pattern.compile("^.+(?<=\\(TV Episode\\) - )(.+)(?=\\(\\[0-9]+\\) \\(TV Series\\)).+$")
+            Matcher m = Pattern.compile("\\(TV Episode\\)\\s*-(.+?)(?=\\(.*\\)\\s*\\(TV Series\\))")
                     .matcher(elementText);
             while (m.find()) {
                  title = m.group(1);

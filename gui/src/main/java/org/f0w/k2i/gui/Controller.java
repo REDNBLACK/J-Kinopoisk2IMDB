@@ -1,8 +1,10 @@
 package org.f0w.k2i.gui;
 
 import com.google.common.eventbus.Subscribe;
+import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException;
 import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigRenderOptions;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -27,13 +29,17 @@ import org.f0w.k2i.core.event.ImportStartedEvent;
 import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.model.entity.Movie;
+import org.f0w.k2i.core.util.ReflectionUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,9 +52,16 @@ public class Controller {
     private Stage stage;
     private final FileChooser fileChooser = new FileChooser();
     private File kpFile;
-    private final Map<String, Object> configMap = new HashMap<>();
 
-    private static final String ERROR_CLASS = "error";
+    private final File configFile = new File(
+            System.getProperty("user.home") + File.separator + "K2IDB" + File.separator + "config.json"
+    );
+
+    private final Config config = ConfigFactory.parseFile(configFile)
+            .withFallback(ConfigFactory.defaultApplication());
+
+    private final Map<String, Object> configMap = config.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().unwrapped()));
 
     @FXML
     private Text titleText;
@@ -82,7 +95,7 @@ public class Controller {
     }
 
     @FXML
-    public void initialize() {
+    void initialize() {
         modeChoiceBox.setMaxWidth(300);
         modeChoiceBox.setItems(FXCollections.observableArrayList(
                 new Choice<>(SET_RATING, "Выставить рейтинг"),
@@ -94,7 +107,6 @@ public class Controller {
                 listId.setEditable(true);
                 listId.setDisable(false);
             } else {
-                listId.getStyleClass().remove(ERROR_CLASS);
                 listId.clear();
                 listId.setDisable(true);
                 listId.setEditable(false);
@@ -102,45 +114,33 @@ public class Controller {
 
             configMap.put("mode", newValue.value.toString());
         });
-        modeChoiceBox.getSelectionModel().selectFirst();
+        modeChoiceBox.getSelectionModel().select(new Choice<>(MovieCommand.Type.valueOf(config.getString("mode"))));
 
         queryFormatChoiceBox.setMaxWidth(300);
         queryFormatChoiceBox.setItems(FXCollections.observableArrayList(
-                new Choice<>(XML, "XML"),
-                new Choice<>(JSON, "JSON"),
-                new Choice<>(HTML, "HTML"),
-                new Choice<>(MIXED, "Смешанный")
+            new Choice<>(XML, "XML"),
+            new Choice<>(JSON, "JSON"),
+            new Choice<>(HTML, "HTML"),
+            new Choice<>(MIXED, "Смешанный")
         ));
         queryFormatChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             configMap.put("query_format", newValue.value.toString());
         });
-        queryFormatChoiceBox.getSelectionModel().selectFirst();
+        queryFormatChoiceBox.getSelectionModel().select(
+            new Choice<>(MovieFinder.Type.valueOf(config.getString("query_format")))
+        );
 
         listId.setMaxWidth(300);
         listId.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            if (!newValue) { //when focus lost
-                if (!listId.getText().startsWith("ls") || listId.getText().length() < 3) {
-                    listId.getStyleClass().add(ERROR_CLASS);
-                } else {
-                    listId.getStyleClass().remove(ERROR_CLASS);
-                }
-            }
-
             configMap.put("list", listId.getText());
         });
+        listId.setText(config.getString("list"));
 
         authId.setMaxWidth(300);
         authId.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) { //when focus lost
-                if (authId.getText().length() < 10) {
-                    authId.getStyleClass().add(ERROR_CLASS);
-                } else {
-                    authId.getStyleClass().remove(ERROR_CLASS);
-                }
-            }
-
             configMap.put("auth", authId.getText());
         });
+        authId.setText(config.getString("auth"));
 
         progressBar.setMaxWidth(Double.MAX_VALUE);
 
@@ -154,18 +154,31 @@ public class Controller {
                 new Choice<>(StartsWithTitleComparator.class, "Одно название начинается с другого"),
                 new Choice<>(EndsWithTitleComparator.class, "Одно название оканчивается другим")
         ));
-        comparatorsBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<Choice<Class<? extends MovieComparator>, String>>() {
-            @Override
-            public void onChanged(Change<? extends Choice<Class<? extends MovieComparator>, String>> c) {
-                List<String> comparators = c.getList().stream()
-                        .map(choice -> choice.value.getName())
-                        .collect(Collectors.toList());
+        comparatorsBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<Choice<Class<? extends MovieComparator>, String>>) c -> {
+            List<String> comparators = c.getList().stream()
+                    .map(choice -> choice.value.getName())
+                    .collect(Collectors.toList());
 
-                configMap.put("comparators", comparators);
-            }
+            configMap.put("comparators", comparators);
         });
-        comparatorsBox.getCheckModel().check(0);
-        comparatorsBox.getCheckModel().check(2);
+        config.getStringList("comparators").forEach(c -> comparatorsBox.getCheckModel().check(
+                new Choice<>(ReflectionUtils.stringToClass(c, MovieComparator.class))
+        ));
+    }
+
+    void destroy() {
+        try {
+            Files.write(
+                    configFile.toPath(),
+                    ConfigFactory.parseMap(configMap)
+                            .withFallback(config)
+                            .root()
+                            .render(ConfigRenderOptions.concise())
+                            .getBytes()
+            );
+        } catch (IOException ignore) {
+            // Do nothing
+        }
     }
 
     @FXML
@@ -192,7 +205,7 @@ public class Controller {
         progressBar.setProgress(0.0);
 
         try {
-            Client client = new Client(kpFile, ConfigFactory.parseMap(configMap));
+            Client client = new Client(kpFile, config);
             client.registerListener(new ProgressListener());
 
             ExecutorService service = Executors.newSingleThreadExecutor();
@@ -307,7 +320,12 @@ public class Controller {
         final K value;
         final V label;
 
-        public Choice(K value, V label) {
+        Choice(K value) {
+            this.value = value;
+            this.label = null;
+        }
+
+        Choice(K value, V label) {
             this.value = value;
             this.label = label;
         }
@@ -319,23 +337,15 @@ public class Controller {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            Choice choice = (Choice) o;
-            return label != null && label.equals(choice.label) || value != null && value.equals(choice.value);
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Choice<?, ?> choice = (Choice<?, ?>) o;
+            return Objects.equals(value, choice.value);
         }
 
         @Override
         public int hashCode() {
-            int result = value != null ? value.hashCode() : 0;
-            result = 31 * result + (label != null ? label.hashCode() : 0);
-            return result;
+            return Objects.hash(value);
         }
     }
 }

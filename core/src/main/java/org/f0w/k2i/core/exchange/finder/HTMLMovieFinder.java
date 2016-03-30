@@ -8,6 +8,7 @@ import org.f0w.k2i.core.model.entity.Movie;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.util.*;
 import java.util.regex.*;
@@ -42,11 +43,29 @@ class HTMLMovieFinder extends AbstractMovieFinder {
         return document.select("table.findList tr td.result_text")
                 .stream()
                 .map(e -> new Movie(
-                        parseTitle(e.getElementsByTag("a").first().text()),
+                        parseTitle(prepareTitle(e)),
                         parseYear(prepareYear(e.text())),
                         parseIMDBId(e.getElementsByTag("a").first().attr("href").split("/")[2])
                 ))
                 .collect(Collectors.toList());
+    }
+
+    private static String prepareTitle(Element element) {
+        String elementText = element.text();
+
+        if (elementText.contains("(TV Episode)")) {
+            String title = elementText;
+
+            Matcher m = Pattern.compile("^.+(?<=\\(TV Episode\\) - )(.+)(?=\\(\\[0-9]+\\) \\(TV Series\\)).+$")
+                    .matcher(elementText);
+            while (m.find()) {
+                 title = m.group(1);
+            }
+
+            return title;
+        }
+
+        return element.getElementsByTag("a").first().text();
     }
 
     private static String prepareYear(String year) {

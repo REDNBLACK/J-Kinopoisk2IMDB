@@ -2,6 +2,8 @@ apply plugin: 'application'
 
 dependencies {
     compile project(':core')
+
+    compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.10'
 }
 
 mainClassName = 'org.f0w.k2i.gui.Main'

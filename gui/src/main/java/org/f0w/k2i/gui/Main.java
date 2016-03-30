@@ -21,7 +21,8 @@ public class Main extends Application {
         controller.init(stage);
 
         stage.setTitle("Kinopoisk2IMDB GUI");
-        stage.setScene(new Scene(root, 500, 300));
+        stage.setScene(new Scene(root, 600, 350));
+        stage.setResizable(false);
         stage.setOnCloseRequest(e -> Platform.exit());
         stage.show();
     }

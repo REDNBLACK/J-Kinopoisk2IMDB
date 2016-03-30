@@ -5,6 +5,7 @@ import com.typesafe.config.ConfigException;
 import com.typesafe.config.ConfigFactory;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,9 +14,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.controlsfx.control.CheckComboBox;
 import org.f0w.k2i.core.Client;
 import org.f0w.k2i.core.command.MovieCommand;
 import org.f0w.k2i.core.command.MovieError;
+import org.f0w.k2i.core.comparator.MovieComparator;
+import org.f0w.k2i.core.comparator.title.*;
+import org.f0w.k2i.core.comparator.year.DeviationYearComparator;
+import org.f0w.k2i.core.comparator.year.EqualsYearComparator;
 import org.f0w.k2i.core.event.ImportFinishedEvent;
 import org.f0w.k2i.core.event.ImportStartedEvent;
 import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
@@ -68,12 +74,16 @@ public class Controller {
     @FXML
     private javafx.scene.control.ProgressBar progressBar;
 
+    @FXML
+    private CheckComboBox<Choice<Class<? extends MovieComparator>, String>> comparatorsBox;
+
     void init(Stage stage) {
         this.stage = stage;
     }
 
     @FXML
     public void initialize() {
+        modeChoiceBox.setMaxWidth(300);
         modeChoiceBox.setItems(FXCollections.observableArrayList(
                 new Choice<>(SET_RATING, "Выставить рейтинг"),
                 new Choice<>(ADD_TO_WATCHLIST, "Добавить в список"),
@@ -94,6 +104,7 @@ public class Controller {
         });
         modeChoiceBox.getSelectionModel().selectFirst();
 
+        queryFormatChoiceBox.setMaxWidth(300);
         queryFormatChoiceBox.setItems(FXCollections.observableArrayList(
                 new Choice<>(XML, "XML"),
                 new Choice<>(JSON, "JSON"),
@@ -105,6 +116,7 @@ public class Controller {
         });
         queryFormatChoiceBox.getSelectionModel().selectFirst();
 
+        listId.setMaxWidth(300);
         listId.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 if (!listId.getText().startsWith("ls") || listId.getText().length() < 3) {
@@ -117,6 +129,7 @@ public class Controller {
             configMap.put("list", listId.getText());
         });
 
+        authId.setMaxWidth(300);
         authId.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 if (authId.getText().length() < 10) {
@@ -130,6 +143,29 @@ public class Controller {
         });
 
         progressBar.setMaxWidth(Double.MAX_VALUE);
+
+        comparatorsBox.setMaxWidth(300);
+        comparatorsBox.getItems().addAll(FXCollections.observableArrayList(
+                new Choice<>(DeviationYearComparator.class, "Год с отклонением"),
+                new Choice<>(EqualsYearComparator.class, "Год с полным совпадением"),
+                new Choice<>(SmartTitleComparator.class, "Интеллектуальное сравнение названий"),
+                new Choice<>(EqualsTitleComparator.class, "Полное совпадение названий"),
+                new Choice<>(ContainsTitleComparator.class, "Одно название содержит другое"),
+                new Choice<>(StartsWithTitleComparator.class, "Одно название начинается с другого"),
+                new Choice<>(EndsWithTitleComparator.class, "Одно название оканчивается другим")
+        ));
+        comparatorsBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<Choice<Class<? extends MovieComparator>, String>>() {
+            @Override
+            public void onChanged(Change<? extends Choice<Class<? extends MovieComparator>, String>> c) {
+                List<String> comparators = c.getList().stream()
+                        .map(choice -> choice.value.getName())
+                        .collect(Collectors.toList());
+
+                configMap.put("comparators", comparators);
+            }
+        });
+        comparatorsBox.getCheckModel().check(0);
+        comparatorsBox.getCheckModel().check(2);
     }
 
     @FXML
@@ -268,8 +304,8 @@ public class Controller {
     }
 
     private class Choice<K, V> {
-        private final K value;
-        private final V label;
+        final K value;
+        final V label;
 
         public Choice(K value, V label) {
             this.value = value;

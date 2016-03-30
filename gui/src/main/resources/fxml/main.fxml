@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import org.controlsfx.control.CheckComboBox?>
 <GridPane fx:controller="org.f0w.k2i.gui.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10"
           styleClass="root">
@@ -55,10 +56,16 @@
     <ChoiceBox fx:id="queryFormatChoiceBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
     <!--End queryFormat row-->
 
-    <ProgressBar fx:id="progressBar" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6" progress="0.0" />
+    <!--Start comparators row-->
+    <Label text="Сравнение:"
+           GridPane.columnIndex="0" GridPane.rowIndex="6" />
+    <CheckComboBox fx:id="comparatorsBox" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+    <!--End comparators row-->
+
+    <ProgressBar fx:id="progressBar" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="7" progress="0.0" />
 
     <HBox spacing="10" alignment="bottom_right"
-          GridPane.columnIndex="1" GridPane.rowIndex="7">
+          GridPane.columnIndex="1" GridPane.rowIndex="8">
         <Button fx:id="startBtn" text="Запустить" onAction="#handleStartAction"/>
     </HBox>
 </GridPane>

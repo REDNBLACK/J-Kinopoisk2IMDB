@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 import static org.f0w.k2i.core.util.FileUtils.*;
 
-public class Client {
+public final class Client {
     private final File file;
     private final MovieHandler.Type handlerType;
     private final MovieHandler handlerChain;
@@ -62,7 +62,12 @@ public class Client {
         registerListeners(Collections.singletonList(listener));
     }
 
+
     public void run() {
+        run(false);
+    }
+
+    public void run(boolean cleanRun) {
         String fileHashCode;
 
         try {
@@ -71,11 +76,8 @@ public class Client {
             throw new KinopoiskToIMDBException(e);
         }
 
-        KinopoiskFile kinopoiskFile  = Optional
-                    .ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
-                    .orElseGet(() -> importNewFile(fileHashCode));
-
-        List<ImportProgress> importProgress = importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile);
+        List<ImportProgress> importProgress = new MovieService(fileHashCode, cleanRun)
+                .getNotHandledMovies(handlerType);
 
         eventBus.post(new ImportStartedEvent(importProgress.size()));
 
@@ -83,32 +85,71 @@ public class Client {
 
         importProgress.forEach(ip -> {
             List<MovieHandler.Error> currentErrors = new ArrayList<>();
+
             handlerChain.handle(ip, currentErrors, handlerType);
 
-            allErrors.addAll(currentErrors);
-
             eventBus.post(new ImportProgressAdvancedEvent(currentErrors.isEmpty()));
+
+            allErrors.addAll(currentErrors);
         });
 
         eventBus.post(new ImportFinishedEvent(allErrors));
     }
 
-    private KinopoiskFile importNewFile(String fileHashCode) {
-        KinopoiskFile newKinopoiskFile = kinopoiskFileRepository.save(new KinopoiskFile(fileHashCode));
-        MovieRepository movieRepository = movieRepositoryProvider.get();
+    private final class MovieService {
+        private final KinopoiskFile kinopoiskFile;
 
-        List<Movie> movies;
+        MovieService(String fileHashCode, boolean cleanRun) {
+            if (cleanRun) {
+                clearExistingFile(fileHashCode);
+            }
 
-        try {
-            movies = parseMovies(file).stream()
-                    .map(movieRepository::findOrCreate)
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new KinopoiskToIMDBException(e);
+            kinopoiskFile  = Optional
+                    .ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
+                    .orElseGet(() -> importNewFile(fileHashCode));
         }
 
-        importProgressRepository.saveAll(newKinopoiskFile, movies);
+        List<ImportProgress> getNotHandledMovies(MovieHandler.Type type) {
+            switch (type) {
+                case SET_RATING:
+                    return importProgressRepository.findNotRatedByFile(kinopoiskFile);
+                case ADD_TO_WATCHLIST:
+                    return importProgressRepository.findNotImportedByFile(kinopoiskFile);
+                case COMBINED:
+                    return importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile);
+            }
 
-        return newKinopoiskFile;
+            return Collections.emptyList();
+        }
+
+        private void clearExistingFile(String fileHashCode) {
+            KinopoiskFile existingFile = kinopoiskFileRepository.findByHashCode(fileHashCode);
+
+            if (existingFile == null) {
+                return;
+            }
+
+            importProgressRepository.deleteAll(existingFile);
+            kinopoiskFileRepository.delete(existingFile);
+        }
+
+        private KinopoiskFile importNewFile(String fileHashCode) {
+            KinopoiskFile newKinopoiskFile = kinopoiskFileRepository.save(new KinopoiskFile(fileHashCode));
+            MovieRepository movieRepository = movieRepositoryProvider.get();
+
+            List<Movie> movies;
+
+            try {
+                movies = parseMovies(file).stream()
+                        .map(movieRepository::findOrCreate)
+                        .collect(Collectors.toList());
+            } catch (IOException e) {
+                throw new KinopoiskToIMDBException(e);
+            }
+
+            importProgressRepository.saveAll(newKinopoiskFile, movies);
+
+            return newKinopoiskFile;
+        }
     }
 }

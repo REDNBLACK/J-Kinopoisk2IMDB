@@ -17,6 +17,12 @@ public class JpaKinopoiskFileRepositoryImpl implements KinopoiskFileRepository {
 
     @Override
     @Transactional
+    public void delete(KinopoiskFile file) {
+        emProvider.get().remove(file);
+    }
+
+    @Override
+    @Transactional
     public KinopoiskFile save(KinopoiskFile file) {
         emProvider.get().persist(file);
 

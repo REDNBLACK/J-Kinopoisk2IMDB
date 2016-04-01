@@ -7,6 +7,7 @@
 <?import javafx.scene.text.*?>
 
 <?import org.controlsfx.control.CheckComboBox?>
+<?import org.controlsfx.control.ToggleSwitch?>
 <GridPane fx:controller="org.f0w.k2i.gui.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10"
           styleClass="root">
@@ -63,6 +64,11 @@
     <!--End comparators row-->
 
     <ProgressBar fx:id="progressBar" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="7" progress="0.0" />
+
+    <HBox spacing="10" alignment="bottom_right"
+          GridPane.columnIndex="0" GridPane.rowIndex="8">
+        <ToggleSwitch fx:id="cleanRunSwitch" />
+    </HBox>
 
     <HBox spacing="10" alignment="bottom_right"
           GridPane.columnIndex="1" GridPane.rowIndex="8">

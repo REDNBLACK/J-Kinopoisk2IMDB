@@ -11,5 +11,11 @@ public interface ImportProgressRepository {
 
     void saveAll(KinopoiskFile kinopoiskFile, List<Movie> movies);
 
+    void deleteAll(KinopoiskFile kinopoiskFile);
+
     List<ImportProgress> findNotImportedOrNotRatedByFile(KinopoiskFile kinopoiskFile);
+
+    List<ImportProgress> findNotImportedByFile(KinopoiskFile kinopoiskFile);
+
+    List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile);
 }

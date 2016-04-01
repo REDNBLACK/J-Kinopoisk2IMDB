@@ -34,13 +34,46 @@ public class JpaImportProgressRepositoryImpl implements ImportProgressRepository
     }
 
     @Override
+    @Transactional
+    public void deleteAll(KinopoiskFile kinopoiskFile) {
+        emProvider.get()
+                .createQuery("DELETE FROM ImportProgress WHERE kinopoiskFile.id = :kinopoiskFileId")
+                .setParameter("kinopoiskFileId", kinopoiskFile.getId())
+                .executeUpdate();
+    }
+
+    @Override
     public List<ImportProgress> findNotImportedOrNotRatedByFile(KinopoiskFile kinopoiskFile) {
-        TypedQuery<ImportProgress> query = emProvider.get().createQuery(
+        return emProvider.get()
+            .createQuery(
                 "FROM ImportProgress WHERE (imported = :imported OR rated = :rated) AND kinopoiskFile = :kinopoiskFile",
+                ImportProgress.class
+            )
+            .setParameter("imported", false)
+            .setParameter("rated", false)
+            .setParameter("kinopoiskFile", kinopoiskFile)
+            .getResultList();
+    }
+
+    @Override
+    public List<ImportProgress> findNotImportedByFile(KinopoiskFile kinopoiskFile) {
+        TypedQuery<ImportProgress> query = emProvider.get().createQuery(
+                "FROM ImportProgress WHERE imported = :imported AND kinopoiskFile = :kinopoiskFile",
+                ImportProgress.class
+        );
+        query.setParameter("imported", false);
+        query.setParameter("kinopoiskFile", kinopoiskFile);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile) {
+        TypedQuery<ImportProgress> query = emProvider.get().createQuery(
+                "FROM ImportProgress WHERE rated = :rated AND kinopoiskFile = :kinopoiskFile",
                 ImportProgress.class
         );
         query.setParameter("rated", false);
-        query.setParameter("imported", false);
         query.setParameter("kinopoiskFile", kinopoiskFile);
 
         return query.getResultList();

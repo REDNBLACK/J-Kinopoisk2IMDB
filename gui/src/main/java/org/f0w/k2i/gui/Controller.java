@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
+import org.controlsfx.control.ToggleSwitch;
 import org.f0w.k2i.core.Client;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.comparator.title.*;
@@ -50,6 +51,7 @@ public class Controller {
     private Stage stage;
     private final FileChooser fileChooser = new FileChooser();
     private File kpFile;
+    private boolean cleanRun;
 
     private final File configFile = new File(
             System.getProperty("user.home") + File.separator + "K2IDB" + File.separator + "config.json"
@@ -78,6 +80,9 @@ public class Controller {
 
     @FXML
     private Button selectFileBtn;
+
+    @FXML
+    private ToggleSwitch cleanRunSwitch;
 
     @FXML
     private Button startBtn;
@@ -162,6 +167,11 @@ public class Controller {
         config.getStringList("comparators").forEach(c -> comparatorsBox.getCheckModel().check(
                 new Choice<>(ReflectionUtils.stringToClass(c, MovieComparator.class))
         ));
+
+        cleanRunSwitch.setText("Чистый запуск");
+        cleanRunSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            cleanRun = newValue;
+        });
     }
 
     void destroy() {
@@ -203,11 +213,11 @@ public class Controller {
         progressBar.setProgress(0.0);
 
         try {
-            Client client = new Client(kpFile, config);
+            Client client = new Client(kpFile, ConfigFactory.parseMap(configMap));
             client.registerListener(new ProgressListener());
 
             ExecutorService service = Executors.newSingleThreadExecutor();
-            service.submit(client::run);
+            service.submit(() -> client.run(cleanRun));
             service.shutdown();
         } catch (IllegalArgumentException|NullPointerException|ConfigException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

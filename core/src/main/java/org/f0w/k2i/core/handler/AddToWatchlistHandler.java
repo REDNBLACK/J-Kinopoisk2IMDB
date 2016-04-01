@@ -1,25 +1,28 @@
-package org.f0w.k2i.core.command;
+package org.f0w.k2i.core.handler;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import org.f0w.k2i.core.exchange.MovieWatchlistAssigner;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.List;
+import java.util.Set;
 
-import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
+import static org.f0w.k2i.core.util.MovieFieldsUtils.isEmptyIMDBId;
 
-public class AddToWatchlistCommand extends AbstractMovieCommand {
+public class AddToWatchlistHandler extends AbstractMovieHandler implements MovieHandler {
     private final MovieWatchlistAssigner assigner;
 
     @Inject
-    public AddToWatchlistCommand(MovieWatchlistAssigner assigner) {
+    public AddToWatchlistHandler(MovieWatchlistAssigner assigner) {
         this.assigner = assigner;
+        this.types = ImmutableSet.of(Type.ADD_TO_WATCHLIST, Type.COMBINED);
     }
 
     @Override
-    public Optional<MovieError> execute(ImportProgress importProgress) {
+    protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
         Movie movie = importProgress.getMovie();
 
         LOG.info("Adding movie to watchlist: {}", movie);
@@ -31,7 +34,7 @@ public class AddToWatchlistCommand extends AbstractMovieCommand {
 
             if (importProgress.isImported()) {
                 LOG.info("Movie is already added to watchlist!");
-                return Optional.empty();
+                return;
             }
 
             assigner.sendRequest(movie);
@@ -39,12 +42,10 @@ public class AddToWatchlistCommand extends AbstractMovieCommand {
             importProgress.setImported(true);
 
             LOG.info("Movie was successfully added to watchlist");
-
-            return Optional.empty();
         } catch (IOException e) {
             LOG.info("Error adding movie to watchlist: {}", e);
 
-            return Optional.of(new MovieError(importProgress.getMovie(), e.getMessage()));
+            errors.add(new Error(importProgress, e.getMessage()));
         }
     }
 }

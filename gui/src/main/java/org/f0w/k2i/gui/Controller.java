@@ -18,8 +18,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 import org.f0w.k2i.core.Client;
-import org.f0w.k2i.core.command.MovieCommand;
-import org.f0w.k2i.core.command.MovieError;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.comparator.title.*;
 import org.f0w.k2i.core.comparator.year.DeviationYearComparator;
@@ -28,6 +26,7 @@ import org.f0w.k2i.core.event.ImportFinishedEvent;
 import org.f0w.k2i.core.event.ImportStartedEvent;
 import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
+import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.ReflectionUtils;
 
@@ -36,7 +35,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -45,7 +43,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static org.f0w.k2i.core.command.MovieCommand.Type.*;
+import static org.f0w.k2i.core.handler.MovieHandler.Type.*;
 import static org.f0w.k2i.core.exchange.finder.MovieFinder.Type.*;
 
 public class Controller {
@@ -67,7 +65,7 @@ public class Controller {
     private Text titleText;
 
     @FXML
-    private ChoiceBox<Choice<MovieCommand.Type, String>> modeChoiceBox;
+    private ChoiceBox<Choice<MovieHandler.Type, String>> modeChoiceBox;
 
     @FXML
     private ChoiceBox<Choice<MovieFinder.Type, String>> queryFormatChoiceBox;
@@ -98,7 +96,7 @@ public class Controller {
     void initialize() {
         modeChoiceBox.setMaxWidth(300);
         modeChoiceBox.setItems(FXCollections.observableArrayList(
-                new Choice<>(SET_RATING, "Выставить рейтинг"),
+                new Choice<>(MovieHandler.Type.SET_RATING, "Выставить рейтинг"),
                 new Choice<>(ADD_TO_WATCHLIST, "Добавить в список"),
                 new Choice<>(COMBINED, "Добавить в список и выставить рейтинг")
         ));
@@ -114,7 +112,7 @@ public class Controller {
 
             configMap.put("mode", newValue.value.toString());
         });
-        modeChoiceBox.getSelectionModel().select(new Choice<>(MovieCommand.Type.valueOf(config.getString("mode"))));
+        modeChoiceBox.getSelectionModel().select(new Choice<>(MovieHandler.Type.valueOf(config.getString("mode"))));
 
         queryFormatChoiceBox.setMaxWidth(300);
         queryFormatChoiceBox.setItems(FXCollections.observableArrayList(
@@ -275,8 +273,8 @@ public class Controller {
 
                     Map<Movie, List<String>> errors = event.errors.stream()
                             .collect(Collectors.groupingBy(
-                                    MovieError::getMovie,
-                                    Collectors.mapping(MovieError::getError, Collectors.toList())
+                                    MovieHandler.Error::getMovie,
+                                    Collectors.mapping(MovieHandler.Error::getMessage, Collectors.toList())
                             ));
 
                     errors.entrySet().forEach(e -> {

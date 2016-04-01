@@ -4,12 +4,10 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.*;
 import com.google.inject.persist.PersistService;
 import com.typesafe.config.Config;
-import org.f0w.k2i.core.command.CommandExecutor;
-import org.f0w.k2i.core.command.MovieCommand;
-import org.f0w.k2i.core.command.MovieError;
 import org.f0w.k2i.core.event.ImportFinishedEvent;
 import org.f0w.k2i.core.event.ImportStartedEvent;
 import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
+import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -31,7 +29,8 @@ import static org.f0w.k2i.core.util.FileUtils.*;
 
 public class Client {
     private final File file;
-    private final List<MovieCommand> commands;
+    private final MovieHandler.Type handlerType;
+    private final MovieHandler handlerChain;
     private final Provider<MovieRepository> movieRepositoryProvider;
     private final KinopoiskFileRepository kinopoiskFileRepository;
     private final ImportProgressRepository importProgressRepository;
@@ -47,7 +46,8 @@ public class Client {
         );
         injector.getInstance(PersistService.class).start();
 
-        commands = injector.getInstance(Key.get(new TypeLiteral<List<MovieCommand>>(){}));
+        handlerType = injector.getInstance(MovieHandler.Type.class);
+        handlerChain = injector.getInstance(MovieHandler.class);
         kinopoiskFileRepository = injector.getInstance(KinopoiskFileRepository.class);
         importProgressRepository = injector.getInstance(ImportProgressRepository.class);
         movieRepositoryProvider = injector.getProvider(MovieRepository.class);
@@ -79,18 +79,18 @@ public class Client {
 
         eventBus.post(new ImportStartedEvent(importProgress.size()));
 
-        final CommandExecutor executor = new CommandExecutor(commands);
-        final List<MovieError> errors = new ArrayList<>();
+        final List<MovieHandler.Error> allErrors = new ArrayList<>();
 
         importProgress.forEach(ip -> {
-            List<MovieError> currentErrors = executor.execute(ip);
+            List<MovieHandler.Error> currentErrors = new ArrayList<>();
+            handlerChain.handle(ip, currentErrors, handlerType);
 
-            errors.addAll(currentErrors);
+            allErrors.addAll(currentErrors);
 
             eventBus.post(new ImportProgressAdvancedEvent(currentErrors.isEmpty()));
         });
 
-        eventBus.post(new ImportFinishedEvent(errors));
+        eventBus.post(new ImportFinishedEvent(allErrors));
     }
 
     private KinopoiskFile importNewFile(String fileHashCode) {

@@ -1,25 +1,28 @@
-package org.f0w.k2i.core.command;
+package org.f0w.k2i.core.handler;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import org.f0w.k2i.core.exchange.MovieRatingChanger;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.List;
 
-import static org.f0w.k2i.core.util.MovieFieldsUtils.*;
+import static org.f0w.k2i.core.util.MovieFieldsUtils.isEmptyIMDBId;
+import static org.f0w.k2i.core.util.MovieFieldsUtils.isEmptyRating;
 
-public class SetRatingCommand extends AbstractMovieCommand {
+public class SetRatingHandler extends AbstractMovieHandler implements MovieHandler {
     private final MovieRatingChanger changer;
 
     @Inject
-    public SetRatingCommand(MovieRatingChanger changer) {
+    public SetRatingHandler(MovieRatingChanger changer) {
         this.changer = changer;
+        this.types = ImmutableSet.of(Type.SET_RATING, Type.COMBINED);
     }
 
     @Override
-    public Optional<MovieError> execute(ImportProgress importProgress) {
+    protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
         Movie movie = importProgress.getMovie();
 
         LOG.info("Setting rating of movie: {}", movie);
@@ -31,14 +34,12 @@ public class SetRatingCommand extends AbstractMovieCommand {
 
             if (isEmptyRating(movie.getRating())) {
                 LOG.info("Movie doesn't have rating!");
-
-                return Optional.empty();
+                return;
             }
 
             if (importProgress.isRated()) {
                 LOG.info("Movie rating is already set!");
-
-                return Optional.empty();
+                return;
             }
 
             changer.sendRequest(movie);
@@ -46,12 +47,10 @@ public class SetRatingCommand extends AbstractMovieCommand {
             importProgress.setRated(true);
 
             LOG.info("Movie rating was successfully set");
-
-            return Optional.empty();
         } catch (IOException e) {
             LOG.info("Error setting rating of movie: {}", e);
 
-            return Optional.of(new MovieError(importProgress.getMovie(), e.getMessage()));
+            errors.add(new Error(importProgress, e.getMessage()));
         }
     }
 }

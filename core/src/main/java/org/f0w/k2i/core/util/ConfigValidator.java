@@ -1,9 +1,9 @@
 package org.f0w.k2i.core.util;
 
 import com.typesafe.config.Config;
-import org.f0w.k2i.core.command.MovieCommand;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
+import org.f0w.k2i.core.handler.MovieHandler;
 
 import java.util.List;
 
@@ -91,10 +91,10 @@ public class ConfigValidator {
         final String message = "List setting is not valid!";
 
         if ("".equals(list)) {
-            MovieCommand.Type commandType = MovieCommand.Type.valueOf(mode);
+            MovieHandler.Type commandType = MovieHandler.Type.valueOf(mode);
 
-            if (commandType.equals(MovieCommand.Type.COMBINED)
-                || commandType.equals(MovieCommand.Type.ADD_TO_WATCHLIST)
+            if (commandType.equals(MovieHandler.Type.COMBINED)
+                || commandType.equals(MovieHandler.Type.ADD_TO_WATCHLIST)
             ) {
                 throw new IllegalArgumentException(message + " Set to null, but required for current mode setting");
             }
@@ -108,7 +108,7 @@ public class ConfigValidator {
         final String message = "Mode setting is not valid!";
 
         try {
-             MovieCommand.Type.valueOf(mode);
+             MovieHandler.Type.valueOf(mode);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(message);
         }

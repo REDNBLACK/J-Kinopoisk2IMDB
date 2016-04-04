@@ -11,7 +11,7 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 
-public class MovieRatingChanger implements Exchangeable<Movie, Connection.Response> {
+public final class MovieRatingChanger implements Exchangeable<Movie, Connection.Response> {
     private final Config config;
 
     private final MovieAuthStringFetcher fetcher;

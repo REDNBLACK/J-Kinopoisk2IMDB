@@ -11,7 +11,7 @@ import org.jsoup.Jsoup;
 import java.io.IOException;
 import java.util.Map;
 
-public class MovieWatchlistAssigner implements Exchangeable<Movie, Connection.Response> {
+public final class MovieWatchlistAssigner implements Exchangeable<Movie, Connection.Response> {
     private final Config config;
 
     private Connection.Response response;

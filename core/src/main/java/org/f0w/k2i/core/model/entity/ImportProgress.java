@@ -29,7 +29,9 @@ public class ImportProgress {
     @Column(name = "RATED", nullable = false)
     private boolean rated;
 
-    public ImportProgress() {}
+    protected ImportProgress() {
+        // Required by JPA
+    }
 
     public ImportProgress(KinopoiskFile kinopoiskFile, Movie movie, boolean imported, boolean rated) {
         setKinopoiskFile(kinopoiskFile);

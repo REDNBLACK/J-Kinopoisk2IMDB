@@ -3,7 +3,7 @@ package org.f0w.k2i.core.comparator.title;
 import org.f0w.k2i.core.comparator.AbstractMovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 
-public class EndsWithTitleComparator extends AbstractMovieComparator {
+public final class EndsWithTitleComparator extends AbstractMovieComparator {
     @Override
     public boolean areEqual(Movie movie1, Movie movie2) {
         String title1 = movie1.getTitle();

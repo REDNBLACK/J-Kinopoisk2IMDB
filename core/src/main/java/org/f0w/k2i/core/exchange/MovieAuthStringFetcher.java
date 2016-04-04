@@ -9,7 +9,7 @@ import org.jsoup.Jsoup;
 import com.google.inject.Inject;
 import java.io.IOException;
 
-public class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
+public final class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
     private final Config config;
 
     private Connection.Response response;

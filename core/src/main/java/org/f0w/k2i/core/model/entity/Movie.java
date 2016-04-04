@@ -27,7 +27,9 @@ public class Movie {
     @Column(name = "IMDB_ID")
     private String imdbId;
 
-    public Movie() {}
+    protected Movie() {
+        // Required by JPA
+    }
 
     public Movie(String title, int year, Integer rating, String imdbId) {
         setTitle(title);

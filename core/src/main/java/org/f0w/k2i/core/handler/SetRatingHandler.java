@@ -12,7 +12,7 @@ import java.util.List;
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyRating;
 
-public class SetRatingHandler extends AbstractMovieHandler implements MovieHandler {
+public final class SetRatingHandler extends AbstractMovieHandler implements MovieHandler {
     private final MovieRatingChanger changer;
 
     @Inject

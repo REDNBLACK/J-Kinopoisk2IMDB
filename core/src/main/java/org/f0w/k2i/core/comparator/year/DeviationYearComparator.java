@@ -6,7 +6,7 @@ import com.typesafe.config.Config;
 import org.f0w.k2i.core.comparator.AbstractMovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 
-public class DeviationYearComparator extends AbstractMovieComparator {
+public final class DeviationYearComparator extends AbstractMovieComparator {
     private final Config config;
 
     @Inject

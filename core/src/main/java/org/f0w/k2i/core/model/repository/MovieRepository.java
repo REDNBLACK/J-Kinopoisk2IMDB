@@ -2,10 +2,12 @@ package org.f0w.k2i.core.model.repository;
 
 import org.f0w.k2i.core.model.entity.Movie;
 
+import java.util.List;
+
 public interface MovieRepository {
     Movie save(Movie movie);
 
-    Movie findOrCreate(Movie movie);
+    List<Movie> saveAllNotExisting(List<Movie> movies);
 
-    Movie findByTitleAndYear(final String title, int year);
+    Movie findByTitleAndYear(final String title, final int year);
 }

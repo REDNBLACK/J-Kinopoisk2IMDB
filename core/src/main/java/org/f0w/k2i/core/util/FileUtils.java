@@ -25,7 +25,7 @@ public class FileUtils {
     }
 
     public static File checkFile(File file) {
-        requireNonNull(file, "File is not set!");
+        requireNonNull(file, "File is null!");
         checkArgument(file.exists(), "File not exists!");
         checkArgument(file.isFile(), "Not a file!");
 

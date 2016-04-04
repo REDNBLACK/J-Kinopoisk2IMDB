@@ -1,7 +1,7 @@
 package org.f0w.k2i.core.model.service;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
+import com.google.inject.persist.Transactional;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
@@ -14,14 +14,13 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.util.FileUtils.*;
 
 public final class ImportProgressService {
     private final KinopoiskFileRepository kinopoiskFileRepository;
     private final ImportProgressRepository importProgressRepository;
-    private final Provider<MovieRepository> movieRepositoryProvider;
+    private final MovieRepository movieRepository;
 
     private File file;
     private KinopoiskFile kinopoiskFile;
@@ -30,11 +29,11 @@ public final class ImportProgressService {
     public ImportProgressService(
             KinopoiskFileRepository kinopoiskFileRepository,
             ImportProgressRepository importProgressRepository,
-            Provider<MovieRepository> movieRepositoryProvider
+            MovieRepository movieRepository
     ) {
         this.kinopoiskFileRepository = kinopoiskFileRepository;
         this.importProgressRepository = importProgressRepository;
-        this.movieRepositoryProvider = movieRepositoryProvider;
+        this.movieRepository = movieRepository;
     }
 
     public ImportProgressService initialize(File file, boolean cleanRun) {
@@ -46,8 +45,7 @@ public final class ImportProgressService {
             removeExistingFileData(fileHashCode);
         }
 
-        kinopoiskFile  = Optional
-                .ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
+        kinopoiskFile = Optional.ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
                 .orElseGet(() -> importNewFileData(fileHashCode));
 
         return this;
@@ -66,19 +64,17 @@ public final class ImportProgressService {
         }
     }
 
+    @Transactional
     private KinopoiskFile importNewFileData(String fileHashCode) {
         KinopoiskFile newFile = kinopoiskFileRepository.save(new KinopoiskFile(fileHashCode));
-        MovieRepository movieRepository = movieRepositoryProvider.get();
-
-        List<Movie> movies = parseMovies(file).stream()
-                .map(movieRepository::findOrCreate)
-                .collect(Collectors.toList());
+        List<Movie> movies = movieRepository.saveAllNotExisting(parseMovies(file));
 
         importProgressRepository.saveAll(newFile, movies);
 
         return newFile;
     }
 
+    @Transactional
     private void removeExistingFileData(String fileHashCode) {
         KinopoiskFile existingFile = kinopoiskFileRepository.findByHashCode(fileHashCode);
 

@@ -10,6 +10,9 @@ import org.f0w.k2i.core.model.repository.MovieRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class JpaMovieRepositoryImpl implements MovieRepository {
     @Inject
@@ -24,18 +27,18 @@ public class JpaMovieRepositoryImpl implements MovieRepository {
     }
 
     @Override
-    public Movie findOrCreate(Movie movie) {
-        Movie existingMovie = findByTitleAndYear(movie.getTitle(), movie.getYear());
-
-        if (existingMovie == null) {
-            return save(movie);
-        } else {
-            return existingMovie;
-        }
+    @Transactional
+    public List<Movie> saveAllNotExisting(final List<Movie> movies) {
+        return movies.stream()
+                .map(m -> Optional
+                        .ofNullable(findByTitleAndYear(m.getTitle(), m.getYear()))
+                        .orElseGet(() -> save(m))
+                )
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Movie findByTitleAndYear(String title, int year) {
+    public Movie findByTitleAndYear(final String title, final int year) {
         TypedQuery<Movie> query = emProvider.get().createQuery(
                 "FROM Movie m WHERE m.title = :title AND m.year = :year",
                 Movie.class

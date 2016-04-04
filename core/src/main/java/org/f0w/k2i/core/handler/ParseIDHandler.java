@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 
-public class ParseIDHandler extends AbstractMovieHandler implements MovieHandler {
+public final class ParseIDHandler extends AbstractMovieHandler implements MovieHandler {
     private final Provider<MovieFinder> movieFinderProvider;
     private final MovieComparator movieComparator;
 

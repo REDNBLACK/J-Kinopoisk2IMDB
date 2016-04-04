@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.util.MovieUtils.*;
 
-class XMLMovieFinder extends AbstractMovieFinder {
+final class XMLMovieFinder extends AbstractMovieFinder {
     public XMLMovieFinder(Config config) {
         super(config);
     }

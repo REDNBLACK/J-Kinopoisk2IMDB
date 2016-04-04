@@ -19,7 +19,9 @@ public class KinopoiskFile {
     @Column(name = "HASH_CODE", unique = true, nullable = false)
     private String hashCode;
 
-    public KinopoiskFile() {}
+    protected KinopoiskFile() {
+        // Required by JPA
+    }
 
     public KinopoiskFile(String hashCode) {
         setHashCode(hashCode);

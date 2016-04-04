@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.*;
 
-class MixedMovieFinder implements MovieFinder {
+final class MixedMovieFinder implements MovieFinder {
     private static final Logger LOG = LoggerFactory.getLogger(MixedMovieFinder.class);
 
     private final Deque<MovieFinder> movieFinders;

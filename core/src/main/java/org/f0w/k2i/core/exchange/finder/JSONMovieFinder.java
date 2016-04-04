@@ -13,7 +13,7 @@ import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
 import static org.f0w.k2i.core.util.MovieUtils.*;
 
-class JSONMovieFinder extends AbstractMovieFinder {
+final class JSONMovieFinder extends AbstractMovieFinder {
     private static final ContainerFactory CONTAINER_FACTORY = new ContainerFactory() {
         @Override
         public List creatArrayContainer() {

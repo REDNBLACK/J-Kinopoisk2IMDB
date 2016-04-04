@@ -25,11 +25,6 @@ public class SystemProvider extends AbstractModule {
     }
 
     @Provides
-    MovieHandler.Type provideHandlerType(Config config) {
-        return MovieHandler.Type.valueOf(config.getString("mode"));
-    }
-
-    @Provides
     MovieHandler provideHandler(Injector injector) {
         MovieHandler chain = injector.getInstance(ParseIDHandler.class);
 

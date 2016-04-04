@@ -16,7 +16,6 @@ class MixedMovieFinder implements MovieFinder {
     private final Deque<MovieFinder> movieFinders;
     private Movie movie;
 
-    @Inject
     public MixedMovieFinder(List<MovieFinder> movieFinders) {
         this.movieFinders = new LinkedList<>(movieFinders);
     }

@@ -6,6 +6,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.util.ConfigValidator;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +22,11 @@ public class ConfigurationProvider extends AbstractModule {
     @Override
     protected void configure() {
         bind(Config.class).toInstance(config);
+
+        bind(MovieHandler.Type.class).toInstance(MovieHandler.Type.valueOf(config.getString("mode")));
+
         configureLogger();
-        configureDatabase();
+        configureJPA();
     }
 
     private void configureLogger() {
@@ -30,7 +34,7 @@ public class ConfigurationProvider extends AbstractModule {
         root.setLevel(Level.toLevel(config.getString("log_level")));
     }
 
-    private void configureDatabase() {
+    private void configureJPA() {
         JpaPersistModule jpa = new JpaPersistModule("K2IDB");
 
         Config dbConfig = config.getConfig("db");

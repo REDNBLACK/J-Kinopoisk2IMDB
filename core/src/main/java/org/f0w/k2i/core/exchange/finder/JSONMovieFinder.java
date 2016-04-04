@@ -26,7 +26,6 @@ class JSONMovieFinder extends AbstractMovieFinder {
         }
     };
 
-    @Inject
     public JSONMovieFinder(Config config) {
         super(config);
     }

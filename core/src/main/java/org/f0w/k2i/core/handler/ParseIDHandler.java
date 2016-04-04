@@ -13,7 +13,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 
-import static org.f0w.k2i.core.util.MovieFieldsUtils.isEmptyIMDBId;
+import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 
 public class ParseIDHandler extends AbstractMovieHandler implements MovieHandler {
     private final Provider<MovieFinder> movieFinderProvider;

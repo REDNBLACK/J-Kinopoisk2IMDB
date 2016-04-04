@@ -2,8 +2,8 @@ package org.f0w.k2i.core.util;
 
 import com.google.common.base.Strings;
 
-public class MovieFieldsUtils {
-    private MovieFieldsUtils() {
+public class MovieUtils {
+    private MovieUtils() {
         throw new UnsupportedOperationException();
     }
 

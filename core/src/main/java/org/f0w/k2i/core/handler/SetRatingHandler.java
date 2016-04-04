@@ -9,8 +9,8 @@ import org.f0w.k2i.core.model.entity.Movie;
 import java.io.IOException;
 import java.util.List;
 
-import static org.f0w.k2i.core.util.MovieFieldsUtils.isEmptyIMDBId;
-import static org.f0w.k2i.core.util.MovieFieldsUtils.isEmptyRating;
+import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
+import static org.f0w.k2i.core.util.MovieUtils.isEmptyRating;
 
 public class SetRatingHandler extends AbstractMovieHandler implements MovieHandler {
     private final MovieRatingChanger changer;

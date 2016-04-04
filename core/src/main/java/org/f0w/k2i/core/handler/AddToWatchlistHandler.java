@@ -8,9 +8,8 @@ import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
-import static org.f0w.k2i.core.util.MovieFieldsUtils.isEmptyIMDBId;
+import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 
 public class AddToWatchlistHandler extends AbstractMovieHandler implements MovieHandler {
     private final MovieWatchlistAssigner assigner;

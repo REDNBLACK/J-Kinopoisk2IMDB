@@ -8,23 +8,23 @@ public final class MovieUtils {
     }
 
     public static String parseTitle(String title) {
-        title = String.valueOf(title).trim();
+        String resultTitle = String.valueOf(title).trim();
 
-        if ("".equals(title)) {
+        if ("".equals(resultTitle)) {
             return "null";
         }
 
-        return title;
+        return resultTitle;
     }
 
     public static String parseTitle(String title, String defaultTitle) {
-        title = parseTitle(title);
+        String resultTitle = parseTitle(title);
 
-        if ("null".equals(title)) {
+        if ("null".equals(resultTitle)) {
             return parseTitle(defaultTitle);
         }
 
-        return title;
+        return resultTitle;
     }
 
     public static boolean isEmptyTitle(String title) {
@@ -32,11 +32,13 @@ public final class MovieUtils {
     }
 
     public static int parseYear(String yearString) {
-        try {
-            yearString = String.valueOf(yearString).trim().substring(0, 4);
+        final int yearLength = 4;
 
-            return Integer.parseInt(yearString);
-        } catch (NumberFormatException|IndexOutOfBoundsException e) {
+        try {
+            String resultYear = String.valueOf(yearString).trim().substring(0, yearLength);
+
+            return Integer.parseInt(resultYear);
+        } catch (NumberFormatException | IndexOutOfBoundsException e) {
             return 0;
         }
     }
@@ -46,13 +48,13 @@ public final class MovieUtils {
     }
 
     public static String parseIMDBId(String imdbId) {
-        imdbId = String.valueOf(imdbId).trim();
+        String resultImdbId = String.valueOf(imdbId).trim();
 
-        if (!imdbId.startsWith("tt")) {
+        if (!resultImdbId.startsWith("tt")) {
             return null;
         }
 
-        return imdbId;
+        return resultImdbId;
     }
 
     public static boolean isEmptyIMDBId(String imdbId) {
@@ -60,18 +62,18 @@ public final class MovieUtils {
     }
 
     public static Integer parseRating(String rating) {
-        rating = String.valueOf(rating).trim();
+        String resultRating = String.valueOf(rating).trim();
 
-        if (Strings.isNullOrEmpty(rating)
-            || "null".equals(rating)
-            || "zero".equals(rating)
-            || "0".equals(rating)
+        if (Strings.isNullOrEmpty(resultRating)
+            || "null".equals(resultRating)
+            || "zero".equals(resultRating)
+            || "0".equals(resultRating)
         ) {
             return null;
         }
 
         try {
-            return Integer.parseInt(rating);
+            return Integer.parseInt(resultRating);
         } catch (NumberFormatException e) {
             return null;
         }

@@ -3,7 +3,6 @@ package org.f0w.k2i.core.exchange.finder;
 import java.util.*;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;

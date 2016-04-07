@@ -2,7 +2,6 @@ package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ImmutableMap;
 
-import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 

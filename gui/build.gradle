@@ -1,4 +1,11 @@
-apply plugin: 'application'
+plugins {
+    id 'application'
+    id 'edu.sc.seis.launch4j' version '1.6.1'
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
+}
+
+mainClassName = 'org.f0w.k2i.gui.Main'
+version = '0.8.0'
 
 dependencies {
     compile project(':core')
@@ -6,14 +13,16 @@ dependencies {
     compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.10'
 }
 
-mainClassName = 'org.f0w.k2i.gui.Main'
+copyL4jLib.dependsOn shadowJar
 
-task fatJar(type: Jar) {
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-    manifest {
-        attributes 'Implementation-Title': 'Kinopoisk2IMDB GUI', 'Implementation-Version': '0.7.0'
-        attributes 'Main-Class': mainClassName
-    }
+launch4j {
+    mainClassName
+    productName = 'Kinopoisk2IMDB GUI'
+    internalName = 'k2i-gui'
+    copyright = 'REDNBLACK'
+    companyName = 'f0w.org'
+    productVersion = version
+    outfile = 'Kinopoisk2IMDB.exe'
+    copyConfigurable = project.tasks.shadowJar.outputs.files
+    jar = "lib/${project.tasks.shadowJar.archiveName}"
 }

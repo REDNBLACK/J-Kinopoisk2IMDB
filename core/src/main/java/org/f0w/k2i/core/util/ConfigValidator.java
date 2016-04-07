@@ -10,7 +10,7 @@ import java.util.List;
 import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public class ConfigValidator {
+public final class ConfigValidator {
     private ConfigValidator() {
         throw new UnsupportedOperationException();
     }

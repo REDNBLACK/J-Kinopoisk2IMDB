@@ -1,6 +1,6 @@
 package org.f0w.k2i.core.util;
 
-public class ReflectionUtils {
+public final class ReflectionUtils {
     private ReflectionUtils() {
         throw new UnsupportedOperationException();
     }

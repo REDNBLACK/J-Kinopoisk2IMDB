@@ -1,6 +1,6 @@
 package org.f0w.k2i.core.util.string;
 
-public class NumericToWord {
+public final class NumericToWord {
     private static final String[] units = {
             "Zero",
             "One",

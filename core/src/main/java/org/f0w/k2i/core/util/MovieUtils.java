@@ -2,7 +2,7 @@ package org.f0w.k2i.core.util;
 
 import com.google.common.base.Strings;
 
-public class MovieUtils {
+public final class MovieUtils {
     private MovieUtils() {
         throw new UnsupportedOperationException();
     }

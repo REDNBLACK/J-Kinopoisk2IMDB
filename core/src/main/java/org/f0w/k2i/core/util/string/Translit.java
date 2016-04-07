@@ -1,6 +1,6 @@
 package org.f0w.k2i.core.util.string;
 
-public class Translit {
+public final class Translit {
     private static final String[] charTable = new String[81];
 
     private static final char START_CHAR = 'Ё';

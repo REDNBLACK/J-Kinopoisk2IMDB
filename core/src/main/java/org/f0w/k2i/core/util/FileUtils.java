@@ -19,7 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 import static org.f0w.k2i.core.util.MovieUtils.*;
 
-public class FileUtils {
+public final class FileUtils {
     private FileUtils() {
         throw new UnsupportedOperationException();
     }

@@ -29,6 +29,6 @@ public final class DeviationYearComparator extends AbstractMovieComparator {
                 result
         );
 
-        return Range.closed(movie2Year - yearDeviation, movie2Year + yearDeviation).contains(movie1.getYear());
+        return result;
     }
 }

@@ -13,6 +13,10 @@ dependencies {
     compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.10'
 }
 
+configurations {
+    runtime.exclude module: 'junit'
+}
+
 copyL4jLib.dependsOn shadowJar
 
 task copyIcon(type: Copy) {

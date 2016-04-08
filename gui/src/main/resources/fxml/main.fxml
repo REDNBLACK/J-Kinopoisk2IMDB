@@ -2,11 +2,9 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <?import org.controlsfx.control.CheckComboBox?>
-<?import org.controlsfx.control.ToggleSwitch?>
 
 <?import java.net.URL?>
 <FlowPane fx:controller="org.f0w.k2i.gui.Controller"
@@ -56,7 +54,7 @@
                                                 <Label text="Режим работы" GridPane.rowIndex="2" />
                                                 <Label text="Строка авторизации IMDB" GridPane.rowIndex="3" />
                                                 <Label text="ID списка IMDB" GridPane.rowIndex="4" />
-                                                <ChoiceBox fx:id="modeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <ComboBox fx:id="modeComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <TextField fx:id="authId" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                 <TextField fx:id="listId" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                             </children>
@@ -86,9 +84,9 @@
                                                 <Label text="Тип запроса" />
                                                 <Label text="Сравнение" GridPane.rowIndex="1" />
                                                 <Label text="Чистый запуск" GridPane.rowIndex="2" />
-                                                <ChoiceBox fx:id="queryFormatChoiceBox" GridPane.columnIndex="1" />
+                                                <ComboBox fx:id="queryFormatComboBox" GridPane.columnIndex="1" />
                                                 <CheckComboBox fx:id="comparatorsBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <ToggleSwitch fx:id="cleanRunSwitch" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <CheckBox fx:id="cleanRunCheckbox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                             </children>
                                         </GridPane>
                                     </children>
@@ -108,10 +106,10 @@
                                                 <Label text="year_deviation" GridPane.rowIndex="1" />
                                                 <Label text="timeout" GridPane.rowIndex="2" />
                                                 <Label text="log_level" GridPane.rowIndex="3" />
-                                                <TextField GridPane.columnIndex="1" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <TextField fx:id="userAgentField" GridPane.columnIndex="1" />
+                                                <TextField fx:id="yearDeviationField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="timeoutField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="logLevelField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                             </children>
                                             <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="193.0" />

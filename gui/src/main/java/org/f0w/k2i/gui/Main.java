@@ -24,7 +24,7 @@ public class Main extends Application {
         Controller controller = loader.getController();
         controller.init(stage);
 
-        stage.setTitle("Kinopoisk2IMDB GUI");
+        stage.setTitle("Kinopoisk2IMDB");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("icon.png")));
         stage.setScene(new Scene(root, WIDTH, HEIGHT));
         stage.setResizable(false);

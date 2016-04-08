@@ -1,10 +1,12 @@
 package org.f0w.k2i.gui;
 
 import com.google.common.eventbus.Subscribe;
+
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -15,16 +17,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import org.controlsfx.control.CheckComboBox;
-import org.controlsfx.control.ToggleSwitch;
+
 import org.f0w.k2i.core.Client;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.comparator.title.*;
-import org.f0w.k2i.core.comparator.year.DeviationYearComparator;
-import org.f0w.k2i.core.comparator.year.EqualsYearComparator;
-import org.f0w.k2i.core.event.ImportFinishedEvent;
-import org.f0w.k2i.core.event.ImportStartedEvent;
-import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
+import org.f0w.k2i.core.comparator.year.*;
+import org.f0w.k2i.core.event.*;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -63,10 +63,10 @@ public class Controller {
             .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().unwrapped()));
 
     @FXML
-    private ChoiceBox<Choice<MovieHandler.Type, String>> modeChoiceBox;
+    private ComboBox<Choice<MovieHandler.Type, String>> modeComboBox;
 
     @FXML
-    private ChoiceBox<Choice<MovieFinder.Type, String>> queryFormatChoiceBox;
+    private ComboBox<Choice<MovieFinder.Type, String>> queryFormatComboBox;
 
     @FXML
     private Label selectedFile;
@@ -81,7 +81,7 @@ public class Controller {
     private Button selectFileBtn;
 
     @FXML
-    private ToggleSwitch cleanRunSwitch;
+    private CheckBox cleanRunCheckbox;
 
     @FXML
     private Button startBtn;
@@ -92,18 +92,31 @@ public class Controller {
     @FXML
     private CheckComboBox<Choice<Class<? extends MovieComparator>, String>> comparatorsBox;
 
+    @FXML
+    private TextField userAgentField;
+
+    @FXML
+    private TextField yearDeviationField;
+
+    @FXML
+    private TextField timeoutField;
+
+    @FXML
+    private TextField logLevelField;
+
     void init(Stage stage) {
         this.stage = stage;
     }
 
     @FXML
     void initialize() {
-        modeChoiceBox.setItems(FXCollections.observableArrayList(
+        // Основные
+        modeComboBox.setItems(FXCollections.observableArrayList(
                 new Choice<>(MovieHandler.Type.SET_RATING, "Выставить рейтинг"),
                 new Choice<>(ADD_TO_WATCHLIST, "Добавить в список"),
                 new Choice<>(COMBINED, "Добавить в список и выставить рейтинг")
         ));
-        modeChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        modeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.value.equals(ADD_TO_WATCHLIST) || newValue.value.equals(COMBINED)) {
                 listId.setEditable(true);
                 listId.setDisable(false);
@@ -115,32 +128,33 @@ public class Controller {
 
             configMap.put("mode", newValue.value.toString());
         });
-        modeChoiceBox.getSelectionModel().select(new Choice<>(MovieHandler.Type.valueOf(config.getString("mode"))));
-
-        queryFormatChoiceBox.setItems(FXCollections.observableArrayList(
-            new Choice<>(XML, "XML"),
-            new Choice<>(JSON, "JSON"),
-            new Choice<>(HTML, "HTML"),
-            new Choice<>(MIXED, "Смешанный")
-        ));
-        queryFormatChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            configMap.put("query_format", newValue.value.toString());
-        });
-        queryFormatChoiceBox.getSelectionModel().select(
-            new Choice<>(MovieFinder.Type.valueOf(config.getString("query_format")))
-        );
-
-        listId.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            configMap.put("list", listId.getText());
-        });
-        listId.setText(config.getString("list"));
+        modeComboBox.getSelectionModel().select(new Choice<>(MovieHandler.Type.valueOf(config.getString("mode"))));
 
         authId.focusedProperty().addListener((observable, oldValue, newValue) -> {
             configMap.put("auth", authId.getText());
         });
         authId.setText(config.getString("auth"));
 
-        progressBar.setMaxWidth(Double.MAX_VALUE);
+        listId.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            configMap.put("list", listId.getText());
+        });
+        listId.setText(config.getString("list"));
+
+
+
+        // Дополнительные
+        queryFormatComboBox.setItems(FXCollections.observableArrayList(
+            new Choice<>(XML, "XML"),
+            new Choice<>(JSON, "JSON"),
+            new Choice<>(HTML, "HTML"),
+            new Choice<>(MIXED, "Смешанный")
+        ));
+        queryFormatComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            configMap.put("query_format", newValue.value.toString());
+        });
+        queryFormatComboBox.getSelectionModel().select(
+            new Choice<>(MovieFinder.Type.valueOf(config.getString("query_format")))
+        );
 
         comparatorsBox.getItems().addAll(FXCollections.observableArrayList(
                 new Choice<>(DeviationYearComparator.class, "Год с отклонением"),
@@ -162,9 +176,32 @@ public class Controller {
                 new Choice<>(ReflectionUtils.stringToClass(c, MovieComparator.class))
         ));
 
-        cleanRunSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
+        cleanRunCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             cleanRun = newValue;
         });
+
+
+
+        // Для экспертов
+        userAgentField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            configMap.put("user_agent", userAgentField.getText());
+        });
+        userAgentField.setText(config.getString("user_agent"));
+
+        yearDeviationField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            configMap.put("year_deviation", yearDeviationField.getText());
+        });
+        yearDeviationField.setText(config.getString("year_deviation"));
+
+        timeoutField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            configMap.put("timeout", timeoutField.getText());
+        });
+        timeoutField.setText(config.getString("timeout"));
+
+        logLevelField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            configMap.put("log_level", logLevelField.getText());
+        });
+        logLevelField.setText(config.getString("log_level"));
     }
 
     void destroy() {

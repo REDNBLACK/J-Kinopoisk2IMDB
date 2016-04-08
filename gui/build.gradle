@@ -5,7 +5,7 @@ plugins {
 }
 
 mainClassName = 'org.f0w.k2i.gui.Main'
-version = '0.8.0'
+version = '0.9.0'
 
 dependencies {
     compile project(':core')
@@ -15,14 +15,23 @@ dependencies {
 
 copyL4jLib.dependsOn shadowJar
 
+task copyIcon(type: Copy) {
+    from 'src/main/resources/icon.ico'
+    into 'build/launch4j'
+}
+
+afterEvaluate {
+    copyL4jLib.dependsOn copyIcon
+}
+
 launch4j {
     mainClassName
     productName = 'Kinopoisk2IMDB GUI'
     internalName = 'k2i-gui'
     copyright = 'REDNBLACK'
     companyName = 'f0w.org'
-    productVersion = version
     outfile = 'Kinopoisk2IMDB.exe'
+    icon = 'icon.ico'
     copyConfigurable = project.tasks.shadowJar.outputs.files
     jar = "lib/${project.tasks.shadowJar.archiveName}"
 }

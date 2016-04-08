@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <?import org.controlsfx.control.CheckComboBox?>
 <?import org.controlsfx.control.ToggleSwitch?>
-<GridPane fx:controller="org.f0w.k2i.gui.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10"
-          styleClass="root">
-    <padding><Insets top="25" right="25" bottom="10" left="25" /></padding>
+
+<?import java.net.URL?>
+<FlowPane fx:controller="org.f0w.k2i.gui.Controller"
+          maxHeight="361"
+          maxWidth="600"
+          xmlns="http://javafx.com/javafx/8"
+          xmlns:fx="http://javafx.com/fxml/1">
 
     <!--Styles-->
     <stylesheets>
@@ -19,59 +21,134 @@
     </stylesheets>
     <!--Styles-->
 
-    <Text fx:id="titleText"
-          GridPane.columnIndex="0" GridPane.rowIndex="0"
-          GridPane.columnSpan="2"/>
+    <children>
+        <AnchorPane>
+            <children>
+                <!--Start Accordion row-->
+                <Accordion prefWidth="600">
+                    <panes>
+                        <!--Start basic-->
+                        <TitledPane fx:id="basePane" animated="false" text="Основные">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0">
+                                    <children>
+                                        <GridPane hgap="10.0" layoutX="26.0" vgap="2.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="290.0" minWidth="10.0" prefWidth="172.0" />
+                                                <ColumnConstraints maxWidth="369.0" minWidth="10.0" prefWidth="365.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0" />
+                                            </rowConstraints>
+                                            <children>
+                                                <Label text="Выбранный файл" />
+                                                <Label fx:id="selectedFile" text="Файл не выбран" GridPane.columnIndex="1" />
+                                                <Label text="Файл с кинопоиска" GridPane.rowIndex="1" />
+                                                <Button fx:id="selectFileBtn"
+                                                        maxWidth="-Infinity" mnemonicParsing="false"
+                                                        text="Выберите файл..." GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                                        onAction="#handleFileChoseAction"
+                                                />
+                                                <Label text="Режим работы" GridPane.rowIndex="2" />
+                                                <Label text="Строка авторизации IMDB" GridPane.rowIndex="3" />
+                                                <Label text="ID списка IMDB" GridPane.rowIndex="4" />
+                                                <ChoiceBox fx:id="modeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="authId" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <TextField fx:id="listId" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                            </children>
+                                        </GridPane>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                        <!--End basic-->
 
-    <!--Start file row-->
-    <Label text="Файл с кинопоиска:"
-           GridPane.columnIndex="0" GridPane.rowIndex="1" />
-    <Button fx:id="selectFileBtn" text="Выберите файл..."
-            GridPane.columnIndex="1" GridPane.rowIndex="1"
-            onAction="#handleFileChoseAction" />
-    <!--End file row-->
+                        <!--Start additional-->
+                        <TitledPane animated="false" text="Дополнительные">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0">
+                                    <children>
+                                        <GridPane hgap="10.0" layoutX="26.0" vgap="2.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="193.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0" prefWidth="344.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0" />
+                                            </rowConstraints>
+                                            <children>
+                                                <Label text="Тип запроса" />
+                                                <Label text="Сравнение" GridPane.rowIndex="1" />
+                                                <Label text="Чистый запуск" GridPane.rowIndex="2" />
+                                                <ChoiceBox fx:id="queryFormatChoiceBox" GridPane.columnIndex="1" />
+                                                <CheckComboBox fx:id="comparatorsBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <ToggleSwitch fx:id="cleanRunSwitch" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                            </children>
+                                        </GridPane>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                        <!--End additional-->
 
-    <!--Start auth row-->
-    <Label text="Строка авторизации:"
-           GridPane.columnIndex="0" GridPane.rowIndex="2" />
-    <TextField fx:id="authId"
-            GridPane.columnIndex="1" GridPane.rowIndex="2" />
-    <!--End auth row-->
+                        <!--Start expert-->
+                        <TitledPane animated="false" text="Для экспертов">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0">
+                                    <children>
+                                        <GridPane hgap="10.0" layoutX="26.0" vgap="2.0">
+                                            <children>
+                                                <Label text="user_agent" />
+                                                <Label text="year_deviation" GridPane.rowIndex="1" />
+                                                <Label text="timeout" GridPane.rowIndex="2" />
+                                                <Label text="log_level" GridPane.rowIndex="3" />
+                                                <TextField GridPane.columnIndex="1" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                            </children>
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="193.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0" prefWidth="344.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0" />
+                                            </rowConstraints>
+                                        </GridPane>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                        <!--End expert-->
+                    </panes>
+                    <expandedPane><fx:reference source="basePane"/></expandedPane>
+                </Accordion>
+                <!--End Accordion row-->
 
-    <!--Start mode row-->
-    <Label text="Режим работы:"
-           GridPane.columnIndex="0" GridPane.rowIndex="3" />
-    <ChoiceBox fx:id="modeChoiceBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-    <!--End mode row-->
-
-    <!--Start list row-->
-    <Label text="ID спиcка:"
-           GridPane.columnIndex="0" GridPane.rowIndex="4" />
-    <TextField fx:id="listId"
-            GridPane.columnIndex="1" GridPane.rowIndex="4" />
-    <!--End list row-->
-
-    <!--Start queryFormat row-->
-    <Label text="Тип запроса:"
-           GridPane.columnIndex="0" GridPane.rowIndex="5" />
-    <ChoiceBox fx:id="queryFormatChoiceBox" layoutX="15.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-    <!--End queryFormat row-->
-
-    <!--Start comparators row-->
-    <Label text="Сравнение:"
-           GridPane.columnIndex="0" GridPane.rowIndex="6" />
-    <CheckComboBox fx:id="comparatorsBox" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-    <!--End comparators row-->
-
-    <ProgressBar fx:id="progressBar" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="7" progress="0.0" />
-
-    <HBox spacing="10" alignment="bottom_right"
-          GridPane.columnIndex="0" GridPane.rowIndex="8">
-        <ToggleSwitch fx:id="cleanRunSwitch" />
-    </HBox>
-
-    <HBox spacing="10" alignment="bottom_right"
-          GridPane.columnIndex="1" GridPane.rowIndex="8">
-        <Button fx:id="startBtn" text="Запустить" onAction="#handleStartAction"/>
-    </HBox>
-</GridPane>
+                <!--Start HBox row-->
+                <HBox alignment="BOTTOM_RIGHT" prefWidth="600" prefHeight="50.0" spacing="40.0" layoutY="311.0">
+                    <children>
+                        <ProgressBar fx:id="progressBar" maxHeight="30.0" prefWidth="435.0" progress="0.0" />
+                        <Button maxHeight="30.0" mnemonicParsing="false"
+                                fx:id="startBtn"
+                                text="Запустить"
+                                onAction="#handleStartAction" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </HBox>
+                <!--End HBox row-->
+            </children>
+        </AnchorPane>
+    </children>
+</FlowPane>

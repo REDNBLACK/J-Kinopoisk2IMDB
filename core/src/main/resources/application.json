@@ -3,7 +3,7 @@
   "year_deviation": 1,
   "timeout": 3000,
   "log_level": "info",
-  "query_format": "XML",
+  "query_format": "MIXED",
   "mode": "COMBINED",
   "list": "",
   "auth": "",

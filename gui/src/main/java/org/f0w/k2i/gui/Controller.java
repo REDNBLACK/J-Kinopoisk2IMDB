@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
@@ -64,13 +63,13 @@ public class Controller {
             .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().unwrapped()));
 
     @FXML
-    private Text titleText;
-
-    @FXML
     private ChoiceBox<Choice<MovieHandler.Type, String>> modeChoiceBox;
 
     @FXML
     private ChoiceBox<Choice<MovieFinder.Type, String>> queryFormatChoiceBox;
+
+    @FXML
+    private Label selectedFile;
 
     @FXML
     private TextField authId;
@@ -99,7 +98,6 @@ public class Controller {
 
     @FXML
     void initialize() {
-        modeChoiceBox.setMaxWidth(300);
         modeChoiceBox.setItems(FXCollections.observableArrayList(
                 new Choice<>(MovieHandler.Type.SET_RATING, "Выставить рейтинг"),
                 new Choice<>(ADD_TO_WATCHLIST, "Добавить в список"),
@@ -119,7 +117,6 @@ public class Controller {
         });
         modeChoiceBox.getSelectionModel().select(new Choice<>(MovieHandler.Type.valueOf(config.getString("mode"))));
 
-        queryFormatChoiceBox.setMaxWidth(300);
         queryFormatChoiceBox.setItems(FXCollections.observableArrayList(
             new Choice<>(XML, "XML"),
             new Choice<>(JSON, "JSON"),
@@ -133,13 +130,11 @@ public class Controller {
             new Choice<>(MovieFinder.Type.valueOf(config.getString("query_format")))
         );
 
-        listId.setMaxWidth(300);
         listId.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             configMap.put("list", listId.getText());
         });
         listId.setText(config.getString("list"));
 
-        authId.setMaxWidth(300);
         authId.focusedProperty().addListener((observable, oldValue, newValue) -> {
             configMap.put("auth", authId.getText());
         });
@@ -147,7 +142,6 @@ public class Controller {
 
         progressBar.setMaxWidth(Double.MAX_VALUE);
 
-        comparatorsBox.setMaxWidth(300);
         comparatorsBox.getItems().addAll(FXCollections.observableArrayList(
                 new Choice<>(DeviationYearComparator.class, "Год с отклонением"),
                 new Choice<>(EqualsYearComparator.class, "Год с полным совпадением"),
@@ -168,7 +162,6 @@ public class Controller {
                 new Choice<>(ReflectionUtils.stringToClass(c, MovieComparator.class))
         ));
 
-        cleanRunSwitch.setText("Чистый запуск");
         cleanRunSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
             cleanRun = newValue;
         });
@@ -201,7 +194,7 @@ public class Controller {
 
         if (file != null) {
             selectFileBtn.setText("Выбрать другой файл...");
-            titleText.setText(file.getPath());
+            selectedFile.setText(file.getPath());
             kpFile = file;
             progressBar.setProgress(0.0);
             startBtn.setText("Запустить");

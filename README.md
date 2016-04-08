@@ -3,7 +3,9 @@
 * Программа для импорта оценок и списков просмотренных фильмов с Кинопоиска на IMDB.
 * Для работы необходима Java 8, [Скачать можно тут](https://www.java.com/ru/download/)
 * Подробные инструкции по работе читайте в пункте [Рекомендации по настройке](#Рекомендации-по-настройке).
-* [Ссылка на скачивание последней версии 0.8.0](https://github.com/REDNBLACK/J-Kinopoisk2IMDB/releases/tag/0.8.0).
+* [Ссылка на скачивание последней версии](https://github.com/REDNBLACK/J-Kinopoisk2IMDB/releases/latest).
+
+![Скриншот](https://cloud.githubusercontent.com/assets/1498939/14372842/252a5e98-fd4d-11e5-8a27-8da4309f12e0.png "Screenshot")
 
 ## Рекомендации по настройке
 

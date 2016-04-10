@@ -13,7 +13,7 @@ import java.util.List;
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyRating;
 
-public final class SetRatingHandler extends AbstractMovieHandler {
+public final class SetRatingHandler extends MovieHandler {
     private final MovieRatingChanger changer;
 
     @Inject
@@ -22,6 +22,11 @@ public final class SetRatingHandler extends AbstractMovieHandler {
         this.types = ImmutableSet.of(Type.SET_RATING, Type.COMBINED);
     }
 
+    /**
+     * Set movie rating and set {@link ImportProgress#rated} to true if succeed
+     * @param importProgress Entity to handle
+     * @param errors List which fill with errors if occured
+     */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
         Movie movie = importProgress.getMovie();

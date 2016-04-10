@@ -1,12 +1,13 @@
 package org.f0w.k2i.core;
 
 import com.google.common.eventbus.EventBus;
-import com.google.inject.*;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.google.inject.persist.PersistService;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.event.ImportFinishedEvent;
-import org.f0w.k2i.core.event.ImportStartedEvent;
 import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
+import org.f0w.k2i.core.event.ImportStartedEvent;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.service.ImportProgressService;
@@ -15,7 +16,9 @@ import org.f0w.k2i.core.providers.JpaRepositoryProvider;
 import org.f0w.k2i.core.providers.SystemProvider;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public final class Client implements Runnable {
     private final File file;

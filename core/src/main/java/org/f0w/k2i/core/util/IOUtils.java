@@ -20,11 +20,21 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 import static org.f0w.k2i.core.util.MovieUtils.*;
 
-public final class FileUtils {
-    private FileUtils() {
+/**
+ * I/O utils.
+ */
+public final class IOUtils {
+    private IOUtils() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Check that file is not null, exists and is not a directory or symlink
+     * @param file File to check
+     * @throws NullPointerException If file is null
+     * @throws IllegalArgumentException If file not exists or not a file
+     * @return Checked file
+     */
     public static File checkFile(File file) {
         requireNonNull(file, "File is null!");
         checkArgument(file.exists(), "File not exists!");
@@ -33,6 +43,12 @@ public final class FileUtils {
         return file;
     }
 
+    /**
+     * Computes and returns file hashcode
+     * @param file File to hash
+     * @return File hashcode
+     * @throws KinopoiskToIMDBException If an I/O error occurs
+     */
     public static String getHashCode(File file) {
         try {
             return Files.hash(file, Hashing.sha256()).toString();
@@ -41,6 +57,12 @@ public final class FileUtils {
         }
     }
 
+    /**
+     * Parses movies from file
+     * @param file File to parse
+     * @return List of parsed movies
+     * @throws KinopoiskToIMDBException If an I/O error occurs
+     */
     public static List<Movie> parseMovies(File file) {
         try {
             Document document = Jsoup.parse(file, Charset.forName("windows-1251").toString());

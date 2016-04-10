@@ -1,7 +1,6 @@
 package org.f0w.k2i.core.comparator.title;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.html.HtmlEscapers;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.comparator.AbstractMovieComparator;
@@ -9,8 +8,12 @@ import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.string.NumericToWord;
 import org.f0w.k2i.core.util.string.Translit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Uses multiple unique algorithms for movie title comparison.
+ */
 public final class SmartTitleComparator extends AbstractMovieComparator {
     private static final List<StringModifier> modifiers;
 
@@ -110,6 +113,7 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
         modifiers = ImmutableList.copyOf(list);
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean areEqual(Movie movie1, Movie movie2) {
         for (StringModifier m1 : modifiers) {

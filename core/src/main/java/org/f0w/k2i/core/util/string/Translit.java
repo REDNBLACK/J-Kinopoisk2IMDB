@@ -1,5 +1,10 @@
 package org.f0w.k2i.core.util.string;
 
+/**
+ * Utility class that transliterates russian text.
+ * For example:
+ *      Шерлок Холмс и доктор Ватсон: Знакомство - Sherlok Kholms i doktor Vatson: Znakomstvo
+ */
 public final class Translit {
     private static final String[] charTable = new String[81];
 
@@ -13,7 +18,7 @@ public final class Translit {
         charTable['Д' - START_CHAR] = "D";
         charTable['Е' - START_CHAR] = "E";
         charTable['Ё' - START_CHAR] = "E";
-        charTable['Ж' - START_CHAR] = "ZH";
+        charTable['Ж' - START_CHAR] = "Zh";
         charTable['З' - START_CHAR] = "Z";
         charTable['И' - START_CHAR] = "I";
         charTable['Й' - START_CHAR] = "I";
@@ -28,17 +33,17 @@ public final class Translit {
         charTable['Т' - START_CHAR] = "T";
         charTable['У' - START_CHAR] = "U";
         charTable['Ф' - START_CHAR] = "F";
-        charTable['Х' - START_CHAR] = "KH";
-        charTable['Ц' - START_CHAR] = "TS";
-        charTable['Ч' - START_CHAR] = "CH";
-        charTable['Ш' - START_CHAR] = "SH";
-        charTable['Щ' - START_CHAR] = "SH";
+        charTable['Х' - START_CHAR] = "Kh";
+        charTable['Ц' - START_CHAR] = "Ts";
+        charTable['Ч' - START_CHAR] = "Ch";
+        charTable['Ш' - START_CHAR] = "Sh";
+        charTable['Щ' - START_CHAR] = "Sh";
         charTable['Ъ' - START_CHAR] = "'";
         charTable['Ы' - START_CHAR] = "Y";
         charTable['Ь' - START_CHAR] = "'";
         charTable['Э' - START_CHAR] = "E";
         charTable['Ю' - START_CHAR] = "U";
-        charTable['Я' - START_CHAR] = "YA";
+        charTable['Я' - START_CHAR] = "Ya";
 
         for (int i = 0; i < charTable.length; i++) {
             char idx = (char) ((char) i + START_CHAR);
@@ -74,11 +79,6 @@ public final class Translit {
 
     public static String toWeakerTranslit(String text) {
         return toTranslit(text).replace("'", "")
-                .replace("KH", "Kh")
-                .replace("CH", "Ch")
-                .replace("ZH", "Zh")
-                .replace("SH", "Sh")
-                .replace("YA", "Ya")
                 .replace("yi", "yy");
     }
 }

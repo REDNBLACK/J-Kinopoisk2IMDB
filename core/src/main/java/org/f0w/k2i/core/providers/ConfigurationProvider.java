@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
+/**
+ * Guice module providing configuration.
+ */
 public class ConfigurationProvider extends AbstractModule {
     private final Config config;
 

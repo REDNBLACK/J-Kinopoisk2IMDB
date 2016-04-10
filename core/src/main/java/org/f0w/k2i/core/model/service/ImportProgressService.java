@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.f0w.k2i.core.util.FileUtils.*;
+import static org.f0w.k2i.core.util.IOUtils.*;
 
 public final class ImportProgressService {
     private final KinopoiskFileRepository kinopoiskFileRepository;

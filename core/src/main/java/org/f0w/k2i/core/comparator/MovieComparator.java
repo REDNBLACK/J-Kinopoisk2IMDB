@@ -2,10 +2,22 @@ package org.f0w.k2i.core.comparator;
 
 import org.f0w.k2i.core.model.entity.Movie;
 
+/**
+ * Interface for comparing equality of two movies.
+ */
 @FunctionalInterface
 public interface MovieComparator {
+    /**
+     * Check equality of two movies
+     * @param movie1 First movie
+     * @param movie2 Second movie
+     * @return Are two movie objects equals to each other
+     */
     boolean areEqual(Movie movie1, Movie movie2);
 
+    /**
+     * Available MovieComparator types
+     */
     enum Type {
         TITLE_CONTAINS,
         TITLE_ENDS,

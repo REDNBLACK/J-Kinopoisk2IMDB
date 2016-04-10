@@ -1,14 +1,15 @@
 package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ForwardingDeque;
-import com.google.inject.Inject;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 
 final class MixedMovieFinder implements MovieFinder {
     private static final Logger LOG = LoggerFactory.getLogger(MixedMovieFinder.class);
@@ -25,6 +26,7 @@ final class MixedMovieFinder implements MovieFinder {
         this.movie = movie;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Connection.Response getRawResponse() {
         throw new UnsupportedOperationException();

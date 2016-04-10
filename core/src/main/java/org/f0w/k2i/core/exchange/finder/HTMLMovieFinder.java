@@ -1,16 +1,17 @@
 package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ImmutableMap;
-
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.util.*;
-import java.util.regex.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.util.HttpUtils.buildURL;
@@ -21,20 +22,22 @@ final class HTMLMovieFinder extends AbstractMovieFinder {
         super(config);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String buildSearchQuery(Movie movie) {
         final String movieSearchLink = "http://www.imdb.com/find?";
 
         final Map<String, String> query = new ImmutableMap.Builder<String, String>()
-                .put("q", movie.getTitle()) // Запрос
-                .put("s", "tt")             // Поиск только по названиям
-              //.put("exact", "true")       // Поиск только по полным совпадениям
-                .put("ref", "fn_tt_ex")     // Реферер для надежности
+                .put("q", movie.getTitle())
+                .put("s", "tt")
+              //.put("exact", "true")
+                .put("ref", "fn_tt_ex")
                 .build();
 
         return buildURL(movieSearchLink, query);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected List<Movie> parseSearchResult(String result) {
         Document document = Jsoup.parse(result);

@@ -6,6 +6,9 @@ import org.f0w.k2i.core.comparator.title.*;
 import org.f0w.k2i.core.comparator.year.DeviationYearComparator;
 import org.f0w.k2i.core.comparator.year.EqualsYearComparator;
 
+/**
+ * {@link MovieComparator} factory
+ */
 public class MovieComparatorFactory {
     private final Config config;
 
@@ -14,6 +17,12 @@ public class MovieComparatorFactory {
         this.config = config;
     }
 
+    /**
+     * Create instance of {@link MovieComparator},
+     * using {@link MovieComparator.Type} as argument.
+     * @param type Type of MovieComparator
+     * @return MovieComparator instance
+     */
     public MovieComparator make(MovieComparator.Type type) {
         switch (type) {
             case TITLE_EQUALS:

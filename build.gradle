@@ -8,4 +8,24 @@ subprojects {
 
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+
+    javadoc {
+        afterEvaluate {
+            configure(options) {
+                windowTitle "Kinopoisk2IMDB Documentation"
+                docTitle "Kinopoisk2IMDB Documentation"
+                bottom 'Copyright &#169; 2016 <a href="https://github.com/REDNBLACK">REDNBLACK</a>'
+                breakIterator true
+                author false
+                source "1.8"
+                encoding "UTF-8"
+                docEncoding "UTF-8"
+                failOnError true
+                links = [
+                    "http://download.oracle.com/javase/8/docs/api/",
+                    "http://download.oracle.com/javaee/7/api/",
+                ]
+            }
+        }
+    }
 }

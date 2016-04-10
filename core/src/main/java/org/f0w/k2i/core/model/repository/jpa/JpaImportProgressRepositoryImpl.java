@@ -1,10 +1,9 @@
 package org.f0w.k2i.core.model.repository.jpa;
 
+import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 import org.f0w.k2i.core.model.entity.ImportProgress;
-
-import com.google.inject.Inject;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.model.repository.ImportProgressRepository;

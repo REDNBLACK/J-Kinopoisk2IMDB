@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 
-public final class ParseIDHandler extends AbstractMovieHandler {
+public final class ParseIDHandler extends MovieHandler {
     private final Provider<MovieFinder> movieFinderProvider;
     private final MovieComparator movieComparator;
 
@@ -26,6 +26,11 @@ public final class ParseIDHandler extends AbstractMovieHandler {
         this.types = ImmutableSet.of(Type.SET_RATING, Type.ADD_TO_WATCHLIST, Type.COMBINED);
     }
 
+    /**
+     * Find and set {@link ImportProgress#movie} IMDB ID, or add error to list if occured.
+     * @param importProgress Entity to handle
+     * @param errors List which fill with errors if occured
+     */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
         Movie movie = importProgress.getMovie();
@@ -62,6 +67,12 @@ public final class ParseIDHandler extends AbstractMovieHandler {
         }
     }
 
+    /**
+     * Finds movie matching to movie argument using {@link MovieComparator} or {@link Optional#empty()} on failure
+     * @param movie Movie similar to which should be found
+     * @param movies Deque in which perform search
+     * @return Optional of found matching movie
+     */
     private Optional<Movie> findMatchingMovie(Movie movie, Deque<Movie> movies) {
         while (!movies.isEmpty()) {
             Movie imdbMovie = movies.poll();

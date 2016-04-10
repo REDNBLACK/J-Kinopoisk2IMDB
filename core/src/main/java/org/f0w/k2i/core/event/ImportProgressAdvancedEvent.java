@@ -1,5 +1,8 @@
 package org.f0w.k2i.core.event;
 
+/**
+ * Indicates that movies import progress has advanced
+ */
 public final class ImportProgressAdvancedEvent implements Event {
     public final boolean successful;
 

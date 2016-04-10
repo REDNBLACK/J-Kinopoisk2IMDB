@@ -13,6 +13,9 @@ import org.f0w.k2i.core.handler.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Guice module providing base system binds
+ */
 public class SystemProvider extends AbstractModule {
     @Override
     protected void configure() {

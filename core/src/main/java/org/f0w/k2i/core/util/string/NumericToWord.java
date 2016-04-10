@@ -1,5 +1,11 @@
 package org.f0w.k2i.core.util.string;
 
+/**
+ * Utility class that converts numbers to words.
+ * For example:
+ *      3 - Three,
+ *      451 - Four Hundred Fifty One
+ */
 public final class NumericToWord {
     private static final String[] units = {
             "Zero",

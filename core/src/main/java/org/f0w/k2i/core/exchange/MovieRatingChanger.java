@@ -1,18 +1,20 @@
 package org.f0w.k2i.core.exchange;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
-
-import com.google.common.collect.ImmutableMap;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 
-public final class MovieRatingChanger extends POSTMovieExchange {
+/**
+ * Changes Movie rating on IMDB.
+ */
+public final class MovieRatingChanger extends IMDBJSONExchange {
     private final Config config;
 
     private final MovieAuthStringFetcher fetcher;
@@ -23,6 +25,13 @@ public final class MovieRatingChanger extends POSTMovieExchange {
         this.fetcher = fetcher;
     }
 
+    /**
+     * Sends POST request and changes Movie rating,
+     * using using {@link MovieAuthStringFetcher#getProcessedResponse()} authorization string
+     * and {@link Movie#imdbId}
+     * @param movie Movie which rating to change
+     * @throws IOException If an I/O error occurs
+     */
     @Override
     public void sendRequest(Movie movie) throws IOException {
         final String movieRatingChangeLink = "http://www.imdb.com/ratings/_ajax/title";
@@ -30,13 +39,13 @@ public final class MovieRatingChanger extends POSTMovieExchange {
         final String authString = getAuthFetcherResponse(movie);
 
         Map<String, String> postData = new ImmutableMap.Builder<String, String>()
-                .put("tconst", movie.getImdbId())                 // ID фильма
-                .put("rating", String.valueOf(movie.getRating())) // Рейтинг
-                .put("auth", authString)                          // ID авторизации фильма
-                .put("pageId", movie.getImdbId())                 // ID страницы (совпадает с ID фильма)
-                .put("tracking_tag", "title-maindetails")         // Тэг для трекинга не меняется
-                .put("pageType", "title")                         // Реферер не меняется
-                .put("subpageType", "main")                       // Тип страницы не меняется
+                .put("tconst", movie.getImdbId())
+                .put("rating", String.valueOf(movie.getRating()))
+                .put("auth", authString)
+                .put("pageId", movie.getImdbId())
+                .put("tracking_tag", "title-maindetails")
+                .put("pageType", "title")
+                .put("subpageType", "main")
                 .build();
 
         Connection request = Jsoup.connect(movieRatingChangeLink)
@@ -50,6 +59,12 @@ public final class MovieRatingChanger extends POSTMovieExchange {
         response = request.execute();
     }
 
+    /**
+     * Executes {@link MovieAuthStringFetcher} and returns it's response
+     * @param movie Movie to get auth string for
+     * @return {@link MovieAuthStringFetcher#getProcessedResponse()}
+     * @throws IOException If an I/O error occurs or authorisation string is null or empty
+     */
     private String getAuthFetcherResponse(Movie movie) throws IOException {
         fetcher.sendRequest(movie);
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 
-public final class AddToWatchlistHandler extends AbstractMovieHandler {
+public final class AddToWatchlistHandler extends MovieHandler {
     private final MovieWatchlistAssigner assigner;
 
     @Inject
@@ -21,6 +21,11 @@ public final class AddToWatchlistHandler extends AbstractMovieHandler {
         this.types = ImmutableSet.of(Type.ADD_TO_WATCHLIST, Type.COMBINED);
     }
 
+    /**
+     * Add Movie to a watchlist and set {@link ImportProgress#imported} to true if succeed
+     * @param importProgress Entity to handle
+     * @param errors List which fill with errors if occured
+     */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
         Movie movie = importProgress.getMovie();

@@ -1,69 +1,106 @@
 package org.f0w.k2i.core.util;
 
 import com.typesafe.config.Config;
+import com.typesafe.config.ConfigException;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.handler.MovieHandler;
 
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+/**
+ * Class for config validation
+ */
 public final class ConfigValidator {
-    private ConfigValidator() {
-        throw new UnsupportedOperationException();
+    private final Config config;
+
+    private ConfigValidator(Config config) {
+        this.config = config;
     }
 
+    /**
+     * Validates given config, returns it on success or throws exception on error
+     * @param config Config to validate
+     * @return Validated config
+     * @throws ConfigException.Generic If validation of field fails
+     */
     public static Config checkValid(Config config) {
-        checkNotNull(config);
+        ConfigValidator validator = new ConfigValidator(config);
 
-        checkLogLevel(config.getString("log_level"));
+        try {
+            checkNotNull(config);
 
-        checkAuth(config.getString("auth"));
-        checkMode(config.getString("mode"));
-        checkList(config.getString("list"), config.getString("mode"));
+            validator.checkLogLevel();
 
-        checkQueryFormat(config.getString("query_format"));
-        checkComparators(config.getStringList("comparators"));
+            validator.checkAuth();
+            validator.checkMode();
+            validator.checkList();
 
-        checkUserAgent(config.getString("user_agent"));
-        checkYearDeviation(config.getInt("year_deviation"));
-        checkTimeout(config.getInt("timeout"));
+            validator.checkQueryFormat();
+            validator.checkComparators();
+
+            validator.checkUserAgent();
+            validator.checkYearDeviation();
+            validator.checkTimeout();
+        } catch (NullPointerException|IllegalArgumentException e) {
+            throw new ConfigException.Generic(e.getMessage(), e);
+        }
 
         return config;
     }
 
-    private static void checkLogLevel(final String logLevel) {
-        final String message = "LogLevel setting is not valid!";
-
-        try {
-            
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(message);
-        }
+    /**
+     * Checks the log_level string
+     * @throws ConfigException
+     */
+    private void checkLogLevel() {
+        config.getString("log_level");
     }
 
-    private static void checkUserAgent(final String userAgent) {
+    /**
+     * Checks the user_agent string
+     * @throws IllegalArgumentException
+     */
+    private void checkUserAgent() {
         final String message = "UserAgent setting is not valid!";
+        final String userAgent = config.getString("user_agent");
 
         checkArgument(!isNullOrEmpty(userAgent), message);
     }
 
-    private static void checkYearDeviation(final Integer yearDeviation) {
+    /**
+     * Checks the year_deviation int
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkYearDeviation() {
         final String message = "YearDeviation setting is not valid!";
+        final int yearDeviation = config.getInt("year_deviation");
 
         checkArgument(yearDeviation > 0, message);
     }
 
-    private static void checkTimeout(final Integer timeout) {
+    /**
+     * Checks the timeout int
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkTimeout() {
         final String message = "TimeOut setting is not valid!";
+        final int timeout = config.getInt("timeout");
 
         checkArgument(timeout >= 1000, message);
     }
 
-    private static void checkQueryFormat(final String queryFormat) {
+    /**
+     * Checks the query_format string
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkQueryFormat() {
         final String message = "QueryFormat setting is not valid!";
+        final String queryFormat = config.getString("query_format");
 
         try {
             MovieFinder.Type.valueOf(queryFormat);
@@ -72,8 +109,13 @@ public final class ConfigValidator {
         }
     }
 
-    private static void checkComparators(List<String> comparators) {
+    /**
+     * Checks the comparators string list
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkComparators() {
         final String message = "Comparators setting is not valid!";
+        final List<String> comparators = config.getStringList("comparators");
 
         try {
             comparators.forEach(MovieComparator.Type::valueOf);
@@ -82,14 +124,25 @@ public final class ConfigValidator {
         }
     }
 
-    private static void checkAuth(final String auth) {
+    /**
+     * Checks the auth string
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkAuth() {
         final String message = "Auth setting is not valid!";
+        final String auth = config.getString("auth");
 
         checkArgument(auth.length() > 10, message);
     }
 
-    private static void checkList(final String list, final String mode) {
+    /**
+     * Checks the list string
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkList() {
         final String message = "List setting is not valid!";
+        final String list = config.getString("list");
+        final String mode = config.getString("mode");
 
         if ("".equals(list)) {
             MovieHandler.Type commandType = MovieHandler.Type.valueOf(mode);
@@ -105,8 +158,13 @@ public final class ConfigValidator {
         }
     }
 
-    private static void checkMode(final String mode) {
+    /**
+     * Checks the mode string
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkMode() {
         final String message = "Mode setting is not valid!";
+        final String mode = config.getString("mode");
 
         try {
              MovieHandler.Type.valueOf(mode);

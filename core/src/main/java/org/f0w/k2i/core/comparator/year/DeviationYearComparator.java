@@ -6,6 +6,9 @@ import com.typesafe.config.Config;
 import org.f0w.k2i.core.comparator.AbstractMovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 
+/**
+ * Checks that one movie year is in range of second movie year +/- yearDeviation.
+ */
 public final class DeviationYearComparator extends AbstractMovieComparator {
     private final Config config;
 
@@ -14,6 +17,7 @@ public final class DeviationYearComparator extends AbstractMovieComparator {
         this.config = config;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean areEqual(Movie movie1, Movie movie2) {
         int yearDeviation = config.getInt("year_deviation");

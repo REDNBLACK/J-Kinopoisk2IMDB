@@ -8,7 +8,7 @@ import org.f0w.k2i.core.util.HttpUtils;
 
 import java.util.List;
 
-public class ConnectionCheckHandler extends AbstractMovieHandler {
+public class ConnectionCheckHandler extends MovieHandler {
     private final Config config;
 
     @Inject
@@ -17,6 +17,11 @@ public class ConnectionCheckHandler extends AbstractMovieHandler {
         this.types = ImmutableSet.of(Type.SET_RATING, Type.ADD_TO_WATCHLIST, Type.COMBINED);
     }
 
+    /**
+     * Repeatably sleeps the thread for specific timeout, until connection to IMDB site is available.
+     * @param importProgress Entity to handle
+     * @param errors List which fill with errors if occured
+     */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
         final String url = "www.imdb.com";

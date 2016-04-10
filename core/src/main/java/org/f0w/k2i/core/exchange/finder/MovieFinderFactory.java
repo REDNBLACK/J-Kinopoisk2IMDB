@@ -5,6 +5,9 @@ import com.typesafe.config.Config;
 
 import java.util.Arrays;
 
+/**
+ * {@link MovieFinder} factory
+ */
 public class MovieFinderFactory {
     private final Config config;
 
@@ -13,8 +16,14 @@ public class MovieFinderFactory {
         this.config = config;
     }
 
-    public MovieFinder make(MovieFinder.Type movieFinderType) {
-        switch (movieFinderType) {
+    /**
+     * Create instance of {@link MovieFinder},
+     * using {@link MovieFinder.Type} as argument.
+     * @param type Type of MovieComparator
+     * @return MovieFinder instance
+     */
+    public MovieFinder make(MovieFinder.Type type) {
+        switch (type) {
             case XML:
                 return new XMLMovieFinder(config);
             case JSON:
@@ -28,6 +37,10 @@ public class MovieFinderFactory {
         }
     }
 
+    /**
+     * Create instance of {@link MixedMovieFinder}
+     * @return MixedMovieFinder
+     */
     private MovieFinder makeMixedMovieFinder() {
         return new MixedMovieFinder(Arrays.asList(
                 make(MovieFinder.Type.XML),

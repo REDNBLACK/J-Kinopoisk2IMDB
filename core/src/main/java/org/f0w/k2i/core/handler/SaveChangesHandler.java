@@ -6,9 +6,8 @@ import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.repository.ImportProgressRepository;
 
 import java.util.List;
-import java.util.Set;
 
-public final class SaveChangesHandler extends AbstractMovieHandler {
+public final class SaveChangesHandler extends MovieHandler {
     private final ImportProgressRepository importProgressRepository;
 
     @Inject
@@ -17,6 +16,11 @@ public final class SaveChangesHandler extends AbstractMovieHandler {
         this.types = ImmutableSet.of(Type.SET_RATING, Type.ADD_TO_WATCHLIST, Type.COMBINED);
     }
 
+    /**
+     * Save changes to ImportProgress entity into {@link ImportProgressRepository}
+     * @param importProgress Entity to handle
+     * @param errors List which fill with errors if occured
+     */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
         importProgressRepository.save(importProgress);

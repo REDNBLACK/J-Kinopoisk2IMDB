@@ -1,17 +1,17 @@
 package org.f0w.k2i.core.exchange.finder;
 
-import java.util.*;
-
 import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.Config;
+import org.f0w.k2i.core.model.entity.Movie;
+import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
 import org.json.simple.parser.ContainerFactory;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
-import static org.f0w.k2i.core.util.MovieUtils.*;
+import java.util.*;
+
 import static org.f0w.k2i.core.util.HttpUtils.buildURL;
+import static org.f0w.k2i.core.util.MovieUtils.*;
 
 final class JSONMovieFinder extends AbstractMovieFinder {
     private static final ContainerFactory CONTAINER_FACTORY = new ContainerFactory() {
@@ -30,20 +30,22 @@ final class JSONMovieFinder extends AbstractMovieFinder {
         super(config);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String buildSearchQuery(Movie movie) {
         final String movieSearchLink = "http://www.imdb.com/xml/find?";
 
         final Map<String, String> query = new ImmutableMap.Builder<String, String>()
-                .put("q", movie.getTitle()) // Запрос
-                .put("tt", "on")            // Поиск только по названиям
+                .put("q", movie.getTitle())
+                .put("tt", "on")
                 .put("nr", "1")
-                .put("json", "1")           // Вывод в формате JSON
+                .put("json", "1")
                 .build();
 
         return buildURL(movieSearchLink, query);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected List<Movie> parseSearchResult(String result) {
         List<Movie> movies = new ArrayList<>();

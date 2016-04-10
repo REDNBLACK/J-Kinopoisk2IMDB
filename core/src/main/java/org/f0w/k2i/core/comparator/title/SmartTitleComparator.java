@@ -10,7 +10,7 @@ import org.f0w.k2i.core.util.string.Translit;
 
 import java.util.*;
 
-public class SmartTitleComparator extends AbstractMovieComparator {
+public final class SmartTitleComparator extends AbstractMovieComparator {
     private static final List<StringModifier> modifiers;
 
     @FunctionalInterface

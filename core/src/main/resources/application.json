@@ -8,8 +8,8 @@
   "list": "",
   "auth": "",
   "comparators": [
-      "org.f0w.k2i.core.comparator.year.DeviationYearComparator",
-      "org.f0w.k2i.core.comparator.title.SmartTitleComparator"
+      "YEAR_DEVIATION",
+      "TITLE_SMART"
   ],
   "db": {
       "driver": "org.h2.Driver",

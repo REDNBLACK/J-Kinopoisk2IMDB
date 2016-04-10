@@ -75,10 +75,11 @@ public final class ConfigValidator {
     private static void checkComparators(List<String> comparators) {
         final String message = "Comparators setting is not valid!";
 
-        boolean allOfMovieComparatorType = comparators.stream()
-                .allMatch(c -> ReflectionUtils.isOfTargetType(c, MovieComparator.class));
-
-        checkArgument(allOfMovieComparatorType, message);
+        try {
+            comparators.forEach(MovieComparator.Type::valueOf);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(message);
+        }
     }
 
     private static void checkAuth(final String auth) {

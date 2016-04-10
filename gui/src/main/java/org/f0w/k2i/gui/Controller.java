@@ -22,13 +22,10 @@ import org.controlsfx.control.CheckComboBox;
 
 import org.f0w.k2i.core.Client;
 import org.f0w.k2i.core.comparator.MovieComparator;
-import org.f0w.k2i.core.comparator.title.*;
-import org.f0w.k2i.core.comparator.year.*;
 import org.f0w.k2i.core.event.*;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.util.ReflectionUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +42,7 @@ import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.handler.MovieHandler.Type.*;
 import static org.f0w.k2i.core.exchange.finder.MovieFinder.Type.*;
+import static org.f0w.k2i.core.comparator.MovieComparator.Type.*;
 
 public class Controller {
     private Stage stage;
@@ -90,7 +88,7 @@ public class Controller {
     private javafx.scene.control.ProgressBar progressBar;
 
     @FXML
-    private CheckComboBox<Choice<Class<? extends MovieComparator>, String>> comparatorsBox;
+    private CheckComboBox<Choice<MovieComparator.Type, String>> comparatorsBox;
 
     @FXML
     private TextField userAgentField;
@@ -112,9 +110,9 @@ public class Controller {
     void initialize() {
         // Основные
         modeComboBox.setItems(FXCollections.observableArrayList(
-                new Choice<>(MovieHandler.Type.SET_RATING, "Выставить рейтинг"),
-                new Choice<>(ADD_TO_WATCHLIST, "Добавить в список"),
-                new Choice<>(COMBINED, "Добавить в список и выставить рейтинг")
+                new Choice<>(COMBINED, "Добавить в список и выставить рейтинг"),
+                new Choice<>(SET_RATING, "Выставить рейтинг"),
+                new Choice<>(ADD_TO_WATCHLIST, "Добавить в список")
         ));
         modeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.value.equals(ADD_TO_WATCHLIST) || newValue.value.equals(COMBINED)) {
@@ -157,23 +155,23 @@ public class Controller {
         );
 
         comparatorsBox.getItems().addAll(FXCollections.observableArrayList(
-                new Choice<>(DeviationYearComparator.class, "Год с отклонением"),
-                new Choice<>(EqualsYearComparator.class, "Год с полным совпадением"),
-                new Choice<>(SmartTitleComparator.class, "Интеллектуальное сравнение названий"),
-                new Choice<>(EqualsTitleComparator.class, "Полное совпадение названий"),
-                new Choice<>(ContainsTitleComparator.class, "Одно название содержит другое"),
-                new Choice<>(StartsWithTitleComparator.class, "Одно название начинается с другого"),
-                new Choice<>(EndsWithTitleComparator.class, "Одно название оканчивается другим")
+                new Choice<>(YEAR_DEVIATION, "Год с отклонением"),
+                new Choice<>(YEAR_EQUALS, "Год с полным совпадением"),
+                new Choice<>(TITLE_SMART, "Интеллектуальное сравнение названий"),
+                new Choice<>(TITLE_EQUALS, "Полное совпадение названий"),
+                new Choice<>(TITLE_CONTAINS, "Одно название содержит другое"),
+                new Choice<>(TITLE_STARTS, "Одно название начинается с другого"),
+                new Choice<>(TITLE_ENDS, "Одно название оканчивается другим")
         ));
-        comparatorsBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<Choice<Class<? extends MovieComparator>, String>>) c -> {
+        comparatorsBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<Choice<MovieComparator.Type, String>>) c -> {
             List<String> comparators = c.getList().stream()
-                    .map(choice -> choice.value.getName())
+                    .map(choice -> choice.value.toString())
                     .collect(Collectors.toList());
 
             configMap.put("comparators", comparators);
         });
         config.getStringList("comparators").forEach(c -> comparatorsBox.getCheckModel().check(
-                new Choice<>(ReflectionUtils.stringToClass(c, MovieComparator.class))
+                new Choice<>(MovieComparator.Type.valueOf(c))
         ));
 
         cleanRunCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {

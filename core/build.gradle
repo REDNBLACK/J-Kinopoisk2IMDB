@@ -1,23 +1,28 @@
-version = '0.7.2'
+version = "0.7.2"
+
+ext {
+    guiceVersion = "4.0"
+    hibernateVersion = "5.1.0.Final"
+}
 
 dependencies {
-    compile group: 'com.google.inject', name: 'guice', version: '4.0'
-    compile group: 'com.google.inject.extensions', name: 'guice-persist', version: '4.0'
+    compile "com.google.inject:guice:$guiceVersion"
+    compile "com.google.inject.extensions:guice-persist:$guiceVersion"
 
-    compile group: 'com.google.guava', name: 'guava', version: '19.0'
-    compile group: 'org.apache.commons', 'name': 'commons-lang3', 'version': '3.4'
+    compile "com.google.guava:guava:19.0"
+    compile "org.apache.commons:commons-lang3:3.4"
 
-    runtime group: 'com.h2database', name: 'h2', version: '1.3.176'
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.1.0.Final'
-    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.1.0.Final'
+    runtime "com.h2database:h2:1.3.176"
+    compile "org.hibernate:hibernate-core:$hibernateVersion"
+    compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
 
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.20'
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+    compile "org.slf4j:slf4j-api:1.7.20"
+    compile "ch.qos.logback:logback-classic:1.1.7"
 
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.8.3'
-    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    compile "org.jsoup:jsoup:1.8.3"
+    compile "com.googlecode.json-simple:json-simple:1.1.1"
 
-    compile group: 'com.typesafe', 'name': 'config', version: '1.3.0'
+    compile "com.typesafe:config:1.3.0"
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile "junit:junit:4.12"
 }

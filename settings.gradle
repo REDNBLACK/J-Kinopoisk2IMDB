@@ -1,2 +1,5 @@
 include 'gui'
 include 'core'
+
+findProject(':core')?.name = 'k2i-core'
+findProject(':gui')?.name = 'k2i-gui'

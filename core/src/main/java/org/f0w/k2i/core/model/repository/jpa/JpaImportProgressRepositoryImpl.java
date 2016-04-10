@@ -10,7 +10,6 @@ import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.model.repository.ImportProgressRepository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class JpaImportProgressRepositoryImpl implements ImportProgressRepository {
@@ -45,37 +44,39 @@ public class JpaImportProgressRepositoryImpl implements ImportProgressRepository
     @Override
     public List<ImportProgress> findNotImportedOrNotRatedByFile(KinopoiskFile kinopoiskFile) {
         return emProvider.get()
-            .createQuery(
-                "FROM ImportProgress WHERE (imported = :imported OR rated = :rated) AND kinopoiskFile = :kinopoiskFile",
-                ImportProgress.class
-            )
-            .setParameter("imported", false)
-            .setParameter("rated", false)
-            .setParameter("kinopoiskFile", kinopoiskFile)
-            .getResultList();
+                .createQuery(
+                    "FROM ImportProgress WHERE (imported = :imported OR (rated = :rated AND movie.rating IS NOT NULL))"
+                            + "AND kinopoiskFile = :kinopoiskFile",
+                    ImportProgress.class
+                )
+                .setParameter("imported", false)
+                .setParameter("rated", false)
+                .setParameter("kinopoiskFile", kinopoiskFile)
+                .getResultList();
     }
 
     @Override
     public List<ImportProgress> findNotImportedByFile(KinopoiskFile kinopoiskFile) {
-        TypedQuery<ImportProgress> query = emProvider.get().createQuery(
-                "FROM ImportProgress WHERE imported = :imported AND kinopoiskFile = :kinopoiskFile",
-                ImportProgress.class
-        );
-        query.setParameter("imported", false);
-        query.setParameter("kinopoiskFile", kinopoiskFile);
-
-        return query.getResultList();
+        return emProvider.get()
+                .createQuery(
+                        "FROM ImportProgress WHERE imported = :imported AND kinopoiskFile = :kinopoiskFile",
+                        ImportProgress.class
+                )
+                .setParameter("imported", false)
+                .setParameter("kinopoiskFile", kinopoiskFile)
+                .getResultList();
     }
 
     @Override
     public List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile) {
-        TypedQuery<ImportProgress> query = emProvider.get().createQuery(
-                "FROM ImportProgress WHERE rated = :rated AND kinopoiskFile = :kinopoiskFile",
-                ImportProgress.class
-        );
-        query.setParameter("rated", false);
-        query.setParameter("kinopoiskFile", kinopoiskFile);
-
-        return query.getResultList();
+        return emProvider.get()
+                .createQuery(
+                        "FROM ImportProgress WHERE rated = :rated"
+                                + " AND kinopoiskFile = :kinopoiskFile AND movie.rating IS NOT NULL",
+                        ImportProgress.class
+                )
+                .setParameter("rated", false)
+                .setParameter("kinopoiskFile", kinopoiskFile)
+                .getResultList();
     }
 }

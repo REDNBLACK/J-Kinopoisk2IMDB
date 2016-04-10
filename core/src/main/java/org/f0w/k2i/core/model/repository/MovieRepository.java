@@ -7,7 +7,5 @@ import java.util.List;
 public interface MovieRepository {
     Movie save(Movie movie);
 
-    List<Movie> saveAllNotExisting(List<Movie> movies);
-
     Movie findByTitleAndYear(final String title, final int year);
 }

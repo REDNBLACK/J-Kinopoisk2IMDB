@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.util.FileUtils.*;
 
@@ -67,7 +68,24 @@ public final class ImportProgressService {
     @Transactional
     private KinopoiskFile importNewFileData(String fileHashCode) {
         KinopoiskFile newFile = kinopoiskFileRepository.save(new KinopoiskFile(fileHashCode));
-        List<Movie> movies = movieRepository.saveAllNotExisting(parseMovies(file));
+
+        List<Movie> movies = parseMovies(file).stream()
+                .map(newMovie -> {
+                    Movie oldMovie = movieRepository.findByTitleAndYear(newMovie.getTitle(), newMovie.getYear());
+
+                    if (oldMovie == null) {
+                        return movieRepository.save(newMovie);
+                    }
+
+                    if (oldMovie.getRating() == null && newMovie.getRating() != null) {
+                        oldMovie.setRating(newMovie.getRating());
+
+                        return movieRepository.save(oldMovie);
+                    }
+
+                    return oldMovie;
+                })
+                .collect(Collectors.toList());
 
         importProgressRepository.saveAll(newFile, movies);
 

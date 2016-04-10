@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.exchange;
 
+import com.google.common.base.Strings;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 
@@ -54,7 +55,13 @@ public final class MovieRatingChanger implements Exchangeable<Movie, Connection.
     private String getAuthFetcherResponse(Movie movie) throws IOException {
         fetcher.sendRequest(movie);
 
-        return fetcher.getProcessedResponse();
+        String fetcherResponse = fetcher.getProcessedResponse();
+
+        if (Strings.isNullOrEmpty(fetcherResponse)) {
+            throw new IOException("Movie authorisation string is empty!");
+        }
+
+        return fetcherResponse;
     }
 
     @Override

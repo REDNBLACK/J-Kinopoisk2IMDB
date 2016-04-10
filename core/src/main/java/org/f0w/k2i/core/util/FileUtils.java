@@ -12,8 +12,9 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
@@ -41,26 +42,34 @@ public final class FileUtils {
     }
 
     public static List<Movie> parseMovies(File file) {
-        ArrayList<Movie> movies = new ArrayList<>();
-
         try {
             Document document = Jsoup.parse(file, Charset.forName("windows-1251").toString());
             Elements content = document.select("table tr");
-            content.remove(0);
 
-            for (Element entity : content) {
-                Elements elements = entity.getElementsByTag("td");
+            List<String> header = content.remove(0)
+                    .getElementsByTag("td")
+                    .stream()
+                    .map(Element::text)
+                    .collect(Collectors.toList());
 
-                movies.add(new Movie(
-                        parseTitle(elements.get(1).text(), elements.get(0).text()),
-                        parseYear(elements.get(2).text()),
-                        parseRating(elements.get(9).text())
-                ));
-            }
+            List<Map<String, String>> elements = content.stream()
+                    .map(e -> e.getElementsByTag("td")
+                            .stream()
+                            .map(Element::text)
+                            .collect(Collectors.toList())
+                    )
+                    .map(e -> CollectionUtils.combineLists(header, e))
+                    .collect(Collectors.toList());
+
+            return elements.stream()
+                    .map(m -> new Movie(
+                            parseTitle(m.get("оригинальное название"), m.get("русскоязычное название")),
+                            parseYear(m.get("год")),
+                            parseRating(m.get("моя оценка"))
+                    ))
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             throw new KinopoiskToIMDBException(e);
         }
-
-        return movies;
     }
 }

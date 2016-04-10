@@ -1,4 +1,4 @@
-version = '0.7.1'
+version = '0.7.2'
 
 dependencies {
     compile group: 'com.google.inject', name: 'guice', version: '4.0'

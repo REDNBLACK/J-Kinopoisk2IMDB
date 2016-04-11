@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.util.MovieUtils.*;
+import static org.f0w.k2i.core.util.HttpUtils.buildURL;
 
 final class XMLMovieFinder extends AbstractMovieFinder {
     public XMLMovieFinder(Config config) {

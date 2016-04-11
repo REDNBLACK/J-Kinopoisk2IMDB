@@ -38,9 +38,10 @@ public class SystemProvider extends AbstractModule {
 
     @Provides
     MovieHandler provideMovieHandler(Injector injector) {
-        MovieHandler chain = injector.getInstance(ParseIDHandler.class);
+        MovieHandler chain = injector.getInstance(ConnectionCheckHandler.class);
 
-        chain.setNext(injector.getInstance(SetRatingHandler.class))
+        chain.setNext(injector.getInstance(ParseIDHandler.class))
+                .setNext(injector.getInstance(SetRatingHandler.class))
                 .setNext(injector.getInstance(AddToWatchlistHandler.class))
                 .setNext(injector.getInstance(SaveChangesHandler.class));
 

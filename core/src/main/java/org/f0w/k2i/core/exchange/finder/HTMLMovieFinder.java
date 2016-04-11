@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.regex.*;
 import java.util.stream.Collectors;
 
+import static org.f0w.k2i.core.util.HttpUtils.buildURL;
 import static org.f0w.k2i.core.util.MovieUtils.*;
 
 final class HTMLMovieFinder extends AbstractMovieFinder {

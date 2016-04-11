@@ -8,7 +8,7 @@ import org.f0w.k2i.core.model.repository.ImportProgressRepository;
 import java.util.List;
 import java.util.Set;
 
-public final class SaveChangesHandler extends AbstractMovieHandler implements MovieHandler {
+public final class SaveChangesHandler extends AbstractMovieHandler {
     private final ImportProgressRepository importProgressRepository;
 
     @Inject

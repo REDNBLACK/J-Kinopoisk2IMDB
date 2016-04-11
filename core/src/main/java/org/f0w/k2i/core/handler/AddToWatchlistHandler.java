@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 
-public final class AddToWatchlistHandler extends AbstractMovieHandler implements MovieHandler {
+public final class AddToWatchlistHandler extends AbstractMovieHandler {
     private final MovieWatchlistAssigner assigner;
 
     @Inject

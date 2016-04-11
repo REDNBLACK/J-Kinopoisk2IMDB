@@ -1,7 +1,5 @@
 package org.f0w.k2i.core.exchange.finder;
 
-import com.google.common.base.Joiner;
-import com.google.common.net.UrlEscapers;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
@@ -13,8 +11,6 @@ import java.io.IOException;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 abstract class AbstractMovieFinder implements MovieFinder {
     protected static final Logger LOG = LoggerFactory.getLogger(AbstractMovieFinder.class);
@@ -45,17 +41,6 @@ abstract class AbstractMovieFinder implements MovieFinder {
     protected abstract String buildSearchQuery(Movie movie);
 
     protected abstract List<Movie> parseSearchResult(final String result);
-
-    protected static String buildURL(final String url, Map<String, String> queryData) {
-        Map<String, String> escapedQueryData = queryData.entrySet()
-                .stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> UrlEscapers.urlFormParameterEscaper().escape(e.getValue())
-                ));
-
-        return url + Joiner.on("&").withKeyValueSeparator("=").join(escapedQueryData);
-    }
 
     @Override
     public Connection.Response getRawResponse() {

@@ -7,6 +7,7 @@ import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
@@ -43,6 +44,12 @@ public final class SetRatingHandler extends AbstractMovieHandler implements Movi
             }
 
             changer.sendRequest(movie);
+
+            Long statusCode = changer.getProcessedResponse();
+
+            if (statusCode != HttpURLConnection.HTTP_OK) {
+                throw new IOException("Can't change movie rating, error status code: " + statusCode);
+            }
 
             importProgress.setRated(true);
 

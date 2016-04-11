@@ -11,10 +11,8 @@ import org.jsoup.Jsoup;
 import java.io.IOException;
 import java.util.Map;
 
-public final class MovieWatchlistAssigner implements Exchangeable<Movie, Connection.Response> {
+public final class MovieWatchlistAssigner extends POSTMovieExchange {
     private final Config config;
-
-    private Connection.Response response;
 
     @Inject
     public MovieWatchlistAssigner(Config config) {
@@ -40,15 +38,5 @@ public final class MovieWatchlistAssigner implements Exchangeable<Movie, Connect
                 .data(postData);
 
         response = request.execute();
-    }
-
-    @Override
-    public Connection.Response getRawResponse() {
-        return response;
-    }
-
-    @Override
-    public Connection.Response getProcessedResponse() {
-        return getRawResponse();
     }
 }

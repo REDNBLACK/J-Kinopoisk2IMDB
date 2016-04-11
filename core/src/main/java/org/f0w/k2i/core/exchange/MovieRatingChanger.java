@@ -12,12 +12,10 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 
-public final class MovieRatingChanger implements Exchangeable<Movie, Connection.Response> {
+public final class MovieRatingChanger extends POSTMovieExchange {
     private final Config config;
 
     private final MovieAuthStringFetcher fetcher;
-
-    private Connection.Response response;
 
     @Inject
     public MovieRatingChanger(Config config, MovieAuthStringFetcher fetcher) {
@@ -55,22 +53,12 @@ public final class MovieRatingChanger implements Exchangeable<Movie, Connection.
     private String getAuthFetcherResponse(Movie movie) throws IOException {
         fetcher.sendRequest(movie);
 
-        String fetcherResponse = fetcher.getProcessedResponse();
+        String response = fetcher.getProcessedResponse();
 
-        if (Strings.isNullOrEmpty(fetcherResponse)) {
+        if (Strings.isNullOrEmpty(response)) {
             throw new IOException("Movie authorisation string is empty!");
         }
 
-        return fetcherResponse;
-    }
-
-    @Override
-    public Connection.Response getRawResponse() {
         return response;
-    }
-
-    @Override
-    public Connection.Response getProcessedResponse() {
-        return getRawResponse();
     }
 }

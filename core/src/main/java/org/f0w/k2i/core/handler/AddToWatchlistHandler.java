@@ -7,6 +7,7 @@ import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
@@ -37,6 +38,12 @@ public final class AddToWatchlistHandler extends AbstractMovieHandler implements
             }
 
             assigner.sendRequest(movie);
+
+            Long statusCode = assigner.getProcessedResponse();
+
+            if (statusCode != HttpURLConnection.HTTP_OK) {
+                throw new IOException("Can't add movie to watchlist, error status code: " + statusCode);
+            }
 
             importProgress.setImported(true);
 

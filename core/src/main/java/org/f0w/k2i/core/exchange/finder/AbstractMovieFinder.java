@@ -6,14 +6,19 @@ import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 abstract class AbstractMovieFinder implements MovieFinder {
+    protected static final Logger LOG = LoggerFactory.getLogger(AbstractMovieFinder.class);
+
     protected Config config;
 
     protected Connection.Response response;
@@ -28,7 +33,13 @@ abstract class AbstractMovieFinder implements MovieFinder {
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"));
 
+        LOG.debug(
+                "Sending request, to url: {}, with headers: {}", request.request().url(), request.request().headers()
+        );
+
         response = request.execute();
+
+        LOG.debug("Got response, status code: {}, headers: {}", response.statusCode(), response.headers());
     }
 
     protected abstract String buildSearchQuery(Movie movie);
@@ -36,7 +47,14 @@ abstract class AbstractMovieFinder implements MovieFinder {
     protected abstract List<Movie> parseSearchResult(final String result);
 
     protected static String buildURL(final String url, Map<String, String> queryData) {
-        return url + UrlEscapers.urlFragmentEscaper().escape(Joiner.on("&").withKeyValueSeparator("=").join(queryData));
+        Map<String, String> escapedQueryData = queryData.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> UrlEscapers.urlFormParameterEscaper().escape(e.getValue())
+                ));
+
+        return url + Joiner.on("&").withKeyValueSeparator("=").join(escapedQueryData);
     }
 
     @Override

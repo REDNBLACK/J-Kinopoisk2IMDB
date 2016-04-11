@@ -9,7 +9,7 @@ public class MovieFinderFactory {
     private final Config config;
 
     @Inject
-    public MovieFinderFactory(Config config) {
+    private MovieFinderFactory(Config config) {
         this.config = config;
     }
 
@@ -22,8 +22,9 @@ public class MovieFinderFactory {
             case HTML:
                 return new HTMLMovieFinder(config);
             case MIXED:
-            default:
                 return makeMixedMovieFinder();
+            default:
+                throw new IllegalArgumentException("Invalid movie finder type!");
         }
     }
 

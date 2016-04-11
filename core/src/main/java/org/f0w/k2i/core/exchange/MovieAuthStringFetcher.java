@@ -38,9 +38,13 @@ public final class MovieAuthStringFetcher implements Exchangeable<Movie, String>
 
     @Override
     public String getProcessedResponse() {
-        return Jsoup.parse(response.body())
-                .select("[data-auth]")
-                .first()
-                .attr("data-auth");
+        try {
+            return Jsoup.parse(response.body())
+                    .select("[data-auth]")
+                    .first()
+                    .attr("data-auth");
+        } catch (NullPointerException ignore) {
+            return null;
+        }
     }
 }

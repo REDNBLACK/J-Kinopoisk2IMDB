@@ -28,10 +28,12 @@ public class Main extends Application {
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("icon.png")));
         stage.setScene(new Scene(root, WIDTH, HEIGHT));
         stage.setResizable(false);
+
         stage.setOnCloseRequest(e -> {
-            Platform.exit();
             controller.destroy();
+            Platform.exit();
         });
+
         stage.show();
     }
 }

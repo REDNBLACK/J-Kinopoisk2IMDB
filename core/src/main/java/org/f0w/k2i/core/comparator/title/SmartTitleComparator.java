@@ -2,6 +2,7 @@ package org.f0w.k2i.core.comparator.title;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.html.HtmlEscapers;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.comparator.AbstractMovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -33,6 +34,9 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
         // Original string without apostrophes
         list.add(s -> s.replaceAll("/([\'\\\\x{0027}]|&#39;|&#x27;)/u", ""));
 
+        // Original string with unescaped XML symbols and removed foreign accents
+        list.add(s -> StringUtils.stripAccents(StringEscapeUtils.unescapeXml(s)));
+
         // Original string without special symbols like unicode etc
         list.add(s -> s.replaceAll("/\\\\u([0-9a-z]{4})/", ""));
 
@@ -55,12 +59,6 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
 
         // Original string with all whitespace characters replaced with plain backspace
         list.add(s -> s.replaceAll("/\\s+/", " "));
-
-        // Original string with replaced foreign characters
-        list.add(s -> HtmlEscapers.htmlEscaper()
-                .escape(s)
-                .replaceAll("~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i", "$1")
-        );
 
         // Original string with XML symbols replaced with backspace
         list.add(s -> {

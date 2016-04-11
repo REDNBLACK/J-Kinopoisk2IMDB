@@ -85,6 +85,9 @@ public class Controller {
     private Button startBtn;
 
     @FXML
+    private Label progressStatus;
+
+    @FXML
     private javafx.scene.control.ProgressBar progressBar;
 
     @FXML
@@ -102,7 +105,7 @@ public class Controller {
     @FXML
     private TextField logLevelField;
 
-    void init(Stage stage) {
+    void setStage(Stage stage) {
         this.stage = stage;
     }
 
@@ -128,14 +131,10 @@ public class Controller {
         });
         modeComboBox.getSelectionModel().select(new Choice<>(MovieHandler.Type.valueOf(config.getString("mode"))));
 
-        authId.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            configMap.put("auth", authId.getText());
-        });
+        authId.focusedProperty().addListener(o -> configMap.put("auth", authId.getText()));
         authId.setText(config.getString("auth"));
 
-        listId.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            configMap.put("list", listId.getText());
-        });
+        listId.focusedProperty().addListener(o -> configMap.put("list", listId.getText()));
         listId.setText(config.getString("list"));
 
 
@@ -181,37 +180,29 @@ public class Controller {
 
 
         // Для экспертов
-        userAgentField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            configMap.put("user_agent", userAgentField.getText());
-        });
+        userAgentField.focusedProperty().addListener(o -> configMap.put("user_agent", userAgentField.getText()));
         userAgentField.setText(config.getString("user_agent"));
 
-        yearDeviationField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            configMap.put("year_deviation", yearDeviationField.getText());
-        });
+        yearDeviationField.focusedProperty()
+                .addListener(o -> configMap.put("year_deviation", yearDeviationField.getText()));
         yearDeviationField.setText(config.getString("year_deviation"));
 
-        timeoutField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            configMap.put("timeout", timeoutField.getText());
-        });
+        timeoutField.focusedProperty().addListener(o -> configMap.put("timeout", timeoutField.getText()));
         timeoutField.setText(config.getString("timeout"));
 
-        logLevelField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            configMap.put("log_level", logLevelField.getText());
-        });
+        logLevelField.focusedProperty().addListener(o -> configMap.put("log_level", logLevelField.getText()));
         logLevelField.setText(config.getString("log_level"));
     }
 
     void destroy() {
+        byte[] configuration = ConfigFactory.parseMap(configMap)
+                .withFallback(config)
+                .root()
+                .render(ConfigRenderOptions.concise())
+                .getBytes();
+
         try {
-            Files.write(
-                    configFile.toPath(),
-                    ConfigFactory.parseMap(configMap)
-                            .withFallback(config)
-                            .root()
-                            .render(ConfigRenderOptions.concise())
-                            .getBytes()
-            );
+            Files.write(configFile.toPath(), configuration);
         } catch (IOException ignore) {
             // Do nothing
         }
@@ -260,7 +251,7 @@ public class Controller {
     private class ProgressListener {
         private final AtomicInteger max = new AtomicInteger(0);
         private final AtomicInteger current = new AtomicInteger(0);
-        private final AtomicInteger successfulCount = new AtomicInteger(0);
+        private final AtomicInteger successful = new AtomicInteger(0);
 
         @Subscribe
         public void handleStart(ImportStartedEvent event) {
@@ -269,6 +260,7 @@ public class Controller {
             Platform.runLater(() -> {
                 startBtn.setText("В процессе...");
                 startBtn.setDisable(true);
+                progressStatus.setText("0/" + max.get());
             });
         }
 
@@ -277,10 +269,11 @@ public class Controller {
             int maximum = max.get();
             int cur = current.incrementAndGet();
             if (event.successful) {
-                successfulCount.incrementAndGet();
+                successful.incrementAndGet();
             }
 
             progressBar.setProgress((cur * 100 / maximum) * 0.01);
+            Platform.runLater(() -> progressStatus.setText(cur + "/" + maximum));
         }
 
         @Subscribe
@@ -302,7 +295,7 @@ public class Controller {
                     alert.setHeaderText("Обработка фильмов была завершена с ошибками.");
 
                     alert.setContentText(
-                            "Было обработаны " + successfulCount.get() + " из " + max.get() + " фильмов, без ошибок"
+                            "Было обработаны " + successful.get() + " из " + max.get() + " фильмов, без ошибок"
                     );
 
                     // Create expandable Exception.
@@ -328,7 +321,7 @@ public class Controller {
 
                     String exceptionText = sw.toString();
 
-                    Label label = new Label("Произошли ошибки с " + (max.get() - successfulCount.get()) + " фильмами:");
+                    Label label = new Label("Произошли ошибки с " + (max.get() - successful.get()) + " фильмами:");
 
                     TextArea textArea = new TextArea(exceptionText);
                     textArea.setEditable(false);

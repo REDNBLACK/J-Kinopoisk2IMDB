@@ -133,13 +133,15 @@
                 <!--End Accordion row-->
 
                 <!--Start HBox row-->
-                <HBox alignment="BOTTOM_RIGHT" prefWidth="600" prefHeight="50.0" spacing="40.0" layoutY="311.0">
+                <HBox alignment="BOTTOM_RIGHT" layoutY="311.0" prefHeight="50.0" prefWidth="600" spacing="40.0">
                     <children>
-                        <ProgressBar fx:id="progressBar" maxHeight="30.0" prefWidth="435.0" progress="0.0" />
-                        <Button maxHeight="30.0" mnemonicParsing="false"
-                                fx:id="startBtn"
-                                text="Запустить"
-                                onAction="#handleStartAction" />
+                        <AnchorPane>
+                            <children>
+                                <ProgressBar fx:id="progressBar" prefHeight="30.0" prefWidth="437.0" progress="0.0" />
+                                <Label fx:id="progressStatus" layoutX="198.0" layoutY="-1.0" prefHeight="30.0" text="0/0" />
+                            </children>
+                        </AnchorPane>
+                        <Button fx:id="startBtn" maxHeight="30.0" mnemonicParsing="false" onAction="#handleStartAction" text="Запустить" />
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

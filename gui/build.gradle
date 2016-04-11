@@ -5,7 +5,7 @@ plugins {
 }
 
 mainClassName = 'org.f0w.k2i.gui.Main'
-version = '0.9.0'
+version = '0.9.5'
 
 dependencies {
     compile project(':k2i-core')

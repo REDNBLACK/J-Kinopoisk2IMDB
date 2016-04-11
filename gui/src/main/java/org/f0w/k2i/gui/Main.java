@@ -9,8 +9,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    public static final int WIDTH = 600;
-    public static final int HEIGHT = 361;
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 361;
 
     public static void main(String[] args) {
         Application.launch(Main.class, args);
@@ -22,7 +22,7 @@ public class Main extends Application {
         Parent root = loader.load();
 
         Controller controller = loader.getController();
-        controller.init(stage);
+        controller.setStage(stage);
 
         stage.setTitle("Kinopoisk2IMDB");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("icon.png")));

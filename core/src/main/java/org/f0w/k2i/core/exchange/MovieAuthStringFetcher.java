@@ -42,6 +42,6 @@ public final class MovieAuthStringFetcher implements Exchangeable<Movie, String>
     public String getProcessedResponse() {
         return Optional.ofNullable(Jsoup.parse(response.body()).select("[data-auth]").first())
                 .map(e -> e.attr("data-auth"))
-                .orElse(null);
+                .orElse("");
     }
 }

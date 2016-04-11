@@ -56,9 +56,9 @@ final class JSONMovieFinder extends AbstractMovieFinder {
                     Map movieInfoObj = (Map) movieInfo;
 
                     movies.add(new Movie(
-                            parseTitle(movieInfoObj.get("title").toString()),
-                            parseYear(movieInfoObj.get("description").toString()),
-                            parseIMDBId(movieInfoObj.get("id").toString())
+                            parseTitle(getStringValueOrNull(movieInfoObj.get("title"))),
+                            parseYear(getStringValueOrNull(movieInfoObj.get("description"))),
+                            parseIMDBId(getStringValueOrNull(movieInfoObj.get("id")))
                     ));
                 }
             }
@@ -67,5 +67,11 @@ final class JSONMovieFinder extends AbstractMovieFinder {
         }
 
         return movies;
+    }
+
+    private static String getStringValueOrNull(Object object) {
+        return Optional.ofNullable(object)
+                .map(String::valueOf)
+                .orElse(null);
     }
 }

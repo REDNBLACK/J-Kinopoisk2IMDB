@@ -2,12 +2,12 @@ package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ImmutableMap;
 
-import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,7 +40,11 @@ final class XMLMovieFinder extends AbstractMovieFinder {
                 .stream()
                 .map(e -> new Movie(
                         parseTitle(e.ownText()),
-                        parseYear(e.getElementsByTag("Description").first().text()),
+                        parseYear(
+                                Optional.ofNullable(e.getElementsByTag("Description").first())
+                                        .map(Element::text)
+                                        .orElse(null)
+                        ),
                         parseIMDBId(e.attr("id"))
                 ))
                 .collect(Collectors.toList());

@@ -21,7 +21,7 @@ abstract class POSTMovieExchange implements Exchangeable<Movie, Long> {
         try {
             Map data = (Map) new JSONParser().parse(response.body());
 
-            return Optional.ofNullable((Long) data.getOrDefault("status", 0L)).orElse(0L);
+            return Optional.ofNullable((Long) data.get("status")).orElse(0L);
         } catch (NullPointerException|ClassCastException|ParseException ignore) {
             return 0L;
         }

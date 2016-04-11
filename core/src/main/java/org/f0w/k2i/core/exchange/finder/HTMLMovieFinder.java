@@ -43,9 +43,17 @@ final class HTMLMovieFinder extends AbstractMovieFinder {
                 .map(e -> new Movie(
                         parseTitle(prepareTitle(e)),
                         parseYear(prepareYear(e.text())),
-                        parseIMDBId(e.getElementsByTag("a").first().attr("href").split("/")[2])
+                        parseIMDBId(prepareImdbId(e.getElementsByTag("a").first()))
                 ))
                 .collect(Collectors.toList());
+    }
+
+    private static String prepareImdbId(Element element) {
+        return Optional.ofNullable(element)
+                .map(e -> e.attr("href"))
+                .map(e -> e.split("/"))
+                .map(e -> e.length < 2 ? null : e[2])
+                .orElse(null);
     }
 
     private static String prepareTitle(Element element) {
@@ -63,7 +71,9 @@ final class HTMLMovieFinder extends AbstractMovieFinder {
             return title;
         }
 
-        return element.getElementsByTag("a").first().text();
+        return Optional.ofNullable(element.getElementsByTag("a").first())
+                .map(Element::text)
+                .orElse(null);
     }
 
     private static String prepareYear(String year) {

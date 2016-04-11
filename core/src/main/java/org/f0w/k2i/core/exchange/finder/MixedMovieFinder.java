@@ -59,7 +59,7 @@ final class MixedMovieFinder implements MovieFinder {
                     super.addAll(movies);
 
                     LOG.debug("Successfully loaded: {}", movies);
-                } catch (IOException e) {
+                } catch (IOException ignore) {
                     LOG.debug("Loading error, trying next finder...");
                 }
 

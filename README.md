@@ -5,7 +5,7 @@
 * Подробные инструкции по работе читайте в пункте [Рекомендации по настройке](#Рекомендации-по-настройке).
 * [Ссылка на скачивание последней версии](https://github.com/REDNBLACK/J-Kinopoisk2IMDB/releases/latest).
 
-![Скриншот](https://cloud.githubusercontent.com/assets/1498939/14372842/252a5e98-fd4d-11e5-8a27-8da4309f12e0.png "Screenshot")
+![Скриншот](https://cloud.githubusercontent.com/assets/1498939/14414795/5158e958-ffa0-11e5-9c8f-73066829d9fe.png "Screenshot")
 
 ## Рекомендации по настройке
 

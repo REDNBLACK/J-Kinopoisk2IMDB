@@ -7,7 +7,9 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import com.google.inject.Inject;
+
 import java.io.IOException;
+import java.util.Optional;
 
 public final class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
     private final Config config;
@@ -38,13 +40,8 @@ public final class MovieAuthStringFetcher implements Exchangeable<Movie, String>
 
     @Override
     public String getProcessedResponse() {
-        try {
-            return Jsoup.parse(response.body())
-                    .select("[data-auth]")
-                    .first()
-                    .attr("data-auth");
-        } catch (NullPointerException ignore) {
-            return null;
-        }
+        return Optional.ofNullable(Jsoup.parse(response.body()).select("[data-auth]").first())
+                .map(e -> e.attr("data-auth"))
+                .orElse(null);
     }
 }

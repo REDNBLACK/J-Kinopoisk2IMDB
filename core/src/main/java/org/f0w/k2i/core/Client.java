@@ -17,22 +17,31 @@ import org.f0w.k2i.core.providers.SystemProvider;
 import java.io.File;
 import java.util.*;
 
-public final class Client {
+public final class Client implements Runnable {
     private final File file;
     private final MovieHandler.Type handlerType;
     private final MovieHandler handlerChain;
     private final EventBus eventBus;
     private final ImportProgressService importProgressService;
+    private final PersistService persistService;
+    private final boolean cleanRun;
 
     public Client(File file, Config config) {
+        this(file, config, false);
+    }
+
+    public Client(File file, Config config, boolean cleanRun) {
         this.file = file;
+        this.cleanRun = cleanRun;
 
         Injector injector = Guice.createInjector(
                 new ConfigurationProvider(config),
                 new JpaRepositoryProvider(),
                 new SystemProvider()
         );
-        injector.getInstance(PersistService.class).start();
+
+        persistService = injector.getInstance(PersistService.class);
+        persistService.start();
 
         handlerType = injector.getInstance(MovieHandler.Type.class);
         handlerChain = injector.getInstance(MovieHandler.class);
@@ -48,11 +57,8 @@ public final class Client {
         registerListeners(Collections.singletonList(listener));
     }
 
+    @Override
     public void run() {
-        run(false);
-    }
-
-    public void run(boolean cleanRun) {
         List<ImportProgress> importProgress = importProgressService
                 .initialize(file, cleanRun)
                 .getNotHandledMovies(handlerType);
@@ -61,16 +67,26 @@ public final class Client {
 
         final List<MovieHandler.Error> allErrors = new ArrayList<>();
 
-        importProgress.forEach(ip -> {
-            List<MovieHandler.Error> currentErrors = new ArrayList<>();
+        try {
+            for (ImportProgress current : importProgress) {
+                List<MovieHandler.Error> currentErrors = new ArrayList<>();
 
-            handlerChain.handle(ip, currentErrors, handlerType);
+                handlerChain.handle(current, currentErrors, handlerType);
 
-            eventBus.post(new ImportProgressAdvancedEvent(currentErrors.isEmpty()));
+                eventBus.post(new ImportProgressAdvancedEvent(currentErrors.isEmpty()));
 
-            allErrors.addAll(currentErrors);
-        });
+                allErrors.addAll(currentErrors);
 
-        eventBus.post(new ImportFinishedEvent(allErrors));
+                if (Thread.interrupted()) {
+                    throw new InterruptedException("Client is interrupted!");
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            eventBus.post(new ImportFinishedEvent(allErrors));
+
+            persistService.stop();
+        }
     }
 }

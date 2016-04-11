@@ -49,6 +49,7 @@ public class Controller {
     private final FileChooser fileChooser = new FileChooser();
     private File kpFile;
     private boolean cleanRun;
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private final File configFile = new File(
             System.getProperty("user.home") + File.separator + "K2IDB" + File.separator + "config.json"
@@ -82,7 +83,7 @@ public class Controller {
     private CheckBox cleanRunCheckbox;
 
     @FXML
-    private Button startBtn;
+    private Button startStopBtn;
 
     @FXML
     private Label progressStatus;
@@ -201,6 +202,8 @@ public class Controller {
                 .render(ConfigRenderOptions.concise())
                 .getBytes();
 
+        executor.shutdownNow();
+
         try {
             Files.write(configFile.toPath(), configuration);
         } catch (IOException ignore) {
@@ -223,7 +226,7 @@ public class Controller {
             selectedFile.setText(file.getPath());
             kpFile = file;
             progressBar.setProgress(0.0);
-            startBtn.setText("Запустить");
+            startStopBtn.setDisable(false);
         }
     }
 
@@ -231,13 +234,18 @@ public class Controller {
     protected void handleStartAction(ActionEvent event) {
         progressBar.setProgress(0.0);
 
+        startStopBtn.setText("Остановить");
+        startStopBtn.getStyleClass().remove("primary");
+        startStopBtn.getStyleClass().add("danger");
+        startStopBtn.setOnAction(this::handleStopAction);
+
         try {
-            Client client = new Client(kpFile, ConfigFactory.parseMap(configMap));
+            Client client = new Client(kpFile, ConfigFactory.parseMap(configMap), cleanRun);
             client.registerListener(new ProgressListener());
 
-            ExecutorService service = Executors.newSingleThreadExecutor();
-            service.submit(() -> client.run(cleanRun));
-            service.shutdown();
+            executor = Executors.newSingleThreadExecutor();
+            executor.submit(client);
+            executor.shutdown();
         } catch (IllegalArgumentException|NullPointerException|ConfigException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Ошибка");
@@ -248,9 +256,20 @@ public class Controller {
         }
     }
 
+    @FXML
+    protected void handleStopAction(ActionEvent event) {
+        startStopBtn.setText("Запустить");
+        startStopBtn.getStyleClass().remove("danger");
+        startStopBtn.getStyleClass().add("primary");
+        startStopBtn.setOnAction(this::handleStartAction);
+
+        executor.shutdownNow();
+    }
+
     private class ProgressListener {
         private final AtomicInteger max = new AtomicInteger(0);
         private final AtomicInteger current = new AtomicInteger(0);
+        private final AtomicInteger failed = new AtomicInteger(0);
         private final AtomicInteger successful = new AtomicInteger(0);
 
         @Subscribe
@@ -258,8 +277,6 @@ public class Controller {
             max.set(event.listSize);
 
             Platform.runLater(() -> {
-                startBtn.setText("В процессе...");
-                startBtn.setDisable(true);
                 progressStatus.setText("0/" + max.get());
             });
         }
@@ -270,6 +287,8 @@ public class Controller {
             int cur = current.incrementAndGet();
             if (event.successful) {
                 successful.incrementAndGet();
+            } else {
+                failed.incrementAndGet();
             }
 
             progressBar.setProgress((cur * 100 / maximum) * 0.01);
@@ -279,9 +298,6 @@ public class Controller {
         @Subscribe
         public void handleEnd(ImportFinishedEvent event) {
             Platform.runLater(() -> {
-                startBtn.setText("Запустить заново");
-                startBtn.setDisable(false);
-
                 Alert alert = new Alert(Alert.AlertType.NONE);
 
                 if (event.errors.isEmpty()) {
@@ -321,7 +337,7 @@ public class Controller {
 
                     String exceptionText = sw.toString();
 
-                    Label label = new Label("Произошли ошибки с " + (max.get() - successful.get()) + " фильмами:");
+                    Label label = new Label("Произошли ошибки с " + failed.get() + " фильмами:");
 
                     TextArea textArea = new TextArea(exceptionText);
                     textArea.setEditable(false);

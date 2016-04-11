@@ -17,3 +17,19 @@
 #progressStatus {
     -fx-text-fill: crimson;
 }
+
+.button {
+    -fx-border-radius: 4px;
+}
+
+.button.primary {
+    -fx-text-fill: #fff;
+    -fx-background-color: #337ab7;
+    -fx-border-color: #2e6da4;
+}
+
+.button.danger {
+    -fx-text-fill: #fff;
+    -fx-background-color: #d9534f;
+    -fx-border-color: #d43f3a;
+}

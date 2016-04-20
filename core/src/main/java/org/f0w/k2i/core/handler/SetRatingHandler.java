@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.handler;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import org.f0w.k2i.core.exchange.MovieRatingChanger;
 import org.f0w.k2i.core.model.entity.ImportProgress;
@@ -19,7 +18,6 @@ public final class SetRatingHandler extends MovieHandler {
     @Inject
     public SetRatingHandler(MovieRatingChanger changer) {
         this.changer = changer;
-        this.types = ImmutableSet.of(Type.SET_RATING, Type.COMBINED);
     }
 
     /**

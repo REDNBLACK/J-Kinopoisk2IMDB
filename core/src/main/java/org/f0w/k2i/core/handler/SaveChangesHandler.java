@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.handler;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.repository.ImportProgressRepository;
@@ -13,7 +12,6 @@ public final class SaveChangesHandler extends MovieHandler {
     @Inject
     public SaveChangesHandler(ImportProgressRepository importProgressRepository) {
         this.importProgressRepository = importProgressRepository;
-        this.types = ImmutableSet.of(Type.SET_RATING, Type.ADD_TO_WATCHLIST, Type.COMBINED);
     }
 
     /**

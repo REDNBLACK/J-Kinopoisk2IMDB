@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.handler;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.f0w.k2i.core.comparator.MovieComparator;
@@ -23,7 +22,6 @@ public final class ParseIDHandler extends MovieHandler {
     public ParseIDHandler(Provider<MovieFinder> movieFinderProvider, MovieComparator movieComparator) {
         this.movieFinderProvider = movieFinderProvider;
         this.movieComparator = movieComparator;
-        this.types = ImmutableSet.of(Type.SET_RATING, Type.ADD_TO_WATCHLIST, Type.COMBINED);
     }
 
     /**

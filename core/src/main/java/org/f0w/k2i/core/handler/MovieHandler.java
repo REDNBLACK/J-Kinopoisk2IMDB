@@ -5,6 +5,7 @@ import org.f0w.k2i.core.model.entity.Movie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,8 +14,31 @@ import java.util.Set;
  */
 public abstract class MovieHandler {
     protected static final Logger LOG = LoggerFactory.getLogger(MovieHandler.class);
-    protected Set<Type> types;
-    protected MovieHandler next;
+    private Set<Type> types;
+    private MovieHandler next;
+
+    /**
+     * Set types of which current handler will be executed
+     * @param first First Type
+     * @param rest Rest of Types
+     * @return this
+     */
+    public MovieHandler setTypes(Type first, Type... rest) {
+        this.types = EnumSet.of(first, rest);
+
+        return this;
+    }
+
+    /**
+     * Set types of which current handler will be executed
+     * @param type Type
+     * @return this
+     */
+    public MovieHandler setTypes(Type type) {
+        this.types = EnumSet.of(type);
+
+        return this;
+    }
 
     /**
      * Sets the next handler in chain
@@ -33,14 +57,18 @@ public abstract class MovieHandler {
      * @param errors List of errors
      * @param type Type of MovieHandler
      */
-    public void handle(ImportProgress importProgress, List<Error> errors, MovieHandler.Type type) {
-        if (types.contains(type)) {
+    public void handle(ImportProgress importProgress, List<Error> errors, Type type) {
+        if (types.contains(type) || isCombinedType(type)) {
             handleMovie(importProgress, errors);
         }
 
         if (next != null) {
             next.handle(importProgress, errors, type);
         }
+    }
+
+    private boolean isCombinedType(Type type) {
+        return types.contains(Type.COMBINED) || Type.COMBINED.equals(type);
     }
 
     /**

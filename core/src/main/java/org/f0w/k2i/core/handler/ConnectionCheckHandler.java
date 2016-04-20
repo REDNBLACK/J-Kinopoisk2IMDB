@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.handler;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.ImportProgress;
@@ -14,7 +13,6 @@ public class ConnectionCheckHandler extends MovieHandler {
     @Inject
     public ConnectionCheckHandler(Config config) {
         this.config = config;
-        this.types = ImmutableSet.of(Type.SET_RATING, Type.ADD_TO_WATCHLIST, Type.COMBINED);
     }
 
     /**

@@ -13,6 +13,8 @@ import org.f0w.k2i.core.handler.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.f0w.k2i.core.handler.MovieHandler.Type;
+
 /**
  * Guice module providing base system binds
  */
@@ -41,12 +43,12 @@ public class SystemProvider extends AbstractModule {
 
     @Provides
     MovieHandler provideMovieHandler(Injector injector) {
-        MovieHandler chain = injector.getInstance(ConnectionCheckHandler.class);
+        MovieHandler chain = injector.getInstance(ConnectionCheckHandler.class).setTypes(Type.COMBINED);
 
-        chain.setNext(injector.getInstance(ParseIDHandler.class))
-                .setNext(injector.getInstance(SetRatingHandler.class))
-                .setNext(injector.getInstance(AddToWatchlistHandler.class))
-                .setNext(injector.getInstance(SaveChangesHandler.class));
+        chain.setNext(injector.getInstance(ParseIDHandler.class).setTypes(Type.COMBINED))
+                .setNext(injector.getInstance(SetRatingHandler.class).setTypes(Type.SET_RATING))
+                .setNext(injector.getInstance(AddToWatchlistHandler.class).setTypes(Type.ADD_TO_WATCHLIST))
+                .setNext(injector.getInstance(SaveChangesHandler.class).setTypes(Type.COMBINED));
 
         return chain;
     }

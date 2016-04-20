@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.handler;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import org.f0w.k2i.core.exchange.MovieWatchlistAssigner;
 import org.f0w.k2i.core.model.entity.ImportProgress;
@@ -18,7 +17,6 @@ public final class AddToWatchlistHandler extends MovieHandler {
     @Inject
     public AddToWatchlistHandler(MovieWatchlistAssigner assigner) {
         this.assigner = assigner;
-        this.types = ImmutableSet.of(Type.ADD_TO_WATCHLIST, Type.COMBINED);
     }
 
     /**

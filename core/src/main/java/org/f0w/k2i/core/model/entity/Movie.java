@@ -1,7 +1,6 @@
 package org.f0w.k2i.core.model.entity;
 
 import com.google.common.base.MoreObjects;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,12 +9,7 @@ import static java.util.Objects.requireNonNull;
 
 @Entity
 @Table(name = "MOVIES", uniqueConstraints = @UniqueConstraint(columnNames = {"TITLE", "YEAR"}))
-public class Movie {
-    @Id
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy = "increment")
-    private Long id;
-
+public class Movie extends BaseEntity {
     @Column(name = "TITLE", nullable = false)
     private String title;
 
@@ -49,14 +43,6 @@ public class Movie {
 
     public Movie(String title, int year, String imdbId) {
         this(title, year, null, imdbId);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    private void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {

@@ -1,30 +1,16 @@
 package org.f0w.k2i.core.model.repository.jpa;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.persist.Transactional;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.model.repository.MovieRepository;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-public class JpaMovieRepositoryImpl implements MovieRepository {
-    @Inject
-    private Provider<EntityManager> emProvider;
-
-    @Override
-    @Transactional
-    public Movie save(Movie movie) {
-        emProvider.get().persist(movie);
-
-        return movie;
-    }
-
+public class JpaMovieRepositoryImpl extends BaseJPARepository<Movie, Long> implements MovieRepository {
+    /** {@inheritDoc} */
     @Override
     public Movie findByTitleAndYear(final String title, final int year) {
-        TypedQuery<Movie> query = emProvider.get()
+        TypedQuery<Movie> query = entityManagerProvider.get()
                 .createQuery(
                         "FROM Movie m WHERE m.title = :title AND m.year = :year",
                         Movie.class

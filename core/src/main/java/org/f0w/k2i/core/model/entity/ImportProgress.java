@@ -8,12 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "IMPORT_PROGRESS", uniqueConstraints = @UniqueConstraint(columnNames = {"KINOPOISK_FILE_ID", "MOVIE_ID"}))
-public class ImportProgress {
-    @Id
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy = "increment")
-    private Long id;
-
+public class ImportProgress extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "KINOPOISK_FILE_ID", nullable = false)
     private KinopoiskFile kinopoiskFile;
@@ -37,14 +32,6 @@ public class ImportProgress {
         setMovie(movie);
         setImported(imported);
         setRated(rated);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    private void setId(Long id) {
-        this.id = id;
     }
 
     public Movie getMovie() {
@@ -99,11 +86,11 @@ public class ImportProgress {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
-                .add("id", id)
-                .add("kinopoiskFile", kinopoiskFile)
-                .add("movie", movie)
-                .add("imported", imported)
-                .add("rated", rated)
+                .add("id", getId())
+                .add("kinopoiskFile", getKinopoiskFile())
+                .add("movie", getMovie())
+                .add("imported", isImported())
+                .add("rated", isRated())
                 .toString();
     }
 }

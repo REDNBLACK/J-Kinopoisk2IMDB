@@ -1,7 +1,6 @@
 package org.f0w.k2i.core.model.entity;
 
 import com.google.common.base.MoreObjects;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,12 +9,7 @@ import static java.util.Objects.requireNonNull;
 
 @Entity
 @Table(name = "KINOPOISK_FILE")
-public class KinopoiskFile {
-    @Id
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy = "increment")
-    private Long id;
-
+public class KinopoiskFile extends BaseEntity {
     @Column(name = "HASH_CODE", unique = true, nullable = false)
     private String hashCode;
 
@@ -25,14 +19,6 @@ public class KinopoiskFile {
 
     public KinopoiskFile(String hashCode) {
         setHashCode(hashCode);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    private void setId(Long id) {
-        this.id = id;
     }
 
     public String getHashCode() {
@@ -61,8 +47,8 @@ public class KinopoiskFile {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
-                .add("id", id)
-                .add("hashCode", hashCode)
+                .add("id", getId())
+                .add("hashCode", getHashCode())
                 .toString();
     }
 }

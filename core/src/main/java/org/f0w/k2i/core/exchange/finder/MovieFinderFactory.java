@@ -19,6 +19,7 @@ public class MovieFinderFactory {
     /**
      * Create instance of {@link MovieFinder},
      * using {@link MovieFinder.Type} as argument.
+     *
      * @param type Type of MovieComparator
      * @return MovieFinder instance
      */
@@ -39,6 +40,7 @@ public class MovieFinderFactory {
 
     /**
      * Create instance of {@link MixedMovieFinder}
+     *
      * @return MixedMovieFinder
      */
     private MovieFinder makeMixedMovieFinder() {

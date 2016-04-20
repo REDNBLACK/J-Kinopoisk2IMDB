@@ -5,7 +5,9 @@ import com.google.common.net.UrlEscapers;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URL;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -38,9 +40,9 @@ public final class HttpUtils {
      * Builds and escapes URL, using host and query
      * @param hostName Hostname component of URL
      * @param query Query component of URL
-     * @return URL String
+     * @return URL
      */
-    public static String buildURL(final String hostName, final Map<String, String> query) {
+    public static URL buildURL(final String hostName, final Map<String, String> query) {
         Map<String, String> escapedQuery = query.entrySet()
                 .stream()
                 .collect(Collectors.toMap(
@@ -48,6 +50,10 @@ public final class HttpUtils {
                         e -> UrlEscapers.urlFormParameterEscaper().escape(e.getValue())
                 ));
 
-        return hostName + Joiner.on("&").withKeyValueSeparator("=").join(escapedQuery);
+        try {
+            return new URL(hostName + Joiner.on("&").withKeyValueSeparator("=").join(escapedQuery));
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

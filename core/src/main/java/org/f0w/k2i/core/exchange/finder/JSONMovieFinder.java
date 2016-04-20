@@ -10,10 +10,9 @@ import org.json.simple.parser.ParseException;
 
 import java.util.*;
 
-import static org.f0w.k2i.core.util.HttpUtils.buildURL;
-import static org.f0w.k2i.core.util.MovieUtils.*;
-
 final class JSONMovieFinder extends AbstractMovieFinder {
+    private static final String SEARCH_LINK = "http://www.imdb.com/xml/find?";
+
     private static final ContainerFactory CONTAINER_FACTORY = new ContainerFactory() {
         @Override
         public List creatArrayContainer() {
@@ -27,27 +26,27 @@ final class JSONMovieFinder extends AbstractMovieFinder {
     };
 
     public JSONMovieFinder(Config config) {
-        super(config);
+        super(config, SEARCH_LINK);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected String buildSearchQuery(Movie movie) {
-        final String movieSearchLink = "http://www.imdb.com/xml/find?";
-
-        final Map<String, String> query = new ImmutableMap.Builder<String, String>()
+    public Map<String, String> buildSearchQuery(Movie movie) {
+        return new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle())
                 .put("tt", "on")
                 .put("nr", "1")
                 .put("json", "1")
                 .build();
-
-        return buildURL(movieSearchLink, query);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected List<Movie> parseSearchResult(String result) {
+    public List<Movie> parseSearchResult(String result) {
         List<Movie> movies = new ArrayList<>();
         JSONParser parser = new JSONParser();
 
@@ -58,10 +57,10 @@ final class JSONMovieFinder extends AbstractMovieFinder {
                 for (Object movieInfo : (List) categories) {
                     Map movieInfoObj = (Map) movieInfo;
 
-                    movies.add(new Movie(
-                            parseTitle(getStringValueOrNull(movieInfoObj.get("title"))),
-                            parseYear(getStringValueOrNull(movieInfoObj.get("description"))),
-                            parseIMDBId(getStringValueOrNull(movieInfoObj.get("id")))
+                    movies.add(new JSONMovieParser(movieInfoObj).parse(
+                            t -> t.get("title"),
+                            t -> t.get("description"),
+                            t -> t.get("id")
                     ));
                 }
             }
@@ -72,9 +71,30 @@ final class JSONMovieFinder extends AbstractMovieFinder {
         return movies;
     }
 
-    private static String getStringValueOrNull(Object object) {
-        return Optional.ofNullable(object)
-                .map(String::valueOf)
-                .orElse(null);
+    private static final class JSONMovieParser extends MovieParser<Map<?, ?>, Object, Object, Object> {
+        public JSONMovieParser(Map<?, ?> root) {
+            super(root);
+        }
+
+        @Override
+        public String prepareTitle(Object element) {
+            return getStringValueOrNull(element);
+        }
+
+        @Override
+        public String prepareYear(Object element) {
+            return getStringValueOrNull(element);
+        }
+
+        @Override
+        public String prepareImdbId(Object element) {
+            return getStringValueOrNull(element);
+        }
+
+        private String getStringValueOrNull(Object object) {
+            return Optional.ofNullable(object)
+                    .map(String::valueOf)
+                    .orElse(null);
+        }
     }
 }

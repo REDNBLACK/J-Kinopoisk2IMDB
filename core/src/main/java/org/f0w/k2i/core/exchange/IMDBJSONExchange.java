@@ -22,6 +22,7 @@ abstract class IMDBJSONExchange implements Exchangeable<Movie, Long> {
 
     /**
      * Returns HTTP status code parsed from JSON response
+     *
      * @return HTTP status code or 0 if an error occured
      */
     @Override
@@ -30,7 +31,7 @@ abstract class IMDBJSONExchange implements Exchangeable<Movie, Long> {
             Map data = (Map) new JSONParser().parse(response.body());
 
             return Optional.ofNullable((Long) data.get("status")).orElse(0L);
-        } catch (NullPointerException|ClassCastException|ParseException ignore) {
+        } catch (NullPointerException | ClassCastException | ParseException ignore) {
             return 0L;
         }
     }

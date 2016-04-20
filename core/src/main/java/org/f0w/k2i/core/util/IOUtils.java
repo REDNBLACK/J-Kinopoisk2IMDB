@@ -30,10 +30,11 @@ public final class IOUtils {
 
     /**
      * Check that file is not null, exists and is not a directory or symlink
+     *
      * @param file File to check
-     * @throws NullPointerException If file is null
-     * @throws IllegalArgumentException If file not exists or not a file
      * @return Checked file
+     * @throws NullPointerException     If file is null
+     * @throws IllegalArgumentException If file not exists or not a file
      */
     public static File checkFile(File file) {
         requireNonNull(file, "File is null!");
@@ -45,6 +46,7 @@ public final class IOUtils {
 
     /**
      * Computes and returns file hashcode
+     *
      * @param file File to hash
      * @return File hashcode
      * @throws KinopoiskToIMDBException If an I/O error occurs
@@ -59,6 +61,7 @@ public final class IOUtils {
 
     /**
      * Parses movies from file
+     *
      * @param file File to parse
      * @return List of parsed movies
      * @throws KinopoiskToIMDBException If an I/O error occurs

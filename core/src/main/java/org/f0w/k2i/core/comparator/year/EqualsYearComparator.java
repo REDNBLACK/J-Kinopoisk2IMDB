@@ -7,7 +7,9 @@ import org.f0w.k2i.core.model.entity.Movie;
  * Check that one movie year equals to another movie year.
  */
 public final class EqualsYearComparator extends AbstractMovieComparator {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean areEqual(Movie movie1, Movie movie2) {
         boolean result = movie1.getYear() == movie2.getYear();

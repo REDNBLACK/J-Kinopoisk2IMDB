@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.f0w.k2i.core.util.MovieUtils.*;
 import static org.f0w.k2i.core.util.HttpUtils.buildURL;
+import static org.f0w.k2i.core.util.MovieUtils.*;
 
 /**
  * Base class implementing {@link MovieFinder} interface.

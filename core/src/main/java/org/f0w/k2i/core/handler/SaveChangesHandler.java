@@ -16,8 +16,9 @@ public final class SaveChangesHandler extends MovieHandler {
 
     /**
      * Save changes to ImportProgress entity into {@link ImportProgressRepository}
+     *
      * @param importProgress Entity to handle
-     * @param errors List which fill with errors if occured
+     * @param errors         List which fill with errors if occured
      */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {

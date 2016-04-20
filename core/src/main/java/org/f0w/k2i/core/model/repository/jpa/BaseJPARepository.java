@@ -12,13 +12,17 @@ public abstract class BaseJPARepository<T, ID extends Serializable> implements R
     @Inject
     protected Provider<EntityManager> entityManagerProvider;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T find(ID id) {
         return entityManagerProvider.get().find(getType(), id);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public T save(T entity) {
@@ -27,14 +31,18 @@ public abstract class BaseJPARepository<T, ID extends Serializable> implements R
         return entity;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public void delete(T entity) {
         entityManagerProvider.get().remove(entity);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public void delete(ID id) {

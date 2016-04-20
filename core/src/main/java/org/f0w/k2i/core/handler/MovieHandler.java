@@ -19,8 +19,9 @@ public abstract class MovieHandler {
 
     /**
      * Set types of which current handler will be executed
+     *
      * @param first First Type
-     * @param rest Rest of Types
+     * @param rest  Rest of Types
      * @return this
      */
     public MovieHandler setTypes(Type first, Type... rest) {
@@ -31,6 +32,7 @@ public abstract class MovieHandler {
 
     /**
      * Set types of which current handler will be executed
+     *
      * @param type Type
      * @return this
      */
@@ -42,6 +44,7 @@ public abstract class MovieHandler {
 
     /**
      * Sets the next handler in chain
+     *
      * @param handler Handler to set
      * @return Handler which was just set
      */
@@ -53,9 +56,10 @@ public abstract class MovieHandler {
 
     /**
      * Executes handler
+     *
      * @param importProgress ImportProgress entity
-     * @param errors List of errors
-     * @param type Type of MovieHandler
+     * @param errors         List of errors
+     * @param type           Type of MovieHandler
      */
     public void handle(ImportProgress importProgress, List<Error> errors, Type type) {
         if (types.contains(type) || isCombinedType(type)) {
@@ -73,8 +77,9 @@ public abstract class MovieHandler {
 
     /**
      * Handles ImportProgress entity. Implementation specific to each handler.
+     *
      * @param importProgress Entity to handle
-     * @param errors List which fill with errors if occured
+     * @param errors         List which fill with errors if occured
      */
     protected abstract void handleMovie(ImportProgress importProgress, List<Error> errors);
 

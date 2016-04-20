@@ -1,7 +1,6 @@
 package org.f0w.k2i.core.model.entity;
 
 import com.google.common.base.MoreObjects;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Objects;

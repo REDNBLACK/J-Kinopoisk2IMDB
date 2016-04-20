@@ -24,6 +24,7 @@ public final class ConfigValidator {
 
     /**
      * Validates given config, returns it on success or throws exception on error
+     *
      * @param config Config to validate
      * @return Validated config
      * @throws ConfigException.Generic If validation of field fails
@@ -46,7 +47,7 @@ public final class ConfigValidator {
             validator.checkUserAgent();
             validator.checkYearDeviation();
             validator.checkTimeout();
-        } catch (NullPointerException|IllegalArgumentException e) {
+        } catch (NullPointerException | IllegalArgumentException e) {
             throw new ConfigException.Generic(e.getMessage(), e);
         }
 
@@ -55,6 +56,7 @@ public final class ConfigValidator {
 
     /**
      * Checks the log_level string
+     *
      * @throws ConfigException
      */
     private void checkLogLevel() {
@@ -63,6 +65,7 @@ public final class ConfigValidator {
 
     /**
      * Checks the user_agent string
+     *
      * @throws IllegalArgumentException
      */
     private void checkUserAgent() {
@@ -74,6 +77,7 @@ public final class ConfigValidator {
 
     /**
      * Checks the year_deviation int
+     *
      * @throws IllegalArgumentException If not valid
      */
     private void checkYearDeviation() {
@@ -85,6 +89,7 @@ public final class ConfigValidator {
 
     /**
      * Checks the timeout int
+     *
      * @throws IllegalArgumentException If not valid
      */
     private void checkTimeout() {
@@ -96,6 +101,7 @@ public final class ConfigValidator {
 
     /**
      * Checks the query_format string
+     *
      * @throws IllegalArgumentException If not valid
      */
     private void checkQueryFormat() {
@@ -111,6 +117,7 @@ public final class ConfigValidator {
 
     /**
      * Checks the comparators string list
+     *
      * @throws IllegalArgumentException If not valid
      */
     private void checkComparators() {
@@ -126,6 +133,7 @@ public final class ConfigValidator {
 
     /**
      * Checks the auth string
+     *
      * @throws IllegalArgumentException If not valid
      */
     private void checkAuth() {
@@ -137,6 +145,7 @@ public final class ConfigValidator {
 
     /**
      * Checks the list string
+     *
      * @throws IllegalArgumentException If not valid
      */
     private void checkList() {
@@ -148,8 +157,8 @@ public final class ConfigValidator {
             MovieHandler.Type commandType = MovieHandler.Type.valueOf(mode);
 
             if (commandType.equals(MovieHandler.Type.COMBINED)
-                || commandType.equals(MovieHandler.Type.ADD_TO_WATCHLIST)
-            ) {
+                    || commandType.equals(MovieHandler.Type.ADD_TO_WATCHLIST)
+                    ) {
                 throw new IllegalArgumentException(message + " Set to null, but required for current mode setting");
             }
         } else {
@@ -160,6 +169,7 @@ public final class ConfigValidator {
 
     /**
      * Checks the mode string
+     *
      * @throws IllegalArgumentException If not valid
      */
     private void checkMode() {
@@ -167,7 +177,7 @@ public final class ConfigValidator {
         final String mode = config.getString("mode");
 
         try {
-             MovieHandler.Type.valueOf(mode);
+            MovieHandler.Type.valueOf(mode);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(message);
         }

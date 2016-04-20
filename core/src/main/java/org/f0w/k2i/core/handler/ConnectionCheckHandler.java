@@ -17,8 +17,9 @@ public class ConnectionCheckHandler extends MovieHandler {
 
     /**
      * Repeatably sleeps the thread for specific timeout, until connection to IMDB site is available.
+     *
      * @param importProgress Entity to handle
-     * @param errors List which fill with errors if occured
+     * @param errors         List which fill with errors if occured
      */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {

@@ -7,7 +7,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 public class JpaMovieRepositoryImpl extends BaseJPARepository<Movie, Long> implements MovieRepository {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Movie findByTitleAndYear(final String title, final int year) {
         TypedQuery<Movie> query = entityManagerProvider.get()

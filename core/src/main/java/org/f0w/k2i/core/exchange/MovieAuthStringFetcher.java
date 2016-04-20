@@ -24,6 +24,7 @@ public final class MovieAuthStringFetcher implements Exchangeable<Movie, String>
 
     /**
      * Opens movie page using {@link Movie#imdbId}
+     *
      * @param movie Movie which page should be opened
      * @throws IOException If an I/O error occurs
      */
@@ -39,7 +40,9 @@ public final class MovieAuthStringFetcher implements Exchangeable<Movie, String>
         response = request.execute();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Connection.Response getRawResponse() {
         return response;
@@ -47,6 +50,7 @@ public final class MovieAuthStringFetcher implements Exchangeable<Movie, String>
 
     /**
      * Parses Movie authorization string
+     *
      * @return Authorization string or empty string if response is empty
      */
     @Override

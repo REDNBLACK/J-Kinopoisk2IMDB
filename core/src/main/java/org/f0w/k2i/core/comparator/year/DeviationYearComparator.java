@@ -17,7 +17,9 @@ public final class DeviationYearComparator extends AbstractMovieComparator {
         this.config = config;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean areEqual(Movie movie1, Movie movie2) {
         int yearDeviation = config.getInt("year_deviation");

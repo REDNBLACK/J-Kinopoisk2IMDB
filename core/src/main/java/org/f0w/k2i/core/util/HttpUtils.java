@@ -22,9 +22,10 @@ public final class HttpUtils {
     /**
      * Checks that given hostname is reacheble in certain timeout.
      * Basically working as {@link java.net.InetAddress#isReachable(int)}, but working on all platforms
+     *
      * @param hostName Hostname
-     * @param port Port
-     * @param timeout Timeout in ms
+     * @param port     Port
+     * @param timeout  Timeout in ms
      * @return Reachable or not
      */
     public static boolean isReachable(String hostName, int port, int timeout) {
@@ -38,8 +39,9 @@ public final class HttpUtils {
 
     /**
      * Builds and escapes URL, using host and query
+     *
      * @param hostName Hostname component of URL
-     * @param query Query component of URL
+     * @param query    Query component of URL
      * @return URL
      */
     public static URL buildURL(final String hostName, final Map<String, String> query) {

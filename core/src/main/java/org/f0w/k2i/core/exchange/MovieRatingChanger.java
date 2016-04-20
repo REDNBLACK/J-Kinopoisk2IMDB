@@ -29,6 +29,7 @@ public final class MovieRatingChanger extends IMDBJSONExchange {
      * Sends POST request and changes Movie rating,
      * using using {@link MovieAuthStringFetcher#getProcessedResponse()} authorization string
      * and {@link Movie#imdbId}
+     *
      * @param movie Movie which rating to change
      * @throws IOException If an I/O error occurs
      */
@@ -61,6 +62,7 @@ public final class MovieRatingChanger extends IMDBJSONExchange {
 
     /**
      * Executes {@link MovieAuthStringFetcher} and returns it's response
+     *
      * @param movie Movie to get auth string for
      * @return {@link MovieAuthStringFetcher#getProcessedResponse()}
      * @throws IOException If an I/O error occurs or authorisation string is null or empty

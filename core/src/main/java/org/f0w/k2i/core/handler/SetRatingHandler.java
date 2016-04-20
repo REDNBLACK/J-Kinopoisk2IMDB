@@ -22,8 +22,9 @@ public final class SetRatingHandler extends MovieHandler {
 
     /**
      * Set movie rating and set {@link ImportProgress#rated} to true if succeed
+     *
      * @param importProgress Entity to handle
-     * @param errors List which fill with errors if occured
+     * @param errors         List which fill with errors if occured
      */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {

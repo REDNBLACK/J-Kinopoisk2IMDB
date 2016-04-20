@@ -2,7 +2,9 @@ package org.f0w.k2i.core.model.entity;
 
 import com.google.common.base.MoreObjects;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;

@@ -23,6 +23,7 @@ public final class MovieWatchlistAssigner extends IMDBJSONExchange {
 
     /**
      * Sends POST request and adds Movie to IMDB list, using {@link Movie#imdbId}
+     *
      * @param movie Movie which should be added to IMDB list
      * @throws IOException If an I/O error occurs
      */

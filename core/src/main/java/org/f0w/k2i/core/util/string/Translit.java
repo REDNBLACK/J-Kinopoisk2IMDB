@@ -3,7 +3,7 @@ package org.f0w.k2i.core.util.string;
 /**
  * Utility class that transliterates russian text.
  * For example:
- *      Шерлок Холмс и доктор Ватсон: Знакомство - Sherlok Kholms i doktor Vatson: Znakomstvo
+ * Шерлок Холмс и доктор Ватсон: Знакомство - Sherlok Kholms i doktor Vatson: Znakomstvo
  */
 public final class Translit {
     private static final String[] charTable = new String[81];

@@ -7,9 +7,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 public class JpaKinopoiskFileRepositoryImpl extends BaseJPARepository<KinopoiskFile, Long>
-        implements KinopoiskFileRepository
-{
-    /** {@inheritDoc} */
+        implements KinopoiskFileRepository {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KinopoiskFile findByHashCode(final String hashCode) {
         TypedQuery<KinopoiskFile> query = entityManagerProvider.get().createQuery(

@@ -20,6 +20,7 @@ public class MovieComparatorFactory {
     /**
      * Create instance of {@link MovieComparator},
      * using {@link MovieComparator.Type} as argument.
+     *
      * @param type Type of MovieComparator
      * @return MovieComparator instance
      */

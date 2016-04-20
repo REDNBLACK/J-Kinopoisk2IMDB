@@ -12,6 +12,7 @@ public final class MovieUtils {
 
     /**
      * Parses title, and returns "null" string if not valid
+     *
      * @param title String to parse
      * @return Parsed title
      */
@@ -27,7 +28,8 @@ public final class MovieUtils {
 
     /**
      * Parses title, if null or empty returns "null" defaultTitle
-     * @param title String to parse
+     *
+     * @param title        String to parse
      * @param defaultTitle Fallback string
      * @return Parsed title or defaultTitle
      */
@@ -43,6 +45,7 @@ public final class MovieUtils {
 
     /**
      * Checks that title equals "null" string
+     *
      * @param title String to check
      * @return Is title empty
      */
@@ -52,6 +55,7 @@ public final class MovieUtils {
 
     /**
      * Parses year, returns 0 if it not valid
+     *
      * @param yearString String to parse
      * @return Parsed year or 0
      */
@@ -69,6 +73,7 @@ public final class MovieUtils {
 
     /**
      * Checks that year equals 0
+     *
      * @param year Integer to check
      * @return Is year empty
      */
@@ -78,6 +83,7 @@ public final class MovieUtils {
 
     /**
      * Parses IMDB ID or returns null if it not valid
+     *
      * @param imdbId String to parse
      * @return Parsed IMDB ID or null
      */
@@ -93,6 +99,7 @@ public final class MovieUtils {
 
     /**
      * Checks that IMDB ID is null
+     *
      * @param imdbId String to check
      * @return Is IMDB ID null
      */
@@ -102,6 +109,7 @@ public final class MovieUtils {
 
     /**
      * Parses rating or returns null if it not valid
+     *
      * @param rating String to parse
      * @return Parsed rating or null
      */
@@ -109,10 +117,10 @@ public final class MovieUtils {
         String resultRating = String.valueOf(rating).trim();
 
         if (Strings.isNullOrEmpty(resultRating)
-            || "null".equals(resultRating)
-            || "zero".equals(resultRating)
-            || "0".equals(resultRating)
-        ) {
+                || "null".equals(resultRating)
+                || "zero".equals(resultRating)
+                || "0".equals(resultRating)
+                ) {
             return null;
         }
 
@@ -125,6 +133,7 @@ public final class MovieUtils {
 
     /**
      * Checks that rating is null
+     *
      * @param rating String to check
      * @return Is rating null
      */

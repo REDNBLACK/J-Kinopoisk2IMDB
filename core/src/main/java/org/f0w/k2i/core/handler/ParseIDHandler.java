@@ -26,8 +26,9 @@ public final class ParseIDHandler extends MovieHandler {
 
     /**
      * Find and set {@link ImportProgress#movie} IMDB ID, or add error to list if occured.
+     *
      * @param importProgress Entity to handle
-     * @param errors List which fill with errors if occured
+     * @param errors         List which fill with errors if occured
      */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
@@ -67,7 +68,8 @@ public final class ParseIDHandler extends MovieHandler {
 
     /**
      * Finds movie matching to movie argument using {@link MovieComparator} or {@link Optional#empty()} on failure
-     * @param movie Movie similar to which should be found
+     *
+     * @param movie  Movie similar to which should be found
      * @param movies Deque in which perform search
      * @return Optional of found matching movie
      */

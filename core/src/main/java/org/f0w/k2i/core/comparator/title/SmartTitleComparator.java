@@ -17,11 +17,6 @@ import java.util.List;
 public final class SmartTitleComparator extends AbstractMovieComparator {
     private static final List<StringModifier> modifiers;
 
-    @FunctionalInterface
-    interface StringModifier {
-        String modify(String string);
-    }
-
     static {
         List<StringModifier> list = new ArrayList<>();
 
@@ -113,7 +108,9 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
         modifiers = ImmutableList.copyOf(list);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean areEqual(Movie movie1, Movie movie2) {
         for (StringModifier m1 : modifiers) {
@@ -135,5 +132,10 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
         }
 
         return false;
+    }
+
+    @FunctionalInterface
+    interface StringModifier {
+        String modify(String string);
     }
 }

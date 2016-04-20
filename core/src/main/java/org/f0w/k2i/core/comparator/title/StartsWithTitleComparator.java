@@ -7,7 +7,9 @@ import org.f0w.k2i.core.model.entity.Movie;
  * Checks that one movie title string contains another movie title string at the start.
  */
 public final class StartsWithTitleComparator extends AbstractMovieComparator {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean areEqual(Movie movie1, Movie movie2) {
         String title1 = movie1.getTitle();

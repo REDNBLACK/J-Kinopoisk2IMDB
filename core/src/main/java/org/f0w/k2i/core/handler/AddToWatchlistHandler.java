@@ -21,8 +21,9 @@ public final class AddToWatchlistHandler extends MovieHandler {
 
     /**
      * Add Movie to a watchlist and set {@link ImportProgress#imported} to true if succeed
+     *
      * @param importProgress Entity to handle
-     * @param errors List which fill with errors if occured
+     * @param errors         List which fill with errors if occured
      */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {

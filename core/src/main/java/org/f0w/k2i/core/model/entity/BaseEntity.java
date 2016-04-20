@@ -10,8 +10,8 @@ import java.util.Objects;
 @MappedSuperclass
 public class BaseEntity {
     @Id
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy = "increment")
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private Long id;
 
     protected BaseEntity() {

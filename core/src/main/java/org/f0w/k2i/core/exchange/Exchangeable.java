@@ -6,7 +6,8 @@ import java.io.IOException;
 
 /**
  * Generic interface for classes implementing send request - get response - handle response chain.
- * @param <IN> Input
+ *
+ * @param <IN>  Input
  * @param <OUT> Output
  */
 public interface Exchangeable<IN, OUT> {

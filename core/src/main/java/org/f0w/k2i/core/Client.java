@@ -76,7 +76,7 @@ public final class Client implements Runnable {
 
                 handlerChain.handle(current, currentErrors, handlerType);
 
-                eventBus.post(new ImportProgressAdvancedEvent(currentErrors.isEmpty()));
+                eventBus.post(new ImportProgressAdvancedEvent(current, currentErrors.isEmpty()));
 
                 allErrors.addAll(currentErrors);
 

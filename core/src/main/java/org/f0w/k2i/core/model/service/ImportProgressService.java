@@ -38,7 +38,7 @@ public final class ImportProgressService {
     }
 
     public ImportProgressService initialize(File file, boolean cleanRun) {
-        this.file = checkFile(file);
+        this.file = file;
 
         String fileHashCode = getHashCode(file);
 

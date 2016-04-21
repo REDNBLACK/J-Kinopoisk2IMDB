@@ -30,8 +30,11 @@ public class Main extends Application {
         stage.setResizable(false);
 
         stage.setOnCloseRequest(e -> {
-            controller.destroy();
-            Platform.exit();
+            if (controller.destroy()) {
+                Platform.exit();
+            }
+
+            e.consume();
         });
 
         stage.show();

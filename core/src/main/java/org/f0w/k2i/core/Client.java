@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.f0w.k2i.core.util.IOUtils.checkFile;
+
 public final class Client implements Runnable {
     private final File file;
     private final MovieHandler.Type handlerType;
@@ -34,7 +36,7 @@ public final class Client implements Runnable {
     }
 
     public Client(File file, Config config, boolean cleanRun) {
-        this.file = file;
+        this.file = checkFile(file);
         this.cleanRun = cleanRun;
 
         Injector injector = Guice.createInjector(

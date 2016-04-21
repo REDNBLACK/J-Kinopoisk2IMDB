@@ -1,12 +1,10 @@
 package org.f0w.k2i.gui;
 
 import com.google.common.eventbus.Subscribe;
-
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
-
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -16,13 +14,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import javafx.stage.StageStyle;
 import org.controlsfx.control.CheckComboBox;
-
-import org.f0w.k2i.core.Client;
 import org.f0w.k2i.core.comparator.MovieComparator;
-import org.f0w.k2i.core.event.*;
+import org.f0w.k2i.core.event.ImportFinishedEvent;
+import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
+import org.f0w.k2i.core.event.ImportStartedEvent;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -32,24 +31,22 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static org.f0w.k2i.core.handler.MovieHandler.Type.*;
-import static org.f0w.k2i.core.exchange.finder.MovieFinder.Type.*;
 import static org.f0w.k2i.core.comparator.MovieComparator.Type.*;
+import static org.f0w.k2i.core.exchange.finder.MovieFinder.Type.*;
+import static org.f0w.k2i.core.handler.MovieHandler.Type.*;
 
 public class Controller {
     private Stage stage;
-    private final FileChooser fileChooser = new FileChooser();
     private File kpFile;
     private boolean cleanRun;
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private ClientManager clientManager = new ClientManager();
 
     private final File configFile = new File(
             System.getProperty("user.home") + File.separator + "K2IDB" + File.separator + "config.json"
@@ -83,7 +80,7 @@ public class Controller {
     private CheckBox cleanRunCheckbox;
 
     @FXML
-    private Button startStopBtn;
+    private Button runBtn;
 
     @FXML
     private Label progressStatus;
@@ -119,7 +116,7 @@ public class Controller {
                 new Choice<>(ADD_TO_WATCHLIST, "Добавить в список")
         ));
         modeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.value.equals(ADD_TO_WATCHLIST) || newValue.value.equals(COMBINED)) {
+            if (newValue.getValue().equals(ADD_TO_WATCHLIST) || newValue.getValue().equals(COMBINED)) {
                 listId.setEditable(true);
                 listId.setDisable(false);
             } else {
@@ -128,7 +125,7 @@ public class Controller {
                 listId.setEditable(false);
             }
 
-            configMap.put("mode", newValue.value.toString());
+            configMap.put("mode", newValue.getValue().toString());
         });
         modeComboBox.getSelectionModel().select(new Choice<>(MovieHandler.Type.valueOf(config.getString("mode"))));
 
@@ -139,19 +136,18 @@ public class Controller {
         listId.setText(config.getString("list"));
 
 
-
         // Дополнительные
         queryFormatComboBox.setItems(FXCollections.observableArrayList(
-            new Choice<>(XML, "XML"),
-            new Choice<>(JSON, "JSON"),
-            new Choice<>(HTML, "HTML"),
-            new Choice<>(MIXED, "Смешанный")
+                new Choice<>(XML, "XML"),
+                new Choice<>(JSON, "JSON"),
+                new Choice<>(HTML, "HTML"),
+                new Choice<>(MIXED, "Смешанный")
         ));
         queryFormatComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            configMap.put("query_format", newValue.value.toString());
+            configMap.put("query_format", newValue.getValue().toString());
         });
         queryFormatComboBox.getSelectionModel().select(
-            new Choice<>(MovieFinder.Type.valueOf(config.getString("query_format")))
+                new Choice<>(MovieFinder.Type.valueOf(config.getString("query_format")))
         );
 
         comparatorsBox.getItems().addAll(FXCollections.observableArrayList(
@@ -165,7 +161,7 @@ public class Controller {
         ));
         comparatorsBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<Choice<MovieComparator.Type, String>>) c -> {
             List<String> comparators = c.getList().stream()
-                    .map(choice -> choice.value.toString())
+                    .map(choice -> choice.getValue().toString())
                     .collect(Collectors.toList());
 
             configMap.put("comparators", comparators);
@@ -177,7 +173,6 @@ public class Controller {
         cleanRunCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             cleanRun = newValue;
         });
-
 
 
         // Для экспертов
@@ -195,59 +190,63 @@ public class Controller {
         logLevelField.setText(config.getString("log_level"));
     }
 
-    void destroy() {
+    boolean destroy() {
+        if (clientManager.isRunning()) {
+            if (!confirmStop()) {
+                return false;
+            }
+
+            clientManager.terminate();
+        }
+
         byte[] configuration = ConfigFactory.parseMap(configMap)
                 .withFallback(config)
                 .root()
                 .render(ConfigRenderOptions.concise())
                 .getBytes();
 
-        executor.shutdownNow();
-
         try {
             Files.write(configFile.toPath(), configuration);
         } catch (IOException ignore) {
             // Do nothing
         }
+
+        return true;
     }
 
     @FXML
     protected void handleFileChoseAction(ActionEvent event) {
-        fileChooser.setTitle("Выберите список кинопоиска:");
-        fileChooser.getExtensionFilters().addAll(
+        FileChooser choser = new FileChooser();
+        choser.setTitle("Выберите список кинопоиска:");
+        choser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("XLS", "*.xls"),
                 new FileChooser.ExtensionFilter("Все файлы", "*.*")
         );
 
-        File file = fileChooser.showOpenDialog(stage);
+        File file = choser.showOpenDialog(stage);
 
         if (file != null) {
             selectFileBtn.setText("Выбрать другой файл...");
             selectedFile.setText(file.getPath());
             kpFile = file;
-            progressBar.setProgress(0.0);
-            startStopBtn.setDisable(false);
+            runBtn.setDisable(false);
         }
     }
 
     @FXML
     protected void handleStartAction(ActionEvent event) {
-        progressBar.setProgress(0.0);
-
-        startStopBtn.setText("Остановить");
-        startStopBtn.getStyleClass().remove("primary");
-        startStopBtn.getStyleClass().add("danger");
-        startStopBtn.setOnAction(this::handleStopAction);
-
         try {
-            Client client = new Client(kpFile, ConfigFactory.parseMap(configMap), cleanRun);
-            client.registerListener(new ProgressListener());
-
-            executor = Executors.newSingleThreadExecutor();
-            executor.submit(client);
-            executor.shutdown();
-        } catch (IllegalArgumentException|NullPointerException|ConfigException e) {
+            clientManager.init(
+                    kpFile,
+                    ConfigFactory.parseMap(configMap),
+                    cleanRun,
+                    Arrays.asList(new ProgressBarUpdater(), new RunButtonUpdater())
+            );
+            clientManager.run();
+        } catch (IllegalArgumentException | NullPointerException | ConfigException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initStyle(StageStyle.UTILITY);
             alert.setTitle("Ошибка");
             alert.setHeaderText("Произошла ошибка");
             alert.setContentText(e.getMessage());
@@ -256,17 +255,26 @@ public class Controller {
         }
     }
 
-    @FXML
-    protected void handleStopAction(ActionEvent event) {
-        startStopBtn.setText("Запустить");
-        startStopBtn.getStyleClass().remove("danger");
-        startStopBtn.getStyleClass().add("primary");
-        startStopBtn.setOnAction(this::handleStartAction);
-
-        executor.shutdownNow();
+    private void handleStopAction(ActionEvent event) {
+        if (clientManager.isRunning() && confirmStop()) {
+            clientManager.terminate();
+        }
     }
 
-    private class ProgressListener {
+    private boolean confirmStop() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.NONE);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setTitle("Потдверждение");
+        alert.setHeaderText("Подтверждение остановки обработки фильмов");
+        alert.setContentText("Вы уверены что хотите остановить обработку фильмов?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        return result.isPresent() && result.get() == ButtonType.OK;
+    }
+
+    private class ProgressBarUpdater {
         private final AtomicInteger max = new AtomicInteger(0);
         private final AtomicInteger current = new AtomicInteger(0);
         private final AtomicInteger failed = new AtomicInteger(0);
@@ -297,100 +305,93 @@ public class Controller {
 
         @Subscribe
         public void handleEnd(ImportFinishedEvent event) {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.NONE);
+            Platform.runLater(() -> showResultDialog(event.errors, max.get(), successful.get(), failed.get()));
+        }
 
-                if (event.errors.isEmpty()) {
-                    alert.setAlertType(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Обработка успешно завершена");
-                    alert.setHeaderText("Обработка фильмов была успешно завершена.");
-                    alert.setContentText("Были обработаны все " + max.get() + " фильмов, без ошибок");
+        private void showResultDialog(List<MovieHandler.Error> errors, int maximum, int successful, int failed) {
+            Alert alert = new Alert(Alert.AlertType.NONE);
+
+            if (errors.isEmpty()) {
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setTitle("Обработка успешно завершена");
+                alert.setHeaderText("Обработка фильмов была успешно завершена.");
+
+                if (successful == maximum) {
+                    alert.setContentText("Были обработаны все " + maximum + " фильмов, без ошибок");
                 } else {
-                    alert.setAlertType(Alert.AlertType.WARNING);
-                    alert.setTitle("Обработка завершена c ошибками");
-                    alert.setHeaderText("Обработка фильмов была завершена с ошибками.");
-
-                    alert.setContentText(
-                            "Было обработаны " + successful.get() + " из " + max.get() + " фильмов, без ошибок"
-                    );
-
-                    // Create expandable Exception.
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter(sw);
-
-                    Map<Movie, List<String>> errors = event.errors.stream()
-                            .collect(Collectors.groupingBy(
-                                    MovieHandler.Error::getMovie,
-                                    Collectors.mapping(MovieHandler.Error::getMessage, Collectors.toList())
-                            ));
-
-                    errors.entrySet().forEach(e -> {
-                        Movie movie = e.getKey();
-
-                        pw.println(movie.getTitle() + "(" + movie.getYear() + "):");
-
-                        e.getValue().forEach(pw::println);
-
-                        pw.println();
-                        pw.println();
-                    });
-
-                    String exceptionText = sw.toString();
-
-                    Label label = new Label("Произошли ошибки с " + failed.get() + " фильмами:");
-
-                    TextArea textArea = new TextArea(exceptionText);
-                    textArea.setEditable(false);
-                    textArea.setWrapText(true);
-
-                    textArea.setMaxWidth(Double.MAX_VALUE);
-                    textArea.setMaxHeight(Double.MAX_VALUE);
-                    GridPane.setVgrow(textArea, Priority.ALWAYS);
-                    GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-                    GridPane expContent = new GridPane();
-                    expContent.setMaxWidth(Double.MAX_VALUE);
-                    expContent.add(label, 0, 0);
-                    expContent.add(textArea, 0, 1);
-
-                    alert.getDialogPane().setExpandableContent(expContent);
+                    alert.setContentText("Были обработаны " + successful + " из " + maximum + " фильмов, без ошибок");
                 }
+            } else {
+                alert.setAlertType(Alert.AlertType.WARNING);
+                alert.setTitle("Обработка завершена c ошибками");
+                alert.setHeaderText("Обработка фильмов была завершена с ошибками.");
+                alert.setContentText("Были обработаны " + successful + " из " + maximum + " фильмов, без ошибок");
 
-                alert.showAndWait();
-            });
+                // Create expandable Exception.
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+
+                errors.stream()
+                        .collect(Collectors.groupingBy(
+                                MovieHandler.Error::getMovie,
+                                Collectors.mapping(MovieHandler.Error::getMessage, Collectors.toList())
+                        ))
+                        .entrySet()
+                        .forEach(e -> {
+                            Movie movie = e.getKey();
+
+                            pw.println(movie.getTitle() + "(" + movie.getYear() + "):");
+
+                            e.getValue().forEach(pw::println);
+
+                            pw.println();
+                            pw.println();
+                        });
+
+                String exceptionText = sw.toString();
+
+                Label label = new Label("Произошли ошибки с " + failed + " фильмами:");
+
+                TextArea textArea = new TextArea(exceptionText);
+                textArea.setEditable(false);
+                textArea.setWrapText(true);
+
+                textArea.setMaxWidth(Double.MAX_VALUE);
+                textArea.setMaxHeight(Double.MAX_VALUE);
+                GridPane.setVgrow(textArea, Priority.ALWAYS);
+                GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+                GridPane expContent = new GridPane();
+                expContent.setMaxWidth(Double.MAX_VALUE);
+                expContent.add(label, 0, 0);
+                expContent.add(textArea, 0, 1);
+
+                alert.getDialogPane().setExpandableContent(expContent);
+            }
+
+            alert.showAndWait();
         }
     }
 
-    private class Choice<K, V> {
-        final K value;
-        final V label;
-
-        Choice(K value) {
-            this.value = value;
-            this.label = null;
+    private class RunButtonUpdater {
+        @Subscribe
+        public void handleStart(ImportStartedEvent event) {
+            Platform.runLater(() -> {
+                runBtn.setText("Остановить");
+                runBtn.getStyleClass().remove("primary");
+                runBtn.getStyleClass().add("danger");
+                runBtn.setOnAction(Controller.this::handleStopAction);
+            });
         }
 
-        Choice(K value, V label) {
-            this.value = value;
-            this.label = label;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(label);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Choice<?, ?> choice = (Choice<?, ?>) o;
-            return Objects.equals(value, choice.value);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(value);
+        @Subscribe
+        public void handleEnd(ImportFinishedEvent event) {
+            Platform.runLater(() -> {
+                runBtn.setText("Запустить");
+                runBtn.getStyleClass().remove("danger");
+                runBtn.getStyleClass().add("primary");
+                runBtn.setOnAction(Controller.this::handleStartAction);
+            });
         }
     }
 }

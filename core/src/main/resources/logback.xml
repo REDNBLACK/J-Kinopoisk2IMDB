@@ -15,6 +15,7 @@
     </appender>
 
     <logger name="org.hibernate" level="error"/>
+    <logger name="h2database" level="error"/>
 
     <root level="info">
         <appender-ref ref="file"/>

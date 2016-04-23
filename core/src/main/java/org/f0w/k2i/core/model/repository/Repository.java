@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.model.repository;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface Repository<T, ID extends Serializable> {
     /**
@@ -10,6 +11,20 @@ public interface Repository<T, ID extends Serializable> {
      * @return Found entity
      */
     T find(ID id);
+
+    /**
+     * Returns all instances of the type.
+     *
+     * @return All entities
+     */
+    List<T> findAll();
+
+    /**
+     * Returns all instances of the type with the given IDs.
+     *
+     * @return All entities having given IDs
+     */
+    List<T> findAll(Iterable<ID> ids);
 
     /**
      * Save or update entity

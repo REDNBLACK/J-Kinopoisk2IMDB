@@ -46,7 +46,7 @@ public class Controller {
     private Stage stage;
     private File kpFile;
     private boolean cleanRun;
-    private ClientManager clientManager = new ClientManager();
+    private ClientExecutor clientExecutor = new ClientExecutor();
 
     private final File configFile = new File(
             System.getProperty("user.home") + File.separator + "K2IDB" + File.separator + "config.json"
@@ -191,12 +191,12 @@ public class Controller {
     }
 
     boolean destroy() {
-        if (clientManager.isRunning()) {
+        if (clientExecutor.isRunning()) {
             if (!confirmStop()) {
                 return false;
             }
 
-            clientManager.terminate();
+            clientExecutor.terminate();
         }
 
         byte[] configuration = ConfigFactory.parseMap(configMap)
@@ -236,13 +236,13 @@ public class Controller {
     @FXML
     protected void handleStartAction(ActionEvent event) {
         try {
-            clientManager.init(
-                    kpFile,
+            clientExecutor.init(
+                    kpFile.toPath(),
                     ConfigFactory.parseMap(configMap),
                     cleanRun,
                     Arrays.asList(new ProgressBarUpdater(), new RunButtonUpdater())
             );
-            clientManager.run();
+            clientExecutor.run();
         } catch (IllegalArgumentException | NullPointerException | ConfigException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -256,8 +256,8 @@ public class Controller {
     }
 
     private void handleStopAction(ActionEvent event) {
-        if (clientManager.isRunning() && confirmStop()) {
-            clientManager.terminate();
+        if (clientExecutor.isRunning() && confirmStop()) {
+            clientExecutor.terminate();
         }
     }
 

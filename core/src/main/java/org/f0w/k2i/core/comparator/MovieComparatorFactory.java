@@ -23,6 +23,7 @@ public class MovieComparatorFactory {
      *
      * @param type Type of MovieComparator
      * @return MovieComparator instance
+     * @throws IllegalArgumentException If such type not instantiable
      */
     public MovieComparator make(MovieComparator.Type type) {
         switch (type) {
@@ -41,7 +42,7 @@ public class MovieComparatorFactory {
             case YEAR_EQUALS:
                 return new EqualsYearComparator();
             default:
-                throw new UnsupportedOperationException("Comparator of this type not found!");
+                throw new IllegalArgumentException("Comparator of this type not found!");
         }
     }
 }

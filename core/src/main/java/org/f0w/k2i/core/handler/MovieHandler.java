@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -95,7 +96,7 @@ public abstract class MovieHandler {
     /**
      * MovieHandler error
      */
-    public class Error {
+    public static class Error {
         private final Movie movie;
         private final String message;
 
@@ -110,6 +111,20 @@ public abstract class MovieHandler {
 
         public String getMessage() {
             return message;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Error error = (Error) o;
+            return Objects.equals(getMovie(), error.getMovie()) &&
+                    Objects.equals(getMessage(), error.getMessage());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getMovie(), getMessage());
         }
     }
 }

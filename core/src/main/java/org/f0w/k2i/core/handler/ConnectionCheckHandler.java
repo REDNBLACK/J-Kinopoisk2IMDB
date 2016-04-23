@@ -7,7 +7,7 @@ import org.f0w.k2i.core.util.HttpUtils;
 
 import java.util.List;
 
-public class ConnectionCheckHandler extends MovieHandler {
+public final class ConnectionCheckHandler extends MovieHandler {
     private final Config config;
 
     @Inject

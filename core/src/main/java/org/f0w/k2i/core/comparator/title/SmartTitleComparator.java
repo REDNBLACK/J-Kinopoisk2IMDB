@@ -1,15 +1,19 @@
 package org.f0w.k2i.core.comparator.title;
 
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.comparator.AbstractMovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.string.NumericToWord;
 import org.f0w.k2i.core.util.string.Translit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringEscapeUtils.unescapeXml;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * Uses multiple unique algorithms for movie title comparison.
@@ -24,49 +28,53 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
         list.add(s -> s);
 
         // Original string without commas
-        list.add(s -> s.replaceAll(",", ""));
+        list.add(s -> replaceChars(s, ",", ""));
 
         // Original string without colon
-        list.add(s -> s.replaceAll(":", ""));
+        list.add(s -> replaceChars(s, ":", ""));
 
-        // Original string without apostrophes
-        list.add(s -> s.replaceAll("/([\'\\\\x{0027}]|&#39;|&#x27;)/u", ""));
+        // Original string without apostrophes and quotes
+        list.add(s -> {
+            String[] toReplace = {"'", "«", "»"};
+            String[] replacements = Collections.nCopies(toReplace.length, "")
+                    .toArray(new String[toReplace.length]);
+
+            return replaceEachRepeatedly(s, toReplace, replacements);
+        });
 
         // Original string with unescaped XML symbols and removed foreign accents
-        list.add(s -> StringUtils.stripAccents(StringEscapeUtils.unescapeXml(s)));
+        list.add(s -> stripAccents(unescapeXml(s)));
 
         // Original string without special symbols like unicode etc
         list.add(s -> s.replaceAll("/\\\\u([0-9a-z]{4})/", ""));
 
         // Original string with part before dash symbol
-        list.add(s -> {
-            String[] parts = s.split("-");
-
-            return parts[0].trim();
-        });
+        list.add(s -> Arrays.stream(splitByWholeSeparator(s, "-"))
+                .findFirst()
+                .map(String::trim)
+                .orElse(s)
+        );
 
         // Original string with part after dash symbol
-        list.add(s -> {
-            String[] parts = s.split("-");
-
-            return parts.length > 0 ? parts[parts.length - 1].trim() : "";
-        });
+        list.add(s -> Arrays.stream(splitByWholeSeparator(s, "-"))
+                .reduce((s1, s2) -> s2)
+                .map(String::trim)
+                .orElse(s)
+        );
 
         // The + Original string
         list.add(s -> "The " + s);
 
         // Original string with all whitespace characters replaced with plain backspace
-        list.add(s -> s.replaceAll("/\\s+/", " "));
+        list.add(s -> s.replaceAll("\\s+", " "));
 
         // Original string with XML symbols replaced with backspace
         list.add(s -> {
-            String[] symbols = {"&#xB;", "&#xC;", "&#x1A;", "&#x1B;"};
+            String[] toReplace = {"&#xB;", "&#xC;", "&#x1A;", "&#x1B;"};
+            String[] replacements = Collections.nCopies(toReplace.length, " ")
+                    .toArray(new String[toReplace.length]);
 
-            for (String symbol : symbols) {
-                s = s.replaceAll(symbol, " ");
-            }
-
-            return s;
+            return replaceEachRepeatedly(s, toReplace, replacements);
         });
 
         // Transliterated string
@@ -76,34 +84,27 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
         list.add(Translit::toWeakerTranslit);
 
         // Weakly transliterated with lower case and capitalized
-        list.add(s -> Translit.toWeakerTranslit(StringUtils.capitalize(s.toLowerCase())));
+        list.add(s -> Translit.toWeakerTranslit(capitalize(s.toLowerCase())));
 
         // Original string with numeric replaced to text representation
-        list.add(s -> {
-            String[] words = s.split(" ");
-
-            for (int i = 0; i < words.length; i++) {
-                try {
-                    words[i] = NumericToWord.convert(Integer.parseInt(words[i]));
-                } catch (NumberFormatException ignored) {
-                    // Ignore
-                }
-            }
-
-            return String.join(" ", words);
-        });
+        list.add(s -> Arrays.stream(splitByWholeSeparator(s, null))
+                .map(n -> {
+                    try {
+                        return NumericToWord.convert(Integer.parseInt(n));
+                    } catch (NumberFormatException ignored) {
+                        return n;
+                    }
+                })
+                .collect(Collectors.joining(" "))
+        );
 
         // Modifiers using symbols mix
-        String[] symbolsMix = {"&", "and", "et"};
-        for (final String firstSymbol : symbolsMix) {
-            for (final String secondSymbol : symbolsMix) {
-                if (firstSymbol.equals(secondSymbol)) {
-                    continue;
-                }
-
-                list.add(s -> s.replaceAll(firstSymbol, secondSymbol));
+        List<String> symbolsMix = Arrays.asList("&", "and", "et");
+        symbolsMix.forEach(s1 -> symbolsMix.forEach(s2 -> {
+            if (!s1.equals(s2)) {
+                list.add(s -> replace(s, s1, s2));
             }
-        }
+        }));
 
         modifiers = ImmutableList.copyOf(list);
     }
@@ -118,14 +119,16 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
                 String m1Title = m1.modify(movie1.getTitle());
                 String m2Title = m2.modify(movie2.getTitle());
 
+                boolean result = m1Title.equals(m2Title);
+
                 LOG.debug(
                         "Comparing title '{}' with title '{}', matches = '{}'",
                         m1Title,
                         m2Title,
-                        m1Title.equals(m2Title)
+                        result
                 );
 
-                if (m1Title.equals(m2Title)) {
+                if (result) {
                     return true;
                 }
             }
@@ -135,7 +138,7 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
     }
 
     @FunctionalInterface
-    interface StringModifier {
+    private interface StringModifier {
         String modify(String string);
     }
 }

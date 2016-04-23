@@ -1,5 +1,7 @@
 package org.f0w.k2i.core.model.service;
 
+import com.google.common.hash.Hashing;
+import com.google.common.io.Files;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import org.f0w.k2i.core.handler.MovieHandler;
@@ -9,21 +11,23 @@ import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.model.repository.ImportProgressRepository;
 import org.f0w.k2i.core.model.repository.KinopoiskFileRepository;
 import org.f0w.k2i.core.model.repository.MovieRepository;
+import org.f0w.k2i.core.util.MovieUtils;
+import org.f0w.k2i.core.util.exception.ExceptionUtils;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.f0w.k2i.core.util.IOUtils.*;
+import static org.f0w.k2i.core.util.IOUtils.checkFile;
 
 public final class ImportProgressService {
     private final KinopoiskFileRepository kinopoiskFileRepository;
     private final ImportProgressRepository importProgressRepository;
     private final MovieRepository movieRepository;
 
-    private File file;
+    private Path filePath;
     private KinopoiskFile kinopoiskFile;
 
     @Inject
@@ -37,10 +41,10 @@ public final class ImportProgressService {
         this.movieRepository = movieRepository;
     }
 
-    public ImportProgressService initialize(File file, boolean cleanRun) {
-        this.file = file;
+    public ImportProgressService initialize(Path filePath, boolean cleanRun) {
+        this.filePath = checkFile(filePath);
 
-        String fileHashCode = getHashCode(file);
+        String fileHashCode = ExceptionUtils.uncheck(() -> Files.hash(filePath.toFile(), Hashing.sha256()).toString());
 
         if (cleanRun) {
             removeExistingFileData(fileHashCode);
@@ -69,7 +73,8 @@ public final class ImportProgressService {
     private KinopoiskFile importNewFileData(String fileHashCode) {
         KinopoiskFile newFile = kinopoiskFileRepository.save(new KinopoiskFile(fileHashCode));
 
-        List<Movie> movies = parseMovies(file).stream()
+        List<Movie> movies = MovieUtils.parseMovies(filePath)
+                .stream()
                 .map(newMovie -> {
                     Movie oldMovie = movieRepository.findByTitleAndYear(newMovie.getTitle(), newMovie.getYear());
 

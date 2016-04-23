@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.util;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,6 @@ import java.util.Map;
  */
 public final class CollectionUtils {
     private CollectionUtils() {
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -26,8 +26,14 @@ public final class CollectionUtils {
             throw new IllegalArgumentException("Cannot combine lists with dissimilar sizes");
         }
 
-        Map<K, V> map = new LinkedHashMap<>(values.size());
-        for (int i = 0; i < keys.size(); i++) {
+        if (keys.isEmpty() && values.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        int size = values.size();
+
+        Map<K, V> map = new LinkedHashMap<>(size);
+        for (int i = 0; i < size; i++) {
             map.put(keys.get(i), values.get(i));
         }
 

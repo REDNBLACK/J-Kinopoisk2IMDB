@@ -1,5 +1,13 @@
 package org.f0w.k2i.core.util.string;
 
+import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.StrBuilder;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Arrays;
+import java.util.Map;
+
 /**
  * Utility class that transliterates russian text.
  * For example:
@@ -7,7 +15,7 @@ package org.f0w.k2i.core.util.string;
  */
 public final class Translit {
     private static final String[] charTable = new String[81];
-
+    private static final String[] weakerCharTable;
     private static final char START_CHAR = 'Ё';
 
     static {
@@ -45,20 +53,41 @@ public final class Translit {
         charTable['Ю' - START_CHAR] = "U";
         charTable['Я' - START_CHAR] = "Ya";
 
-        for (int i = 0; i < charTable.length; i++) {
+        fillWithLowerCaseChars(charTable);
+
+        weakerCharTable = Arrays.copyOf(charTable, charTable.length);
+        weakerCharTable['Ъ' - START_CHAR] = "";
+        weakerCharTable['Ь' - START_CHAR] = "";
+
+        fillWithLowerCaseChars(weakerCharTable);
+    }
+
+    private Translit() {
+    }
+
+    /**
+     * Adds lowercase copy of already existing uppercase characters into table
+     *
+     * @param table Table to add chars into
+     */
+    private static void fillWithLowerCaseChars(String[] table) {
+        for (int i = 0; i < table.length; i++) {
             char idx = (char) ((char) i + START_CHAR);
             char lower = new String(new char[]{idx}).toLowerCase().charAt(0);
-            if (charTable[i] != null) {
-                charTable[lower - START_CHAR] = charTable[i].toLowerCase();
+            if (table[i] != null) {
+                table[lower - START_CHAR] = table[i].toLowerCase();
             }
         }
     }
 
-    private Translit() {
-        throw new UnsupportedOperationException();
-    }
-
-    public static String toTranslit(String text) {
+    /**
+     * Replaces chars in text using replacements from given table of chars.
+     *
+     * @param text      Text to replace
+     * @param charTable Table of chars
+     * @return Replaced text
+     */
+    private static String replaceChars(String text, String[] charTable) {
         char[] charBuffer = text.toCharArray();
 
         StringBuilder sb = new StringBuilder(text.length());
@@ -77,8 +106,38 @@ public final class Translit {
         return sb.toString();
     }
 
+    /**
+     * Transliterates russian text.
+     * For example:
+     * Шерлок Холмс и доктор Ватсон: Знакомство - Sherlok Kholms i doktor Vatson: Znakomstvo
+     *
+     * @param text Text to replaceChars
+     * @return Transliterated text
+     */
+    public static String toTranslit(String text) {
+        return replaceChars(text, charTable);
+    }
+
+    /**
+     * Works the same as {@link Translit#toTranslit(String)},
+     * except using different chars and some chars pairs are replaced.
+     *
+     * @param text Text to replaceChars
+     * @return Transliterated text
+     */
     public static String toWeakerTranslit(String text) {
-        return toTranslit(text).replace("'", "")
-                .replace("yi", "yy");
+        final StrBuilder builder = new StrBuilder(replaceChars(text, weakerCharTable));
+
+        Map<String, Pair<String, String>> pairsToReplace = new ImmutableMap.Builder<String, Pair<String, String>>()
+                .put("уй", Pair.of("yi", "yy"))
+                .build();
+
+        pairsToReplace.forEach((search, replacements) -> {
+            if (StringUtils.containsIgnoreCase(text, search)) {
+                builder.replaceAll("(?i)" + replacements.getKey(), replacements.getValue());
+            }
+        });
+
+        return builder.toString();
     }
 }

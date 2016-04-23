@@ -15,7 +15,7 @@ public final class EqualsTitleComparator extends AbstractMovieComparator {
         String title1 = movie1.getTitle();
         String title2 = movie2.getTitle();
 
-        boolean result = title1.equals(title2);
+        boolean result = title1.equalsIgnoreCase(title2);
 
         LOG.debug("Comparing title '{}' with title '{}', matches = '{}'", title1, title2, result);
 

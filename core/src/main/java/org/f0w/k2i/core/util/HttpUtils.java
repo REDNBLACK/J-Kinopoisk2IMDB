@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  */
 public final class HttpUtils {
     private HttpUtils() {
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -29,8 +28,8 @@ public final class HttpUtils {
      * @return Reachable or not
      */
     public static boolean isReachable(String hostName, int port, int timeout) {
-        try (Socket soc = new Socket()) {
-            soc.connect(new InetSocketAddress(hostName, port), timeout);
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress(hostName, port), timeout);
             return true;
         } catch (IOException ignore) {
             return false;
@@ -53,7 +52,11 @@ public final class HttpUtils {
                 ));
 
         try {
-            return new URL(hostName + Joiner.on("&").withKeyValueSeparator("=").join(escapedQuery));
+            return new URL(
+                    hostName
+                            + (!hostName.endsWith("?") ? "?" : "")
+                            + Joiner.on("&").withKeyValueSeparator("=").join(escapedQuery)
+            );
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e);
         }

@@ -2,9 +2,6 @@ package org.f0w.k2i.core.util.string;
 
 /**
  * Utility class that converts numbers to words.
- * For example:
- * 3 - Three,
- * 451 - Four Hundred Fifty One
  */
 public final class NumericToWord {
     private static final String[] units = {
@@ -44,9 +41,17 @@ public final class NumericToWord {
     };
 
     private NumericToWord() {
-        throw new UnsupportedOperationException();
     }
 
+    /**
+     * Converts given integer to a words describing it.
+     * For example:
+     * 3 - Three,
+     * 451 - Four hundred Fifty One
+     *
+     * @param n Integer to convert
+     * @return Result words
+     */
     public static String convert(Integer n) {
         if (n < 0) {
             return "minus " + convert(-n);

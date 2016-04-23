@@ -15,30 +15,29 @@ import org.f0w.k2i.core.providers.ConfigurationProvider;
 import org.f0w.k2i.core.providers.JpaRepositoryProvider;
 import org.f0w.k2i.core.providers.SystemProvider;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.f0w.k2i.core.util.IOUtils.checkFile;
+import static java.util.Objects.requireNonNull;
 
 public final class Client implements Runnable {
-    private final File file;
     private final MovieHandler.Type handlerType;
     private final MovieHandler handlerChain;
     private final EventBus eventBus;
     private final ImportProgressService importProgressService;
     private final PersistService persistService;
-    private final boolean cleanRun;
 
-    public Client(File file, Config config) {
-        this(file, config, false);
+    public Client(Path filePath, Config config) {
+        this(filePath, config, false);
     }
 
-    public Client(File file, Config config, boolean cleanRun) {
-        this.file = checkFile(file);
-        this.cleanRun = cleanRun;
+    public Client(Path filePath, Config config, boolean cleanRun) {
+        this(filePath, config, cleanRun, Collections.emptyList());
+    }
 
+    public Client(Path filePath, Config config, boolean cleanRun, List<?> listeners) {
         Injector injector = Guice.createInjector(
                 new ConfigurationProvider(config),
                 new JpaRepositoryProvider(),
@@ -50,23 +49,16 @@ public final class Client implements Runnable {
 
         handlerType = injector.getInstance(MovieHandler.Type.class);
         handlerChain = injector.getInstance(MovieHandler.class);
+        importProgressService = injector.getInstance(ImportProgressService.class)
+                .initialize(filePath, cleanRun);
+
         eventBus = new EventBus();
-        importProgressService = injector.getInstance(ImportProgressService.class);
-    }
-
-    public void registerListeners(List<?> listeners) {
-        listeners.forEach(eventBus::register);
-    }
-
-    public void registerListener(Object listener) {
-        registerListeners(Collections.singletonList(listener));
+        requireNonNull(listeners).forEach(eventBus::register);
     }
 
     @Override
     public void run() {
-        List<ImportProgress> importProgress = importProgressService
-                .initialize(file, cleanRun)
-                .getNotHandledMovies(handlerType);
+        List<ImportProgress> importProgress = importProgressService.getNotHandledMovies(handlerType);
 
         eventBus.post(new ImportStartedEvent(importProgress.size()));
 

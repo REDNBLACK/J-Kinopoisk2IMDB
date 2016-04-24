@@ -13,6 +13,14 @@ public class SmartTitleComparatorTest {
     private final MovieComparator comparator = new SmartTitleComparator();
 
     @Test
+    public void testAreEqualDifferentTitles() throws Exception {
+        assertFalse(comparator.areEqual(
+                new Movie("Inception", 2010),
+                new Movie("Hannibal", 2013)
+        ));
+    }
+
+    @Test
     public void testAreEqualEqualTitles() throws Exception {
         assertTrue(comparator.areEqual(
                 new Movie("Inception", 2010),

@@ -43,7 +43,7 @@ public final class AddToWatchlistHandler extends MovieHandler {
 
             assigner.sendRequest(movie);
 
-            Long statusCode = assigner.getProcessedResponse();
+            Integer statusCode = assigner.getProcessedResponse();
 
             if (statusCode != HttpURLConnection.HTTP_OK) {
                 throw new IOException("Can't add movie to watchlist, error status code: " + statusCode);

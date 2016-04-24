@@ -49,7 +49,7 @@ public final class SetRatingHandler extends MovieHandler {
 
             changer.sendRequest(movie);
 
-            Long statusCode = changer.getProcessedResponse();
+            Integer statusCode = changer.getProcessedResponse();
 
             if (statusCode != HttpURLConnection.HTTP_OK) {
                 throw new IOException("Can't change movie rating, error status code: " + statusCode);

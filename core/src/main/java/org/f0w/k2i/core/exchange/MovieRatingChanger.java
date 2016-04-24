@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Changes Movie rating on IMDB.
  */
-public final class MovieRatingChanger extends IMDBJSONExchange {
+public final class MovieRatingChanger extends JSONPostExchange {
     private final Config config;
 
     private final MovieAuthStringFetcher fetcher;

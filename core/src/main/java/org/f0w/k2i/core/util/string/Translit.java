@@ -1,12 +1,12 @@
 package org.f0w.k2i.core.util.string;
 
 import com.google.common.collect.ImmutableMap;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrBuilder;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
 import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 /**
  * Utility class that transliterates russian text.
@@ -126,15 +126,20 @@ public final class Translit {
      * @return Transliterated text
      */
     public static String toWeakerTranslit(String text) {
-        final StrBuilder builder = new StrBuilder(replaceChars(text, weakerCharTable));
+        final StringBuilder builder = new StringBuilder(replaceChars(text, weakerCharTable));
 
         Map<String, Pair<String, String>> pairsToReplace = new ImmutableMap.Builder<String, Pair<String, String>>()
-                .put("уй", Pair.of("yi", "yy"))
+                .put("ый", Pair.of("yi", "yy"))
                 .build();
 
         pairsToReplace.forEach((search, replacements) -> {
-            if (StringUtils.containsIgnoreCase(text, search)) {
-                builder.replaceAll("(?i)" + replacements.getKey(), replacements.getValue());
+            if (containsIgnoreCase(text, search)) {
+                String replaced = builder.toString().replaceAll(
+                        "(?i)" + replacements.getKey(),
+                        replacements.getValue()
+                );
+
+                builder.replace(0, builder.length(), replaced);
             }
         });
 

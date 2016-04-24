@@ -2,6 +2,7 @@ package org.f0w.k2i.core.comparator.title;
 
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
+import org.f0w.k2i.core.util.string.Translit;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,6 +50,11 @@ public class SmartTitleComparatorTest {
         assertTrue(comparator.areEqual(
                 new Movie("Операция «Ы» и другие «приключения» Шурика", 1965),
                 new Movie("Операция Ы и другие приключения Шурика", 1965)
+        ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("Белый Бим Черное ухо", 2010),
+                new Movie("Belyy Bim Chernoe ukho", 2010)
         ));
 
         assertTrue(comparator.areEqual(

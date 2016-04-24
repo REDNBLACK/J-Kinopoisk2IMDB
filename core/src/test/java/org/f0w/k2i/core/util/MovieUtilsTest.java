@@ -20,6 +20,9 @@ public class MovieUtilsTest {
         assertEquals("Inception", parseTitle("    Inception    "));
         assertEquals("Inception", parseTitle("Inception    "));
         assertEquals("Inception", parseTitle("    Inception"));
+        assertEquals(
+                "Операция Ы и другие приключения Шурика", parseTitle("Операция «Ы» и другие «приключения» Шурика")
+        );
         assertEquals("null", parseTitle(null));
         assertEquals("null", parseTitle(""));
         assertEquals("null", parseTitle(" "));

@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
 import org.jsoup.Jsoup;
@@ -30,7 +31,11 @@ public final class MovieUtils {
      * @return Parsed title
      */
     public static String parseTitle(String title) {
-        String resultTitle = String.valueOf(title).trim();
+        String resultTitle = StringUtils.replaceEachRepeatedly(
+                String.valueOf(title).trim(),
+                new String[]{"«", "»"},
+                new String[]{"", ""}
+        );
 
         if ("".equals(resultTitle)) {
             return "null";

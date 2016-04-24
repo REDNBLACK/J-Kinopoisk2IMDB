@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.jsoup.Connection;
 
 import java.util.Optional;
 
@@ -12,14 +11,7 @@ import java.util.Optional;
  * Abstract class used by classes
  * returning HTTP status code in JSON response body, instead of headers.
  */
-abstract class JSONPostExchange implements Exchangeable<Movie, Integer> {
-    protected Connection.Response response;
-
-    @Override
-    public Connection.Response getRawResponse() {
-        return response;
-    }
-
+public abstract class JSONPostExchangeable<IN> extends AbstractExchangeable<IN, Integer> {
     /**
      * Returns HTTP status code parsed from JSON response
      *

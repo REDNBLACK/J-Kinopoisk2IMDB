@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Adds Movie to IMDB list.
  */
-public final class MovieWatchlistAssigner extends JSONPostExchange {
+public final class MovieWatchlistAssigner extends JSONPostExchangeable<Movie> {
     private final Config config;
 
     @Inject

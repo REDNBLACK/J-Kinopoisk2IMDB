@@ -12,10 +12,8 @@ import java.util.Optional;
 /**
  * Parses authorisation string used for setting a Movie rating.
  */
-public final class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
+public final class MovieAuthStringFetcher extends AbstractExchangeable<Movie, String> {
     private final Config config;
-
-    private Connection.Response response;
 
     @Inject
     public MovieAuthStringFetcher(Config config) {
@@ -38,14 +36,6 @@ public final class MovieAuthStringFetcher implements Exchangeable<Movie, String>
                 .cookie("id", config.getString("auth"));
 
         response = request.execute();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Connection.Response getRawResponse() {
-        return response;
     }
 
     /**

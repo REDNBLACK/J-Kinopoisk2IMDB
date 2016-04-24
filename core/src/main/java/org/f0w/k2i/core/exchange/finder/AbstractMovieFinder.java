@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.exchange.finder;
 
 import com.typesafe.config.Config;
+import org.f0w.k2i.core.exchange.AbstractExchangeable;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -21,14 +22,12 @@ import static org.f0w.k2i.core.util.MovieUtils.*;
 /**
  * Base class implementing {@link MovieFinder} interface.
  */
-abstract class AbstractMovieFinder implements MovieFinder {
+abstract class AbstractMovieFinder extends AbstractExchangeable<Movie, Deque<Movie>> implements MovieFinder {
     protected static final Logger LOG = LoggerFactory.getLogger(AbstractMovieFinder.class);
 
     private final Config config;
 
     private final String searchLink;
-
-    private Connection.Response response;
 
     public AbstractMovieFinder(Config config, String searchLink) {
         this.config = config;
@@ -56,14 +55,6 @@ abstract class AbstractMovieFinder implements MovieFinder {
         response = request.execute();
 
         LOG.debug("Got response, status code: {}, headers: {}", response.statusCode(), response.headers());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Connection.Response getRawResponse() {
-        return response;
     }
 
     /**

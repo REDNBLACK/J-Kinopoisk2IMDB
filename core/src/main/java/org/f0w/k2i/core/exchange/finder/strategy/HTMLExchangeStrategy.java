@@ -1,12 +1,13 @@
-package org.f0w.k2i.core.exchange.finder;
+package org.f0w.k2i.core.exchange.finder.strategy;
 
 import com.google.common.collect.ImmutableMap;
-import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.Movie;
+import org.f0w.k2i.core.util.HttpUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,36 +15,35 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-final class HTMLMovieFinder extends AbstractMovieFinder {
-    private static final String SEARCH_LINK = "http://www.imdb.com/find?";
-
-    public HTMLMovieFinder(Config config) {
-        super(config, SEARCH_LINK);
-    }
-
+public final class HTMLExchangeStrategy implements ExchangeStrategy {
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> buildSearchQuery(Movie movie) {
-        return new ImmutableMap.Builder<String, String>()
+    public URL buildURL(final Movie movie) {
+        String searchLink = "http://www.imdb.com/find?";
+        Map<String, String> queryParams = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle())
                 .put("s", "tt")
                 //.put("exact", "true")
                 .put("ref", "fn_tt_ex")
                 .build();
+
+        return HttpUtils.buildURL(searchLink, queryParams);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Movie> parseSearchResult(String result) {
-        Document document = Jsoup.parse(result);
+    public List<Movie> parse(final String data) {
+        Document document = Jsoup.parse(data);
+        HTMLMovieParser parser = new HTMLMovieParser();
 
         return document.select("table.findList tr td.result_text")
                 .stream()
-                .map(e -> new HTMLMovieParser(e).parse(
+                .map(e -> parser.parse(
+                        e,
                         t -> t,
                         Element::text,
                         t -> t.getElementsByTag("a").first()
@@ -51,11 +51,7 @@ final class HTMLMovieFinder extends AbstractMovieFinder {
                 .collect(Collectors.toList());
     }
 
-    private static final class HTMLMovieParser extends MovieParser<Element, Element, String, Element> {
-        public HTMLMovieParser(Element root) {
-            super(root);
-        }
-
+    private static final class HTMLMovieParser implements MovieParser<Element, Element, String, Element> {
         @Override
         public String prepareTitle(Element element) {
             String elementText = element.text();

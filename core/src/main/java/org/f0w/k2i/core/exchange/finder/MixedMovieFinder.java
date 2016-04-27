@@ -11,13 +11,15 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-final class MixedMovieFinder implements MovieFinder {
+public final class MixedMovieFinder implements MovieFinder {
     private static final Logger LOG = LoggerFactory.getLogger(MixedMovieFinder.class);
 
+    private final Type type;
     private final Deque<MovieFinder> movieFinders;
     private Movie movie;
 
-    public MixedMovieFinder(List<MovieFinder> movieFinders) {
+    public MixedMovieFinder(Type type, List<MovieFinder> movieFinders) {
+        this.type = type;
         this.movieFinders = new LinkedList<>(movieFinders);
     }
 
@@ -39,6 +41,11 @@ final class MixedMovieFinder implements MovieFinder {
         return new MovieLazyLoadingDeque();
     }
 
+    @Override
+    public Type getType() {
+        return type;
+    }
+
     private class MovieLazyLoadingDeque extends ForwardingDeque<Movie> {
         private final Deque<Movie> delegate = new LinkedList<>();
 
@@ -56,7 +63,7 @@ final class MixedMovieFinder implements MovieFinder {
 
                 try {
                     MovieFinder finder = movieFinders.poll();
-                    LOG.debug("Loading with finder: {}", finder.getClass().getSimpleName());
+                    LOG.debug("Loading with finder: {}", finder.getType());
 
                     finder.sendRequest(MixedMovieFinder.this.movie);
                     Deque<Movie> movies = finder.getProcessedResponse();

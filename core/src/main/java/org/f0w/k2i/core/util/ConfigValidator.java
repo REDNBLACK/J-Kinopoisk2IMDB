@@ -2,6 +2,7 @@ package org.f0w.k2i.core.util;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException;
+import org.apache.commons.lang3.EnumUtils;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.handler.MovieHandler;
@@ -47,11 +48,28 @@ public final class ConfigValidator {
             validator.checkUserAgent();
             validator.checkYearDeviation();
             validator.checkTimeout();
+            validator.checkDataBase();
         } catch (NullPointerException | IllegalArgumentException e) {
             throw new ConfigException.Generic(e.getMessage(), e);
         }
 
         return config;
+    }
+
+    /**
+     * Checks the db and db.additional settings
+     *
+     * @throws ConfigException
+     */
+    private void checkDataBase() {
+        final Config dbConfig = config.getConfig("db");
+
+        checkArgument(!isNullOrEmpty(dbConfig.getString("driver")), "db.driver is not set!");
+        checkArgument(!isNullOrEmpty(dbConfig.getString("url")), "db.url is not set!");
+
+        dbConfig.getString("user");
+        dbConfig.getString("password");
+        dbConfig.getObject("additional");
     }
 
     /**
@@ -69,10 +87,9 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException
      */
     private void checkUserAgent() {
-        final String message = "UserAgent setting is not valid!";
         final String userAgent = config.getString("user_agent");
 
-        checkArgument(!isNullOrEmpty(userAgent), message);
+        checkArgument(!isNullOrEmpty(userAgent), "user_agent is not set!");
     }
 
     /**
@@ -81,10 +98,9 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkYearDeviation() {
-        final String message = "YearDeviation setting is not valid!";
         final int yearDeviation = config.getInt("year_deviation");
 
-        checkArgument(yearDeviation > 0, message);
+        checkArgument(yearDeviation > 0, "year_deviation is less than or equal to 0!");
     }
 
     /**
@@ -93,10 +109,9 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkTimeout() {
-        final String message = "TimeOut setting is not valid!";
         final int timeout = config.getInt("timeout");
 
-        checkArgument(timeout >= 1000, message);
+        checkArgument(timeout >= 1000, "timeout is less than 1000!");
     }
 
     /**
@@ -105,13 +120,10 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkQueryFormat() {
-        final String message = "QueryFormat setting is not valid!";
         final String queryFormat = config.getString("query_format");
 
-        try {
-            MovieFinder.Type.valueOf(queryFormat);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(message);
+        if (!EnumUtils.isValidEnum(MovieFinder.Type.class, queryFormat)) {
+            throw new IllegalArgumentException("query_format is not valid!");
         }
     }
 
@@ -137,10 +149,9 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkAuth() {
-        final String message = "Auth setting is not valid!";
         final String auth = config.getString("auth");
 
-        checkArgument(auth.length() > 10, message);
+        checkArgument(auth.length() > 10, "auth string length is less than or equal to 10!");
     }
 
     /**
@@ -149,21 +160,18 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkList() {
-        final String message = "List setting is not valid!";
         final String list = config.getString("list");
         final String mode = config.getString("mode");
 
-        if ("".equals(list)) {
-            MovieHandler.Type commandType = MovieHandler.Type.valueOf(mode);
+        if (isNullOrEmpty(list)) {
+            MovieHandler.Type type = MovieHandler.Type.valueOf(mode);
 
-            if (commandType.equals(MovieHandler.Type.COMBINED)
-                    || commandType.equals(MovieHandler.Type.ADD_TO_WATCHLIST)
-                    ) {
-                throw new IllegalArgumentException(message + " Set to null, but required for current mode setting");
+            if (type.equals(MovieHandler.Type.COMBINED) || type.equals(MovieHandler.Type.ADD_TO_WATCHLIST)) {
+                throw new IllegalArgumentException("list is not set, but required for current mode!");
             }
         } else {
-            checkArgument(list.startsWith("ls"), message);
-            checkArgument(list.length() >= 3, message);
+            checkArgument(list.startsWith("ls"), "list doesn't start with ls prefix!");
+            checkArgument(list.length() >= 3, "list string length less than 3!");
         }
     }
 
@@ -173,13 +181,10 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkMode() {
-        final String message = "Mode setting is not valid!";
         final String mode = config.getString("mode");
 
-        try {
-            MovieHandler.Type.valueOf(mode);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(message);
+        if (!EnumUtils.isValidEnum(MovieHandler.Type.class, mode)) {
+            throw new IllegalArgumentException("mode is not valid!");
         }
     }
 }

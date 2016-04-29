@@ -63,7 +63,7 @@ public final class MixedMovieFinder implements MovieFinder {
 
                 try {
                     MovieFinder finder = movieFinders.poll();
-                    LOG.debug("Loading with finder: {}", finder.getType());
+                    LOG.debug("Loading using finder type: {}", finder.getType());
 
                     finder.sendRequest(MixedMovieFinder.this.movie);
                     Deque<Movie> movies = finder.getProcessedResponse();

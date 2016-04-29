@@ -17,7 +17,7 @@ public class MovieFinderFactory {
     private final Config config;
 
     @Inject
-    private MovieFinderFactory(Config config) {
+    public MovieFinderFactory(Config config) {
         this.config = config;
     }
 
@@ -37,18 +37,9 @@ public class MovieFinderFactory {
             case HTML:
                 return new BasicMovieFinder(HTML, new HTMLExchangeStrategy(), config);
             case MIXED:
-                return makeMixedMovieFinder();
+                return new MixedMovieFinder(MIXED, Arrays.asList(make(XML), make(JSON), make(HTML)));
             default:
                 throw new IllegalArgumentException("Invalid movie finder type!");
         }
-    }
-
-    /**
-     * Create instance of {@link MixedMovieFinder}
-     *
-     * @return MixedMovieFinder
-     */
-    private MovieFinder makeMixedMovieFinder() {
-        return new MixedMovieFinder(MIXED, Arrays.asList(make(XML), make(JSON), make(HTML)));
     }
 }

@@ -1,9 +1,12 @@
 package org.f0w.k2i.gui;
 
+import com.google.common.eventbus.Subscribe;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.Client;
+import org.f0w.k2i.core.event.ImportFinishedEvent;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,11 +18,14 @@ class ClientExecutor {
     private ExecutorService executor;
 
     public void init(Path filePath, Config config, boolean cleanRun, List<?> listeners) {
-        client = new Client(filePath, config, cleanRun, listeners);
+        List<Object> listenersExtended = new ArrayList<>(listeners);
+        listenersExtended.add(new ExecutionCompleteListener());
+
+        client = new Client(filePath, config, cleanRun, listenersExtended);
     }
 
     public void run() {
-        if (running.get()) {
+        if (running.get() || client == null) {
             return;
         }
 
@@ -40,5 +46,12 @@ class ClientExecutor {
 
         executor.shutdownNow();
         running.set(false);
+    }
+
+    private class ExecutionCompleteListener {
+        @Subscribe
+        public void handleEnd(ImportFinishedEvent event) {
+            running.set(false);
+        }
     }
 }

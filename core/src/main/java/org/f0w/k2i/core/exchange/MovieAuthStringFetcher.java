@@ -41,12 +41,12 @@ public final class MovieAuthStringFetcher extends AbstractExchangeable<Movie, St
     /**
      * Parses Movie authorization string
      *
-     * @return Authorization string or empty string if response is empty
+     * @return Authorization string or null if response is empty
      */
     @Override
     public String getProcessedResponse() {
         return Optional.ofNullable(Jsoup.parse(response.body()).select("[data-auth]").first())
                 .map(e -> e.attr("data-auth"))
-                .orElse("");
+                .orElse(null);
     }
 }

@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
+import org.f0w.k2i.core.exchange.MovieAuthStringFetcher;
 import org.f0w.k2i.core.exchange.MovieRatingChanger;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -13,10 +14,12 @@ import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyRating;
 
 public final class SetRatingHandler extends MovieHandler {
+    private final MovieAuthStringFetcher fetcher;
     private final MovieRatingChanger changer;
 
     @Inject
-    public SetRatingHandler(MovieRatingChanger changer) {
+    public SetRatingHandler(MovieAuthStringFetcher fetcher, MovieRatingChanger changer) {
+        this.fetcher = fetcher;
         this.changer = changer;
     }
 
@@ -47,6 +50,15 @@ public final class SetRatingHandler extends MovieHandler {
                 return;
             }
 
+            fetcher.sendRequest(movie);
+
+            final String authString = fetcher.getProcessedResponse();
+
+            if (authString == null) {
+                throw new IOException("Movie authorisation string is empty!");
+            }
+
+            changer.setAuthString(authString);
             changer.sendRequest(movie);
 
             Integer statusCode = changer.getProcessedResponse();

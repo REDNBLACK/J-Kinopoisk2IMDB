@@ -22,6 +22,9 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Main facade implemented as {@link Runnable} for working with core module.
+ */
 public final class Client implements Runnable {
     private final MovieHandler.Type handlerType;
     private final MovieHandler handlerChain;

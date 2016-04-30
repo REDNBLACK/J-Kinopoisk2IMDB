@@ -11,7 +11,7 @@ import java.util.Deque;
 public interface MovieFinder extends Exchangeable<Movie, Deque<Movie>> {
     /**
      * Returns type of current MovieFinder
-     * @return type of MovieFinder
+     * @return {@link Type}
      */
     Type getType();
 

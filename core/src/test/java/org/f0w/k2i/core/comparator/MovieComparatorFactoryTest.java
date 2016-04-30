@@ -9,9 +9,9 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import static org.junit.Assert.*;
 import static org.f0w.k2i.core.comparator.MovieComparator.Type;
 import static org.f0w.k2i.core.comparator.MovieComparator.Type.*;
+import static org.junit.Assert.assertTrue;
 
 public class MovieComparatorFactoryTest {
     private static final MovieComparatorFactory FACTORY = new MovieComparatorFactory(ConfigFactory.load());

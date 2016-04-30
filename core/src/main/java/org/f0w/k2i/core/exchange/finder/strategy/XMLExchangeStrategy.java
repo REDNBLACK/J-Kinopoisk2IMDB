@@ -13,13 +13,17 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
 public final class XMLExchangeStrategy implements ExchangeStrategy {
     /**
      * {@inheritDoc}
      */
     @Override
-    public URL buildURL(final Movie movie) {
-        String searchLink = "http://www.imdb.com/xml/find?";
+    public URL buildSearchURL(final Movie movie) {
+        requireNonNull(movie);
+
+        String searchLink = "http://www.imdb.com/xml/find";
         Map<String, String> queryParams = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle())
                 .put("tt", "on")
@@ -33,8 +37,8 @@ public final class XMLExchangeStrategy implements ExchangeStrategy {
      * {@inheritDoc}
      */
     @Override
-    public List<Movie> parse(final String data) {
-        Document document = Jsoup.parse(data);
+    public List<Movie> parseSearchResult(final String data) {
+        Document document = Jsoup.parse(requireNonNull(data));
         XMLMovieParser parser = new XMLMovieParser();
 
         return document.getElementsByTag("ImdbEntity")

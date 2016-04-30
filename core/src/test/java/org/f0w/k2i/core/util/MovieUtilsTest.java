@@ -3,8 +3,8 @@ package org.f0w.k2i.core.util;
 import org.f0w.k2i.TestHelper;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import static org.f0w.k2i.core.util.MovieUtils.*;
+import static org.junit.Assert.*;
 
 public class MovieUtilsTest {
     @Test

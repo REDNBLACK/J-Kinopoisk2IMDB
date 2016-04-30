@@ -27,7 +27,7 @@ public final class MovieUtils {
     /**
      * Parses title, and returns "null" string if not valid
      *
-     * @param title String to parse
+     * @param title String to parseSearchResult
      * @return Parsed title
      */
     public static String parseTitle(String title) {
@@ -47,7 +47,7 @@ public final class MovieUtils {
     /**
      * Parses title, if null or empty returns "null" defaultTitle
      *
-     * @param title    String to parse
+     * @param title    String to parseSearchResult
      * @param fallback Fallback string
      * @return Parsed title or defaultTitle
      */
@@ -64,7 +64,7 @@ public final class MovieUtils {
     /**
      * Parses year, returns 0 if it not valid
      *
-     * @param yearString String to parse
+     * @param yearString String to parseSearchResult
      * @return Parsed year or 0
      */
     public static int parseYear(String yearString) {
@@ -82,7 +82,7 @@ public final class MovieUtils {
     /**
      * Parses IMDB ID or returns null if it not valid
      *
-     * @param imdbId String to parse
+     * @param imdbId String to parseSearchResult
      * @return Parsed IMDB ID or null
      */
     public static String parseIMDBId(String imdbId) {
@@ -98,7 +98,7 @@ public final class MovieUtils {
     /**
      * Parses rating or returns null if it not valid
      *
-     * @param rating String to parse
+     * @param rating String to parseSearchResult
      * @return Parsed rating or null
      */
     public static Integer parseRating(String rating) {
@@ -161,7 +161,7 @@ public final class MovieUtils {
     /**
      * Parses movies from file
      *
-     * @param filePath File to parse
+     * @param filePath File to parseSearchResult
      * @return List of parsed movies
      * @throws KinopoiskToIMDBException If an I/O error occurs
      */

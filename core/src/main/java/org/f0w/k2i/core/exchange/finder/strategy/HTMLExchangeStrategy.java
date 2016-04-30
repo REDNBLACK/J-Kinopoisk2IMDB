@@ -14,14 +14,19 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 public final class HTMLExchangeStrategy implements ExchangeStrategy {
     /**
      * {@inheritDoc}
      */
     @Override
-    public URL buildURL(final Movie movie) {
-        String searchLink = "http://www.imdb.com/find?";
+    public URL buildSearchURL(final Movie movie) {
+        requireNonNull(movie);
+
+        String searchLink = "http://www.imdb.com/find";
         Map<String, String> queryParams = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle())
                 .put("s", "tt")
@@ -36,8 +41,8 @@ public final class HTMLExchangeStrategy implements ExchangeStrategy {
      * {@inheritDoc}
      */
     @Override
-    public List<Movie> parse(final String data) {
-        Document document = Jsoup.parse(data);
+    public List<Movie> parseSearchResult(final String data) {
+        Document document = Jsoup.parse(requireNonNull(data));
         HTMLMovieParser parser = new HTMLMovieParser();
 
         return document.select("table.findList tr td.result_text")

@@ -14,8 +14,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.*;
-import static org.f0w.k2i.core.util.IOUtils.*;
+import static org.f0w.k2i.core.util.IOUtils.checkFile;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class IOUtilsTest {
     private FileSystem fileSystem;

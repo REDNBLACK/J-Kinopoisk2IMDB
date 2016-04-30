@@ -2,8 +2,7 @@ package org.f0w.k2i.core.event;
 
 import org.junit.Test;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ImportStartedEventTest {
     @Test

@@ -1,7 +1,6 @@
 package org.f0w.k2i;
 
 import org.f0w.k2i.core.model.entity.ImportProgress;
-import org.f0w.k2i.core.model.entity.Movie;
 
 public class ImportProgressTestData {
     public static final ImportProgress IMPORT_PROGRESS_1 = new ImportProgress(KinopoiskFileTestData.KINOPOISK_FILE_1, MovieTestData.MOVIE_1, true, false);

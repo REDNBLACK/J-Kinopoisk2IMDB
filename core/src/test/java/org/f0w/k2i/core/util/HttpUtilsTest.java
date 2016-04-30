@@ -8,8 +8,9 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 
+import static org.f0w.k2i.core.util.HttpUtils.buildURL;
+import static org.f0w.k2i.core.util.HttpUtils.isReachable;
 import static org.junit.Assert.*;
-import static org.f0w.k2i.core.util.HttpUtils.*;
 
 public class HttpUtilsTest {
     @Test

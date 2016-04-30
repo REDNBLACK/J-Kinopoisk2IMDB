@@ -36,16 +36,26 @@ public final class MixedMovieFinder implements MovieFinder {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Returns the deque of movies
+     * @return {@link MovieLazyLoadingDeque}
+     */
     @Override
     public Deque<Movie> getProcessedResponse() {
         return new MovieLazyLoadingDeque();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Type getType() {
         return type;
     }
 
+    /**
+     * Movies deque with preloading, using list of {@link MovieFinder} if it is empty.
+     */
     private class MovieLazyLoadingDeque extends ForwardingDeque<Movie> {
         private final Deque<Movie> delegate = new LinkedList<>();
 

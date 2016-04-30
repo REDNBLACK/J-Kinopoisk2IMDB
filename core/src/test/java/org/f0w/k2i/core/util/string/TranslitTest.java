@@ -3,8 +3,10 @@ package org.f0w.k2i.core.util.string;
 import org.f0w.k2i.TestHelper;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.f0w.k2i.core.util.string.Translit.*;
+import static org.f0w.k2i.core.util.string.Translit.toTranslit;
+import static org.f0w.k2i.core.util.string.Translit.toWeakerTranslit;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TranslitTest {
     @Test

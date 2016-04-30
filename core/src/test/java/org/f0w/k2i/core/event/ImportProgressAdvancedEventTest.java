@@ -3,7 +3,6 @@ package org.f0w.k2i.core.event;
 import org.f0w.k2i.ImportProgressTestData;
 import org.junit.Test;
 
-
 import static org.junit.Assert.*;
 
 public class ImportProgressAdvancedEventTest {

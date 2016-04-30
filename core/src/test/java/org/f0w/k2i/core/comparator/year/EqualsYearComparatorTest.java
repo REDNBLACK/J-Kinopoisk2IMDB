@@ -2,7 +2,6 @@ package org.f0w.k2i.core.comparator.year;
 
 import com.google.common.collect.ImmutableMap;
 import org.f0w.k2i.core.comparator.BaseComparatorTest;
-import org.f0w.k2i.core.comparator.title.StartsWithTitleComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.junit.Before;
 

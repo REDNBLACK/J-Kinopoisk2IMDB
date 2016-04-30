@@ -1,15 +1,15 @@
 package org.f0w.k2i.core.util.exception;
 
 import org.f0w.k2i.TestHelper;
-import org.f0w.k2i.core.util.MovieUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.net.URL;
 
-import static org.junit.Assert.*;
-import static org.f0w.k2i.core.util.exception.ExceptionUtils.*;
+import static org.f0w.k2i.core.util.exception.ExceptionUtils.uncheck;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ExceptionUtilsTest {
     @Rule

@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.comparator;
 
-import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.junit.Test;
 

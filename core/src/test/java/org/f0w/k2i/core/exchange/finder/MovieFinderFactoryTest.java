@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import static org.junit.Assert.*;
 import static org.f0w.k2i.core.exchange.finder.MovieFinder.Type;
 import static org.f0w.k2i.core.exchange.finder.MovieFinder.Type.*;
+import static org.junit.Assert.assertTrue;
 
 public class MovieFinderFactoryTest {
     private static final MovieFinderFactory FACTORY = new MovieFinderFactory(ConfigFactory.load());

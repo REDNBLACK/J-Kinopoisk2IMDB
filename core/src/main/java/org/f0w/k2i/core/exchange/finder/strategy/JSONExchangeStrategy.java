@@ -1,24 +1,31 @@
 package org.f0w.k2i.core.exchange.finder.strategy;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.HttpUtils;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static java.util.Objects.requireNonNull;
+
 public final class JSONExchangeStrategy implements ExchangeStrategy {
     /**
      * {@inheritDoc}
      */
     @Override
-    public URL buildURL(final Movie movie) {
-        String searchLink = "http://www.imdb.com/xml/find?";
+    public URL buildSearchURL(final Movie movie) {
+        requireNonNull(movie);
+
+        String searchLink = "http://www.imdb.com/xml/find";
         Map<String, String> queryParams = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle())
                 .put("tt", "on")
@@ -33,7 +40,11 @@ public final class JSONExchangeStrategy implements ExchangeStrategy {
      * {@inheritDoc}
      */
     @Override
-    public List<Movie> parse(final String data) {
+    public List<Movie> parseSearchResult(final String data) {
+        if ("".equals(requireNonNull(data))) {
+            return Collections.emptyList();
+        }
+
         JSONMovieParser movieParser = new JSONMovieParser();
         JsonParser jsonParser = new JsonParser();
 

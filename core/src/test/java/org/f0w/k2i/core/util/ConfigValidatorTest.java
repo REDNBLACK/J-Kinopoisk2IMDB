@@ -8,7 +8,6 @@ import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -16,9 +15,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.f0w.k2i.core.util.ConfigValidator.checkValid;
 import static com.typesafe.config.ConfigFactory.parseMap;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.f0w.k2i.core.util.ConfigValidator.checkValid;
 
 public class ConfigValidatorTest {
     private static final Map<String, Object> ORIGINAL_CONFIG_MAP = new ImmutableMap.Builder<String, Object>()

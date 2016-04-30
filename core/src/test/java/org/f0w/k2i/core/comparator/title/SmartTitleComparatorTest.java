@@ -2,13 +2,10 @@ package org.f0w.k2i.core.comparator.title;
 
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.util.string.Translit;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.util.stream.Stream;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class SmartTitleComparatorTest {
     private final MovieComparator comparator = new SmartTitleComparator();

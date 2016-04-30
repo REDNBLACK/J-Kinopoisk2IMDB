@@ -3,12 +3,11 @@ package org.f0w.k2i.core.exchange.finder.strategy;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import static org.f0w.k2i.core.util.MovieUtils.parseIMDBId;
-import static org.f0w.k2i.core.util.MovieUtils.parseTitle;
-import static org.f0w.k2i.core.util.MovieUtils.parseYear;
+import static org.f0w.k2i.core.util.MovieUtils.*;
 
 /**
  * Exchange strategy for MovieFinder
@@ -19,20 +18,22 @@ public interface ExchangeStrategy {
      *
      * @param movie Movie which fields to use
      * @return Movie search URL
+     * @throws NullPointerException If movie is null
      */
-    URL buildURL(final Movie movie);
+    URL buildSearchURL(final Movie movie);
 
     /**
      * Parses data, implementation specific to each Format
      *
      * @param data Data
-     * @return List of movies
+     * @return List of movies if data not an empty string, or {@link Collections#emptyList()} otherwise.
+     * @throws NullPointerException If data is null
      */
-    List<Movie> parse(final String data);
+    List<Movie> parseSearchResult(final String data);
 
     /**
      * Generic interface for parsing single movie from collection.
-     * Used in {@link this#parse(String)}
+     * Used in {@link this#parseSearchResult(String)}
      * @param <R> Root element
      * @param <T> Title element
      * @param <Y> Year element

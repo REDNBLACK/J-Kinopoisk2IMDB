@@ -37,7 +37,7 @@ public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Mo
      */
     @Override
     public void sendRequest(Movie movie) throws IOException {
-        final URL movieSearchLink = exchangeStrategy.buildURL(movie);
+        final URL movieSearchLink = exchangeStrategy.buildSearchURL(movie);
 
         Connection request = Jsoup.connect(movieSearchLink.toString())
                 .userAgent(config.getString("user_agent"))
@@ -53,15 +53,18 @@ public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Mo
     }
 
     /**
-     * Parses search page using {@link ExchangeStrategy#parse(String)}
+     * Parses search page using {@link ExchangeStrategy#parseSearchResult(String)}
      *
      * @return Deque of found movies
      */
     @Override
     public Deque<Movie> getProcessedResponse() {
-        return new LinkedList<>(exchangeStrategy.parse(response.body()));
+        return new LinkedList<>(exchangeStrategy.parseSearchResult(response.body()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Type getType() {
         return type;

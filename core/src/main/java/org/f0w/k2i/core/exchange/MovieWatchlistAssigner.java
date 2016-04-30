@@ -45,6 +45,6 @@ public final class MovieWatchlistAssigner extends JSONPostExchangeable<Movie> {
                 .ignoreContentType(true)
                 .data(postData);
 
-        response = request.execute();
+        setResponse(request.execute());
     }
 }

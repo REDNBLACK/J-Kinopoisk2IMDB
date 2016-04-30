@@ -32,8 +32,16 @@ public final class MixedMovieFinder implements MovieFinder {
      * {@inheritDoc}
      */
     @Override
+    public void setResponse(Connection.Response response) {
+        // Do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Connection.Response getRawResponse() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     /**

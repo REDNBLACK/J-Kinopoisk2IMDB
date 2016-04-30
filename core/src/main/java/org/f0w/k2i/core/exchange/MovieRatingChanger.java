@@ -72,6 +72,6 @@ public final class MovieRatingChanger extends JSONPostExchangeable<Movie> {
                 .ignoreContentType(true)
                 .data(postData);
 
-        response = request.execute();
+        setResponse(request.execute());
     }
 }

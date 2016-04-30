@@ -35,7 +35,7 @@ public final class MovieAuthStringFetcher extends AbstractExchangeable<Movie, St
                 .timeout(config.getInt("timeout"))
                 .cookie("id", config.getString("auth"));
 
-        response = request.execute();
+        setResponse(request.execute());
     }
 
     /**
@@ -45,7 +45,8 @@ public final class MovieAuthStringFetcher extends AbstractExchangeable<Movie, St
      */
     @Override
     public String getProcessedResponse() {
-        return Optional.ofNullable(Jsoup.parse(response.body()).select("[data-auth]").first())
+        return Optional.ofNullable(Jsoup.parse(response.body()))
+                .map(e -> e.select("[data-auth]").first())
                 .map(e -> e.attr("data-auth"))
                 .orElse(null);
     }

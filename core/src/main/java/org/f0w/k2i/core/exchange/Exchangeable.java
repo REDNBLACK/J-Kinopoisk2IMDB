@@ -14,6 +14,12 @@ public interface Exchangeable<IN, OUT> {
     void sendRequest(IN param) throws IOException;
 
     /**
+     * Sets the response
+     * @param response Response to set
+     */
+    void setResponse(Connection.Response response);
+
+    /**
      * @return Raw response from server
      */
     Connection.Response getRawResponse();

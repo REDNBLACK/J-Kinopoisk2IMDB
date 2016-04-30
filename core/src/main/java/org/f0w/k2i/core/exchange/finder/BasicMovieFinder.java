@@ -47,7 +47,7 @@ public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Mo
                 "Sending request, to url: {}, with headers: {}", request.request().url(), request.request().headers()
         );
 
-        response = request.execute();
+        setResponse(request.execute());
 
         LOG.debug("Got response, status code: {}, headers: {}", response.statusCode(), response.headers());
     }

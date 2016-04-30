@@ -4,11 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.f0w.k2i.core.util.exception.ExceptionUtils.uncheck;
 
 /**
  * NullPointer safe class for checking and parsing movie fields.
@@ -166,34 +166,34 @@ public final class MovieUtils {
      * @throws KinopoiskToIMDBException If an I/O error occurs
      */
     public static List<Movie> parseMovies(Path filePath) {
-        try {
-            Document document = Jsoup.parse(new String(Files.readAllBytes(filePath), Charset.forName("windows-1251")));
-            Elements content = document.select("table tr");
+        String data = uncheck(() -> new String(Files.readAllBytes(filePath), Charset.forName("windows-1251")));
+        Elements content = Jsoup.parse(data).select("table tr");
 
-            List<String> header = content.remove(0)
-                    .getElementsByTag("td")
-                    .stream()
-                    .map(Element::text)
-                    .collect(Collectors.toList());
-
-            List<Map<String, String>> elements = content.stream()
-                    .map(e -> e.getElementsByTag("td")
-                            .stream()
-                            .map(Element::text)
-                            .collect(Collectors.toList())
-                    )
-                    .map(e -> CollectionUtils.combineLists(header, e))
-                    .collect(Collectors.toList());
-
-            return elements.stream()
-                    .map(m -> new Movie(
-                            parseTitle(m.get("оригинальное название"), m.get("русскоязычное название")),
-                            parseYear(m.get("год")),
-                            parseRating(m.get("моя оценка"))
-                    ))
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new KinopoiskToIMDBException(e);
+        if (content.isEmpty()) {
+            throw new KinopoiskToIMDBException(String.format("File '%s' is not valid or empty!", filePath));
         }
+
+        List<String> header = content.remove(0)
+                .getElementsByTag("td")
+                .stream()
+                .map(Element::text)
+                .collect(Collectors.toList());
+
+        List<Map<String, String>> elements = content.stream()
+                .map(e -> e.getElementsByTag("td")
+                        .stream()
+                        .map(Element::text)
+                        .collect(Collectors.toList())
+                )
+                .map(e -> CollectionUtils.combineLists(header, e))
+                .collect(Collectors.toList());
+
+        return elements.stream()
+                .map(m -> new Movie(
+                        parseTitle(m.get("оригинальное название"), m.get("русскоязычное название")),
+                        parseYear(m.get("год")),
+                        parseRating(m.get("моя оценка"))
+                ))
+                .collect(Collectors.toList());
     }
 }

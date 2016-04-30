@@ -1,0 +1,637 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>оценки</title>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1251" />
+</head>
+<body>
+<table>
+    <tr>
+
+        <td bgcolor="#f2f2f2" height="40" valign="top"><i>русскоязычное название</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>оригинальное название</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>год</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>страны</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>режисcёр</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>жанры</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>время</i></td>
+
+        <td bgcolor="#f2f2f2" valign="top"><i>моя оценка</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>рейтинг КиноПоиска</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>число оценок</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>рейтинг IMDb</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>число оценок IMDb</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>мировая премьера</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>премьера в РФ</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>релиз на DVD</i></td>
+        <td bgcolor="#f2f2f2" valign="top"><i>бюджет</i><br />$</td>
+        <td bgcolor="#f2f2f2" valign="top"><i>сборы США</i><br />$</td>
+        <td bgcolor="#f2f2f2" valign="top"><i>сборы МИР</i><br />$</td>
+        <td bgcolor="#f2f2f2" valign="top"><i>сборы РФ</i><br />$</td>
+        <td bgcolor="#f2f2f2" valign="top"><i>дата и время</i></td>
+
+    </tr>
+    <tr>
+
+        <td align="left" nowrap><b>Тупик</b></td>
+        <td align="left" nowrap>Standoff</td>
+        <td align="left">2015</td>
+        <td align="left" nowrap></td>
+        <td align="left" nowrap>Адам Аллека</td>
+        <td align="left" nowrap>триллер, драма</td>
+        <td align="left">80</td>
+
+        <td align="left" nowrap>6</td>
+        <td align="left">5,854</td>
+        <td align="left">285</td>
+        <td align="left">5,80</td>
+        <td align="left">1&nbsp;753</td>
+        <td align="left">2016-01-04</td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left" nowrap>10:53:27 11.04.2016</td>
+
+    </tr><tr>
+
+    <td align="left" nowrap><b>Доверие</b></td>
+    <td align="left" nowrap>The Trust</td>
+    <td align="left">2016</td>
+    <td align="left" nowrap>Великобритания</td>
+    <td align="left" nowrap>Alex Brewer, Бенжамин Брюэр</td>
+    <td align="left" nowrap>триллер, криминал</td>
+    <td align="left">93</td>
+
+    <td align="left" nowrap>6</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">5,70</td>
+    <td align="left">1&nbsp;526</td>
+    <td align="left">2016-04-14</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">9000000</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>10:52:41 11.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Космический полицейский</b></td>
+    <td align="left" nowrap>Space Cop</td>
+    <td align="left">2016</td>
+    <td align="left" nowrap>США</td>
+    <td align="left" nowrap>Джей Бауман, Mike Stoklasa</td>
+    <td align="left" nowrap>фантастика, боевик, комедия</td>
+    <td align="left">102</td>
+
+    <td align="left" nowrap>5</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">6,30</td>
+    <td align="left">924</td>
+    <td align="left">2016-01-12</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>02:47:44 11.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Как поднять миллион. Исповедь Z@drota</b></td>
+    <td align="left" nowrap></td>
+    <td align="left">2014</td>
+    <td align="left" nowrap>Россия</td>
+    <td align="left" nowrap>Клим Шипенко</td>
+    <td align="left" nowrap>драма</td>
+    <td align="left">95</td>
+
+    <td align="left" nowrap>7</td>
+    <td align="left">5,792</td>
+    <td align="left">262</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">2016-03-10</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>23:38:52 10.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Сотовый</b></td>
+    <td align="left" nowrap>Cellular</td>
+    <td align="left">2004</td>
+    <td align="left" nowrap>США, Германия</td>
+    <td align="left" nowrap>Дэвид Р. Эллис</td>
+    <td align="left" nowrap>боевик, триллер, криминал</td>
+    <td align="left">94</td>
+
+    <td align="left" nowrap>7</td>
+    <td align="left">7,183</td>
+    <td align="left">36&nbsp;702</td>
+    <td align="left">6,50</td>
+    <td align="left">77&nbsp;701</td>
+    <td align="left">2004-09-10</td>
+    <td align="left">2004-11-11</td>
+    <td align="left">2005-05-05</td>
+    <td align="left">25000000</td>
+    <td align="left">32003620</td>
+    <td align="left">56051920</td>
+    <td align="left">1000000</td>
+    <td align="left" nowrap>21:52:15 10.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Я улыбаюсь в ответ</b></td>
+    <td align="left" nowrap>I Smile Back</td>
+    <td align="left">2015</td>
+    <td align="left" nowrap>США</td>
+    <td align="left" nowrap>Адам Салки</td>
+    <td align="left" nowrap>драма</td>
+    <td align="left">85</td>
+
+    <td align="left" nowrap>5</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">6,10</td>
+    <td align="left">2&nbsp;569</td>
+    <td align="left">2015-10-23</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">495000</td>
+    <td align="left">58738</td>
+    <td align="left">58738</td>
+    <td align="left"></td>
+    <td align="left" nowrap>19:45:23 10.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Конец детства</b></td>
+    <td align="left" nowrap>Childhood's End</td>
+    <td align="left">2015</td>
+    <td align="left" nowrap>США</td>
+    <td align="left" nowrap>Ник Харран</td>
+    <td align="left" nowrap>фантастика, триллер, драма</td>
+    <td align="left">60</td>
+
+    <td align="left" nowrap>5</td>
+    <td align="left">6,833</td>
+    <td align="left">2&nbsp;836</td>
+    <td align="left">7,00</td>
+    <td align="left">6&nbsp;638</td>
+    <td align="left">2015-12-14</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>02:15:40 10.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Арденны</b></td>
+    <td align="left" nowrap>D'Ardennen</td>
+    <td align="left">2015</td>
+    <td align="left" nowrap>Бельгия</td>
+    <td align="left" nowrap>Робин Пронт</td>
+    <td align="left" nowrap>драма</td>
+    <td align="left">93</td>
+
+    <td align="left" nowrap>6</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">7,40</td>
+    <td align="left">572</td>
+    <td align="left">2015-10-13</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>00:39:23 10.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Джой</b></td>
+    <td align="left" nowrap>Joy</td>
+    <td align="left">2015</td>
+    <td align="left" nowrap>США</td>
+    <td align="left" nowrap>Дэвид О. Расселл</td>
+    <td align="left" nowrap>драма, комедия, биография</td>
+    <td align="left">124</td>
+
+    <td align="left" nowrap>6</td>
+    <td align="left">6,595</td>
+    <td align="left">13&nbsp;717</td>
+    <td align="left">6,60</td>
+    <td align="left">51&nbsp;911</td>
+    <td align="left">2015-12-13</td>
+    <td align="left">2016-01-21</td>
+    <td align="left"></td>
+    <td align="left">60000000</td>
+    <td align="left">56451232</td>
+    <td align="left">101105312</td>
+    <td align="left">545687</td>
+    <td align="left" nowrap>20:44:59 09.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Кукла</b></td>
+    <td align="left" nowrap>The Boy</td>
+    <td align="left">2016</td>
+    <td align="left" nowrap>США, Китай, Канада</td>
+    <td align="left" nowrap>Уильям Брент Белл</td>
+    <td align="left" nowrap>ужасы, триллер</td>
+    <td align="left">98</td>
+
+    <td align="left" nowrap>6</td>
+    <td align="left">6,070</td>
+    <td align="left">5&nbsp;809</td>
+    <td align="left">6,20</td>
+    <td align="left">9&nbsp;302</td>
+    <td align="left">2016-01-21</td>
+    <td align="left">2016-01-28</td>
+    <td align="left"></td>
+    <td align="left">10000000</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">992667</td>
+    <td align="left" nowrap>00:20:25 08.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Веселый господин</b></td>
+    <td align="left" nowrap>The Merry Gentleman</td>
+    <td align="left">2008</td>
+    <td align="left" nowrap>США</td>
+    <td align="left" nowrap>Майкл Китон</td>
+    <td align="left" nowrap>драма</td>
+    <td align="left">110</td>
+
+    <td align="left" nowrap>5</td>
+    <td align="left">6,429</td>
+    <td align="left">113</td>
+    <td align="left">6,60</td>
+    <td align="left">2&nbsp;133</td>
+    <td align="left">2009-05-01</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">5000000</td>
+    <td align="left">347977</td>
+    <td align="left">347977</td>
+    <td align="left"></td>
+    <td align="left" nowrap>22:26:14 07.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Каждая секретная вещь</b></td>
+    <td align="left" nowrap>Every Secret Thing</td>
+    <td align="left">2014</td>
+    <td align="left" nowrap>США</td>
+    <td align="left" nowrap>Эми Берг</td>
+    <td align="left" nowrap>триллер, драма, криминал</td>
+    <td align="left">93</td>
+
+    <td align="left" nowrap>4</td>
+    <td align="left">6,262</td>
+    <td align="left">125</td>
+    <td align="left">6,00</td>
+    <td align="left">2&nbsp;663</td>
+    <td align="left">2015-04-27</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>00:16:06 07.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>5-я волна</b></td>
+    <td align="left" nowrap>The 5th Wave</td>
+    <td align="left">2016</td>
+    <td align="left" nowrap>США</td>
+    <td align="left" nowrap>Дж. Блэйксон</td>
+    <td align="left" nowrap>фантастика, боевик, триллер</td>
+    <td align="left">112</td>
+
+    <td align="left" nowrap>5</td>
+    <td align="left">5,177</td>
+    <td align="left">16&nbsp;998</td>
+    <td align="left">5,20</td>
+    <td align="left">26&nbsp;878</td>
+    <td align="left">2016-01-14</td>
+    <td align="left">2016-01-21</td>
+    <td align="left"></td>
+    <td align="left">38000000</td>
+    <td align="left">34420364</td>
+    <td align="left">106933459</td>
+    <td align="left">3556174</td>
+    <td align="left" nowrap>20:30:23 05.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Три девятки</b></td>
+    <td align="left" nowrap>Triple 9</td>
+    <td align="left">2016</td>
+    <td align="left" nowrap>США</td>
+    <td align="left" nowrap>Джон Хиллкоут</td>
+    <td align="left" nowrap>криминал, драма, триллер</td>
+    <td align="left">115</td>
+
+    <td align="left" nowrap>7</td>
+    <td align="left">6,136</td>
+    <td align="left">5&nbsp;126</td>
+    <td align="left">6,50</td>
+    <td align="left">6&nbsp;907</td>
+    <td align="left">2016-02-19</td>
+    <td align="left">2016-03-03</td>
+    <td align="left"></td>
+    <td align="left">28000000</td>
+    <td align="left">12624553</td>
+    <td align="left">12624553</td>
+    <td align="left">525530</td>
+    <td align="left" nowrap>10:43:32 03.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Чемпионы: Быстрее. Выше. Сильнее</b></td>
+    <td align="left" nowrap></td>
+    <td align="left">2016</td>
+    <td align="left" nowrap>Россия</td>
+    <td align="left" nowrap>Артем Аксененко</td>
+    <td align="left" nowrap>спорт, драма</td>
+    <td align="left">100</td>
+
+    <td align="left" nowrap>6</td>
+    <td align="left">7,273</td>
+    <td align="left">6&nbsp;789</td>
+    <td align="left">6,20</td>
+    <td align="left">92</td>
+    <td align="left"></td>
+    <td align="left">2016-02-18</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>16:54:58 02.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Визит инспектора</b></td>
+    <td align="left" nowrap>An Inspector Calls</td>
+    <td align="left">2015</td>
+    <td align="left" nowrap>Великобритания</td>
+    <td align="left" nowrap>Эшлин Уолш</td>
+    <td align="left" nowrap>триллер, драма, детектив</td>
+    <td align="left">87</td>
+
+    <td align="left" nowrap>7</td>
+    <td align="left">7,535</td>
+    <td align="left">505</td>
+    <td align="left">7,80</td>
+    <td align="left">2&nbsp;738</td>
+    <td align="left">2015-09-13</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>01:10:59 01.04.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Мальчик</b></td>
+    <td align="left" nowrap>The Boy</td>
+    <td align="left">2015</td>
+    <td align="left" nowrap>США</td>
+    <td align="left" nowrap>Крэйг Уилльям Макнейлл</td>
+    <td align="left" nowrap>ужасы, триллер, драма</td>
+    <td align="left">105</td>
+
+    <td align="left" nowrap>3</td>
+    <td align="left">5,202</td>
+    <td align="left">437</td>
+    <td align="left">5,50</td>
+    <td align="left">2&nbsp;528</td>
+    <td align="left">2015-08-14</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>20:51:17 28.03.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Тряпичный союз</b></td>
+    <td align="left" nowrap></td>
+    <td align="left">2015</td>
+    <td align="left" nowrap>Россия</td>
+    <td align="left" nowrap>Михаил Местецкий</td>
+    <td align="left" nowrap>комедия, драма</td>
+    <td align="left">97</td>
+
+    <td align="left" nowrap>4</td>
+    <td align="left">6,055</td>
+    <td align="left">1&nbsp;783</td>
+    <td align="left">6,80</td>
+    <td align="left">79</td>
+    <td align="left"></td>
+    <td align="left">2016-03-03</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>03:57:36 28.03.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Кристал Фэйри и волшебный кактус и 2012</b></td>
+    <td align="left" nowrap>Crystal Fairy & the Magical Cactus and 2012</td>
+    <td align="left">2013</td>
+    <td align="left" nowrap>Чили</td>
+    <td align="left" nowrap>Себастьян Сильва</td>
+    <td align="left" nowrap>комедия, приключения</td>
+    <td align="left">98</td>
+
+    <td align="left" nowrap>4</td>
+    <td align="left">6,526</td>
+    <td align="left">525</td>
+    <td align="left">5,80</td>
+    <td align="left">5&nbsp;552</td>
+    <td align="left">2013-07-12</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>21:05:42 27.03.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Девушка из Монако</b></td>
+    <td align="left" nowrap>La fille de Monaco</td>
+    <td align="left">2008</td>
+    <td align="left" nowrap>Франция</td>
+    <td align="left" nowrap>Анн Фонтен</td>
+    <td align="left" nowrap>драма, комедия</td>
+    <td align="left">95</td>
+
+    <td align="left" nowrap>5</td>
+    <td align="left">6,031</td>
+    <td align="left">1&nbsp;342</td>
+    <td align="left">5,80</td>
+    <td align="left">1&nbsp;630</td>
+    <td align="left">2008-08-20</td>
+    <td align="left">2009-04-16</td>
+    <td align="left">2009-05-07</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>03:52:23 27.03.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Девушка из Дании</b></td>
+    <td align="left" nowrap>The Danish Girl</td>
+    <td align="left">2015</td>
+    <td align="left" nowrap>Великобритания, США, Бельгия</td>
+    <td align="left" nowrap>Том Хупер</td>
+    <td align="left" nowrap>драма, мелодрама, биография</td>
+    <td align="left">119</td>
+
+    <td align="left" nowrap>7</td>
+    <td align="left">6,846</td>
+    <td align="left">17&nbsp;673</td>
+    <td align="left">7,00</td>
+    <td align="left">64&nbsp;698</td>
+    <td align="left">2015-11-27</td>
+    <td align="left">2016-01-28</td>
+    <td align="left"></td>
+    <td align="left">25000000</td>
+    <td align="left">11114018</td>
+    <td align="left">63639983</td>
+    <td align="left">230752</td>
+    <td align="left" nowrap>23:46:16 26.03.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Дэдпул</b></td>
+    <td align="left" nowrap>Deadpool</td>
+    <td align="left">2016</td>
+    <td align="left" nowrap>США, Канада</td>
+    <td align="left" nowrap>Тим Миллер</td>
+    <td align="left" nowrap>фантастика, боевик, комедия</td>
+    <td align="left">108</td>
+
+    <td align="left" nowrap>7</td>
+    <td align="left">7,735</td>
+    <td align="left">106&nbsp;837</td>
+    <td align="left">8,30</td>
+    <td align="left">309&nbsp;318</td>
+    <td align="left">2016-01-21</td>
+    <td align="left">2016-02-11</td>
+    <td align="left"></td>
+    <td align="left">58000000</td>
+    <td align="left">358424739</td>
+    <td align="left">758822172</td>
+    <td align="left">26120904</td>
+    <td align="left" nowrap>20:12:52 26.03.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>День выборов 2</b></td>
+    <td align="left" nowrap></td>
+    <td align="left">2015</td>
+    <td align="left" nowrap>Россия</td>
+    <td align="left" nowrap>Александр Баршак</td>
+    <td align="left" nowrap>комедия</td>
+    <td align="left">105</td>
+
+    <td align="left" nowrap>6</td>
+    <td align="left">6,614</td>
+    <td align="left">14&nbsp;790</td>
+    <td align="left">6,50</td>
+    <td align="left">246</td>
+    <td align="left">2016-03-02</td>
+    <td align="left">2016-02-18</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left" nowrap>17:41:03 26.03.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Кунг-фу Панда 3</b></td>
+    <td align="left" nowrap>Kung Fu Panda 3</td>
+    <td align="left">2016</td>
+    <td align="left" nowrap>США, Китай</td>
+    <td align="left" nowrap>Алессандро Карлони, Дженнифер Ю</td>
+    <td align="left" nowrap>мультфильм, боевик, комедия</td>
+    <td align="left">95</td>
+
+    <td align="left" nowrap>6</td>
+    <td align="left">7,512</td>
+    <td align="left">22&nbsp;417</td>
+    <td align="left">7,40</td>
+    <td align="left">33&nbsp;838</td>
+    <td align="left">2016-01-16</td>
+    <td align="left">2016-01-28</td>
+    <td align="left"></td>
+    <td align="left">145000000</td>
+    <td align="left">140977613</td>
+    <td align="left">483702765</td>
+    <td align="left">13376780</td>
+    <td align="left" nowrap>20:54:51 24.03.2016</td>
+
+</tr><tr>
+
+    <td align="left" nowrap><b>Вакантна жизнь шеф-повара</b></td>
+    <td align="left" nowrap></td>
+    <td align="left">2015</td>
+    <td align="left" nowrap>Россия</td>
+    <td align="left" nowrap>Рустам Ильясов</td>
+    <td align="left" nowrap>триллер, драма, фантастика</td>
+    <td align="left">86</td>
+
+    <td align="left" nowrap>5</td>
+    <td align="left">6,377</td>
+    <td align="left">926</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">2016-03-10</td>
+    <td align="left"></td>
+    <td align="left">1500000</td>
+    <td align="left"></td>
+    <td align="left"></td>
+    <td align="left">36197</td>
+    <td align="left" nowrap>03:16:50 24.03.2016</td>
+
+</tr>
+</table>
+</body>
+</html>

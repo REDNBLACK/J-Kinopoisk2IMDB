@@ -1,7 +1,6 @@
 package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.model.entity.ImportProgress;
@@ -15,12 +14,12 @@ import java.util.Optional;
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 
 public final class ParseIDHandler extends MovieHandler {
-    private final Provider<MovieFinder> movieFinderProvider;
+    private final MovieFinder movieFinder;
     private final MovieComparator movieComparator;
 
     @Inject
-    public ParseIDHandler(Provider<MovieFinder> movieFinderProvider, MovieComparator movieComparator) {
-        this.movieFinderProvider = movieFinderProvider;
+    public ParseIDHandler(MovieFinder movieFinder, MovieComparator movieComparator) {
+        this.movieFinder = movieFinder;
         this.movieComparator = movieComparator;
     }
 
@@ -42,23 +41,14 @@ public final class ParseIDHandler extends MovieHandler {
         }
 
         try {
-            MovieFinder movieFinder = movieFinderProvider.get();
-
             movieFinder.sendRequest(movie);
 
-            Optional<Movie> matchingMovie = findMatchingMovie(movie, movieFinder.getProcessedResponse());
+            Movie matchingMovie = findMatchingMovie(movie, movieFinder.getProcessedResponse())
+                    .orElseThrow(() -> new IOException("Matching movie not found"));
 
-            if (!matchingMovie.isPresent()) {
-                throw new IOException("Matching movie not found");
-            }
+            movie.setImdbId(matchingMovie.getImdbId());
 
-            matchingMovie.ifPresent(m -> {
-                movie.setImdbId(m.getImdbId());
-
-                importProgress.setMovie(movie);
-
-                LOG.info("Movie IMDB id successfully found: {}", m.getImdbId());
-            });
+            LOG.info("Movie IMDB id successfully found: {}", matchingMovie.getImdbId());
         } catch (IOException e) {
             LOG.info("Can't prepare movie: {}", e);
 

@@ -3,6 +3,7 @@ package org.f0w.k2i.core;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Stage;
 import com.google.inject.persist.PersistService;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.event.ImportFinishedEvent;
@@ -42,6 +43,7 @@ public final class Client implements Runnable {
 
     public Client(Path filePath, Config config, boolean cleanRun, List<?> listeners) {
         Injector injector = Guice.createInjector(
+                Stage.PRODUCTION,
                 new ConfigurationProvider(config),
                 new JpaRepositoryProvider(),
                 new SystemProvider()

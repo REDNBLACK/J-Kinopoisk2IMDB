@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ForwardingDeque;
+import com.google.common.collect.ImmutableList;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 import org.slf4j.Logger;
@@ -15,17 +16,19 @@ public final class MixedMovieFinder implements MovieFinder {
     private static final Logger LOG = LoggerFactory.getLogger(MixedMovieFinder.class);
 
     private final Type type;
-    private final Deque<MovieFinder> movieFinders;
+    private final List<MovieFinder> originalFinders;
+    private Deque<MovieFinder> findersDeque;
     private Movie movie;
 
     public MixedMovieFinder(Type type, List<MovieFinder> movieFinders) {
         this.type = type;
-        this.movieFinders = new LinkedList<>(movieFinders);
+        this.originalFinders = ImmutableList.copyOf(movieFinders);
     }
 
     @Override
     public void sendRequest(Movie movie) throws IOException {
         this.movie = movie;
+        findersDeque = new LinkedList<>(originalFinders);
     }
 
     /**
@@ -76,11 +79,11 @@ public final class MixedMovieFinder implements MovieFinder {
         public boolean isEmpty() {
             boolean isEmpty = super.isEmpty();
 
-            if (isEmpty && !movieFinders.isEmpty()) {
+            if (isEmpty && !findersDeque.isEmpty()) {
                 LOG.debug("Movies deque is empty, start loading...");
 
                 try {
-                    MovieFinder finder = movieFinders.poll();
+                    MovieFinder finder = findersDeque.poll();
                     LOG.debug("Loading using finder type: {}", finder.getType());
 
                     finder.sendRequest(MixedMovieFinder.this.movie);

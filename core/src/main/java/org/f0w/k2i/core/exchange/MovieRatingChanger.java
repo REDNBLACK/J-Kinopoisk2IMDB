@@ -25,21 +25,21 @@ public final class MovieRatingChanger extends JSONPostExchangeable<Movie> {
     }
 
     /**
-     * Set the {@link this#authString) to a not null value.
-     *
-     * @param authString
-     */
-    public void setAuthString(final String authString) {
-        this.authString = requireNonNull(authString);
-    }
-
-    /**
      * Get the authString value.
      *
      * @return {@link this#authString}
      */
     private String getAuthString() {
         return authString;
+    }
+
+    /**
+     * Set the {@link this#authString) to a not null value.
+     *
+     * @param authString
+     */
+    public void setAuthString(final String authString) {
+        this.authString = requireNonNull(authString);
     }
 
     /**

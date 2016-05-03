@@ -45,7 +45,7 @@ public final class MovieAuthStringFetcher extends AbstractExchangeable<Movie, St
      */
     @Override
     public String getProcessedResponse() {
-        return Optional.ofNullable(Jsoup.parse(response.body()))
+        return Optional.ofNullable(Jsoup.parse(getResponseBody()))
                 .map(e -> e.select("[data-auth]").first())
                 .map(e -> e.attr("data-auth"))
                 .orElse(null);

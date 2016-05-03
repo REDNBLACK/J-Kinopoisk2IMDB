@@ -3,6 +3,7 @@ package org.f0w.k2i.core.exchange;
 import org.jsoup.Connection;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Generic interface for classes implementing send request - get response - handle response chain.
@@ -15,6 +16,7 @@ public interface Exchangeable<IN, OUT> {
 
     /**
      * Sets the response
+     *
      * @param response Response to set
      */
     void setResponse(Connection.Response response);
@@ -22,7 +24,7 @@ public interface Exchangeable<IN, OUT> {
     /**
      * @return Raw response from server
      */
-    Connection.Response getRawResponse();
+    Optional<Connection.Response> getRawResponse();
 
     OUT getProcessedResponse();
 }

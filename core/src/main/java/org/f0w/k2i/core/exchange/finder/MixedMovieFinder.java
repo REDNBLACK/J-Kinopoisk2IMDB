@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public final class MixedMovieFinder implements MovieFinder {
     private static final Logger LOG = LoggerFactory.getLogger(MixedMovieFinder.class);
@@ -43,12 +44,13 @@ public final class MixedMovieFinder implements MovieFinder {
      * {@inheritDoc}
      */
     @Override
-    public Connection.Response getRawResponse() {
-        return null;
+    public Optional<Connection.Response> getRawResponse() {
+        return Optional.empty();
     }
 
     /**
      * Returns the deque of movies
+     *
      * @return {@link MovieLazyLoadingDeque}
      */
     @Override

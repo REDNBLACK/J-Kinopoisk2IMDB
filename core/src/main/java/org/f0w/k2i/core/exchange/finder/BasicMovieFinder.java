@@ -59,7 +59,7 @@ public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Mo
      */
     @Override
     public Deque<Movie> getProcessedResponse() {
-        return new LinkedList<>(exchangeStrategy.parseSearchResult(response.body()));
+        return new LinkedList<>(exchangeStrategy.parseSearchResult(getResponseBody()));
     }
 
     /**

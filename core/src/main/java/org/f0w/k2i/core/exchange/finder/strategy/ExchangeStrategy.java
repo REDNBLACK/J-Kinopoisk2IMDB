@@ -34,6 +34,7 @@ public interface ExchangeStrategy {
     /**
      * Generic interface for parsing single movie from collection.
      * Used in {@link this#parseSearchResult(String)}
+     *
      * @param <R> Root element
      * @param <T> Title element
      * @param <Y> Year element

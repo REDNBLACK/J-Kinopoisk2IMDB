@@ -115,7 +115,6 @@ public class Controller {
                 listId.setEditable(true);
                 listId.setDisable(false);
             } else {
-                listId.clear();
                 listId.setDisable(true);
                 listId.setEditable(false);
             }

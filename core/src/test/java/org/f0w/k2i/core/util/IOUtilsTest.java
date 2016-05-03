@@ -19,12 +19,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class IOUtilsTest {
+    @Rule
+    public ExpectedException expected = ExpectedException.none();
     private FileSystem fileSystem;
     private Path temporaryFile;
     private Path temporaryDirectory;
-
-    @Rule
-    public ExpectedException expected = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {

@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.util;
 
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
@@ -12,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.util.exception.ExceptionUtils.uncheck;
@@ -30,8 +30,8 @@ public final class MovieUtils {
      * @param title String to parseSearchResult
      * @return Parsed title
      */
-    public static String parseTitle(String title) {
-        String resultTitle = StringUtils.replaceEachRepeatedly(
+    public static String parseTitle(final String title) {
+        val resultTitle = StringUtils.replaceEachRepeatedly(
                 String.valueOf(title).trim(),
                 new String[]{"«", "»"},
                 new String[]{"", ""}
@@ -51,8 +51,8 @@ public final class MovieUtils {
      * @param fallback Fallback string
      * @return Parsed title or defaultTitle
      */
-    public static String parseTitle(String title, String fallback) {
-        String resultTitle = parseTitle(title);
+    public static String parseTitle(final String title, final String fallback) {
+        val resultTitle = parseTitle(title);
 
         if ("null".equals(resultTitle)) {
             return parseTitle(fallback);
@@ -67,11 +67,11 @@ public final class MovieUtils {
      * @param yearString String to parseSearchResult
      * @return Parsed year or 0
      */
-    public static int parseYear(String yearString) {
-        final int yearLength = 4;
+    public static int parseYear(final String yearString) {
+        val yearLength = 4;
 
         try {
-            String resultYear = String.valueOf(yearString).trim().substring(0, yearLength);
+            val resultYear = String.valueOf(yearString).trim().substring(0, yearLength);
 
             return Integer.parseInt(resultYear);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
@@ -85,8 +85,8 @@ public final class MovieUtils {
      * @param imdbId String to parseSearchResult
      * @return Parsed IMDB ID or null
      */
-    public static String parseIMDBId(String imdbId) {
-        String resultImdbId = String.valueOf(imdbId).trim();
+    public static String parseIMDBId(final String imdbId) {
+        val resultImdbId = String.valueOf(imdbId).trim();
 
         if (!resultImdbId.startsWith("tt") || resultImdbId.length() < 3) {
             return null;
@@ -101,16 +101,16 @@ public final class MovieUtils {
      * @param rating String to parseSearchResult
      * @return Parsed rating or null
      */
-    public static Integer parseRating(String rating) {
-        String resultRating = String.valueOf(rating).trim();
-        List<String> zeroValues = Arrays.asList("", "null", "zero", "0");
+    public static Integer parseRating(final String rating) {
+        val resultRating = String.valueOf(rating).trim();
+        val zeroValues = Arrays.asList("", "null", "zero", "0");
 
         if (zeroValues.contains(resultRating)) {
             return null;
         }
 
         try {
-            Integer result = Integer.parseInt(resultRating);
+            val result = Integer.parseInt(resultRating);
 
             return result <= 10 ? result : null;
         } catch (NumberFormatException ignore) {
@@ -124,7 +124,7 @@ public final class MovieUtils {
      * @param title String to check
      * @return Is title empty
      */
-    public static boolean isEmptyTitle(String title) {
+    public static boolean isEmptyTitle(final String title) {
         return "null".equals(title);
     }
 
@@ -134,7 +134,7 @@ public final class MovieUtils {
      * @param year Integer to check
      * @return Is year empty
      */
-    public static boolean isEmptyYear(int year) {
+    public static boolean isEmptyYear(final int year) {
         return year == 0;
     }
 
@@ -144,7 +144,7 @@ public final class MovieUtils {
      * @param imdbId String to check
      * @return Is IMDB ID null
      */
-    public static boolean isEmptyIMDBId(String imdbId) {
+    public static boolean isEmptyIMDBId(final String imdbId) {
         return imdbId == null;
     }
 
@@ -154,7 +154,7 @@ public final class MovieUtils {
      * @param rating String to check
      * @return Is rating null
      */
-    public static boolean isEmptyRating(Integer rating) {
+    public static boolean isEmptyRating(final Integer rating) {
         return rating == null;
     }
 
@@ -165,21 +165,21 @@ public final class MovieUtils {
      * @return List of parsed movies
      * @throws KinopoiskToIMDBException If an I/O error occurs
      */
-    public static List<Movie> parseMovies(Path filePath) {
-        String data = uncheck(() -> new String(Files.readAllBytes(filePath), Charset.forName("windows-1251")));
+    public static List<Movie> parseMovies(final Path filePath) {
+        val data = uncheck(() -> new String(Files.readAllBytes(filePath), Charset.forName("windows-1251")));
         Elements content = Jsoup.parse(data).select("table tr");
 
         if (content.isEmpty()) {
             throw new KinopoiskToIMDBException(String.format("File '%s' is not valid or empty!", filePath));
         }
 
-        List<String> header = content.remove(0)
+        val header = content.remove(0)
                 .getElementsByTag("td")
                 .stream()
                 .map(Element::text)
                 .collect(Collectors.toList());
 
-        List<Map<String, String>> elements = content.stream()
+        val rows = content.stream()
                 .map(e -> e.getElementsByTag("td")
                         .stream()
                         .map(Element::text)
@@ -188,7 +188,7 @@ public final class MovieUtils {
                 .map(e -> CollectionUtils.combineLists(header, e))
                 .collect(Collectors.toList());
 
-        return elements.stream()
+        return rows.stream()
                 .map(m -> new Movie(
                         parseTitle(m.get("оригинальное название"), m.get("русскоязычное название")),
                         parseYear(m.get("год")),

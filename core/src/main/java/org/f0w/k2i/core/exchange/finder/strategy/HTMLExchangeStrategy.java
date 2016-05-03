@@ -1,6 +1,8 @@
 package org.f0w.k2i.core.exchange.finder.strategy;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.NonNull;
+import lombok.val;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.HttpUtils;
 import org.jsoup.Jsoup;
@@ -9,24 +11,19 @@ import org.jsoup.nodes.Element;
 
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static java.util.Objects.requireNonNull;
 
 public final class HTMLExchangeStrategy implements ExchangeStrategy {
     /**
      * {@inheritDoc}
      */
     @Override
-    public URL buildSearchURL(final Movie movie) {
-        requireNonNull(movie);
-
-        String searchLink = "http://www.imdb.com/find";
-        Map<String, String> queryParams = new ImmutableMap.Builder<String, String>()
+    public URL buildSearchURL(@NonNull final Movie movie) {
+        val searchLink = "http://www.imdb.com/find";
+        val queryParams = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle())
                 .put("s", "tt")
                 //.put("exact", "true")
@@ -40,8 +37,8 @@ public final class HTMLExchangeStrategy implements ExchangeStrategy {
      * {@inheritDoc}
      */
     @Override
-    public List<Movie> parseSearchResult(final String data) {
-        Document document = Jsoup.parse(requireNonNull(data));
+    public List<Movie> parseSearchResult(@NonNull final String data) {
+        Document document = Jsoup.parse(data);
         HTMLMovieParser parser = new HTMLMovieParser();
 
         return document.select("table.findList tr td.result_text")

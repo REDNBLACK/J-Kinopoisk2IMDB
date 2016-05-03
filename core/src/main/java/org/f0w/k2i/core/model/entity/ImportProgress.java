@@ -1,12 +1,16 @@
 package org.f0w.k2i.core.model.entity;
 
-import com.google.common.base.MoreObjects;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "IMPORT_PROGRESS", uniqueConstraints = @UniqueConstraint(columnNames = {"KINOPOISK_FILE_ID", "MOVIE_ID"}))
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ImportProgress extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "KINOPOISK_FILE_ID", nullable = false)
@@ -21,75 +25,4 @@ public class ImportProgress extends BaseEntity {
 
     @Column(name = "RATED", nullable = false)
     private boolean rated;
-
-    protected ImportProgress() {
-        // Required by JPA
-    }
-
-    public ImportProgress(KinopoiskFile kinopoiskFile, Movie movie, boolean imported, boolean rated) {
-        setKinopoiskFile(kinopoiskFile);
-        setMovie(movie);
-        setImported(imported);
-        setRated(rated);
-    }
-
-    public Movie getMovie() {
-        return movie;
-    }
-
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
-
-    public KinopoiskFile getKinopoiskFile() {
-        return kinopoiskFile;
-    }
-
-    public void setKinopoiskFile(KinopoiskFile kinopoiskFile) {
-        this.kinopoiskFile = kinopoiskFile;
-    }
-
-    public boolean isImported() {
-        return imported;
-    }
-
-    public void setImported(boolean imported) {
-        this.imported = imported;
-    }
-
-    public boolean isRated() {
-        return rated;
-    }
-
-    public void setRated(boolean rated) {
-        this.rated = rated;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ImportProgress that = (ImportProgress) o;
-        return isImported() == that.isImported() &&
-                isRated() == that.isRated() &&
-                Objects.equals(getKinopoiskFile(), that.getKinopoiskFile()) &&
-                Objects.equals(getMovie(), that.getMovie());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getKinopoiskFile(), getMovie(), isImported(), isRated());
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .omitNullValues()
-                .add("id", getId())
-                .add("kinopoiskFile", getKinopoiskFile())
-                .add("movie", getMovie())
-                .add("imported", isImported())
-                .add("rated", isRated())
-                .toString();
-    }
 }

@@ -55,7 +55,7 @@ public final class AddToWatchlistHandler extends MovieHandler {
         } catch (IOException e) {
             LOG.info("Error adding movie to watchlist: {}", e);
 
-            errors.add(new Error(importProgress, e.getMessage()));
+            errors.add(new Error(importProgress.getMovie(), e.getMessage()));
         }
     }
 }

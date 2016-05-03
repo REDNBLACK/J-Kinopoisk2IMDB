@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
+import lombok.NonNull;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.model.entity.ImportProgress;
@@ -52,7 +53,7 @@ public final class ParseIDHandler extends MovieHandler {
         } catch (IOException e) {
             LOG.info("Can't prepare movie: {}", e);
 
-            errors.add(new Error(importProgress, e.getMessage()));
+            errors.add(new Error(importProgress.getMovie(), e.getMessage()));
         }
     }
 
@@ -63,7 +64,7 @@ public final class ParseIDHandler extends MovieHandler {
      * @param movies Deque in which perform search
      * @return Optional of found matching movie
      */
-    private Optional<Movie> findMatchingMovie(Movie movie, Deque<Movie> movies) {
+    private Optional<Movie> findMatchingMovie(@NonNull final Movie movie, @NonNull final Deque<Movie> movies) {
         while (!movies.isEmpty()) {
             Movie imdbMovie = movies.poll();
 

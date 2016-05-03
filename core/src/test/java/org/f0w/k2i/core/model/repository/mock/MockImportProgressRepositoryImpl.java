@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MockImportProgressRepositoryImpl extends BaseMockRepository<ImportProgress>
-        implements ImportProgressRepository
-{
+        implements ImportProgressRepository {
     @Override
     public void saveAll(KinopoiskFile kinopoiskFile, List<Movie> movies) {
         movies.forEach(m -> save(new ImportProgress(kinopoiskFile, m, false, false)));

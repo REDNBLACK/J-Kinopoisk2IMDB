@@ -1,26 +1,28 @@
 package org.f0w.k2i.core.exchange.finder;
 
 import com.typesafe.config.Config;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.f0w.k2i.core.exchange.AbstractExchangeable;
 import org.f0w.k2i.core.exchange.finder.strategy.ExchangeStrategy;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Deque;
 import java.util.LinkedList;
 
+@Slf4j
 public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Movie>> implements MovieFinder {
-    protected static final Logger LOG = LoggerFactory.getLogger(BasicMovieFinder.class);
-
+    @NonNull
     private final Type type;
 
+    @NonNull
     private final ExchangeStrategy exchangeStrategy;
 
+    @NonNull
     private final Config config;
 
     public BasicMovieFinder(Type type, ExchangeStrategy exchangeStrategy, Config config) {
@@ -36,20 +38,20 @@ public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Mo
      * @throws IOException If an I/O error occurs
      */
     @Override
-    public void sendRequest(Movie movie) throws IOException {
-        final URL movieSearchLink = exchangeStrategy.buildSearchURL(movie);
+    public void sendRequest(@NonNull Movie movie) throws IOException {
+        val movieSearchLink = exchangeStrategy.buildSearchURL(movie);
 
-        Connection request = Jsoup.connect(movieSearchLink.toString())
+        Connection client = Jsoup.connect(movieSearchLink.toString())
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"));
 
-        LOG.debug(
-                "Sending request, to url: {}, with headers: {}", request.request().url(), request.request().headers()
+        log.debug(
+                "Sending request, to url: {}, with headers: {}", client.request().url(), client.request().headers()
         );
 
-        setResponse(request.execute());
+        setResponse(client.execute());
 
-        LOG.debug("Got response, status code: {}, headers: {}", response.statusCode(), response.headers());
+        log.debug("Got response, status code: {}, headers: {}", response.statusCode(), response.headers());
     }
 
     /**

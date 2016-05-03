@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.exchange.finder.strategy;
 
+import lombok.NonNull;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.net.URL;
@@ -18,18 +19,16 @@ public interface ExchangeStrategy {
      *
      * @param movie Movie which fields to use
      * @return Movie search URL
-     * @throws NullPointerException If movie is null
      */
-    URL buildSearchURL(final Movie movie);
+    URL buildSearchURL(@NonNull final Movie movie);
 
     /**
      * Parses data, implementation specific to each Format
      *
      * @param data Data
      * @return List of movies if data not an empty string, or {@link Collections#emptyList()} otherwise.
-     * @throws NullPointerException If data is null
      */
-    List<Movie> parseSearchResult(final String data);
+    List<Movie> parseSearchResult(@NonNull final String data);
 
     /**
      * Generic interface for parsing single movie from collection.

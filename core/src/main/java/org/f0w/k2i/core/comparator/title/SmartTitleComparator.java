@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.comparator.title;
 
 import com.google.common.collect.ImmutableList;
+import lombok.NonNull;
 import org.f0w.k2i.core.comparator.AbstractMovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.string.NumericToWord;
@@ -113,7 +114,7 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
      * {@inheritDoc}
      */
     @Override
-    public boolean areEqual(Movie movie1, Movie movie2) {
+    public boolean areEqual(@NonNull Movie movie1, @NonNull Movie movie2) {
         for (StringModifier m1 : modifiers) {
             for (StringModifier m2 : modifiers) {
                 String m1Title = m1.modify(movie1.getTitle());
@@ -139,6 +140,6 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
 
     @FunctionalInterface
     private interface StringModifier {
-        String modify(String string);
+        String modify(@NonNull String string);
     }
 }

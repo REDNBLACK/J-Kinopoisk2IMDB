@@ -3,43 +3,30 @@ package org.f0w.k2i.core.exchange;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.val;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
-import java.util.Map;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Changes Movie rating on IMDB.
  */
 public final class MovieRatingChanger extends JSONPostExchangeable<Movie> {
     private final Config config;
+
+    @Getter
+    @Setter
+    @NonNull
     private String authString;
 
     @Inject
     public MovieRatingChanger(Config config) {
         this.config = config;
-    }
-
-    /**
-     * Get the authString value.
-     *
-     * @return {@link this#authString}
-     */
-    private String getAuthString() {
-        return authString;
-    }
-
-    /**
-     * Set the {@link this#authString) to a not null value.
-     *
-     * @param authString
-     */
-    public void setAuthString(final String authString) {
-        this.authString = requireNonNull(authString);
     }
 
     /**
@@ -52,9 +39,8 @@ public final class MovieRatingChanger extends JSONPostExchangeable<Movie> {
      */
     @Override
     public void sendRequest(Movie movie) throws IOException {
-        final String movieRatingChangeLink = "http://www.imdb.com/ratings/_ajax/title";
-
-        Map<String, String> postData = new ImmutableMap.Builder<String, String>()
+        val movieRatingChangeLink = "http://www.imdb.com/ratings/_ajax/title";
+        val postData = new ImmutableMap.Builder<String, String>()
                 .put("tconst", movie.getImdbId())
                 .put("rating", String.valueOf(movie.getRating()))
                 .put("auth", getAuthString())
@@ -64,7 +50,7 @@ public final class MovieRatingChanger extends JSONPostExchangeable<Movie> {
                 .put("subpageType", "main")
                 .build();
 
-        Connection request = Jsoup.connect(movieRatingChangeLink)
+        Connection client = Jsoup.connect(movieRatingChangeLink)
                 .method(Connection.Method.POST)
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"))
@@ -72,6 +58,6 @@ public final class MovieRatingChanger extends JSONPostExchangeable<Movie> {
                 .ignoreContentType(true)
                 .data(postData);
 
-        setResponse(request.execute());
+        setResponse(client.execute());
     }
 }

@@ -2,6 +2,8 @@ package org.f0w.k2i.core.exchange;
 
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
+import lombok.NonNull;
+import lombok.val;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -27,15 +29,15 @@ public final class MovieAuthStringFetcher extends AbstractExchangeable<Movie, St
      * @throws IOException If an I/O error occurs
      */
     @Override
-    public void sendRequest(Movie movie) throws IOException {
-        final String moviePageLink = "http://www.imdb.com/title/";
+    public void sendRequest(@NonNull Movie movie) throws IOException {
+        val moviePageLink = "http://www.imdb.com/title/";
 
-        Connection request = Jsoup.connect(moviePageLink + movie.getImdbId())
+        Connection client = Jsoup.connect(moviePageLink + movie.getImdbId())
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"))
                 .cookie("id", config.getString("auth"));
 
-        setResponse(request.execute());
+        setResponse(client.execute());
     }
 
     /**

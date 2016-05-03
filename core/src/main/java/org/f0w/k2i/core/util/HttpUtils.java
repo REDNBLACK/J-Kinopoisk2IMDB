@@ -2,6 +2,7 @@ package org.f0w.k2i.core.util;
 
 import com.google.common.base.Joiner;
 import com.google.common.net.UrlEscapers;
+import lombok.val;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -27,7 +28,7 @@ public final class HttpUtils {
      * @param timeout  Timeout in ms
      * @return Reachable or not
      */
-    public static boolean isReachable(String hostName, int port, int timeout) {
+    public static boolean isReachable(final String hostName, int port, int timeout) {
         try (Socket socket = new Socket()) {
             socket.connect(new InetSocketAddress(hostName, port), timeout);
             return true;
@@ -42,9 +43,10 @@ public final class HttpUtils {
      * @param hostName Hostname component of URL
      * @param query    Query component of URL
      * @return URL
+     * @throws IllegalArgumentException If URL is invalid
      */
     public static URL buildURL(final String hostName, final Map<String, String> query) {
-        Map<String, String> escapedQuery = query.entrySet()
+        val escapedQuery = query.entrySet()
                 .stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,

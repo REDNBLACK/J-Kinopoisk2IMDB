@@ -4,29 +4,26 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.NonNull;
+import lombok.val;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.HttpUtils;
 
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import static java.util.Objects.requireNonNull;
 
 public final class JSONExchangeStrategy implements ExchangeStrategy {
     /**
      * {@inheritDoc}
      */
     @Override
-    public URL buildSearchURL(final Movie movie) {
-        requireNonNull(movie);
-
-        String searchLink = "http://www.imdb.com/xml/find";
-        Map<String, String> queryParams = new ImmutableMap.Builder<String, String>()
+    public URL buildSearchURL(@NonNull final Movie movie) {
+        val searchLink = "http://www.imdb.com/xml/find";
+        val queryParams = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle())
                 .put("tt", "on")
                 .put("nr", "1")
@@ -40,8 +37,8 @@ public final class JSONExchangeStrategy implements ExchangeStrategy {
      * {@inheritDoc}
      */
     @Override
-    public List<Movie> parseSearchResult(final String data) {
-        if ("".equals(requireNonNull(data))) {
+    public List<Movie> parseSearchResult(@NonNull final String data) {
+        if ("".equals(data)) {
             return Collections.emptyList();
         }
 

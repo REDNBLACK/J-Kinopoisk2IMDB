@@ -4,6 +4,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
+import lombok.val;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
@@ -44,7 +45,7 @@ public final class ImportProgressService {
     public ImportProgressService initialize(Path filePath, boolean cleanRun) {
         this.filePath = checkFile(filePath);
 
-        String fileHashCode = ExceptionUtils.uncheck(() -> Files.hash(filePath.toFile(), Hashing.sha256()).toString());
+        val fileHashCode = ExceptionUtils.uncheck(() -> Files.hash(filePath.toFile(), Hashing.sha256()).toString());
 
         if (cleanRun) {
             removeExistingFileData(fileHashCode);

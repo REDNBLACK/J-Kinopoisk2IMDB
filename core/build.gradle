@@ -1,4 +1,13 @@
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '1.6'
+}
+
 version = "0.7.7"
+
+lombok {
+    version = "1.16.8"
+    sha256 = "fe32b29b7b33eb2b19866cbc5345c59c9984a6036cc396856a04c0d09f99ea68"
+}
 
 ext {
     guiceVersion = "4.0"

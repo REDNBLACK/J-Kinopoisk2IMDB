@@ -104,8 +104,6 @@ public class Controller {
 
     @FXML
     void initialize() {
-        clientExecutor.setListeners(Arrays.asList(new ProgressBarUpdater(), new RunButtonUpdater()));
-
         // Основные
         modeComboBox.setItems(FXCollections.observableList(Arrays.asList(
                 new Choice<>(COMBINED, "Добавить в список и выставить рейтинг"),
@@ -241,6 +239,7 @@ public class Controller {
     @FXML
     protected void handleStartAction(ActionEvent event) {
         try {
+            clientExecutor.setListeners(Arrays.asList(new ProgressBarUpdater(), new RunButtonUpdater()));
             clientExecutor.setConfig(configMap);
             clientExecutor.run();
         } catch (IllegalArgumentException | NullPointerException | ConfigException e) {

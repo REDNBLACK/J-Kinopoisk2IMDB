@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -44,18 +46,15 @@ import static org.f0w.k2i.core.handler.MovieHandler.Type.*;
 
 public class Controller {
     private Stage stage;
-    private File kpFile;
-    private boolean cleanRun;
     private ClientExecutor clientExecutor = new ClientExecutor();
 
-    private final File configFile = new File(
-            System.getProperty("user.home") + File.separator + "K2IDB" + File.separator + "config.json"
-    );
+    private final Path configPath = Paths.get(System.getProperty("user.home"), "K2IDB", "config.json");
 
-    private final Config config = ConfigFactory.parseFile(configFile)
+    private final Config config = ConfigFactory.parseFile(configPath.toFile())
             .withFallback(ConfigFactory.defaultApplication());
 
-    private final Map<String, Object> configMap = config.entrySet().stream()
+    private final Map<String, Object> configMap = config.entrySet()
+            .stream()
             .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().unwrapped()));
 
     @FXML
@@ -86,7 +85,7 @@ public class Controller {
     private Label progressStatus;
 
     @FXML
-    private javafx.scene.control.ProgressBar progressBar;
+    private ProgressBar progressBar;
 
     @FXML
     private CheckComboBox<Choice<MovieComparator.Type, String>> comparatorsBox;
@@ -103,18 +102,16 @@ public class Controller {
     @FXML
     private TextField logLevelField;
 
-    void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
     @FXML
     void initialize() {
+        clientExecutor.setListeners(Arrays.asList(new ProgressBarUpdater(), new RunButtonUpdater()));
+
         // Основные
-        modeComboBox.setItems(FXCollections.observableArrayList(
+        modeComboBox.setItems(FXCollections.observableList(Arrays.asList(
                 new Choice<>(COMBINED, "Добавить в список и выставить рейтинг"),
                 new Choice<>(SET_RATING, "Выставить рейтинг"),
                 new Choice<>(ADD_TO_WATCHLIST, "Добавить в список")
-        ));
+        )));
         modeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.getValue().equals(ADD_TO_WATCHLIST) || newValue.getValue().equals(COMBINED)) {
                 listId.setEditable(true);
@@ -137,12 +134,12 @@ public class Controller {
 
 
         // Дополнительные
-        queryFormatComboBox.setItems(FXCollections.observableArrayList(
+        queryFormatComboBox.setItems(FXCollections.observableList(Arrays.asList(
                 new Choice<>(XML, "XML"),
                 new Choice<>(JSON, "JSON"),
                 new Choice<>(HTML, "HTML"),
                 new Choice<>(MIXED, "Смешанный")
-        ));
+        )));
         queryFormatComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             configMap.put("query_format", newValue.getValue().toString());
         });
@@ -150,7 +147,7 @@ public class Controller {
                 new Choice<>(MovieFinder.Type.valueOf(config.getString("query_format")))
         );
 
-        comparatorsBox.getItems().addAll(FXCollections.observableArrayList(
+        comparatorsBox.getItems().addAll(FXCollections.observableList(Arrays.asList(
                 new Choice<>(YEAR_DEVIATION, "Год с отклонением"),
                 new Choice<>(YEAR_EQUALS, "Год с полным совпадением"),
                 new Choice<>(TITLE_SMART, "Интеллектуальное сравнение названий"),
@@ -158,7 +155,7 @@ public class Controller {
                 new Choice<>(TITLE_CONTAINS, "Одно название содержит другое"),
                 new Choice<>(TITLE_STARTS, "Одно название начинается с другого"),
                 new Choice<>(TITLE_ENDS, "Одно название оканчивается другим")
-        ));
+        )));
         comparatorsBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<Choice<MovieComparator.Type, String>>) c -> {
             List<String> comparators = c.getList().stream()
                     .map(choice -> choice.getValue().toString())
@@ -171,7 +168,7 @@ public class Controller {
         ));
 
         cleanRunCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            cleanRun = newValue;
+            clientExecutor.setCleanRun(newValue);
         });
 
 
@@ -206,12 +203,20 @@ public class Controller {
                 .getBytes();
 
         try {
-            Files.write(configFile.toPath(), configuration);
+            Path parentDir = configPath.getParent();
+            if (!Files.exists(parentDir)) {
+                Files.createDirectories(parentDir);
+            }
+            Files.write(configPath, configuration);
         } catch (IOException ignore) {
             // Do nothing
         }
 
         return true;
+    }
+
+    void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     @FXML
@@ -228,7 +233,7 @@ public class Controller {
         if (file != null) {
             selectFileBtn.setText("Выбрать другой файл...");
             selectedFile.setText(file.getPath());
-            kpFile = file;
+            clientExecutor.setFilePath(file.toPath());
             runBtn.setDisable(false);
         }
     }
@@ -236,12 +241,7 @@ public class Controller {
     @FXML
     protected void handleStartAction(ActionEvent event) {
         try {
-            clientExecutor.init(
-                    kpFile.toPath(),
-                    ConfigFactory.parseMap(configMap),
-                    cleanRun,
-                    Arrays.asList(new ProgressBarUpdater(), new RunButtonUpdater())
-            );
+            clientExecutor.setConfig(configMap);
             clientExecutor.run();
         } catch (IllegalArgumentException | NullPointerException | ConfigException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

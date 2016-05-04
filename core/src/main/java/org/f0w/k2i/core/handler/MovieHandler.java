@@ -1,5 +1,7 @@
 package org.f0w.k2i.core.handler;
 
+import lombok.NonNull;
+import lombok.Value;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.slf4j.Logger;
@@ -7,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -15,7 +16,11 @@ import java.util.Set;
  */
 public abstract class MovieHandler {
     protected static final Logger LOG = LoggerFactory.getLogger(MovieHandler.class);
+
+    @NonNull
     private Set<Type> types;
+
+    @NonNull
     private MovieHandler next;
 
     /**
@@ -62,7 +67,7 @@ public abstract class MovieHandler {
      * @param errors         List of errors
      * @param type           Type of MovieHandler
      */
-    public void handle(ImportProgress importProgress, List<Error> errors, Type type) {
+    public void handle(@NonNull ImportProgress importProgress, @NonNull List<Error> errors, @NonNull Type type) {
         if (types.contains(type) || isCombinedType(type)) {
             handleMovie(importProgress, errors);
         }
@@ -72,6 +77,12 @@ public abstract class MovieHandler {
         }
     }
 
+    /**
+     * Checks that given type is COMBINED
+     *
+     * @param type Type to check
+     * @return is combined type
+     */
     private boolean isCombinedType(Type type) {
         return types.contains(Type.COMBINED) || Type.COMBINED.equals(type);
     }
@@ -96,35 +107,12 @@ public abstract class MovieHandler {
     /**
      * MovieHandler error
      */
-    public static class Error {
-        private final Movie movie;
-        private final String message;
+    @Value
+    public static final class Error {
+        @NonNull
+        private Movie movie;
 
-        public Error(ImportProgress importProgress, String message) {
-            this.movie = importProgress.getMovie();
-            this.message = message;
-        }
-
-        public Movie getMovie() {
-            return movie;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Error error = (Error) o;
-            return Objects.equals(getMovie(), error.getMovie()) &&
-                    Objects.equals(getMessage(), error.getMessage());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(getMovie(), getMessage());
-        }
+        @NonNull
+        private String message;
     }
 }

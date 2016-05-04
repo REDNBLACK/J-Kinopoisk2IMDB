@@ -2,6 +2,7 @@ package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
+import lombok.val;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.util.HttpUtils;
 
@@ -23,9 +24,9 @@ public final class ConnectionCheckHandler extends MovieHandler {
      */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
-        final String url = "www.imdb.com";
-        final int port = 80;
-        final int timeout = config.getInt("timeout");
+        val url = "www.imdb.com";
+        val port = 80;
+        val timeout = config.getInt("timeout");
 
         while (!HttpUtils.isReachable(url, port, timeout)) {
             LOG.info("IMDB url is not reachable, retrying...");

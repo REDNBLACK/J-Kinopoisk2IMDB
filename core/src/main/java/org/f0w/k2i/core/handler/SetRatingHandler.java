@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
+import lombok.NonNull;
 import org.f0w.k2i.core.exchange.MovieAuthStringFetcher;
 import org.f0w.k2i.core.exchange.MovieRatingChanger;
 import org.f0w.k2i.core.model.entity.ImportProgress;
@@ -9,6 +10,7 @@ import org.f0w.k2i.core.model.entity.Movie;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
+import java.util.Optional;
 
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyRating;
@@ -50,15 +52,7 @@ public final class SetRatingHandler extends MovieHandler {
                 return;
             }
 
-            fetcher.sendRequest(movie);
-
-            final String authString = fetcher.getProcessedResponse();
-
-            if (authString == null) {
-                throw new IOException("Movie authorisation string is empty!");
-            }
-
-            changer.setAuthString(authString);
+            changer.setAuthString(fetchAuthorisationString(movie));
             changer.sendRequest(movie);
 
             Integer statusCode = changer.getProcessedResponse();
@@ -73,7 +67,21 @@ public final class SetRatingHandler extends MovieHandler {
         } catch (IOException e) {
             LOG.info("Error setting rating of movie: {}", e);
 
-            errors.add(new Error(importProgress, e.getMessage()));
+            errors.add(new Error(importProgress.getMovie(), e.getMessage()));
         }
+    }
+
+    /**
+     * Fetch the authorisation string for movie.
+     *
+     * @param movie For which movie
+     * @return Authorisation string
+     * @throws IOException If an I/O error occurs or string is null
+     */
+    private String fetchAuthorisationString(@NonNull final Movie movie) throws IOException {
+        fetcher.sendRequest(movie);
+
+        return Optional.ofNullable(fetcher.getProcessedResponse())
+                .orElseThrow(() -> new IOException("Movie authorisation string is empty!"));
     }
 }

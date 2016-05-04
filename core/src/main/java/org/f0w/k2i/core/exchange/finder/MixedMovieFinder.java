@@ -2,10 +2,10 @@ package org.f0w.k2i.core.exchange.finder;
 
 import com.google.common.collect.ForwardingDeque;
 import com.google.common.collect.ImmutableList;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Deque;
@@ -13,11 +13,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public final class MixedMovieFinder implements MovieFinder {
-    private static final Logger LOG = LoggerFactory.getLogger(MixedMovieFinder.class);
-
+    @NonNull
     private final Type type;
+
+    @NonNull
     private final List<MovieFinder> originalFinders;
+
     private Deque<MovieFinder> findersDeque;
     private Movie movie;
 
@@ -27,7 +30,7 @@ public final class MixedMovieFinder implements MovieFinder {
     }
 
     @Override
-    public void sendRequest(Movie movie) throws IOException {
+    public void sendRequest(@NonNull Movie movie) throws IOException {
         this.movie = movie;
         findersDeque = new LinkedList<>(originalFinders);
     }
@@ -82,19 +85,19 @@ public final class MixedMovieFinder implements MovieFinder {
             boolean isEmpty = super.isEmpty();
 
             if (isEmpty && !findersDeque.isEmpty()) {
-                LOG.debug("Movies deque is empty, start loading...");
+                log.debug("Movies deque is empty, start loading...");
 
                 try {
                     MovieFinder finder = findersDeque.poll();
-                    LOG.debug("Loading using finder type: {}", finder.getType());
+                    log.debug("Loading using finder type: {}", finder.getType());
 
                     finder.sendRequest(MixedMovieFinder.this.movie);
                     Deque<Movie> movies = finder.getProcessedResponse();
                     super.addAll(movies);
 
-                    LOG.debug("Successfully loaded: {}", movies);
+                    log.debug("Successfully loaded: {}", movies);
                 } catch (IOException ignore) {
-                    LOG.debug("Loading error, trying next finder...");
+                    log.debug("Loading error, trying next finder...");
                 }
 
                 return isEmpty();

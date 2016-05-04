@@ -6,6 +6,7 @@ import com.google.inject.Injector;
 import com.google.inject.Stage;
 import com.google.inject.persist.PersistService;
 import com.typesafe.config.Config;
+import lombok.NonNull;
 import org.f0w.k2i.core.event.ImportFinishedEvent;
 import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
 import org.f0w.k2i.core.event.ImportStartedEvent;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Objects.requireNonNull;
+import static org.f0w.k2i.core.util.IOUtils.checkFile;
 
 /**
  * Main facade implemented as {@link Runnable} for working with core module.
@@ -33,15 +34,15 @@ public final class Client implements Runnable {
     private final ImportProgressService importProgressService;
     private final PersistService persistService;
 
-    public Client(Path filePath, Config config) {
+    public Client(@NonNull Path filePath, @NonNull Config config) {
         this(filePath, config, false);
     }
 
-    public Client(Path filePath, Config config, boolean cleanRun) {
+    public Client(@NonNull Path filePath, @NonNull Config config, boolean cleanRun) {
         this(filePath, config, cleanRun, Collections.emptyList());
     }
 
-    public Client(Path filePath, Config config, boolean cleanRun, List<?> listeners) {
+    public Client(@NonNull Path filePath, @NonNull Config config, boolean cleanRun, @NonNull List<?> listeners) {
         Injector injector = Guice.createInjector(
                 Stage.PRODUCTION,
                 new ConfigurationProvider(config),
@@ -55,10 +56,10 @@ public final class Client implements Runnable {
         handlerType = injector.getInstance(MovieHandler.Type.class);
         handlerChain = injector.getInstance(MovieHandler.class);
         importProgressService = injector.getInstance(ImportProgressService.class)
-                .initialize(filePath, cleanRun);
+                .initialize(checkFile(filePath), cleanRun);
 
         eventBus = new EventBus();
-        requireNonNull(listeners).forEach(eventBus::register);
+        listeners.forEach(eventBus::register);
     }
 
     @Override

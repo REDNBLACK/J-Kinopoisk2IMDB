@@ -1,20 +1,16 @@
 package org.f0w.k2i.core.exchange;
 
+import lombok.NonNull;
+import lombok.Setter;
 import org.jsoup.Connection;
 
 import java.util.Optional;
 
 
 public abstract class AbstractExchangeable<IN, OUT> implements Exchangeable<IN, OUT> {
+    @Setter
+    @NonNull
     protected Connection.Response response;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setResponse(Connection.Response response) {
-        this.response = response;
-    }
 
     /**
      * {@inheritDoc}

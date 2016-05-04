@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.comparator;
 
+import lombok.NonNull;
 import org.f0w.k2i.core.model.entity.Movie;
 
 /**
@@ -14,7 +15,7 @@ public interface MovieComparator {
      * @param movie2 Second movie
      * @return Are two movie objects equals to each other
      */
-    boolean areEqual(Movie movie1, Movie movie2);
+    boolean areEqual(@NonNull Movie movie1, @NonNull Movie movie2);
 
     /**
      * Available MovieComparator types

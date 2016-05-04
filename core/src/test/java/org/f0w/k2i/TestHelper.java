@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 public final class TestHelper {
     /**
      * Checks that constructor of the given class is private
+     *
      * @param clazz Class to check
      * @return Is private constructor
      * @throws Exception
@@ -19,6 +20,7 @@ public final class TestHelper {
 
     /**
      * Calls the private constructor
+     *
      * @param clazz Class which constructor to call
      * @throws Exception
      * @see Constructor#setAccessible(boolean)

@@ -10,10 +10,10 @@ import static org.f0w.k2i.core.exchange.finder.MovieFinder.Type.*;
 import static org.junit.Assert.assertTrue;
 
 public class MovieFinderFactoryTest {
-    private final MovieFinderFactory factory = new MovieFinderFactory(ConfigFactory.load());
+    private MovieFinderFactory factory = new MovieFinderFactory(ConfigFactory.load());
 
     @Test
-    public void testMake() throws Exception {
+    public void make() throws Exception {
         val classMap = new ImmutableMap.Builder<Type, Class<? extends MovieFinder>>()
                 .put(MIXED, MixedMovieFinder.class)
                 .put(XML, BasicMovieFinder.class)
@@ -30,7 +30,7 @@ public class MovieFinderFactoryTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testMakeWithNull() throws Exception {
+    public void makeWithNull() throws Exception {
         factory.make(null);
     }
 }

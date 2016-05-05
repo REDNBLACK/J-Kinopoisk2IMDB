@@ -13,10 +13,10 @@ import static org.f0w.k2i.core.comparator.MovieComparator.Type.*;
 import static org.junit.Assert.assertTrue;
 
 public class MovieComparatorFactoryTest {
-    private final MovieComparatorFactory factory = new MovieComparatorFactory(ConfigFactory.load());
+    private MovieComparatorFactory factory = new MovieComparatorFactory(ConfigFactory.load());
 
     @Test
-    public void testMake() throws Exception {
+    public void make() throws Exception {
         val classMap = new ImmutableMap.Builder<Type, Class<? extends MovieComparator>>()
                 .put(YEAR_EQUALS, EqualsYearComparator.class)
                 .put(YEAR_DEVIATION, DeviationYearComparator.class)
@@ -35,7 +35,7 @@ public class MovieComparatorFactoryTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testMakeWithNull() throws Exception {
+    public void makeWithNull() throws Exception {
         factory.make(null);
     }
 }

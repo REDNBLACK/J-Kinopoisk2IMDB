@@ -8,34 +8,34 @@ import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import static org.f0w.k2i.MovieTestData.TestMovie;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class DeviationYearComparatorTest {
-    private final List<Integer> deviations = Arrays.asList(1, 2, 3, 4, 5);
+    private List<Integer> deviations = IntStream.range(0, 5).boxed().collect(Collectors.toList());
 
-    private MovieComparator initComparator(Integer deviation) {
+    private MovieComparator makeComparator(Integer deviation) {
         Config config = ConfigFactory.parseMap(ImmutableMap.of("year_deviation", deviation));
 
         return new DeviationYearComparator(config);
     }
 
     @Test
-    public void testAreEqualWithinDeviation() throws Exception {
+    public void areEqualWithinDeviation() throws Exception {
         deviations.forEach(deviation -> {
-            MovieComparator comparator = initComparator(deviation);
+            MovieComparator comparator = makeComparator(deviation);
 
-            MovieTestData.MOVIE_LIST.forEach(movie -> {
-                Movie movieWithForwardDeviation = TestMovie.copyOf(movie);
+            MovieTestData.MOVIES_LIST.forEach(movie -> {
+                Movie movieWithForwardDeviation = new Movie(movie);
                 movieWithForwardDeviation.setYear(movieWithForwardDeviation.getYear() + deviation);
 
                 assertTrue(comparator.areEqual(movieWithForwardDeviation, movie));
 
-                Movie movieWithBackwardDeviation = TestMovie.copyOf(movie);
+                Movie movieWithBackwardDeviation = new Movie(movie);
                 movieWithBackwardDeviation.setYear(movieWithBackwardDeviation.getYear() - deviation);
 
                 assertTrue(comparator.areEqual(movieWithBackwardDeviation, movie));
@@ -44,12 +44,12 @@ public class DeviationYearComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithDeviationOverflow() throws Exception {
+    public void areEqualWithDeviationOverflow() throws Exception {
         deviations.forEach(deviation -> {
-            MovieComparator comparator = initComparator(deviation);
+            MovieComparator comparator = makeComparator(deviation);
 
-            MovieTestData.MOVIE_LIST.forEach(movie -> {
-                Movie deviatedMovie = TestMovie.copyOf(movie);
+            MovieTestData.MOVIES_LIST.forEach(movie -> {
+                Movie deviatedMovie = new Movie(movie);
                 deviatedMovie.setYear(deviatedMovie.getYear() + deviation + 1);
 
                 assertFalse(comparator.areEqual(deviatedMovie, movie));
@@ -58,12 +58,12 @@ public class DeviationYearComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithDeviationUnderflow() throws Exception {
+    public void areEqualWithDeviationUnderflow() throws Exception {
         deviations.forEach(deviation -> {
-            MovieComparator comparator = initComparator(deviation);
+            MovieComparator comparator = makeComparator(deviation);
 
-            MovieTestData.MOVIE_LIST.forEach(movie -> {
-                Movie deviatedMovie = TestMovie.copyOf(movie);
+            MovieTestData.MOVIES_LIST.forEach(movie -> {
+                Movie deviatedMovie = new Movie(movie);
                 deviatedMovie.setYear(deviatedMovie.getYear() - deviation);
 
                 assertTrue(comparator.areEqual(deviatedMovie, movie));

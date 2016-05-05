@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ImportStartedEventTest {
     @Test
-    public void testConstructorInitialization() {
+    public void constructorInitialization() {
         ImportStartedEvent event = new ImportStartedEvent(5);
 
         assertEquals(5, event.listSize);

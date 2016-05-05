@@ -18,4 +18,8 @@ public class KinopoiskFile extends BaseEntity {
     @Column(name = "HASH_CODE", unique = true, nullable = false)
     @NonNull
     private String hashCode;
+
+    public KinopoiskFile(KinopoiskFile kinopoiskFile) {
+        this(kinopoiskFile.getHashCode());
+    }
 }

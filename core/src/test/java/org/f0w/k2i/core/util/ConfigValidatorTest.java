@@ -3,6 +3,7 @@ package org.f0w.k2i.core.util;
 import ch.qos.logback.classic.Level;
 import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.ConfigException;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
@@ -20,38 +21,37 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.f0w.k2i.core.util.ConfigValidator.checkValid;
 
 public class ConfigValidatorTest {
-    private static final Map<String, Object> ORIGINAL_CONFIG_MAP = new ImmutableMap.Builder<String, Object>()
-            .put("user_agent", "Mozilla/5.0 (Windows NT 6.3; WOW64)")
-            .put("year_deviation", 1)
-            .put("log_level", Level.INFO.toString())
-            .put("timeout", 3000)
-            .put("query_format", MovieFinder.Type.MIXED.toString())
-            .put("comparators", Arrays.asList(
-                    MovieComparator.Type.YEAR_DEVIATION.toString(),
-                    MovieComparator.Type.TITLE_SMART.toString()
-            ))
-            .put("mode", MovieHandler.Type.COMBINED.toString())
-            .put("auth", "BCYnIhDSKm7sIoiawZ6TVKs5htuaGRHpT")
-            .put("list", "ls032387067")
-            .put("db", new ImmutableMap.Builder<String, Object>()
-                    .put("driver", "org.h2.Driver")
-                    .put("url", "jdbc:h2:~/K2IDB/db/K2IDB;TRACE_LEVEL_FILE=4")
-                    .put("password", "root")
-                    .put("user", "root")
-                    .put("additional", ImmutableMap.of("hibernate.hbm2ddl.auto", "update"))
-                    .build()
-            )
-            .build();
-
     private Map<String, Object> configMap;
 
     @Before
     public void setUp() throws Exception {
-        configMap = new HashMap<>(ORIGINAL_CONFIG_MAP);
+        val originalConfigMap = new ImmutableMap.Builder<String, Object>()
+                .put("user_agent", "Mozilla/5.0 (Windows NT 6.3; WOW64)")
+                .put("year_deviation", 1)
+                .put("log_level", Level.INFO.toString())
+                .put("timeout", 3000)
+                .put("query_format", MovieFinder.Type.MIXED.toString())
+                .put("comparators", Arrays.asList(
+                        MovieComparator.Type.YEAR_DEVIATION.toString(),
+                        MovieComparator.Type.TITLE_SMART.toString()
+                ))
+                .put("mode", MovieHandler.Type.COMBINED.toString())
+                .put("auth", "BCYnIhDSKm7sIoiawZ6TVKs5htuaGRHpT")
+                .put("list", "ls032387067")
+                .put("db", new ImmutableMap.Builder<String, Object>()
+                        .put("driver", "org.h2.Driver")
+                        .put("url", "jdbc:h2:~/K2IDB/db/K2IDB;TRACE_LEVEL_FILE=4")
+                        .put("password", "root")
+                        .put("user", "root")
+                        .put("additional", ImmutableMap.of("hibernate.hbm2ddl.auto", "update"))
+                        .build()
+                )
+                .build();
+        configMap = new HashMap<>(originalConfigMap);
     }
 
     @Test
-    public void checkValidLogLevel() throws Exception {
+    public void checkLogLevel() throws Exception {
         configMap.remove("log_level");
 
         assertThatThrownBy(() -> checkValid(parseMap(configMap)))
@@ -59,7 +59,7 @@ public class ConfigValidatorTest {
     }
 
     @Test
-    public void checkValidUserAgent() throws Exception {
+    public void checkUserAgent() throws Exception {
         checkValid(parseMap(configMap));
 
         configMap.replace("user_agent", "");
@@ -72,7 +72,7 @@ public class ConfigValidatorTest {
     }
 
     @Test
-    public void checkValidYearDeviation() throws Exception {
+    public void checkYearDeviation() throws Exception {
         checkValid(parseMap(configMap));
 
         configMap.replace("year_deviation", 0);
@@ -85,7 +85,7 @@ public class ConfigValidatorTest {
     }
 
     @Test
-    public void checkValidTimeout() throws Exception {
+    public void checkTimeout() throws Exception {
         checkValid(parseMap(configMap));
 
         configMap.replace("timeout", 999);
@@ -98,7 +98,7 @@ public class ConfigValidatorTest {
     }
 
     @Test
-    public void checkValidQueryFormat() throws Exception {
+    public void checkQueryFormat() throws Exception {
         checkValid(parseMap(configMap));
 
         configMap.replace("query_format", MovieFinder.Type.XML.toString());
@@ -114,7 +114,7 @@ public class ConfigValidatorTest {
     }
 
     @Test
-    public void checkValidAuth() throws Exception {
+    public void checkAuth() throws Exception {
         checkValid(parseMap(configMap));
 
         configMap.replace("auth", StringUtils.repeat("S", 10));
@@ -127,7 +127,7 @@ public class ConfigValidatorTest {
     }
 
     @Test
-    public void checkValidList() throws Exception {
+    public void checkList() throws Exception {
         checkValid(parseMap(configMap));
 
         configMap.replace("list", "");
@@ -152,7 +152,7 @@ public class ConfigValidatorTest {
     }
 
     @Test
-    public void checkValidMode() throws Exception {
+    public void checkMode() throws Exception {
         checkValid(parseMap(configMap));
 
         configMap.replace("mode", MovieHandler.Type.SET_RATING.toString());
@@ -168,7 +168,7 @@ public class ConfigValidatorTest {
     }
 
     @Test
-    public void checkValidComparators() throws Exception {
+    public void checkComparators() throws Exception {
         checkValid(parseMap(configMap));
 
         configMap.replace("comparators", Arrays.asList(
@@ -187,7 +187,7 @@ public class ConfigValidatorTest {
     }
 
     @Test
-    public void checkValidDataBase() throws Exception {
+    public void checkDataBase() throws Exception {
         checkValid(parseMap(configMap));
 
         configMap.remove("db");

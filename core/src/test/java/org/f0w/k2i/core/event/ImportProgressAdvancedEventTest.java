@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class ImportProgressAdvancedEventTest {
     @Test
-    public void testConstructorInitialization() {
+    public void constructorInitialization() {
         ImportProgressAdvancedEvent eventSuccess = new ImportProgressAdvancedEvent(
                 ImportProgressTestData.IMPORT_PROGRESS_1, true
         );

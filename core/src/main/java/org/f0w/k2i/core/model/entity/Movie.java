@@ -38,4 +38,8 @@ public class Movie extends BaseEntity {
     public Movie(String title, int year, String imdbId) {
         this(title, year, null, imdbId);
     }
+
+    public Movie(Movie movie) {
+        this(movie.getTitle(), movie.getYear(), movie.getRating(), movie.getImdbId());
+    }
 }

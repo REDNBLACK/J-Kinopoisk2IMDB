@@ -14,12 +14,12 @@ public abstract class BaseComparatorTest {
     protected Map<Movie, Movie> notEqualMovies;
 
     @Test
-    public void testAreEqual() throws Exception {
+    public void areEqualEqual() throws Exception {
         equalMovies.forEach((firstMovie, secondMovie) -> assertTrue(comparator.areEqual(firstMovie, secondMovie)));
     }
 
     @Test
-    public void testAreNotEqual() throws Exception {
+    public void areEqualNotEqual() throws Exception {
         notEqualMovies.forEach((firstMovie, secondMovie) -> assertFalse(comparator.areEqual(firstMovie, secondMovie)));
     }
 }

@@ -10,14 +10,14 @@ import static org.junit.Assert.assertTrue;
 
 public class TranslitTest {
     @Test
-    public void testPrivateConstructor() throws Exception {
+    public void isConstructorPrivate() throws Exception {
         assertTrue(TestHelper.isConstructorPrivate(Translit.class));
 
         TestHelper.callPrivateConstructor(Translit.class);
     }
 
     @Test
-    public void testToTranslitOnCyrillic() throws Exception {
+    public void toTranslitOnCyrillic() throws Exception {
         String expected = "Ochen' nu oshen' dlinnaya stroka s Raznymi simvolami russkogo alfavita. Y";
         String actual = toTranslit("Очень ну ощень длинная строка с Разными символами русского алфавита. Ы");
 
@@ -25,12 +25,12 @@ public class TranslitTest {
     }
 
     @Test
-    public void testToTranslitOnLatin() throws Exception {
+    public void toTranslitOnLatin() throws Exception {
         assertEquals("this one must be left as is", toTranslit("this one must be left as is"));
     }
 
     @Test
-    public void testToWeakerTranslitOnCyrrilic() throws Exception {
+    public void toWeakerTranslitOnCyrillic() throws Exception {
         String expected = "Ochen nu oshen dlinnaya stroka s Raznymi simvolami russkogo alfavita. Y";
         String actual = toWeakerTranslit("Очень ну ощень длинная строка с Разными символами русского алфавита. Ы");
 
@@ -38,7 +38,7 @@ public class TranslitTest {
     }
 
     @Test
-    public void testToWeakerTranslitOnLatin() throws Exception {
+    public void toWeakerTranslitOnLatin() throws Exception {
         assertEquals("this one must be 'left' as is. YI!!!", toWeakerTranslit("this one must be 'left' as is. YI!!!"));
     }
 }

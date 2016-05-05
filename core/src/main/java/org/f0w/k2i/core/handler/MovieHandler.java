@@ -110,9 +110,13 @@ public abstract class MovieHandler {
     @Value
     public static final class Error {
         @NonNull
-        private Movie movie;
+        private final Movie movie;
 
         @NonNull
-        private String message;
+        private final String message;
+
+        public Movie getMovie() {
+            return new Movie(movie);
+        }
     }
 }

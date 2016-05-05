@@ -11,7 +11,7 @@ public class SmartTitleComparatorTest {
     private final MovieComparator comparator = new SmartTitleComparator();
 
     @Test
-    public void testAreEqualDifferentTitles() throws Exception {
+    public void areEqualDifferentTitles() throws Exception {
         assertFalse(comparator.areEqual(
                 new Movie("Inception", 2010),
                 new Movie("Hannibal", 2013)
@@ -19,7 +19,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualEqualTitles() throws Exception {
+    public void areEqualEqualTitles() throws Exception {
         assertTrue(comparator.areEqual(
                 new Movie("Inception", 2010),
                 new Movie("Inception", 2010)
@@ -27,7 +27,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithoutCommas() throws Exception {
+    public void areEqualWithoutCommas() throws Exception {
         assertTrue(comparator.areEqual(
                 new Movie("The boy, who lived", 2010),
                 new Movie("The boy who lived", 2010)
@@ -35,7 +35,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithoutColon() throws Exception {
+    public void areEqualWithoutColon() throws Exception {
         assertTrue(comparator.areEqual(
                 new Movie("Independence Day: Resurgence", 2016),
                 new Movie("Independence Day Resurgence", 2016)
@@ -43,7 +43,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithoutApostrophesAndQuotes() throws Exception {
+    public void areEqualWithoutApostrophesAndQuotes() throws Exception {
         assertTrue(comparator.areEqual(
                 new Movie("Операция «Ы» и другие «приключения» Шурика", 1965),
                 new Movie("Операция Ы и другие приключения Шурика", 1965)
@@ -61,7 +61,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithoutForeignAccents() {
+    public void areEqualWithoutForeignAccents() {
         assertTrue(comparator.areEqual(
                 new Movie("Kôkaku kidôtai: Stand Alone Complex", 2002),
                 new Movie("Kokaku kidotai: Stand Alone Complex", 2002)
@@ -69,7 +69,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithPartBeforeDashSymbol() {
+    public void areEqualWithPartBeforeDashSymbol() {
         assertTrue(comparator.areEqual(
                 new Movie("Super Movie - Again", 2002),
                 new Movie("Super Movie", 2002)
@@ -77,7 +77,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithPartAfterDashSymbol() {
+    public void areEqualWithPartAfterDashSymbol() {
         assertTrue(comparator.areEqual(
                 new Movie("Super Movie - Again - And again", 2002),
                 new Movie("And again", 2002)
@@ -85,7 +85,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithThePrefix() {
+    public void areEqualWithThePrefix() {
         assertTrue(comparator.areEqual(
                 new Movie("The Godfather", 1972),
                 new Movie("Godfather", 1972)
@@ -93,7 +93,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithWhitespaceNormalized() {
+    public void areEqualWithWhitespaceNormalized() {
         assertTrue(comparator.areEqual(
                 new Movie("Super Cool\tMovie So Good\r\nEven Better\nAnd more\rAnd moar", 2010),
                 new Movie("Super Cool Movie So Good Even Better And more And moar", 2010)
@@ -101,7 +101,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWeaklyTransliteratedAndCapitalized() {
+    public void areEqualWeaklyTransliteratedAndCapitalized() {
         assertTrue(comparator.areEqual(
                 new Movie("ЛУЧШИЙ фильм НА ВСЕМ свете", 2010),
                 new Movie("Luchshii film na vsem svete", 2010)
@@ -109,7 +109,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithNumericRepresentedAsWords() {
+    public void areEqualWithNumericRepresentedAsWords() {
         assertTrue(comparator.areEqual(
                 new Movie("Iron Man 3", 2013),
                 new Movie("Iron Man Three", 2013)
@@ -127,7 +127,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void testAreEqualWithReplacedSymbols() {
+    public void areEqualWithReplacedSymbols() {
         assertTrue(comparator.areEqual(
                 new Movie("Ernest et Célestine", 2012),
                 new Movie("Ernest & Célestine", 2012)

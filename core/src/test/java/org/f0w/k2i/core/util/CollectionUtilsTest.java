@@ -11,14 +11,14 @@ import static org.junit.Assert.assertTrue;
 
 public class CollectionUtilsTest {
     @Test
-    public void testPrivateConstructor() throws Exception {
+    public void constructorIsPrivate() throws Exception {
         assertTrue(TestHelper.isConstructorPrivate(CollectionUtils.class));
 
         TestHelper.callPrivateConstructor(CollectionUtils.class);
     }
 
     @Test
-    public void testCombineLists() throws Exception {
+    public void combineNormalLists() throws Exception {
         List<String> firstList = Arrays.asList("1", "2", "3");
         List<Integer> secondList = Arrays.asList(4, 5, 6);
 
@@ -31,7 +31,7 @@ public class CollectionUtilsTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testExceptionOnCombineListsWithDissimilarSize() throws Exception {
+    public void exceptionOnCombineListsWithDissimilarSize() throws Exception {
         List<String> firstList = Arrays.asList("1", "2", "3", "4");
         List<Integer> secondList = Arrays.asList(4, 5, 6);
 
@@ -39,7 +39,7 @@ public class CollectionUtilsTest {
     }
 
     @Test
-    public void testCombineEmptyLists() throws Exception {
+    public void combineEmptyLists() throws Exception {
         List firstList = Collections.emptyList();
         List secondList = Collections.emptyList();
 

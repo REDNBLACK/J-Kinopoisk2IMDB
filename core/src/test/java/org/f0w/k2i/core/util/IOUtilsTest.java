@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class IOUtilsTest {
     @Rule
     public ExpectedException expected = ExpectedException.none();
+
     private FileSystem fileSystem;
     private Path temporaryFile;
     private Path temporaryDirectory;
@@ -28,23 +29,24 @@ public class IOUtilsTest {
     @Before
     public void setUp() throws Exception {
         fileSystem = Jimfs.newFileSystem();
-
         Path root = fileSystem.getPath("/");
-        temporaryFile = root.resolve("test_file.txt");
-        temporaryDirectory = root.resolve("test_directory");
 
-        Files.write(temporaryFile, ImmutableList.of("text"));
+        temporaryDirectory = root.resolve("test_directory");
         Files.createDirectory(temporaryDirectory);
+
+        temporaryFile = root.resolve("test_file.txt");
+        Files.write(temporaryFile, ImmutableList.of("text"));
     }
 
     @After
     public void tearDown() throws Exception {
         Files.deleteIfExists(temporaryFile);
         Files.deleteIfExists(temporaryDirectory);
+        fileSystem.close();
     }
 
     @Test
-    public void testPrivateConstructor() throws Exception {
+    public void isConstructorPrivate() throws Exception {
         assertTrue(TestHelper.isConstructorPrivate(IOUtils.class));
 
         TestHelper.callPrivateConstructor(IOUtils.class);

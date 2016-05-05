@@ -25,4 +25,8 @@ public class ImportProgress extends BaseEntity {
 
     @Column(name = "RATED", nullable = false)
     private boolean rated;
+
+    public ImportProgress(ImportProgress ip) {
+        this(new KinopoiskFile(ip.getKinopoiskFile()), new Movie(ip.getMovie()), ip.isImported(), ip.isRated());
+    }
 }

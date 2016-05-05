@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 public class MovieUtilsTest {
     @Test
-    public void testPrivateConstructor() throws Exception {
+    public void isConstructorPrivate() throws Exception {
         assertTrue(TestHelper.isConstructorPrivate(MovieUtils.class));
 
         TestHelper.callPrivateConstructor(MovieUtils.class);
@@ -107,19 +107,19 @@ public class MovieUtilsTest {
     }
 
     @Test(expected = KinopoiskToIMDBException.class)
-    public void testParseMoviesFromEmptyFile() throws Exception {
+    public void parseMoviesFromEmptyFile() throws Exception {
         URL resource = getClass().getClassLoader().getResource("parse_movies_file_test_data/empty_file.xls");
         parseMovies(Paths.get(resource.toURI()));
     }
 
     @Test(expected = KinopoiskToIMDBException.class)
-    public void testParseMoviesFromInvalidFile() throws Exception {
+    public void parseMoviesFromInvalidFile() throws Exception {
         URL resource = getClass().getClassLoader().getResource("parse_movies_file_test_data/invalid_file.xls");
         parseMovies(Paths.get(resource.toURI()));
     }
 
     @Test
-    public void testParseMoviesFromValidFileVariationOne() throws Exception {
+    public void parseMoviesFromValidFileExportedFromLists() throws Exception {
         URL resource = getClass().getClassLoader().getResource("parse_movies_file_test_data/exported_from_lists.xls");
         List<Movie> expected = Arrays.asList(
                 new Movie("Law Abiding Citizen", 2009, 10),
@@ -151,7 +151,7 @@ public class MovieUtilsTest {
     }
 
     @Test
-    public void testParseMoviesFromValidFileVariationTwo() throws Exception {
+    public void parseMoviesFromValidFileExportedFromProfile() throws Exception {
         URL resource = getClass().getClassLoader().getResource("parse_movies_file_test_data/exported_from_profile.xls");
         List<Movie> expected = Arrays.asList(
                 new Movie("Standoff", 2015, 6),

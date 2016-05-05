@@ -16,14 +16,14 @@ public class ExceptionUtilsTest {
     public ExpectedException expected = ExpectedException.none();
 
     @Test
-    public void testPrivateConstructor() throws Exception {
+    public void isConstructorPrivate() throws Exception {
         assertTrue(TestHelper.isConstructorPrivate(ExceptionUtils.class));
 
         TestHelper.callPrivateConstructor(ExceptionUtils.class);
     }
 
     @Test
-    public void testUncheckRethrowsException() throws Exception {
+    public void uncheckRethrowsException() throws Exception {
         expected.expect(KinopoiskToIMDBException.class);
         expected.expectMessage("no protocol: not_existing_url");
 
@@ -31,10 +31,7 @@ public class ExceptionUtilsTest {
     }
 
     @Test
-    public void testUncheckedWrapsException() throws Exception {
-        URL expected = new URL("http://google.com");
-        URL actual = uncheck(() -> new URL("http://google.com"));
-
-        assertEquals(expected, actual);
+    public void uncheckWrapsException() throws Exception {
+        assertEquals(new URL("http://google.com"), uncheck(() -> new URL("http://google.com")));
     }
 }

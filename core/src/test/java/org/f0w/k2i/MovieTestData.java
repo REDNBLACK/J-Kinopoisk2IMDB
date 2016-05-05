@@ -14,11 +14,5 @@ public class MovieTestData {
     public static final Movie MOVIE_6 = new Movie("Шерлок Холмс и доктор Ватсон: Знакомство", 1979, 10, "tt0079902");
     public static final Movie MOVIE_7 = new Movie("Операция Ы и другие приключения Шурика", 1965, 10, "tt0059550");
 
-    public static final List<Movie> MOVIE_LIST = Arrays.asList(MOVIE_7, MOVIE_6, MOVIE_5, MOVIE_4, MOVIE_3, MOVIE_2, MOVIE_1);
-
-    public static class TestMovie extends Movie {
-        public static Movie copyOf(Movie movie) {
-            return new Movie(movie.getTitle(), movie.getYear(), movie.getRating(), movie.getImdbId());
-        }
-    }
+    public static final List<Movie> MOVIES_LIST = Arrays.asList(MOVIE_7, MOVIE_6, MOVIE_5, MOVIE_4, MOVIE_3, MOVIE_2, MOVIE_1);
 }

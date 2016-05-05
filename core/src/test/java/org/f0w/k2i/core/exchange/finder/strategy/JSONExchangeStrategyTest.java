@@ -20,7 +20,7 @@ public class JSONExchangeStrategyTest extends BaseExchangeStrategyTest {
     }
 
     @Test
-    public void testParseSearchResultOnValidData() throws Exception {
+    public void parseSearchResultWithValidData() throws Exception {
         URL resource = getClass().getClassLoader().getResource("strategy_test_data/test_data.json");
         String data = Resources.toString(resource, StandardCharsets.UTF_8);
         List<Movie> expected = Arrays.asList(
@@ -50,9 +50,7 @@ public class JSONExchangeStrategyTest extends BaseExchangeStrategyTest {
     }
 
     @Test
-    @Override
-    public void testParseSearchResultWithEmptyData() throws Exception {
-        super.testParseSearchResultWithEmptyData();
+    public void parseSearchResultWithEmptyJSONData() throws Exception {
         assertEquals(strategy.parseSearchResult("{}"), Collections.emptyList());
     }
 }

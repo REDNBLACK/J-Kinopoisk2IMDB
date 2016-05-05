@@ -19,7 +19,7 @@ public class HTMLExchangeStrategyTest extends BaseExchangeStrategyTest {
     }
 
     @Test
-    public void testParseSearchResultOnValidData() throws Exception {
+    public void parseSearchResultWithValidData() throws Exception {
         URL resource = getClass().getClassLoader().getResource("strategy_test_data/test_data.html");
         String data = Resources.toString(resource, StandardCharsets.UTF_8);
         List<Movie> expected = Arrays.asList(

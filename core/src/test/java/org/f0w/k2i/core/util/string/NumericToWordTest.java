@@ -9,19 +9,19 @@ import static org.junit.Assert.assertTrue;
 
 public class NumericToWordTest {
     @Test
-    public void testPrivateConstructor() throws Exception {
+    public void isConstructorPrivate() throws Exception {
         assertTrue(TestHelper.isConstructorPrivate(NumericToWord.class));
 
         TestHelper.callPrivateConstructor(NumericToWord.class);
     }
 
     @Test
-    public void testSimpleConvert() throws Exception {
+    public void simpleConvert() throws Exception {
         assertEquals("Three", convert(3));
     }
 
     @Test
-    public void testComplexConvert() throws Exception {
+    public void complexConvert() throws Exception {
         assertEquals("Four hundred Fifty One", convert(451));
     }
 }

@@ -2,6 +2,7 @@ package org.f0w.k2i.core.util;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException;
+import lombok.val;
 import org.apache.commons.lang3.EnumUtils;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
@@ -87,7 +88,7 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException
      */
     private void checkUserAgent() {
-        final String userAgent = config.getString("user_agent");
+        val userAgent = config.getString("user_agent");
 
         checkArgument(!isNullOrEmpty(userAgent), "user_agent is not set!");
     }
@@ -98,7 +99,7 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkYearDeviation() {
-        final int yearDeviation = config.getInt("year_deviation");
+        val yearDeviation = config.getInt("year_deviation");
 
         checkArgument(yearDeviation > 0, "year_deviation is less than or equal to 0!");
     }
@@ -109,7 +110,7 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkTimeout() {
-        final int timeout = config.getInt("timeout");
+        val timeout = config.getInt("timeout");
 
         checkArgument(timeout >= 1000, "timeout is less than 1000!");
     }
@@ -120,7 +121,7 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkQueryFormat() {
-        final String queryFormat = config.getString("query_format");
+        val queryFormat = config.getString("query_format");
 
         if (!EnumUtils.isValidEnum(MovieFinder.Type.class, queryFormat)) {
             throw new IllegalArgumentException("query_format is not valid!");
@@ -133,8 +134,8 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkComparators() {
-        final String message = "Comparators setting is not valid!";
-        final List<String> comparators = config.getStringList("comparators");
+        val message = "Comparators setting is not valid!";
+        val comparators = config.getStringList("comparators");
 
         try {
             comparators.forEach(MovieComparator.Type::valueOf);
@@ -149,7 +150,7 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkAuth() {
-        final String auth = config.getString("auth");
+        val auth = config.getString("auth");
 
         checkArgument(auth.length() > 10, "auth string length is less than or equal to 10!");
     }
@@ -160,8 +161,8 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkList() {
-        final String list = config.getString("list");
-        final String mode = config.getString("mode");
+        val list = config.getString("list");
+        val mode = config.getString("mode");
 
         if (isNullOrEmpty(list)) {
             MovieHandler.Type type = MovieHandler.Type.valueOf(mode);
@@ -181,7 +182,7 @@ public final class ConfigValidator {
      * @throws IllegalArgumentException If not valid
      */
     private void checkMode() {
-        final String mode = config.getString("mode");
+        val mode = config.getString("mode");
 
         if (!EnumUtils.isValidEnum(MovieHandler.Type.class, mode)) {
             throw new IllegalArgumentException("mode is not valid!");

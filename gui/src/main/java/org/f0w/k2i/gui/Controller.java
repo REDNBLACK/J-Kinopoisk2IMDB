@@ -280,6 +280,7 @@ public class Controller {
 
         @Subscribe
         public void handleStart(ImportStartedEvent event) {
+            progressBar.setProgress(0);
             max.set(event.listSize);
 
             Platform.runLater(() -> {

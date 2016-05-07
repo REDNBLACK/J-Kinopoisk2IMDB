@@ -23,7 +23,8 @@ class ClientExecutor {
     private Path filePath;
     private Config config;
     private boolean cleanRun = false;
-    private final List<Object> listeners = new ArrayList<>(Collections.singletonList(new ExecutionCompleteListener()));
+    private final Object baseListener = new ExecutionCompleteListener();
+    private final List<Object> listeners = new ArrayList<>(Collections.singletonList(baseListener));
 
     public void setFilePath(Path filePath) {
         this.filePath = filePath;
@@ -42,6 +43,8 @@ class ClientExecutor {
     }
 
     public void setListeners(List<Object> listeners) {
+        this.listeners.clear();
+        this.listeners.add(baseListener);
         this.listeners.addAll(listeners);
     }
 

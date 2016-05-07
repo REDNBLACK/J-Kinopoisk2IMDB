@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.ConfigFactory;
 import lombok.val;
 import org.f0w.k2i.core.comparator.title.*;
+import org.f0w.k2i.core.comparator.type.AnyTypeComparator;
+import org.f0w.k2i.core.comparator.type.EqualsTypeComparator;
 import org.f0w.k2i.core.comparator.year.DeviationYearComparator;
 import org.f0w.k2i.core.comparator.year.EqualsYearComparator;
 import org.junit.Test;
@@ -20,6 +22,8 @@ public class MovieComparatorFactoryTest {
         val classMap = new ImmutableMap.Builder<Type, Class<? extends MovieComparator>>()
                 .put(YEAR_EQUALS, EqualsYearComparator.class)
                 .put(YEAR_DEVIATION, DeviationYearComparator.class)
+                .put(TYPE_EQUALS, EqualsTypeComparator.class)
+                .put(TYPE_ANY, AnyTypeComparator.class)
                 .put(TITLE_CONTAINS, ContainsTitleComparator.class)
                 .put(TITLE_ENDS, EndsWithTitleComparator.class)
                 .put(TITLE_STARTS, StartsWithTitleComparator.class)

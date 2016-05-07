@@ -55,12 +55,13 @@ public final class JSONExchangeStrategy implements ExchangeStrategy {
                         e.getAsJsonObject(),
                         t -> t.get("title"),
                         t -> t.get("description"),
+                        t -> t.get("description"),
                         t -> t.get("id")
                 ))
                 .collect(Collectors.toList());
     }
 
-    private static final class JSONMovieParser implements MovieParser<JsonObject, JsonElement, JsonElement, JsonElement> {
+    private static final class JSONMovieParser implements MovieParser<JsonObject, JsonElement, JsonElement, JsonElement, JsonElement> {
         @Override
         public String prepareTitle(JsonElement element) {
             return getStringOrNull(element);
@@ -69,6 +70,23 @@ public final class JSONExchangeStrategy implements ExchangeStrategy {
         @Override
         public String prepareYear(JsonElement element) {
             return getStringOrNull(element);
+        }
+
+        @Override
+        public Movie.Type parseType(JsonElement element) {
+            val stringValue = Optional.ofNullable(element).map(JsonElement::getAsString).orElse("");
+
+            if (stringValue.contains("TV series")) {
+                return Movie.Type.SERIES;
+            } else if (stringValue.contains("documentary")) {
+                return Movie.Type.DOCUMENTARY;
+            } else if (stringValue.contains("short")) {
+                return Movie.Type.SHORT;
+            } else if (stringValue.contains("video game")) {
+                return Movie.Type.VIDEO_GAME;
+            }
+
+            return Movie.Type.MOVIE;
         }
 
         @Override

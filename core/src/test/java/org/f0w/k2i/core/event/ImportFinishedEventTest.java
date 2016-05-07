@@ -27,7 +27,7 @@ public class ImportFinishedEventTest {
     @Test
     public void isImmutableError() {
         List<MovieHandler.Error> errors = Collections.singletonList(
-                new MovieHandler.Error(new Movie("Inception", 2010, 9, "tt1375666"), "Error 1")
+                new MovieHandler.Error(new Movie("Inception", 2010, Movie.Type.MOVIE, 9, "tt1375666"), "Error 1")
         );
         ImportFinishedEvent event = new ImportFinishedEvent(errors);
 
@@ -36,13 +36,13 @@ public class ImportFinishedEventTest {
         mutableEntity.setYear(9999);
         mutableEntity.setRating(1);
 
-        assertEquals(new Movie("Inception", 2010, 9, "tt1375666"), event.errors.get(0).getMovie());
+        assertEquals(new Movie("Inception", 2010, Movie.Type.MOVIE, 9, "tt1375666"), event.errors.get(0).getMovie());
     }
 
     @Test
     public void isImmutableErrorsList() {
         List<MovieHandler.Error> errors = new ArrayList<>(Collections.singletonList(
-                new MovieHandler.Error(new Movie("Inception", 2010, 9, "tt1375666"), "Error 1")
+                new MovieHandler.Error(new Movie("Inception", 2010, Movie.Type.MOVIE, 9, "tt1375666"), "Error 1")
         ));
         ImportFinishedEvent event = new ImportFinishedEvent(errors);
 
@@ -51,7 +51,7 @@ public class ImportFinishedEventTest {
         assertTrue(errors.isEmpty());
         assertEquals(
                 Collections.singletonList(
-                        new MovieHandler.Error(new Movie("Inception", 2010, 9, "tt1375666"), "Error 1")
+                        new MovieHandler.Error(new Movie("Inception", 2010, Movie.Type.MOVIE, 9, "tt1375666"), "Error 1")
                 ),
                 event.errors
         );

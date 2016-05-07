@@ -8,10 +8,7 @@ import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 
 import java.io.IOException;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 public final class MixedMovieFinder implements MovieFinder {

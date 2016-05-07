@@ -9,6 +9,7 @@
   "auth": "",
   "comparators": [
       "YEAR_DEVIATION",
+      "TYPE_EQUALS",
       "TITLE_SMART"
   ],
   "db": {

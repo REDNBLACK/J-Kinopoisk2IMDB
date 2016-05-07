@@ -2,6 +2,7 @@ package org.f0w.k2i.core.exchange.finder.strategy;
 
 import lombok.NonNull;
 import org.f0w.k2i.core.model.entity.Movie;
+import org.f0w.k2i.core.util.MovieUtils;
 
 import java.net.URL;
 import java.util.Collections;
@@ -35,23 +36,34 @@ public interface ExchangeStrategy {
      * Used in {@link this#parseSearchResult(String)}
      *
      * @param <R> Root element
-     * @param <T> Title element
-     * @param <Y> Year element
-     * @param <I> IMDB ID element
+     * @param <TITLE> Title element
+     * @param <YEAR> Year element
+     * @param <YEAR> Type element
+     * @param <ID> IMDB ID element
      */
-    interface MovieParser<R, T, Y, I> {
-        default Movie parse(R rootElement, Function<R, T> title, Function<R, Y> year, Function<R, I> imdbID) {
+    interface MovieParser<R, TITLE, YEAR, TYPE, ID> {
+        default Movie parse(
+                R rootElement,
+                Function<R, TITLE> title,
+                Function<R, YEAR> year,
+                Function<R, TYPE> type,
+                Function<R, ID> imdbID
+        ) {
             return new Movie(
                     parseTitle(prepareTitle(title.apply(rootElement))),
                     parseYear(prepareYear(year.apply(rootElement))),
+                    parseType(type.apply(rootElement)),
+                    null,
                     parseIMDBId(prepareImdbId(imdbID.apply(rootElement)))
             );
         }
 
-        String prepareTitle(T element);
+        String prepareTitle(TITLE element);
 
-        String prepareYear(Y element);
+        String prepareYear(YEAR element);
 
-        String prepareImdbId(I element);
+        Movie.Type parseType(TYPE element);
+
+        String prepareImdbId(ID element);
     }
 }

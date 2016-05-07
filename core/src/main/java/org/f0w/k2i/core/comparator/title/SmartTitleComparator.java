@@ -29,8 +29,8 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
         list.add(s -> s);
 
         // Original string without one of symbols
-        val symbolsToRemove = Arrays.asList(",", ":", "-", " ");
-        symbolsToRemove.forEach(symbol -> list.add(s -> replace(s, symbol, "")));
+        val symbolsToRemove = Arrays.asList(",", ":", "-", " ", "3-D", "3D", "4D", "4-D");
+        symbolsToRemove.forEach(symbol -> list.add(s -> replace(s, symbol, "").trim()));
 
         // Original string without apostrophes and quotes
         list.add(s -> {
@@ -50,13 +50,20 @@ public final class SmartTitleComparator extends AbstractMovieComparator {
         // Original string without special symbols like unicode etc
         list.add(s -> javaLetterOrDigit().or(WHITESPACE).or(isNot('.')).precomputed().retainFrom(s));
 
-        // Original string with part before one of separating symbols
-        val separatingSymbols = Collections.singletonList("-");
-        separatingSymbols.forEach(separator -> list.add(s -> Arrays.stream(splitByWholeSeparator(s, separator))
-                .findFirst()
-                .map(String::trim)
-                .orElse(s)
-        ));
+        // Original string with part before or after one of separating symbols
+        val separatingSymbols = Arrays.asList("-", ":");
+        separatingSymbols.forEach(separator -> {
+            list.add(s -> Arrays.stream(splitByWholeSeparator(s, separator))
+                    .findFirst()
+                    .map(String::trim)
+                    .orElse(s)
+            );
+            list.add(s -> Arrays.stream(splitByWholeSeparator(s, separator))
+                    .reduce((s1, s2) -> s2)
+                    .map(String::trim)
+                    .orElse(s)
+            );
+        });
 
         // One of the prefixes + original string
         val prefixes = Collections.singletonList("The ");

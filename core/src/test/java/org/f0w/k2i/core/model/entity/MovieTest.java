@@ -17,9 +17,11 @@ public class MovieTest {
     public void testEqualsAndHashCode() throws Exception {
         val equalMovies = new ImmutableMap.Builder<Movie, Movie>()
                 .put(new Movie("Inception", 2010), new Movie("Inception", 2010))
-                .put(new Movie("Sin City", 2005), new Movie("Sin City", 2005, 10, "tt1"))
-                .put(new Movie("Breaking Bad", 2008, null, null), new Movie("Breaking Bad", 2008, 10, "tt1"))
-                .put(new Movie("Hannibal", 2013, 5, "tt1"), new Movie("Hannibal", 2013, 10, "tt2"))
+                .put(new Movie("Sin City", 2005), new Movie("Sin City", 2005, Movie.Type.MOVIE, 10, "tt1"))
+                .put(new Movie("Breaking Bad", 2008), new Movie("Breaking Bad", 2008, Movie.Type.MOVIE, 10, "tt1"))
+                .put(new Movie("Hannibal", 2013, Movie.Type.MOVIE, 5, "tt1"),
+                        new Movie("Hannibal", 2013, Movie.Type.MOVIE, 10, "tt2")
+                )
                 .build();
 
         equalMovies.forEach((movie1, movie2) -> {

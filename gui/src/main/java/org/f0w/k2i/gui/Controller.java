@@ -147,6 +147,8 @@ public class Controller {
         comparatorsBox.getItems().addAll(FXCollections.observableList(Arrays.asList(
                 new Choice<>(YEAR_DEVIATION, "Год с отклонением"),
                 new Choice<>(YEAR_EQUALS, "Год с полным совпадением"),
+                new Choice<>(TYPE_EQUALS, "Тип фильма с полным совпадением"),
+                new Choice<>(TYPE_ANY, "Любой тип фильма"),
                 new Choice<>(TITLE_SMART, "Интеллектуальное сравнение названий"),
                 new Choice<>(TITLE_EQUALS, "Полное совпадение названий"),
                 new Choice<>(TITLE_CONTAINS, "Одно название содержит другое"),

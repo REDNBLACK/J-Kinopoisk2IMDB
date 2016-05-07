@@ -3,6 +3,8 @@ package org.f0w.k2i.core.comparator;
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import org.f0w.k2i.core.comparator.title.*;
+import org.f0w.k2i.core.comparator.type.AnyTypeComparator;
+import org.f0w.k2i.core.comparator.type.EqualsTypeComparator;
 import org.f0w.k2i.core.comparator.year.DeviationYearComparator;
 import org.f0w.k2i.core.comparator.year.EqualsYearComparator;
 
@@ -41,6 +43,10 @@ public class MovieComparatorFactory {
                 return new DeviationYearComparator(config);
             case YEAR_EQUALS:
                 return new EqualsYearComparator();
+            case TYPE_EQUALS:
+                return new EqualsTypeComparator();
+            case TYPE_ANY:
+                return new AnyTypeComparator();
             default:
                 throw new IllegalArgumentException("Comparator of this type not found!");
         }

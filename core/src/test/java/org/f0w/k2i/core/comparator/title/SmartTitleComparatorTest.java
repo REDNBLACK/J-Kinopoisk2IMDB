@@ -52,6 +52,11 @@ public class SmartTitleComparatorTest {
                 new Movie("Lock Out", 2012),
                 new Movie("Lockout", 2012)
         ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("The Incredibles 3-D", 2004),
+                new Movie("The Incredibles", 2004)
+        ));
     }
 
     @Test
@@ -80,6 +85,24 @@ public class SmartTitleComparatorTest {
         assertTrue(comparator.areEqual(
                 new Movie("Super Movie - Again", 2002),
                 new Movie("Super Movie", 2002)
+        ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("Taare Zameen Par: Every Child Is Special", 2007),
+                new Movie("Taare Zameen Par", 2007)
+        ));
+    }
+
+    @Test
+    public void areEqualWithPartAfterOneOfSeparatingSymbols() {
+        assertTrue(comparator.areEqual(
+                new Movie("Super Movie - Again - And again", 2002),
+                new Movie("And again", 2002)
+        ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("4: Rise of the Silver Surfer", 2007),
+                new Movie("Rise of the Silver Surfer", 2007)
         ));
     }
 

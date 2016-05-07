@@ -47,12 +47,13 @@ public final class HTMLExchangeStrategy implements ExchangeStrategy {
                         e,
                         t -> t,
                         Element::text,
+                        t -> t,
                         t -> t.getElementsByTag("a").first()
                 ))
                 .collect(Collectors.toList());
     }
 
-    private static final class HTMLMovieParser implements MovieParser<Element, Element, String, Element> {
+    private static final class HTMLMovieParser implements MovieParser<Element, Element, String, Element, Element> {
         @Override
         public String prepareTitle(Element element) {
             String elementText = element.text();
@@ -84,6 +85,21 @@ public final class HTMLExchangeStrategy implements ExchangeStrategy {
             }
 
             return preparedYear;
+        }
+
+        @Override
+        public Movie.Type parseType(Element element) {
+            val elementText = element.text();
+
+            if (elementText.contains("(TV Series)") || elementText.contains("(TV Mini-Series)")) {
+                return Movie.Type.SERIES;
+            } else if (elementText.contains("(Short)")) {
+                return Movie.Type.SHORT;
+            } else if (elementText.contains("(Video Game)")) {
+                return Movie.Type.VIDEO_GAME;
+            }
+
+            return Movie.Type.MOVIE;
         }
 
         @Override

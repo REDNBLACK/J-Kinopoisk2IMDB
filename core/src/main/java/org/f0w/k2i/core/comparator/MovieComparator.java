@@ -27,6 +27,8 @@ public interface MovieComparator {
         TITLE_EQUALS,
         TITLE_SMART,
         YEAR_DEVIATION,
-        YEAR_EQUALS
+        YEAR_EQUALS,
+        TYPE_EQUALS,
+        TYPE_ANY
     }
 }

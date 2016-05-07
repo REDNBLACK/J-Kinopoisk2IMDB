@@ -44,12 +44,13 @@ public final class XMLExchangeStrategy implements ExchangeStrategy {
                         e,
                         Element::ownText,
                         t -> t.getElementsByTag("Description").first(),
+                        t -> t.getElementsByTag("Description").first(),
                         t -> t.attr("id")
                 ))
                 .collect(Collectors.toList());
     }
 
-    private static final class XMLMovieParser implements MovieParser<Element, String, Element, String> {
+    private static final class XMLMovieParser implements MovieParser<Element, String, Element, Element, String> {
         @Override
         public String prepareTitle(String element) {
             return element;
@@ -60,6 +61,23 @@ public final class XMLExchangeStrategy implements ExchangeStrategy {
             return Optional.ofNullable(element)
                     .map(Element::text)
                     .orElse(null);
+        }
+
+        @Override
+        public Movie.Type parseType(Element element) {
+            val stringValue = Optional.ofNullable(element).map(Element::text).orElse("");
+
+            if (stringValue.contains("TV series")) {
+                return Movie.Type.SERIES;
+            } else if (stringValue.contains("documentary")) {
+                return Movie.Type.DOCUMENTARY;
+            } else if (stringValue.contains("short")) {
+                return Movie.Type.SHORT;
+            } else if (stringValue.contains("video game")) {
+                return Movie.Type.VIDEO_GAME;
+            }
+
+            return Movie.Type.MOVIE;
         }
 
         @Override

@@ -1,7 +1,6 @@
 package org.f0w.k2i.core.util;
 
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
 import org.jsoup.Jsoup;
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.util.exception.ExceptionUtils.uncheck;
+import static org.apache.commons.lang3.StringUtils.replaceEachRepeatedly;
 
 /**
  * NullPointer safe class for checking and parsing movie fields.
@@ -31,11 +31,7 @@ public final class MovieUtils {
      * @return Parsed title
      */
     public static String parseTitle(final String title) {
-        val resultTitle = StringUtils.replaceEachRepeatedly(
-                String.valueOf(title).trim(),
-                new String[]{"«", "»"},
-                new String[]{"", ""}
-        );
+        val resultTitle = String.valueOf(title).trim();
 
         if ("".equals(resultTitle)) {
             return "null";
@@ -55,7 +51,11 @@ public final class MovieUtils {
         val resultTitle = parseTitle(title);
 
         if ("null".equals(resultTitle)) {
-            return parseTitle(fallback);
+            return replaceEachRepeatedly(
+                    parseTitle(fallback),
+                    new String[]{"«", "»"},
+                    new String[]{"", ""}
+            );
         }
 
         return resultTitle;

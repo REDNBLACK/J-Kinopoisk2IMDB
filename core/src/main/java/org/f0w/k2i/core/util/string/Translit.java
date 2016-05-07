@@ -58,6 +58,7 @@ public final class Translit {
         weakerCharTable = Arrays.copyOf(charTable, charTable.length);
         weakerCharTable['Ъ' - START_CHAR] = "";
         weakerCharTable['Ь' - START_CHAR] = "";
+        weakerCharTable['Ё' - START_CHAR] = "Yo";
 
         fillWithLowerCaseChars(weakerCharTable);
     }
@@ -130,6 +131,7 @@ public final class Translit {
 
         Map<String, Pair<String, String>> pairsToReplace = new ImmutableMap.Builder<String, Pair<String, String>>()
                 .put("ый", Pair.of("yi", "yy"))
+                .put("ищ", Pair.of("ish", "ishch"))
                 .build();
 
         pairsToReplace.forEach((search, replacements) -> {

@@ -24,21 +24,33 @@ public class SmartTitleComparatorTest {
                 new Movie("Inception", 2010),
                 new Movie("Inception", 2010)
         ));
-    }
 
-    @Test
-    public void areEqualWithoutCommas() throws Exception {
         assertTrue(comparator.areEqual(
-                new Movie("The boy, who lived", 2010),
-                new Movie("The boy who lived", 2010)
+                new Movie("inception", 2010),
+                new Movie("Inception", 2010)
+        ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("Мы из будущего 2", 2010),
+                new Movie("Мы из будущего 2", 2010)
         ));
     }
 
     @Test
-    public void areEqualWithoutColon() throws Exception {
+    public void areEqualWithRemovedSymbols() throws Exception {
+        assertTrue(comparator.areEqual(
+                new Movie("The boy, who lived", 2010),
+                new Movie("The boy who lived", 2010)
+        ));
+
         assertTrue(comparator.areEqual(
                 new Movie("Independence Day: Resurgence", 2016),
                 new Movie("Independence Day Resurgence", 2016)
+        ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("Lock Out", 2012),
+                new Movie("Lockout", 2012)
         ));
     }
 
@@ -47,11 +59,6 @@ public class SmartTitleComparatorTest {
         assertTrue(comparator.areEqual(
                 new Movie("Операция «Ы» и другие «приключения» Шурика", 1965),
                 new Movie("Операция Ы и другие приключения Шурика", 1965)
-        ));
-
-        assertTrue(comparator.areEqual(
-                new Movie("Белый Бим Черное ухо", 2010),
-                new Movie("Belyy Bim Chernoe ukho", 2010)
         ));
 
         assertTrue(comparator.areEqual(
@@ -69,7 +76,7 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void areEqualWithPartBeforeDashSymbol() {
+    public void areEqualWithPartBeforeOneOfSeparatingSymbols() {
         assertTrue(comparator.areEqual(
                 new Movie("Super Movie - Again", 2002),
                 new Movie("Super Movie", 2002)
@@ -77,18 +84,18 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
-    public void areEqualWithPartAfterDashSymbol() {
+    public void areEqualWithThePrefixes() {
         assertTrue(comparator.areEqual(
-                new Movie("Super Movie - Again - And again", 2002),
-                new Movie("And again", 2002)
+                new Movie("The Godfather", 1972),
+                new Movie("Godfather", 1972)
         ));
     }
 
     @Test
-    public void areEqualWithThePrefix() {
+    public void areEqualWithThePostfixes() {
         assertTrue(comparator.areEqual(
-                new Movie("The Godfather", 1972),
-                new Movie("Godfather", 1972)
+                new Movie("Shaman kingu", 2001),
+                new Movie("Shaman king", 2001)
         ));
     }
 
@@ -97,14 +104,6 @@ public class SmartTitleComparatorTest {
         assertTrue(comparator.areEqual(
                 new Movie("Super Cool\tMovie So Good\r\nEven Better\nAnd more\rAnd moar", 2010),
                 new Movie("Super Cool Movie So Good Even Better And more And moar", 2010)
-        ));
-    }
-
-    @Test
-    public void areEqualWeaklyTransliteratedAndCapitalized() {
-        assertTrue(comparator.areEqual(
-                new Movie("ЛУЧШИЙ фильм НА ВСЕМ свете", 2010),
-                new Movie("Luchshii film na vsem svete", 2010)
         ));
     }
 
@@ -127,6 +126,32 @@ public class SmartTitleComparatorTest {
     }
 
     @Test
+    public void areEqualTranslit() {
+        assertTrue(comparator.areEqual(
+                new Movie("Остров сокровищ", 1988),
+                new Movie("Ostrov sokrovishch", 1988)
+        ));
+
+        assertTrue(comparator.areEqual(
+                 new Movie("Белый Бим Черное ухо", 1976),
+                 new Movie("Belyy Bim Chernoe ukho", 1976)
+        ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("Шерлок Холмс и доктор Ватсон: Знакомство", 1979),
+                new Movie("Sherlok Kholms i doktor Vatson: Znakomstvo", 1979)
+        ));
+    }
+
+    @Test
+    public void areEqualWithoutSpecialSymbols() {
+        assertTrue(comparator.areEqual(
+                new Movie("...А зори здесь тихие", 1975),
+                new Movie("А зори здесь тихие", 1975)
+        ));
+    }
+
+    @Test
     public void areEqualWithReplacedSymbols() {
         assertTrue(comparator.areEqual(
                 new Movie("Ernest et Célestine", 2012),
@@ -136,6 +161,26 @@ public class SmartTitleComparatorTest {
         assertTrue(comparator.areEqual(
                 new Movie("Mr. Peabody & Sherman", 2014),
                 new Movie("Mr. Peabody and Sherman", 2014)
+        ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("Легенда №17", 2013),
+                new Movie("Легенда No. 17", 2013)
+        ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("Yip Man", 2008),
+                new Movie("Ip Man", 2008)
+        ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("The Lion King 1½", 2004),
+                new Movie("The Lion King 1 1/2", 2004)
+        ));
+
+        assertTrue(comparator.areEqual(
+                new Movie("Nanny McPhee and the Big Bang", 2010),
+                new Movie("Nanny McPhee et le Big Bang", 2010)
         ));
     }
 }

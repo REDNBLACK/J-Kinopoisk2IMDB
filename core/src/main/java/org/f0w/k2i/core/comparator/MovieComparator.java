@@ -21,14 +21,14 @@ public interface MovieComparator {
      * Available MovieComparator types
      */
     enum Type {
+        YEAR_EQUALS,
+        YEAR_DEVIATION,
+        TYPE_EQUALS,
+        TYPE_ANY,
         TITLE_CONTAINS,
         TITLE_ENDS,
         TITLE_STARTS,
         TITLE_EQUALS,
-        TITLE_SMART,
-        YEAR_DEVIATION,
-        YEAR_EQUALS,
-        TYPE_EQUALS,
-        TYPE_ANY
+        TITLE_SMART
     }
 }

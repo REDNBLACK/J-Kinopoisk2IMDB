@@ -70,7 +70,7 @@ public final class MixedMovieFinder implements MovieFinder {
      * Movies deque with preloading, using list of {@link MovieFinder} if it is empty.
      */
     private class MovieLazyLoadingDeque extends ForwardingDeque<Movie> {
-        private final Deque<Movie> delegate = new LinkedList<>();
+        private final Deque<Movie> delegate = new ArrayDeque<>();
 
         @Override
         protected Deque<Movie> delegate() {

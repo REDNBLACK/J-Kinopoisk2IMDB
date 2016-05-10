@@ -11,8 +11,8 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.LinkedList;
 
 @Slf4j
 public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Movie>> implements MovieFinder {
@@ -61,7 +61,7 @@ public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Mo
      */
     @Override
     public Deque<Movie> getProcessedResponse() {
-        return new LinkedList<>(exchangeStrategy.parseSearchResult(getResponseBody()));
+        return new ArrayDeque<>(exchangeStrategy.parseSearchResult(getResponseBody()));
     }
 
     /**

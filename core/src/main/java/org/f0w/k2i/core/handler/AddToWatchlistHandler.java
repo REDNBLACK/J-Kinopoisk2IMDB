@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
+import com.typesafe.config.Config;
 import org.f0w.k2i.core.exchange.MovieWatchlistAssigner;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -12,11 +13,11 @@ import java.util.List;
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 
 public final class AddToWatchlistHandler extends MovieHandler {
-    private final MovieWatchlistAssigner assigner;
+    private final Config config;
 
     @Inject
-    public AddToWatchlistHandler(MovieWatchlistAssigner assigner) {
-        this.assigner = assigner;
+    public AddToWatchlistHandler(Config config) {
+        this.config = config;
     }
 
     /**
@@ -40,10 +41,10 @@ public final class AddToWatchlistHandler extends MovieHandler {
                 LOG.info("Movie is already added to watchlist!");
                 return;
             }
-
-            assigner.sendRequest(movie);
-
-            Integer statusCode = assigner.getProcessedResponse();
+            
+            int statusCode = new MovieWatchlistAssigner(config)
+                    .prepare(movie)
+                    .getProcessedResponse();
 
             if (statusCode != HttpURLConnection.HTTP_OK) {
                 throw new IOException("Can't add movie to watchlist, error status code: " + statusCode);

@@ -61,7 +61,9 @@ public final class HTMLExchangeStrategy implements ExchangeStrategy {
             if (elementText.contains("(TV Episode)")) {
                 String title = elementText;
 
-                Matcher m = Pattern.compile("\\(TV Episode\\)\\s*-(.+?)(?=\\(.*\\)\\s*\\(TV Series\\))")
+                Matcher m = Pattern.compile(
+                        "\\(TV Episode\\)\\s*-(.+?)(?=\\(.*\\)\\s*(\\(TV Series\\)|\\(TV Mini-Series\\)))"
+                )
                         .matcher(elementText);
                 while (m.find()) {
                     title = m.group(1);

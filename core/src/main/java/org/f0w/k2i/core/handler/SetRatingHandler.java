@@ -1,7 +1,8 @@
 package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
-import lombok.NonNull;
+import com.typesafe.config.Config;
+import lombok.val;
 import org.f0w.k2i.core.exchange.MovieAuthStringFetcher;
 import org.f0w.k2i.core.exchange.MovieRatingChanger;
 import org.f0w.k2i.core.model.entity.ImportProgress;
@@ -10,19 +11,16 @@ import org.f0w.k2i.core.model.entity.Movie;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
-import java.util.Optional;
 
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
 import static org.f0w.k2i.core.util.MovieUtils.isEmptyRating;
 
 public final class SetRatingHandler extends MovieHandler {
-    private final MovieAuthStringFetcher fetcher;
-    private final MovieRatingChanger changer;
+    private final Config config;
 
     @Inject
-    public SetRatingHandler(MovieAuthStringFetcher fetcher, MovieRatingChanger changer) {
-        this.fetcher = fetcher;
-        this.changer = changer;
+    public SetRatingHandler(Config config) {
+        this.config = config;
     }
 
     /**
@@ -52,10 +50,17 @@ public final class SetRatingHandler extends MovieHandler {
                 return;
             }
 
-            changer.setAuthString(fetchAuthorisationString(movie));
-            changer.sendRequest(movie);
+            val authString = new MovieAuthStringFetcher(config)
+                    .prepare(movie)
+                    .getProcessedResponse();
 
-            Integer statusCode = changer.getProcessedResponse();
+            if (authString == null) {
+                throw new IOException("Movie authorisation string is empty!");
+            }
+
+            int statusCode = new MovieRatingChanger(config, authString)
+                    .prepare(movie)
+                    .getProcessedResponse();
 
             if (statusCode != HttpURLConnection.HTTP_OK) {
                 throw new IOException("Can't change movie rating, error status code: " + statusCode);
@@ -69,19 +74,5 @@ public final class SetRatingHandler extends MovieHandler {
 
             errors.add(new Error(importProgress.getMovie(), e.getMessage()));
         }
-    }
-
-    /**
-     * Fetch the authorisation string for movie.
-     *
-     * @param movie For which movie
-     * @return Authorisation string
-     * @throws IOException If an I/O error occurs or string is null
-     */
-    private String fetchAuthorisationString(@NonNull final Movie movie) throws IOException {
-        fetcher.sendRequest(movie);
-
-        return Optional.ofNullable(fetcher.getProcessedResponse())
-                .orElseThrow(() -> new IOException("Movie authorisation string is empty!"));
     }
 }

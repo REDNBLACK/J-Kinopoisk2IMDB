@@ -2,20 +2,18 @@ package org.f0w.k2i.core.exchange.finder;
 
 import com.typesafe.config.Config;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.f0w.k2i.core.exchange.AbstractExchangeable;
+import org.f0w.k2i.core.exchange.ExchangeObject;
 import org.f0w.k2i.core.exchange.finder.strategy.ExchangeStrategy;
+import org.f0w.k2i.core.exchange.processor.ResponseProcessor;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
+import org.jsoup.helper.HttpConnection;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-@Slf4j
-public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Movie>> implements MovieFinder {
+public final class BasicMovieFinder implements MovieFinder {
     @NonNull
     private final Type type;
 
@@ -38,30 +36,15 @@ public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Mo
      * @throws IOException If an I/O error occurs
      */
     @Override
-    public void sendRequest(@NonNull Movie movie) throws IOException {
+    public ExchangeObject<Deque<Movie>> prepare(@NonNull Movie movie) throws IOException {
         val movieSearchLink = exchangeStrategy.buildSearchURL(movie);
 
-        Connection client = Jsoup.connect(movieSearchLink.toString())
+        val request = HttpConnection.connect(movieSearchLink)
                 .userAgent(config.getString("user_agent"))
-                .timeout(config.getInt("timeout"));
+                .timeout(config.getInt("timeout"))
+                .request();
 
-        log.debug(
-                "Sending request, to url: {}, with headers: {}", client.request().url(), client.request().headers()
-        );
-
-        setResponse(client.execute());
-
-        log.debug("Got response, status code: {}, headers: {}", response.statusCode(), response.headers());
-    }
-
-    /**
-     * Parses search page using {@link ExchangeStrategy#parseSearchResult(String)}
-     *
-     * @return Deque of found movies
-     */
-    @Override
-    public Deque<Movie> getProcessedResponse() {
-        return new ArrayDeque<>(exchangeStrategy.parseSearchResult(getResponseBody()));
+        return new ExchangeObject<>(request, getResponseProcessor());
     }
 
     /**
@@ -70,5 +53,12 @@ public final class BasicMovieFinder extends AbstractExchangeable<Movie, Deque<Mo
     @Override
     public Type getType() {
         return type;
+    }
+
+    /**
+     * @return Deque of parsed movies using current {@link ExchangeStrategy}
+     */
+    private ResponseProcessor<Deque<Movie>> getResponseProcessor() {
+        return response -> new ArrayDeque<>(exchangeStrategy.parseSearchResult(response.body()));
     }
 }

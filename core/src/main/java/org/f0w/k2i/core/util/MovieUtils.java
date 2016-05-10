@@ -1,15 +1,12 @@
 package org.f0w.k2i.core.util;
 
-import com.google.common.collect.ImmutableMap;
 import lombok.val;
-import org.f0w.k2i.core.exchange.finder.strategy.XMLExchangeStrategy;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.f0w.k2i.core.util.exception.ExceptionUtils.uncheck;
 import static org.apache.commons.lang3.StringUtils.replaceEachRepeatedly;
 import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
+import static org.f0w.k2i.core.util.exception.ExceptionUtils.uncheck;
 
 /**
  * NullPointer safe class for checking and parsing movie fields.
@@ -86,7 +83,7 @@ public final class MovieUtils {
 
     private static Movie.Type parseType(final Map<String, String> row) {
         val genres = Arrays.asList(splitByWholeSeparator(row.get("жанры"), ", "));
-        val isSeries = splitByWholeSeparator(row.get("год"), "-").length == 2;
+        val isSeries = row.get("год").split("-|–").length == 2;
 
         if (isSeries) {
             return Movie.Type.SERIES;

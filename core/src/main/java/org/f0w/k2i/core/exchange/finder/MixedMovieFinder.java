@@ -4,11 +4,13 @@ import com.google.common.collect.ForwardingDeque;
 import com.google.common.collect.ImmutableList;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.f0w.k2i.core.exchange.ExchangeObject;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.jsoup.Connection;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
 
 @Slf4j
 public final class MixedMovieFinder implements MovieFinder {
@@ -27,35 +29,11 @@ public final class MixedMovieFinder implements MovieFinder {
     }
 
     @Override
-    public void sendRequest(@NonNull Movie movie) throws IOException {
+    public ExchangeObject<Deque<Movie>> prepare(@NonNull Movie movie) throws IOException {
         this.movie = movie;
-        findersDeque = new LinkedList<>(originalFinders);
-    }
+        this.findersDeque = new ArrayDeque<>(originalFinders);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setResponse(Connection.Response response) {
-        // Do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<Connection.Response> getRawResponse() {
-        return Optional.empty();
-    }
-
-    /**
-     * Returns the deque of movies
-     *
-     * @return {@link MovieLazyLoadingDeque}
-     */
-    @Override
-    public Deque<Movie> getProcessedResponse() {
-        return new MovieLazyLoadingDeque();
+        return new ExchangeObject<>(response -> new MovieLazyLoadingDeque());
     }
 
     /**
@@ -88,8 +66,7 @@ public final class MixedMovieFinder implements MovieFinder {
                     MovieFinder finder = findersDeque.poll();
                     log.debug("Loading using finder type: {}", finder.getType());
 
-                    finder.sendRequest(MixedMovieFinder.this.movie);
-                    Deque<Movie> movies = finder.getProcessedResponse();
+                    Deque<Movie> movies = finder.prepare(movie).getProcessedResponse();
                     super.addAll(movies);
 
                     log.debug("Successfully loaded: {}", movies);

@@ -67,7 +67,7 @@ public final class XMLExchangeStrategy implements ExchangeStrategy {
         public Movie.Type parseType(Element element) {
             val stringValue = Optional.ofNullable(element).map(Element::text).orElse("");
 
-            if (stringValue.contains("TV series")) {
+            if (stringValue.contains("TV series") || stringValue.contains("TV mini-series")) {
                 return Movie.Type.SERIES;
             } else if (stringValue.contains("documentary")) {
                 return Movie.Type.DOCUMENTARY;

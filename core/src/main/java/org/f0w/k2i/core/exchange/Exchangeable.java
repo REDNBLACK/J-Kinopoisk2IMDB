@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.exchange;
 
 import lombok.NonNull;
+import org.f0w.k2i.core.exchange.processor.ResponseProcessor;
 import org.jsoup.Connection;
 
 import java.io.IOException;
@@ -13,19 +14,5 @@ import java.util.Optional;
  * @param <OUT> Output
  */
 public interface Exchangeable<IN, OUT> {
-    void sendRequest(@NonNull IN param) throws IOException;
-
-    /**
-     * Sets the response
-     *
-     * @param response Response to set
-     */
-    void setResponse(@NonNull Connection.Response response);
-
-    /**
-     * @return Raw response from server
-     */
-    Optional<Connection.Response> getRawResponse();
-
-    OUT getProcessedResponse();
+    ExchangeObject<OUT> prepare(@NonNull IN param) throws IOException;
 }

@@ -1,25 +1,23 @@
-package org.f0w.k2i.core.exchange;
+package org.f0w.k2i.core.exchange.processor;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import org.jsoup.Connection;
 
 import java.util.Optional;
 
 /**
- * Abstract class used by classes
- * returning HTTP status code in JSON response body, instead of headers.
+ * Processor for post request - json response status in body of document
  */
-public abstract class JSONPostExchangeable<IN> extends AbstractExchangeable<IN, Integer> {
+public class JSONPOSTResponseProcessor implements ResponseProcessor<Integer> {
     /**
-     * Returns HTTP status code parsed from JSON response
-     *
-     * @return HTTP status code or 0 if an error occurred
+     * {@inheritDoc}
      */
     @Override
-    public Integer getProcessedResponse() {
+    public Integer process(Connection.Response response) {
         try {
-            return Optional.ofNullable(new JsonParser().parse(getResponseBody()))
+            return Optional.ofNullable(new JsonParser().parse(response.body()))
                     .map(e -> e.isJsonObject() ? e.getAsJsonObject() : null)
                     .map(e -> e.get("status"))
                     .map(JsonElement::getAsInt)

@@ -42,9 +42,7 @@ public final class ParseIDHandler extends MovieHandler {
         }
 
         try {
-            movieFinder.sendRequest(movie);
-
-            Movie matchingMovie = findMatchingMovie(movie, movieFinder.getProcessedResponse())
+            Movie matchingMovie = findMatchingMovie(movie, movieFinder.prepare(movie).getProcessedResponse())
                     .orElseThrow(() -> new IOException("Matching movie not found"));
 
             movie.setImdbId(matchingMovie.getImdbId());

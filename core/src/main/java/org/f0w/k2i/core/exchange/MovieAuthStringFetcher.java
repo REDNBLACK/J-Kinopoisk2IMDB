@@ -1,24 +1,24 @@
 package org.f0w.k2i.core.exchange;
 
-import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import lombok.NonNull;
 import lombok.val;
+import org.f0w.k2i.core.exchange.processor.ResponseProcessor;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.HttpConnection;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
 
 /**
  * Parses authorisation string used for setting a Movie rating.
  */
-public final class MovieAuthStringFetcher extends AbstractExchangeable<Movie, String> {
+public final class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
     private final Config config;
 
-    @Inject
-    public MovieAuthStringFetcher(Config config) {
+    public MovieAuthStringFetcher(@NonNull Config config) {
         this.config = config;
     }
 
@@ -29,25 +29,23 @@ public final class MovieAuthStringFetcher extends AbstractExchangeable<Movie, St
      * @throws IOException If an I/O error occurs
      */
     @Override
-    public void sendRequest(@NonNull Movie movie) throws IOException {
-        val moviePageLink = "http://www.imdb.com/title/";
+    public ExchangeObject<String> prepare(@NonNull Movie movie) throws IOException {
+        val moviePageLink = new URL("http://www.imdb.com/title/" + movie.getImdbId());
 
-        Connection client = Jsoup.connect(moviePageLink + movie.getImdbId())
+        val request = HttpConnection.connect(moviePageLink)
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"))
-                .cookie("id", config.getString("auth"));
+                .cookie("id", config.getString("auth"))
+                .request();
 
-        setResponse(client.execute());
+        return new ExchangeObject<>(request, getResponseProcessor());
     }
 
     /**
-     * Parses Movie authorization string
-     *
      * @return Authorization string or null if response is empty
      */
-    @Override
-    public String getProcessedResponse() {
-        return Optional.ofNullable(Jsoup.parse(getResponseBody()))
+    private ResponseProcessor<String> getResponseProcessor() {
+        return response -> Optional.ofNullable(Jsoup.parse(response.body()))
                 .map(e -> e.select("[data-auth]").first())
                 .map(e -> e.attr("data-auth"))
                 .orElse(null);

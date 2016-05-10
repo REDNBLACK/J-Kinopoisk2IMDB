@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false, of = {"title", "year"})
+@EqualsAndHashCode(callSuper = false, of = {"title", "year", "type"})
 public class Movie extends BaseEntity {
     @Column(name = "TITLE", nullable = false)
     @NonNull

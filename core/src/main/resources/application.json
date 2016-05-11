@@ -18,6 +18,7 @@
       "user": "root",
       "password": "root",
       "additional": {
+        "hibernate.dialect": "org.hibernate.dialect.H2Dialect",
         "hibernate.hbm2ddl.auto": "update"
       }
   }

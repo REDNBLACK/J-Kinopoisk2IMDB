@@ -49,4 +49,28 @@ public class MovieTest {
                 .and(containsString("imdbId=" + movie.getImdbId()))
         ));
     }
+
+    @Test
+    public void testIsEmptyTitle() throws Exception {
+        assertFalse(new Movie("Inception", 2010).isEmptyTitle());
+        assertTrue(new Movie("null", 2010).isEmptyTitle());
+    }
+
+    @Test
+    public void testIsEmptyYear() throws Exception {
+        assertFalse(new Movie("Inception", 2010).isEmptyYear());
+        assertTrue(new Movie("Inception", 0).isEmptyYear());
+    }
+
+    @Test
+    public void testIsEmptyIMDBId() throws Exception {
+        assertFalse(new Movie("Inception", 2010, "tt210240").isEmptyIMDBId());
+        assertTrue(new Movie("Inception", 2010, null, null, null).isEmptyIMDBId());
+    }
+
+    @Test
+    public void testIsEmptyRating() throws Exception {
+        assertFalse(new Movie("Inception", 2010, 10).isEmptyRating());
+        assertTrue(new Movie("Inception", 2010, 0).isEmptyRating());
+    }
 }

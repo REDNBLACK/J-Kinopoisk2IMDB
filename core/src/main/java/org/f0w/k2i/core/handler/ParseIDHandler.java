@@ -12,8 +12,6 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 
-import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
-
 public final class ParseIDHandler extends MovieHandler {
     private final MovieFinder movieFinder;
     private final MovieComparator movieComparator;
@@ -36,7 +34,7 @@ public final class ParseIDHandler extends MovieHandler {
 
         LOG.info("Preparing movie {}", movie);
 
-        if (!isEmptyIMDBId(movie.getImdbId())) {
+        if (!movie.isEmptyIMDBId()) {
             LOG.info("Movie is already prepared {}", movie);
             return;
         }

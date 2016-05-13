@@ -50,6 +50,42 @@ public class Movie extends BaseEntity {
     }
 
     /**
+     * Checks that title equals "null" string
+     *
+     * @return Is title empty
+     */
+    public boolean isEmptyTitle() {
+        return "null".equals(getTitle());
+    }
+
+    /**
+     * Checks that year equals 0
+     *
+     * @return Is year empty
+     */
+    public boolean isEmptyYear() {
+        return getYear() == 0;
+    }
+
+    /**
+     * Checks that IMDB ID is null
+     *
+     * @return Is IMDB ID null
+     */
+    public boolean isEmptyIMDBId() {
+        return getImdbId() == null;
+    }
+
+    /**
+     * Checks that rating is null
+     *
+     * @return Is rating null
+     */
+    public boolean isEmptyRating() {
+        return getRating() == null;
+    }
+
+    /**
      * Type of movie
      */
     public enum Type {

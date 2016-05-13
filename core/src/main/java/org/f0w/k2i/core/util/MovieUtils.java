@@ -138,46 +138,6 @@ public final class MovieUtils {
     }
 
     /**
-     * Checks that title equals "null" string
-     *
-     * @param title String to check
-     * @return Is title empty
-     */
-    public static boolean isEmptyTitle(final String title) {
-        return "null".equals(title);
-    }
-
-    /**
-     * Checks that year equals 0
-     *
-     * @param year Integer to check
-     * @return Is year empty
-     */
-    public static boolean isEmptyYear(final int year) {
-        return year == 0;
-    }
-
-    /**
-     * Checks that IMDB ID is null
-     *
-     * @param imdbId String to check
-     * @return Is IMDB ID null
-     */
-    public static boolean isEmptyIMDBId(final String imdbId) {
-        return imdbId == null;
-    }
-
-    /**
-     * Checks that rating is null
-     *
-     * @param rating String to check
-     * @return Is rating null
-     */
-    public static boolean isEmptyRating(final Integer rating) {
-        return rating == null;
-    }
-
-    /**
      * Parses movies from file
      *
      * @param filePath File to parseSearchResult

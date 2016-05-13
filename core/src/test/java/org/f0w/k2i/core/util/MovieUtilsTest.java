@@ -82,30 +82,6 @@ public class MovieUtilsTest {
         assertEquals(null, parseRating("not a rating"));
     }
 
-    @Test
-    public void testIsEmptyTitle() throws Exception {
-        assertFalse(isEmptyTitle("Inception"));
-        assertTrue(isEmptyTitle("null"));
-    }
-
-    @Test
-    public void testIsEmptyYear() throws Exception {
-        assertFalse(isEmptyYear(2010));
-        assertTrue(isEmptyYear(0));
-    }
-
-    @Test
-    public void testIsEmptyIMDBId() throws Exception {
-        assertFalse(isEmptyIMDBId("tt210240"));
-        assertTrue(isEmptyIMDBId(null));
-    }
-
-    @Test
-    public void testIsEmptyRating() throws Exception {
-        assertFalse(isEmptyRating(10));
-        assertTrue(isEmptyRating(null));
-    }
-
     @Test(expected = KinopoiskToIMDBException.class)
     public void parseMoviesFromEmptyFile() throws Exception {
         URL resource = getClass().getClassLoader().getResource("parse_movies_file_test_data/empty_file.xls");

@@ -12,9 +12,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
 
-import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
-import static org.f0w.k2i.core.util.MovieUtils.isEmptyRating;
-
 public final class SetRatingHandler extends MovieHandler {
     private final Config config;
 
@@ -36,11 +33,11 @@ public final class SetRatingHandler extends MovieHandler {
         LOG.info("Setting rating of movie: {}", movie);
 
         try {
-            if (isEmptyIMDBId(movie.getImdbId())) {
+            if (movie.isEmptyIMDBId()) {
                 throw new IOException("Can't change movie rating, IMDB ID is not set");
             }
 
-            if (isEmptyRating(movie.getRating())) {
+            if (movie.isEmptyRating()) {
                 LOG.info("Movie doesn't have rating!");
                 return;
             }

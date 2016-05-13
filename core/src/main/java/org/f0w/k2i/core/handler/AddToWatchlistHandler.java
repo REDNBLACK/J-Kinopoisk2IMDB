@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
 
-import static org.f0w.k2i.core.util.MovieUtils.isEmptyIMDBId;
-
 public final class AddToWatchlistHandler extends MovieHandler {
     private final Config config;
 
@@ -33,7 +31,7 @@ public final class AddToWatchlistHandler extends MovieHandler {
         LOG.info("Adding movie to watchlist: {}", movie);
 
         try {
-            if (isEmptyIMDBId(movie.getImdbId())) {
+            if (movie.isEmptyIMDBId()) {
                 throw new IOException("Can't add movie to watchlist, IMDB ID is not set");
             }
 

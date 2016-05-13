@@ -40,8 +40,8 @@ public class CollectionUtilsTest {
 
     @Test
     public void combineEmptyLists() throws Exception {
-        List firstList = Collections.emptyList();
-        List secondList = Collections.emptyList();
+        List<?> firstList = Collections.emptyList();
+        List<?> secondList = Collections.emptyList();
 
         assertEquals(Collections.emptyMap(), combineLists(firstList, secondList));
     }

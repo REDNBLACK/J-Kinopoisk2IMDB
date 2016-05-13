@@ -12,15 +12,17 @@ import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.model.repository.ImportProgressRepository;
 import org.f0w.k2i.core.model.repository.KinopoiskFileRepository;
 import org.f0w.k2i.core.model.repository.MovieRepository;
-import org.f0w.k2i.core.util.MovieUtils;
+import org.f0w.k2i.core.parser.FileMovieParser;
 import org.f0w.k2i.core.util.exception.ExceptionUtils;
 
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.nio.file.Files.readAllBytes;
 import static org.f0w.k2i.core.util.IOUtils.checkFile;
 
 public final class ImportProgressService {
@@ -73,8 +75,10 @@ public final class ImportProgressService {
     @Transactional
     private KinopoiskFile importNewFileData(String fileHashCode) {
         KinopoiskFile newFile = kinopoiskFileRepository.save(new KinopoiskFile(fileHashCode));
+        val data = ExceptionUtils.uncheck(() -> new String(readAllBytes(filePath), Charset.forName("windows-1251")));
 
-        List<Movie> movies = MovieUtils.parseMovies(filePath)
+        List<Movie> movies = new FileMovieParser()
+                .parse(data)
                 .stream()
                 .map(newMovie -> {
                     Movie oldMovie = movieRepository.findByTitleAndYear(newMovie.getTitle(), newMovie.getYear());

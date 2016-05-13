@@ -59,6 +59,6 @@ public final class BasicMovieFinder implements MovieFinder {
      * @return Deque of parsed movies using current {@link ExchangeStrategy}
      */
     private ResponseProcessor<Deque<Movie>> getResponseProcessor() {
-        return response -> new ArrayDeque<>(exchangeStrategy.parseSearchResult(response.body()));
+        return response -> new ArrayDeque<>(exchangeStrategy.parseSearchResult(response));
     }
 }

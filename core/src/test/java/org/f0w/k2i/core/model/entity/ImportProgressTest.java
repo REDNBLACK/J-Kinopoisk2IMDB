@@ -5,13 +5,13 @@ import lombok.val;
 import org.f0w.k2i.ImportProgressTestData;
 import org.junit.Test;
 
-import java.util.Arrays;
-
+import static org.f0w.k2i.KinopoiskFileTestData.KINOPOISK_FILE_1;
+import static org.f0w.k2i.KinopoiskFileTestData.KINOPOISK_FILE_2;
+import static org.f0w.k2i.MovieTestData.MOVIE_1;
+import static org.f0w.k2i.MovieTestData.MOVIE_2;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.CombinableMatcher.both;
 import static org.junit.Assert.*;
-import static org.f0w.k2i.KinopoiskFileTestData.*;
-import static org.f0w.k2i.MovieTestData.*;
 
 public class ImportProgressTest {
     @Test

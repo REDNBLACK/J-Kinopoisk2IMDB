@@ -5,7 +5,6 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.f0w.k2i.core.exchange.processor.ResponseProcessor;
-import org.f0w.k2i.core.util.exception.KinopoiskToIMDBException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
@@ -17,7 +16,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static org.f0w.k2i.core.util.exception.ExceptionUtils.rethrowSupplier;
-import static org.f0w.k2i.core.util.exception.ExceptionUtils.uncheck;
 
 /**
  * Interface for object which performs lazy execution of already prepared request

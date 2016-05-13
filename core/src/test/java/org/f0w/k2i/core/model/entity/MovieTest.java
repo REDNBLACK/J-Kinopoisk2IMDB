@@ -5,10 +5,7 @@ import lombok.val;
 import org.f0w.k2i.MovieTestData;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.core.CombinableMatcher.both;
 import static org.junit.Assert.*;
 
@@ -65,12 +62,12 @@ public class MovieTest {
     @Test
     public void testIsEmptyIMDBId() throws Exception {
         assertFalse(new Movie("Inception", 2010, "tt210240").isEmptyIMDBId());
-        assertTrue(new Movie("Inception", 2010, null, null, null).isEmptyIMDBId());
+        assertTrue(new Movie("Inception", 2010, Movie.Type.MOVIE, null, null).isEmptyIMDBId());
     }
 
     @Test
     public void testIsEmptyRating() throws Exception {
         assertFalse(new Movie("Inception", 2010, 10).isEmptyRating());
-        assertTrue(new Movie("Inception", 2010, 0).isEmptyRating());
+        assertTrue(new Movie("Inception", 2010, Movie.Type.MOVIE, null, null).isEmptyRating());
     }
 }

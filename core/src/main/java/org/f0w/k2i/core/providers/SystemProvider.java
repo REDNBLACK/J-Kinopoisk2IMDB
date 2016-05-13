@@ -10,7 +10,6 @@ import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.exchange.finder.MovieFinderFactory;
 import org.f0w.k2i.core.handler.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

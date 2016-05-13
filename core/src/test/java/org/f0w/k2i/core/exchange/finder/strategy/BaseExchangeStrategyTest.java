@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.exchange.finder.strategy;
 
 import org.f0w.k2i.MovieTestData;
+import org.f0w.k2i.ResponseMock;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.junit.Test;
 
@@ -36,7 +37,7 @@ public abstract class BaseExchangeStrategyTest {
     }
 
     @Test
-    public void parseSearchResultWithEmptyData() throws Exception {
-        assertEquals(strategy.parseSearchResult(""), Collections.emptyList());
+    public void parseSearchResultWithEmpyData() throws Exception {
+        assertEquals(Collections.emptyList(), strategy.parseSearchResult(new ResponseMock("")));
     }
 }

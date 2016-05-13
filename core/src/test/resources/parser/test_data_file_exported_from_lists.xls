@@ -1,0 +1,689 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>оценки</title>
+<meta http-equiv="content-type" content="text/html; charset=windows-1251" />
+</head>
+<body>
+<table>
+    <tr>
+        
+            <td bgcolor="#f2f2f2" height="40" valign="top"><i>русскоязычное название</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>оригинальное название</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>год</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>страны</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>режисcёр</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>актёры</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>жанры</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>возраст</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>время</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>моя оценка</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>рейтинг КиноПоиска</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>число оценок</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>рейтинг IMDb</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>число оценок IMDb</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>рейтинг MPAA</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>мировая премьера</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>премьера в РФ</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>релиз на DVD</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>мой комментарий</i></td>
+            <td bgcolor="#f2f2f2" valign="top"><i>бюджет</i><br />$</td>
+            <td bgcolor="#f2f2f2" valign="top"><i>сборы США</i><br />$</td>
+            <td bgcolor="#f2f2f2" valign="top"><i>сборы МИР</i><br />$</td>
+            <td bgcolor="#f2f2f2" valign="top"><i>сборы РФ</i><br />$</td>
+        
+    </tr>
+    <tr>
+    
+        <td align="left" nowrap><b>Кунг Фьюри</b></td>
+        <td align="left" nowrap>Kung Fury</td>
+        <td align="left">2015</td>
+        <td align="left" nowrap>Швеция</td>
+        <td align="left" nowrap>Дэвид Сандберг</td>
+        <td align="left">Дэвид Сандберг, Йорма Такконе, Стивен Чю</td>
+        <td align="left" nowrap>короткометражка, фантастика, фэнтези</td>
+        <td align="left" nowrap></td>
+        <td align="left">31</td>
+        <td align="left">9</td>
+        <td align="left">7,861</td>
+        <td align="left">24&nbsp;465</td>
+        <td align="left">8,10</td>
+        <td align="left">35&nbsp;129</td>
+        <td align="left"></td>
+        <td align="left">2015-05-28</td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left" nowrap></td>
+        <td align="left">600000</td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Придурки</b></td>
+        <td align="left" nowrap>Jackass Number Two</td>
+        <td align="left">2006</td>
+        <td align="left" nowrap>США</td>
+        <td align="left" nowrap>Джефф Треймейн</td>
+        <td align="left">Джонни Ноксвил, Бэм Марджера, Стив-О</td>
+        <td align="left" nowrap>документальный, комедия</td>
+        <td align="left" nowrap>18+</td>
+        <td align="left">92</td>
+        <td align="left">8</td>
+        <td align="left">7,270</td>
+        <td align="left">9&nbsp;598</td>
+        <td align="left">7,10</td>
+        <td align="left">54&nbsp;015</td>
+        <td align="left">R</td>
+        <td align="left">2006-09-22</td>
+        <td align="left">2006-10-12</td>
+        <td align="left">2012-07-30</td>
+        <td align="left" nowrap></td>
+        <td align="left">11500000</td>
+        <td align="left">72778712</td>
+        <td align="left">84618532</td>
+        <td align="left">555500</td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Белое солнце пустыни</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1969</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Владимир Мотыль</td>
+        <td align="left">Анатолий Кузнецов, Спартак Мишулин, Кахи Кавсадзе</td>
+        <td align="left" nowrap>боевик, драма, мелодрама</td>
+        <td align="left" nowrap>16+</td>
+        <td align="left">84</td>
+        <td align="left">7</td>
+        <td align="left">8,026</td>
+        <td align="left">40&nbsp;385</td>
+        <td align="left">8,10</td>
+        <td align="left">4&nbsp;550</td>
+        <td align="left"></td>
+        <td align="left">1970-03-30</td>
+        <td align="left"></td>
+        <td align="left">2011-01-11</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Операция «Ы» и другие приключения Шурика</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1965</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Леонид Гайдай</td>
+        <td align="left">Александр Демьяненко, Наталья Селезнёва, Алексей Смирнов</td>
+        <td align="left" nowrap>мелодрама, комедия, криминал</td>
+        <td align="left" nowrap>0+</td>
+        <td align="left">95</td>
+        <td align="left">9</td>
+        <td align="left">8,743</td>
+        <td align="left">240&nbsp;573</td>
+        <td align="left">8,60</td>
+        <td align="left">7&nbsp;125</td>
+        <td align="left"></td>
+        <td align="left">1965-07-23</td>
+        <td align="left"></td>
+        <td align="left">2011-01-11</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Кавказская пленница, или Новые приключения Шурика</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1966</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Леонид Гайдай</td>
+        <td align="left">Александр Демьяненко, Наталья Варлей, Юрий Никулин</td>
+        <td align="left" nowrap>мелодрама, комедия, приключения</td>
+        <td align="left" nowrap>12+</td>
+        <td align="left">82</td>
+        <td align="left">8</td>
+        <td align="left">8,469</td>
+        <td align="left">195&nbsp;787</td>
+        <td align="left">8,50</td>
+        <td align="left">6&nbsp;519</td>
+        <td align="left"></td>
+        <td align="left">1967-04-01</td>
+        <td align="left"></td>
+        <td align="left">2008-09-16</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Иван Васильевич меняет профессию</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1973</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Леонид Гайдай</td>
+        <td align="left">Александр Демьяненко, Юрий Яковлев, Леонид Куравлёв</td>
+        <td align="left" nowrap>фантастика, комедия, приключения</td>
+        <td align="left" nowrap>12+</td>
+        <td align="left">88</td>
+        <td align="left">8</td>
+        <td align="left">8,798</td>
+        <td align="left">271&nbsp;764</td>
+        <td align="left">8,50</td>
+        <td align="left">10&nbsp;174</td>
+        <td align="left"></td>
+        <td align="left">1973-09-17</td>
+        <td align="left"></td>
+        <td align="left">2009-06-09</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>В бой идут одни «старики»</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1973</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Леонид Быков</td>
+        <td align="left">Леонид Быков, Сергей Подгорный, Сергей Иванов</td>
+        <td align="left" nowrap>драма, комедия, военный</td>
+        <td align="left" nowrap>12+</td>
+        <td align="left">87</td>
+        <td align="left">8</td>
+        <td align="left">8,726</td>
+        <td align="left">116&nbsp;881</td>
+        <td align="left">8,60</td>
+        <td align="left">2&nbsp;705</td>
+        <td align="left"></td>
+        <td align="left">1974-08-12</td>
+        <td align="left"></td>
+        <td align="left">2009-02-19</td>
+        <td align="left" nowrap></td>
+        <td align="left">500000</td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Бриллиантовая рука</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1968</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Леонид Гайдай</td>
+        <td align="left">Юрий Никулин, Андрей Миронов, Анатолий Папанов</td>
+        <td align="left" nowrap>комедия, криминал, приключения</td>
+        <td align="left" nowrap>0+</td>
+        <td align="left">94</td>
+        <td align="left">8</td>
+        <td align="left">8,659</td>
+        <td align="left">219&nbsp;403</td>
+        <td align="left">8,60</td>
+        <td align="left">8&nbsp;653</td>
+        <td align="left"></td>
+        <td align="left">1969-04-28</td>
+        <td align="left"></td>
+        <td align="left">2009-04-29</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>...А зори здесь тихие</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1972</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Станислав Ростоцкий</td>
+        <td align="left">Елена Драпеко, Екатерина Маркова, Ольга Остроумова</td>
+        <td align="left" nowrap>драма, военный, история</td>
+        <td align="left" nowrap>12+</td>
+        <td align="left">160</td>
+        <td align="left">zero</td>
+        <td align="left">8,502</td>
+        <td align="left">77&nbsp;414</td>
+        <td align="left">8,40</td>
+        <td align="left">2&nbsp;187</td>
+        <td align="left"></td>
+        <td align="left">1972-11-04</td>
+        <td align="left"></td>
+        <td align="left">2008-02-29</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Приключения Шерлока Холмса и доктора Ватсона: Собака Баскервилей</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1981</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Игорь Масленников</td>
+        <td align="left">Василий Ливанов, Виталий Соломин, Рина Зеленая</td>
+        <td align="left" nowrap>криминал, детектив</td>
+        <td align="left" nowrap>0+</td>
+        <td align="left">154</td>
+        <td align="left"></td>
+        <td align="left">8,448</td>
+        <td align="left">91&nbsp;045</td>
+        <td align="left">8,90</td>
+        <td align="left">3&nbsp;106</td>
+        <td align="left"></td>
+        <td align="left">1981-07-25</td>
+        <td align="left"></td>
+        <td align="left">2010-02-09</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Шерлок Холмс и доктор Ватсон: Знакомство</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1979</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Игорь Масленников</td>
+        <td align="left">Василий Ливанов, Виталий Соломин, Рина Зеленая</td>
+        <td align="left" nowrap>криминал, детектив</td>
+        <td align="left" nowrap>12+</td>
+        <td align="left">68</td>
+        <td align="left"></td>
+        <td align="left">8,415</td>
+        <td align="left">75&nbsp;830</td>
+        <td align="left">8,80</td>
+        <td align="left">1&nbsp;857</td>
+        <td align="left"></td>
+        <td align="left">1980-03-22</td>
+        <td align="left"></td>
+        <td align="left">2010-02-02</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Собачье сердце</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1988</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Владимир Бортко</td>
+        <td align="left">Владимир Толоконников, Евгений Евстигнеев, Борис Плотников</td>
+        <td align="left" nowrap>фантастика, драма, комедия</td>
+        <td align="left" nowrap>12+</td>
+        <td align="left">136</td>
+        <td align="left">10</td>
+        <td align="left">8,364</td>
+        <td align="left">122&nbsp;229</td>
+        <td align="left">9,00</td>
+        <td align="left">3&nbsp;973</td>
+        <td align="left"></td>
+        <td align="left">1988-11-19</td>
+        <td align="left"></td>
+        <td align="left">2011-01-11</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Офицеры</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1971</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Владимир Роговой</td>
+        <td align="left">Георгий Юматов, Василий Лановой, Алина Покровская</td>
+        <td align="left" nowrap>драма, мелодрама</td>
+        <td align="left" nowrap>0+</td>
+        <td align="left">91</td>
+        <td align="left">zero</td>
+        <td align="left">8,456</td>
+        <td align="left">43&nbsp;598</td>
+        <td align="left">7,90</td>
+        <td align="left">791</td>
+        <td align="left"></td>
+        <td align="left">1971-07-26</td>
+        <td align="left"></td>
+        <td align="left">2008-11-24</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Москва слезам не верит</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1979</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Владимир Меньшов</td>
+        <td align="left">Вера Алентова, Ирина Муравьёва, Алексей Баталов</td>
+        <td align="left" nowrap>драма, мелодрама, комедия</td>
+        <td align="left" nowrap>16+</td>
+        <td align="left">150</td>
+        <td align="left">zero</td>
+        <td align="left">8,370</td>
+        <td align="left">118&nbsp;867</td>
+        <td align="left">8,20</td>
+        <td align="left">7&nbsp;423</td>
+        <td align="left"></td>
+        <td align="left">1980-02-11</td>
+        <td align="left"></td>
+        <td align="left">2011-01-11</td>
+        <td align="left" nowrap></td>
+        <td align="left">900000</td>
+        <td align="left">2500000</td>
+        <td align="left">2500000</td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Летят журавли</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1957</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Михаил Калатозов</td>
+        <td align="left">Татьяна Самойлова, Алексей Баталов, Василий Меркурьев</td>
+        <td align="left" nowrap>драма, мелодрама, военный</td>
+        <td align="left" nowrap>12+</td>
+        <td align="left">97</td>
+        <td align="left">zero</td>
+        <td align="left">8,284</td>
+        <td align="left">33&nbsp;550</td>
+        <td align="left">8,20</td>
+        <td align="left">10&nbsp;029</td>
+        <td align="left"></td>
+        <td align="left">1957-10-12</td>
+        <td align="left"></td>
+        <td align="left">2013-06-06</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Судьба человека</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1959</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Сергей Бондарчук</td>
+        <td align="left">Сергей Бондарчук, Павел Полунин, Зинаида Кириенко</td>
+        <td align="left" nowrap>драма, военный</td>
+        <td align="left" nowrap>12+</td>
+        <td align="left">97</td>
+        <td align="left">zero</td>
+        <td align="left">8,366</td>
+        <td align="left">33&nbsp;085</td>
+        <td align="left">8,10</td>
+        <td align="left">1&nbsp;676</td>
+        <td align="left"></td>
+        <td align="left">1959-04-12</td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Белый Бим Черное ухо</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1976</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Станислав Ростоцкий</td>
+        <td align="left">Вячеслав Тихонов, Валентина Владимирова, Михаил Дадыко</td>
+        <td align="left" nowrap>драма</td>
+        <td align="left" nowrap>12+</td>
+        <td align="left">183</td>
+        <td align="left">zero</td>
+        <td align="left">8,385</td>
+        <td align="left">54&nbsp;335</td>
+        <td align="left">8,30</td>
+        <td align="left">1&nbsp;059</td>
+        <td align="left"></td>
+        <td align="left">1977-09-15</td>
+        <td align="left"></td>
+        <td align="left">2005-06-07</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Они сражались за Родину</b></td>
+        <td align="left" nowrap></td>
+        <td align="left">1975</td>
+        <td align="left" nowrap>СССР</td>
+        <td align="left" nowrap>Сергей Бондарчук</td>
+        <td align="left">Василий Шукшин, Вячеслав Тихонов, Сергей Бондарчук</td>
+        <td align="left" nowrap>драма, военный, история</td>
+        <td align="left" nowrap>0+</td>
+        <td align="left">160</td>
+        <td align="left">zero</td>
+        <td align="left">8,371</td>
+        <td align="left">34&nbsp;322</td>
+        <td align="left">8,20</td>
+        <td align="left">1&nbsp;252</td>
+        <td align="left"></td>
+        <td align="left">1975-05-12</td>
+        <td align="left"></td>
+        <td align="left">2005-05-04</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Во все тяжкие</b></td>
+        <td align="left" nowrap>Breaking Bad</td>
+        <td align="left">2008 &ndash; 2013</td>
+        <td align="left" nowrap>США</td>
+        <td align="left" nowrap>Мишель МакЛарен, Адам Бернштейн, Винс Гиллиган</td>
+        <td align="left">Брайан Крэнстон, Анна Ганн, Аарон Пол</td>
+        <td align="left" nowrap>триллер, драма, криминал</td>
+        <td align="left" nowrap>18+</td>
+        <td align="left">47</td>
+        <td align="left">10</td>
+        <td align="left">8,871</td>
+        <td align="left">123&nbsp;514</td>
+        <td align="left">9,50</td>
+        <td align="left">844&nbsp;796</td>
+        <td align="left"></td>
+        <td align="left">2008-01-20</td>
+        <td align="left">2011-03-17</td>
+        <td align="left"></td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Южный Парк</b></td>
+        <td align="left" nowrap>South Park</td>
+        <td align="left">1997 &ndash; ...</td>
+        <td align="left" nowrap>США</td>
+        <td align="left" nowrap>Трей Паркер, Эрик Сточ, Мэтт Стоун</td>
+        <td align="left">Трей Паркер, Мэтт Стоун, Мона Маршалл</td>
+        <td align="left" nowrap>мультфильм, комедия</td>
+        <td align="left" nowrap>18+</td>
+        <td align="left">22</td>
+        <td align="left">10</td>
+        <td align="left">8,011</td>
+        <td align="left">57&nbsp;535</td>
+        <td align="left">8,80</td>
+        <td align="left">232&nbsp;596</td>
+        <td align="left"></td>
+        <td align="left">1997-08-13</td>
+        <td align="left"></td>
+        <td align="left">2014-03-31</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>1+1</b></td>
+        <td align="left" nowrap>Intouchables</td>
+        <td align="left">2011</td>
+        <td align="left" nowrap>Франция</td>
+        <td align="left" nowrap>Оливье Накаш, Эрик Толедано</td>
+        <td align="left">Франсуа Клюзе, Омар Си, Анн Ле Ни</td>
+        <td align="left" nowrap>драма, комедия, биография</td>
+        <td align="left" nowrap>16+</td>
+        <td align="left">112</td>
+        <td align="left">10</td>
+        <td align="left">8,827</td>
+        <td align="left">361&nbsp;500</td>
+        <td align="left">8,60</td>
+        <td align="left">487&nbsp;255</td>
+        <td align="left">R</td>
+        <td align="left">2011-10-03</td>
+        <td align="left">2012-04-26</td>
+        <td align="left">2012-05-28</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Ганнибал</b></td>
+        <td align="left" nowrap>Hannibal</td>
+        <td align="left">2013 &ndash; 2015</td>
+        <td align="left" nowrap>США</td>
+        <td align="left" nowrap>Майкл Раймер, Гильермо Наварро, Винченцо Натали</td>
+        <td align="left">Мадс Миккельсен, Хью Дэнси, Лоренс Фишбёрн</td>
+        <td align="left" nowrap>детектив, триллер, криминал</td>
+        <td align="left" nowrap>18+</td>
+        <td align="left">43</td>
+        <td align="left">10</td>
+        <td align="left">8,097</td>
+        <td align="left">39&nbsp;136</td>
+        <td align="left">8,60</td>
+        <td align="left">154&nbsp;868</td>
+        <td align="left"></td>
+        <td align="left">2013-04-04</td>
+        <td align="left">2013-04-13</td>
+        <td align="left"></td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Призрак в доспехах: Синдром одиночки</b></td>
+        <td align="left" nowrap>Kokaku kidotai: Stand Alone Complex</td>
+        <td align="left">2002 &ndash; 2005</td>
+        <td align="left" nowrap>Япония</td>
+        <td align="left" nowrap>Кэндзи Камияма, Масаки Тачибана, Ицуро Кавасаки</td>
+        <td align="left">Ацуко Танака, Осаму Сака, Эрик Дейвис</td>
+        <td align="left" nowrap>аниме, мультфильм, фантастика</td>
+        <td align="left" nowrap>16+</td>
+        <td align="left">25</td>
+        <td align="left">10</td>
+        <td align="left">7,953</td>
+        <td align="left">4&nbsp;190</td>
+        <td align="left">8,50</td>
+        <td align="left">10&nbsp;283</td>
+        <td align="left"></td>
+        <td align="left">2002-10-01</td>
+        <td align="left"></td>
+        <td align="left">2008-09-16</td>
+        <td align="left" nowrap></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+        <td align="left"></td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Город грехов</b></td>
+        <td align="left" nowrap>Sin City</td>
+        <td align="left">2005</td>
+        <td align="left" nowrap>США</td>
+        <td align="left" nowrap>Фрэнк Миллер, Роберт Родригес, Квентин Тарантино</td>
+        <td align="left">Брюс Уиллис, Микки Рурк, Клайв Оуэн</td>
+        <td align="left" nowrap>боевик, триллер, криминал</td>
+        <td align="left" nowrap>16+</td>
+        <td align="left">124</td>
+        <td align="left">10</td>
+        <td align="left">7,857</td>
+        <td align="left">145&nbsp;061</td>
+        <td align="left">8,10</td>
+        <td align="left">604&nbsp;768</td>
+        <td align="left">R</td>
+        <td align="left">2005-03-28</td>
+        <td align="left">2005-05-26</td>
+        <td align="left">2005-08-04</td>
+        <td align="left" nowrap></td>
+        <td align="left">40000000</td>
+        <td align="left">74103820</td>
+        <td align="left">158733820</td>
+        <td align="left">2385000</td>
+    
+</tr><tr>
+    
+        <td align="left" nowrap><b>Законопослушный гражданин</b></td>
+        <td align="left" nowrap>Law Abiding Citizen</td>
+        <td align="left">2009</td>
+        <td align="left" nowrap>США</td>
+        <td align="left" nowrap>Ф. Гэри Грей</td>
+        <td align="left">Джейми Фокс, Джерард Батлер, Колм Мини</td>
+        <td align="left" nowrap>триллер, драма, криминал</td>
+        <td align="left" nowrap>18+</td>
+        <td align="left">108</td>
+        <td align="left">10</td>
+        <td align="left">8,030</td>
+        <td align="left">164&nbsp;001</td>
+        <td align="left">7,40</td>
+        <td align="left">213&nbsp;962</td>
+        <td align="left">R</td>
+        <td align="left">2009-10-06</td>
+        <td align="left">2009-11-04</td>
+        <td align="left">2009-12-03</td>
+        <td align="left" nowrap></td>
+        <td align="left">50000000</td>
+        <td align="left">73357727</td>
+        <td align="left">126635256</td>
+        <td align="left">2133270</td>
+    
+</tr>
+</table>
+</body>
+</html>

@@ -1,17 +1,12 @@
 package org.f0w.k2i.core.exchange;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.Inject;
 import com.typesafe.config.Config;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import lombok.val;
 import org.f0w.k2i.core.exchange.processor.JSONPOSTResponseProcessor;
-import org.f0w.k2i.core.exchange.processor.ResponseProcessor;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.jsoup.helper.HttpConnection;
 
 import java.io.IOException;

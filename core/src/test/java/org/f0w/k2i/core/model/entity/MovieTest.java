@@ -61,13 +61,13 @@ public class MovieTest {
 
     @Test
     public void testIsEmptyIMDBId() throws Exception {
-        assertFalse(new Movie("Inception", 2010, "tt210240").isEmptyIMDBId());
+        assertFalse(new Movie("Inception", 2010).setImdbId("tt210240").isEmptyIMDBId());
         assertTrue(new Movie("Inception", 2010, Movie.Type.MOVIE, null, null).isEmptyIMDBId());
     }
 
     @Test
     public void testIsEmptyRating() throws Exception {
-        assertFalse(new Movie("Inception", 2010, 10).isEmptyRating());
-        assertTrue(new Movie("Inception", 2010, Movie.Type.MOVIE, null, null).isEmptyRating());
+        assertFalse(new Movie("Inception", 2010).setRating(10).isEmptyRating());
+        assertTrue(new Movie("Inception", 2010).setRating(null).isEmptyRating());
     }
 }

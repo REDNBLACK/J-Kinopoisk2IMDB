@@ -18,11 +18,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.controlsfx.control.CheckComboBox;
+import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.event.ImportFinishedEvent;
 import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
 import org.f0w.k2i.core.event.ImportStartedEvent;
-import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.Movie;
 
@@ -33,15 +33,12 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.comparator.MovieComparator.Type.*;
-import static org.f0w.k2i.core.exchange.finder.MovieFinder.Type.*;
+import static org.f0w.k2i.core.DocumentSourceType.*;
 import static org.f0w.k2i.core.handler.MovieHandler.Type.*;
 
 public class Controller {
@@ -61,7 +58,7 @@ public class Controller {
     private ComboBox<Choice<MovieHandler.Type, String>> modeComboBox;
 
     @FXML
-    private ComboBox<Choice<MovieFinder.Type, String>> queryFormatComboBox;
+    private CheckComboBox<Choice<DocumentSourceType, String>> documentSourceBox;
 
     @FXML
     private Label selectedFile;
@@ -129,20 +126,22 @@ public class Controller {
         listId.focusedProperty().addListener(o -> configMap.put("list", listId.getText()));
         listId.setText(config.getString("list"));
 
-
         // Дополнительные
-        queryFormatComboBox.setItems(FXCollections.observableList(Arrays.asList(
+        documentSourceBox.getItems().addAll(FXCollections.observableList(Arrays.asList(
                 new Choice<>(XML, "XML"),
                 new Choice<>(JSON, "JSON"),
-                new Choice<>(HTML, "HTML"),
-                new Choice<>(MIXED, "Смешанный")
+                new Choice<>(HTML, "HTML")
         )));
-        queryFormatComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            configMap.put("query_format", newValue.getValue().toString());
+        documentSourceBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<Choice<DocumentSourceType, String>>) c -> {
+            List<String> types = c.getList().stream()
+                    .map(choice -> choice.getValue().toString())
+                    .collect(Collectors.toList());
+
+            configMap.put("document_source_types", types);
         });
-        queryFormatComboBox.getSelectionModel().select(
-                new Choice<>(MovieFinder.Type.valueOf(config.getString("query_format")))
-        );
+        config.getStringList("document_source_types").forEach(c -> documentSourceBox.getCheckModel().check(
+                new Choice<>(DocumentSourceType.valueOf(c))
+        ));
 
         comparatorsBox.getItems().addAll(FXCollections.observableList(Arrays.asList(
                 new Choice<>(YEAR_DEVIATION, "Год с отклонением"),

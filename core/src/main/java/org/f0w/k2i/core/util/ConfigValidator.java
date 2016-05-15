@@ -4,8 +4,8 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException;
 import lombok.val;
 import org.apache.commons.lang3.EnumUtils;
+import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.comparator.MovieComparator;
-import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.handler.MovieHandler;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -41,7 +41,7 @@ public final class ConfigValidator {
             validator.checkMode();
             validator.checkList();
 
-            validator.checkQueryFormat();
+            validator.checkDocumentSourceTypes();
             validator.checkComparators();
 
             validator.checkUserAgent();
@@ -118,11 +118,14 @@ public final class ConfigValidator {
      *
      * @throws IllegalArgumentException If not valid
      */
-    private void checkQueryFormat() {
-        val queryFormat = config.getString("query_format");
+    private void checkDocumentSourceTypes() {
+        val message = "document_source_types is not valid!";
+        val documentSourceTypes = config.getStringList("document_source_types");
 
-        if (!EnumUtils.isValidEnum(MovieFinder.Type.class, queryFormat)) {
-            throw new IllegalArgumentException("query_format is not valid!");
+        try {
+            documentSourceTypes.forEach(DocumentSourceType::valueOf);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(message);
         }
     }
 

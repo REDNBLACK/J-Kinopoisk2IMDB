@@ -4,6 +4,7 @@ import com.google.common.collect.ForwardingDeque;
 import com.google.common.collect.ImmutableList;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.exchange.ExchangeObject;
 import org.f0w.k2i.core.model.entity.Movie;
 
@@ -13,18 +14,14 @@ import java.util.Deque;
 import java.util.List;
 
 @Slf4j
-public final class MixedMovieFinder implements MovieFinder {
-    @NonNull
-    private final Type type;
-
+final class MixedMovieFinder implements MovieFinder {
     @NonNull
     private final List<MovieFinder> originalFinders;
 
     private Deque<MovieFinder> findersDeque;
     private Movie movie;
 
-    public MixedMovieFinder(Type type, List<MovieFinder> movieFinders) {
-        this.type = type;
+    public MixedMovieFinder(MovieFinder... movieFinders) {
         this.originalFinders = ImmutableList.copyOf(movieFinders);
     }
 
@@ -40,8 +37,8 @@ public final class MixedMovieFinder implements MovieFinder {
      * {@inheritDoc}
      */
     @Override
-    public Type getType() {
-        return type;
+    public DocumentSourceType getDocumentSourceType() {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -64,7 +61,7 @@ public final class MixedMovieFinder implements MovieFinder {
 
                 try {
                     MovieFinder finder = findersDeque.poll();
-                    log.debug("Loading using finder type: {}", finder.getType());
+                    log.debug("Loading using finder type: {}", finder.getDocumentSourceType());
 
                     Deque<Movie> movies = finder.prepare(movie).getProcessedResponse();
                     super.addAll(movies);

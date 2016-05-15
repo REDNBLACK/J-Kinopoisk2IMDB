@@ -3,6 +3,7 @@ package org.f0w.k2i.core.exchange.finder;
 import com.typesafe.config.Config;
 import lombok.NonNull;
 import lombok.val;
+import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.exchange.ExchangeObject;
 import org.f0w.k2i.core.exchange.finder.strategy.ExchangeStrategy;
 import org.f0w.k2i.core.exchange.processor.ResponseProcessor;
@@ -13,9 +14,9 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public final class BasicMovieFinder implements MovieFinder {
+final class BasicMovieFinder implements MovieFinder {
     @NonNull
-    private final Type type;
+    private final DocumentSourceType documentSourceType;
 
     @NonNull
     private final ExchangeStrategy exchangeStrategy;
@@ -23,8 +24,8 @@ public final class BasicMovieFinder implements MovieFinder {
     @NonNull
     private final Config config;
 
-    public BasicMovieFinder(Type type, ExchangeStrategy exchangeStrategy, Config config) {
-        this.type = type;
+    public BasicMovieFinder(DocumentSourceType documentSourceType, ExchangeStrategy exchangeStrategy, Config config) {
+        this.documentSourceType = documentSourceType;
         this.exchangeStrategy = exchangeStrategy;
         this.config = config;
     }
@@ -51,8 +52,8 @@ public final class BasicMovieFinder implements MovieFinder {
      * {@inheritDoc}
      */
     @Override
-    public Type getType() {
-        return type;
+    public DocumentSourceType getDocumentSourceType() {
+        return documentSourceType;
     }
 
     /**

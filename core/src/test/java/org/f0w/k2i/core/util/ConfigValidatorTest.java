@@ -5,8 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.ConfigException;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.comparator.MovieComparator;
-import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,9 +30,14 @@ public class ConfigValidatorTest {
                 .put("year_deviation", 1)
                 .put("log_level", Level.INFO.toString())
                 .put("timeout", 3000)
-                .put("query_format", MovieFinder.Type.MIXED.toString())
+                .put("document_source_types", Arrays.asList(
+                        DocumentSourceType.XML.toString(),
+                        DocumentSourceType.JSON.toString(),
+                        DocumentSourceType.HTML.toString()
+                ))
                 .put("comparators", Arrays.asList(
                         MovieComparator.Type.YEAR_DEVIATION.toString(),
+                        MovieComparator.Type.TYPE_EQUALS.toString(),
                         MovieComparator.Type.TITLE_SMART.toString()
                 ))
                 .put("mode", MovieHandler.Type.COMBINED.toString())
@@ -98,17 +103,17 @@ public class ConfigValidatorTest {
     }
 
     @Test
-    public void checkQueryFormat() throws Exception {
+    public void checkDocumentSourceTypes() throws Exception {
         checkValid(parseMap(configMap));
 
-        configMap.replace("query_format", MovieFinder.Type.XML.toString());
+        configMap.replace("document_source_types", Collections.singletonList(DocumentSourceType.XML.toString()));
         checkValid(parseMap(configMap));
 
-        configMap.replace("query_format", "not existing query_format");
+        configMap.replace("document_source_types", Collections.singletonList("not existing document_source_type"));
         assertThatThrownBy(() -> checkValid(parseMap(configMap)))
                 .isInstanceOf(ConfigException.class);
 
-        configMap.remove("query_format");
+        configMap.remove("document_source_types");
         assertThatThrownBy(() -> checkValid(parseMap(configMap)))
                 .isInstanceOf(ConfigException.class);
     }

@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.exchange.finder;
 
+import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.exchange.Exchangeable;
 import org.f0w.k2i.core.model.entity.Movie;
 
@@ -10,19 +11,9 @@ import java.util.Deque;
  */
 public interface MovieFinder extends Exchangeable<Movie, Deque<Movie>> {
     /**
-     * Returns type of current MovieFinder
+     * Returns source type of document for current MovieFinder
      *
-     * @return {@link Type}
+     * @return {@link DocumentSourceType}
      */
-    Type getType();
-
-    /**
-     * Available movie finder types
-     */
-    enum Type {
-        XML,
-        JSON,
-        HTML,
-        MIXED
-    }
+    DocumentSourceType getDocumentSourceType();
 }

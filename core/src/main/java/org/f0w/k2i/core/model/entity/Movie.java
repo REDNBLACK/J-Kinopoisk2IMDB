@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false, of = {"title", "year", "type"})
+@EqualsAndHashCode(of = {"title", "year", "type"})
 public class Movie extends BaseEntity {
     @Column(name = "TITLE", nullable = false)
     @NonNull
@@ -33,18 +33,6 @@ public class Movie extends BaseEntity {
         this(title, year, Type.MOVIE, null, null);
     }
 
-    public Movie(String title, int year, Integer rating) {
-        this(title, year, Type.MOVIE, rating, null);
-    }
-
-    public Movie(String title, int year, Type type) {
-        this(title, year, type, null, null);
-    }
-
-    public Movie(String title, int year, String imdbId) {
-        this(title, year, Type.MOVIE, null, imdbId);
-    }
-
     public Movie(Movie movie) {
         this(movie.getTitle(), movie.getYear(), movie.getType(), movie.getRating(), movie.getImdbId());
     }
@@ -65,6 +53,15 @@ public class Movie extends BaseEntity {
      */
     public boolean isEmptyYear() {
         return getYear() == 0;
+    }
+
+    /**
+     * Checks that type equals to {@link Movie.Type#MOVIE}
+     *
+     * @return Is default type
+     */
+    public boolean isDefaultType() {
+        return getType().equals(Type.MOVIE);
     }
 
     /**

@@ -3,15 +3,16 @@ package org.f0w.k2i.core.exchange.finder.strategy;
 import com.google.common.collect.ImmutableMap;
 import lombok.NonNull;
 import lombok.val;
+import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.parser.JSONMovieParser;
 import org.f0w.k2i.core.util.HttpUtils;
+import org.f0w.k2i.core.util.parser.MovieParsers;
 
 import java.net.URL;
 
 public final class JSONExchangeStrategy extends AbstractExchangeStrategy {
     public JSONExchangeStrategy() {
-        super(new JSONMovieParser());
+        super(MovieParsers.ofSourceType(DocumentSourceType.JSON));
     }
 
     /**

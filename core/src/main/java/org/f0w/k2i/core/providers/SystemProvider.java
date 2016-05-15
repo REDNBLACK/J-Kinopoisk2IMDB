@@ -4,14 +4,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.typesafe.config.Config;
+import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.comparator.MovieComparatorFactory;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
 import org.f0w.k2i.core.exchange.finder.MovieFinderFactory;
 import org.f0w.k2i.core.handler.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.handler.MovieHandler.Type;
 
@@ -26,20 +24,22 @@ public class SystemProvider extends AbstractModule {
 
     @Provides
     MovieFinder provideMovieFinder(Config config, MovieFinderFactory factory) {
-        return factory.make(MovieFinder.Type.valueOf(config.getString("query_format")));
+        DocumentSourceType[] types = config.getStringList("document_source_types")
+                .stream()
+                .map(DocumentSourceType::valueOf)
+                .toArray(DocumentSourceType[]::new);
+
+        return factory.make(types);
     }
 
     @Provides
     MovieComparator provideMovieComparator(Config config, MovieComparatorFactory factory) {
-        List<MovieComparator> comparators = config.getStringList("comparators")
+        MovieComparator.Type[] types = config.getStringList("comparators")
                 .stream()
                 .map(MovieComparator.Type::valueOf)
-                .distinct()
-                .sorted()
-                .map(factory::make)
-                .collect(Collectors.toList());
+                .toArray(MovieComparator.Type[]::new);
 
-        return (m1, m2) -> comparators.stream().allMatch(c -> c.areEqual(m1, m2));
+        return factory.make(types);
     }
 
     @Provides

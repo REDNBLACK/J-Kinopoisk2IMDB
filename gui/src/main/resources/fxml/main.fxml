@@ -84,7 +84,7 @@
                                                 <Label text="Тип запроса" />
                                                 <Label text="Сравнение" GridPane.rowIndex="1" />
                                                 <Label text="Чистый запуск" GridPane.rowIndex="2" />
-                                                <ComboBox fx:id="queryFormatComboBox" GridPane.columnIndex="1" />
+                                                <CheckComboBox fx:id="documentSourceBox" GridPane.columnIndex="1" />
                                                 <CheckComboBox fx:id="comparatorsBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 <CheckBox fx:id="cleanRunCheckbox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                             </children>

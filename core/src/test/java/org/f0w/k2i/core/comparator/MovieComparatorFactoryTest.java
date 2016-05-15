@@ -3,11 +3,6 @@ package org.f0w.k2i.core.comparator;
 import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.ConfigFactory;
 import lombok.val;
-import org.f0w.k2i.core.comparator.title.*;
-import org.f0w.k2i.core.comparator.type.AnyTypeComparator;
-import org.f0w.k2i.core.comparator.type.EqualsTypeComparator;
-import org.f0w.k2i.core.comparator.year.DeviationYearComparator;
-import org.f0w.k2i.core.comparator.year.EqualsYearComparator;
 import org.junit.Test;
 
 import static org.f0w.k2i.core.comparator.MovieComparator.Type;
@@ -18,7 +13,7 @@ public class MovieComparatorFactoryTest {
     private MovieComparatorFactory factory = new MovieComparatorFactory(ConfigFactory.load());
 
     @Test
-    public void make() throws Exception {
+    public void makeSingle() throws Exception {
         val classMap = new ImmutableMap.Builder<Type, Class<? extends MovieComparator>>()
                 .put(YEAR_EQUALS, EqualsYearComparator.class)
                 .put(YEAR_DEVIATION, DeviationYearComparator.class)
@@ -38,8 +33,10 @@ public class MovieComparatorFactoryTest {
         });
     }
 
-    @Test(expected = NullPointerException.class)
-    public void makeWithNull() throws Exception {
-        factory.make(null);
+    @Test
+    public void makeMultiple() throws Exception {
+        factory.make(TYPE_ANY, TITLE_SMART, YEAR_DEVIATION);
+
+        assertTrue(factory.make(new Type[]{TYPE_ANY}) instanceof AnyTypeComparator);
     }
 }

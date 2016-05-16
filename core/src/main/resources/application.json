@@ -4,9 +4,9 @@
   "timeout": 3000,
   "log_level": "info",
   "document_source_types": [
-      "XML",
-      "JSON",
-      "HTML"
+      "IMDB_XML",
+      "IMDB_JSON",
+      "IMDB_HTML"
   ],
   "mode": "COMBINED",
   "list": "",

@@ -8,14 +8,15 @@ public final class MovieParsers {
 
     public static MovieParser ofSourceType(DocumentSourceType documentSourceType) {
         switch (documentSourceType) {
-            case XML: return new XMLMovieParser();
-            case JSON: return new JSONMovieParser();
-            case HTML: return new HTMLMovieParser();
+            case IMDB_XML: return new IMDBXMLMovieParser();
+            case IMDB_JSON: return new IMDBJSONMovieParser();
+            case IMDB_HTML: return new IMDBHTMLMovieParser();
+            case OMDB: return new OMDBMovieParser();
             default: throw new IllegalArgumentException("Unsupported format!");
         }
     }
 
     public static MovieParser fileParser() {
-        return new FileMovieParser();
+        return new KinopoiskFileMovieParser();
     }
 }

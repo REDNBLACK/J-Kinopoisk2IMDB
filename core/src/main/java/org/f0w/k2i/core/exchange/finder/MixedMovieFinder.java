@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.f0w.k2i.core.DocumentSourceType;
-import org.f0w.k2i.core.exchange.ExchangeObject;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;

@@ -128,9 +128,10 @@ public class Controller {
 
         // Дополнительные
         documentSourceBox.getItems().addAll(FXCollections.observableList(Arrays.asList(
-                new Choice<>(XML, "XML"),
-                new Choice<>(JSON, "JSON"),
-                new Choice<>(HTML, "HTML")
+                new Choice<>(IMDB_XML, "IMDB XML"),
+                new Choice<>(IMDB_JSON, "IMDB JSON"),
+                new Choice<>(IMDB_HTML, "IMDB HTML"),
+                new Choice<>(OMDB, "OMDB API")
         )));
         documentSourceBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<Choice<DocumentSourceType, String>>) c -> {
             List<String> types = c.getList().stream()

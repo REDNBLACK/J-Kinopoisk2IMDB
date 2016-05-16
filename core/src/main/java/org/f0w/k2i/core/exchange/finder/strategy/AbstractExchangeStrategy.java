@@ -19,7 +19,7 @@ abstract class AbstractExchangeStrategy implements ExchangeStrategy {
      * {@inheritDoc}
      */
     @Override
-    public List<Movie> parseSearchResult(@NonNull Connection.Response response) {
+    public List<Movie> parseResponse(@NonNull Connection.Response response) {
         return parser.parse(response.body());
     }
 }

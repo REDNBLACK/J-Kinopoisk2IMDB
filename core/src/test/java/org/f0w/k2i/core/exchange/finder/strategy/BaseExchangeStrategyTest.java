@@ -17,9 +17,9 @@ public abstract class BaseExchangeStrategyTest {
     protected ExchangeStrategy strategy;
 
     @Test
-    public void buildSearchURLWithValidMovies() throws Exception {
+    public void buildRequestWithValidMovies() throws Exception {
         for (Movie movie : MovieTestData.MOVIES_LIST) {
-            URL searchURL = strategy.buildSearchURL(movie);
+            URL searchURL = strategy.buildRequest(movie).url();
             String decodedURL = URLDecoder.decode(searchURL.toString(), StandardCharsets.UTF_8.toString());
 
             assertTrue(decodedURL.contains("q=" + movie.getTitle()));
@@ -27,17 +27,17 @@ public abstract class BaseExchangeStrategyTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void buildSearchURLWithNullMovie() throws Exception {
-        strategy.buildSearchURL(null);
+    public void buildRequestWithNullMovie() throws Exception {
+        strategy.buildRequest(null);
     }
 
     @Test(expected = NullPointerException.class)
-    public void parseSearchResultWithNullData() throws Exception {
-        strategy.parseSearchResult(null);
+    public void parseResponseWithNullData() throws Exception {
+        strategy.parseResponse(null);
     }
 
     @Test
-    public void parseSearchResultWithEmpyData() throws Exception {
-        assertEquals(Collections.emptyList(), strategy.parseSearchResult(new ResponseMock("")));
+    public void parseResponseWithEmpyData() throws Exception {
+        assertEquals(Collections.emptyList(), strategy.parseResponse(new ResponseMock("")));
     }
 }

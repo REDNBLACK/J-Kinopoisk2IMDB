@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-final class HTMLMovieParser extends AbstractMovieParser {
+final class IMDBHTMLMovieParser extends AbstractMovieParser {
     /**
      * {@inheritDoc}
      */
@@ -30,7 +30,7 @@ final class HTMLMovieParser extends AbstractMovieParser {
                 .map(e -> new Movie(
                         parseTitle(e),
                         parseYear(e.text()),
-                        parseType(e),
+                        parseType(e.text()),
                         null,
                         parseIMDBId(e.getElementsByTag("a").first())
                 ))
@@ -73,14 +73,13 @@ final class HTMLMovieParser extends AbstractMovieParser {
         return super.parseYear(preparedYear);
     }
 
-    protected Movie.Type parseType(Element element) {
-        val elementText = element.text();
-
-        if (elementText.contains("(TV Series)") || elementText.contains("(TV Mini-Series)")) {
+    @Override
+    protected Movie.Type parseType(final String type) {
+        if (type.contains("(TV Series)") || type.contains("(TV Mini-Series)")) {
             return Movie.Type.SERIES;
-        } else if (elementText.contains("(Short)")) {
+        } else if (type.contains("(Short)")) {
             return Movie.Type.SHORT;
-        } else if (elementText.contains("(Video Game)")) {
+        } else if (type.contains("(Video Game)")) {
             return Movie.Type.VIDEO_GAME;
         }
 

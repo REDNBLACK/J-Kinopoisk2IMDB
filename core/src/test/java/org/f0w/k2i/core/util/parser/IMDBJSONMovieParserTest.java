@@ -1,29 +1,24 @@
 package org.f0w.k2i.core.util.parser;
 
-import com.google.common.io.Resources;
 import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
+import static org.f0w.k2i.TestHelper.getResourceContents;
 import static org.junit.Assert.assertEquals;
 
-public class JSONMovieParserTest extends BaseMovieParserTest {
+public class IMDBJSONMovieParserTest extends JSONBasedMovieParserTest {
     @Before
     public void setUp() throws Exception {
-        parser = MovieParsers.ofSourceType(DocumentSourceType.JSON);
+        parser = MovieParsers.ofSourceType(DocumentSourceType.IMDB_JSON);
     }
 
     @Test
     public void parseWithValidData() throws Exception {
-        URL resource = getClass().getClassLoader().getResource("parser/test_data.json");
-        String data = Resources.toString(resource, StandardCharsets.UTF_8);
         List<Movie> expected = Arrays.asList(
                 new Movie("Inception", 2010, Movie.Type.MOVIE, null, "tt1375666"),
                 new Movie("Inception: Motion Comics", 2010, Movie.Type.SERIES, null, "tt1790736"),
@@ -47,11 +42,6 @@ public class JSONMovieParserTest extends BaseMovieParserTest {
                 new Movie("Immaculate Conception", 1992, Movie.Type.MOVIE, null, "tt0104489")
         );
 
-        assertEquals(expected, parser.parse(data));
-    }
-
-    @Test
-    public void parseWithEmptyJSONData() throws Exception {
-        assertEquals(parser.parse("{}"), Collections.emptyList());
+        assertEquals(expected, parser.parse(getResourceContents("parser/test_data_imdb.json")));
     }
 }

@@ -7,19 +7,19 @@ import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.HttpUtils;
 import org.f0w.k2i.core.util.parser.MovieParsers;
+import org.jsoup.Connection;
+import org.jsoup.helper.HttpConnection;
 
-import java.net.URL;
-
-public final class HTMLExchangeStrategy extends AbstractExchangeStrategy {
-    public HTMLExchangeStrategy() {
-        super(MovieParsers.ofSourceType(DocumentSourceType.HTML));
+public final class IMDBHTMLExchangeStrategy extends AbstractExchangeStrategy {
+    public IMDBHTMLExchangeStrategy() {
+        super(MovieParsers.ofSourceType(DocumentSourceType.IMDB_HTML));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public URL buildSearchURL(@NonNull final Movie movie) {
+    public Connection.Request buildRequest(@NonNull final Movie movie) {
         val searchLink = "http://www.imdb.com/find";
         val queryParams = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle())
@@ -28,6 +28,6 @@ public final class HTMLExchangeStrategy extends AbstractExchangeStrategy {
                 .put("ref", "fn_tt_ex")
                 .build();
 
-        return HttpUtils.buildURL(searchLink, queryParams);
+        return HttpConnection.connect(HttpUtils.buildURL(searchLink, queryParams)).request();
     }
 }

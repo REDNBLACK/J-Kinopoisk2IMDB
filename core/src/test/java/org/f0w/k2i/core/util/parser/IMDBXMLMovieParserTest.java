@@ -1,28 +1,24 @@
 package org.f0w.k2i.core.util.parser;
 
-import com.google.common.io.Resources;
 import lombok.val;
 import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import static org.f0w.k2i.TestHelper.getResourceContents;
 import static org.junit.Assert.assertEquals;
 
-public class XMLMovieParserTest extends BaseMovieParserTest {
+public class IMDBXMLMovieParserTest extends BaseMovieParserTest {
     @Before
     public void setUp() throws Exception {
-        parser = MovieParsers.ofSourceType(DocumentSourceType.XML);
+        parser = MovieParsers.ofSourceType(DocumentSourceType.IMDB_XML);
     }
 
     @Test
     public void parseWithValidData() throws Exception {
-        URL resource = getClass().getClassLoader().getResource("parser/test_data.xml");
-        String data = Resources.toString(resource, StandardCharsets.UTF_8);
         val expected = Arrays.asList(
                 new Movie("Inception: The IMAX Experience", 2010, Movie.Type.MOVIE, null, "tt1375666"),
                 new Movie("Inception: Motion Comics", 2010, Movie.Type.SERIES, null, "tt1790736"),
@@ -46,6 +42,6 @@ public class XMLMovieParserTest extends BaseMovieParserTest {
                 new Movie("Immaculate Conception", 1992, Movie.Type.MOVIE, null, "tt0104489")
         );
 
-        assertEquals(expected, parser.parse(data));
+        assertEquals(expected, parser.parse(getResourceContents("parser/test_data_imdb.xml")));
     }
 }

@@ -1,28 +1,24 @@
 package org.f0w.k2i.core.util.parser;
 
-import com.google.common.io.Resources;
 import lombok.val;
 import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import static org.f0w.k2i.TestHelper.getResourceContents;
 import static org.junit.Assert.assertEquals;
 
-public class HTMLMovieParserTest extends BaseMovieParserTest {
+public class IMDBHTMLMovieParserTest extends BaseMovieParserTest {
     @Before
     public void setUp() throws Exception {
-        parser = MovieParsers.ofSourceType(DocumentSourceType.HTML);
+        parser = MovieParsers.ofSourceType(DocumentSourceType.IMDB_HTML);
     }
 
     @Test
     public void parseWithValidData() throws Exception {
-        URL resource = getClass().getClassLoader().getResource("parser/test_data.html");
-        String data = Resources.toString(resource, StandardCharsets.UTF_8);
         val expected = Arrays.asList(
                 new Movie("Начало", 2010, Movie.Type.MOVIE, null, "tt1375666"),
                 new Movie("Forget About It", 2011, Movie.Type.SERIES, null, "tt2125844"),
@@ -226,6 +222,6 @@ public class HTMLMovieParserTest extends BaseMovieParserTest {
                 new Movie("Within These Walls", 1974, Movie.Type.SERIES, null, "tt0749588")
         );
 
-        assertEquals(expected, parser.parse(data));
+        assertEquals(expected, parser.parse(getResourceContents("parser/test_data_imdb.html")));
     }
 }

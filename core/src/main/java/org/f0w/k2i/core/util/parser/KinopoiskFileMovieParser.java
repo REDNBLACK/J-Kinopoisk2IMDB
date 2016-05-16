@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import static org.apache.commons.lang3.StringUtils.replaceEachRepeatedly;
 import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
 
-final class FileMovieParser extends AbstractMovieParser {
+final class KinopoiskFileMovieParser extends AbstractMovieParser {
     /**
      * {@inheritDoc}
      */
@@ -61,7 +61,7 @@ final class FileMovieParser extends AbstractMovieParser {
     /**
      * Parses title, if null or empty returns "null" defaultTitle
      *
-     * @param title    String to parseSearchResult
+     * @param title    String to parseResponse
      * @param fallback Fallback string
      * @return Parsed title or defaultTitle
      */
@@ -80,13 +80,12 @@ final class FileMovieParser extends AbstractMovieParser {
     }
 
     protected Movie.Type parseType(final Map<String, String> row) {
-        val genres = Arrays.asList(splitByWholeSeparator(row.get("жанры"), ", "));
-        val isSeries = row.get("год").split("-|–").length == 2;
-
+        boolean isSeries = row.get("год").split("-|–").length == 2;
         if (isSeries) {
             return Movie.Type.SERIES;
         }
 
+        val genres = row.get("жанры");
         if (genres.contains("документальный")) {
             return Movie.Type.DOCUMENTARY;
         } else if (genres.contains("короткометражка")) {

@@ -18,11 +18,11 @@ public class MovieParsersTest {
     }
 
     @Test
-    public void ofFormat() throws Exception {
+    public void ofSourceType() throws Exception {
         val classMap = new ImmutableMap.Builder<DocumentSourceType, Class<? extends MovieParser>>()
-                .put(XML, XMLMovieParser.class)
-                .put(JSON, JSONMovieParser.class)
-                .put(HTML, HTMLMovieParser.class)
+                .put(IMDB_XML, IMDBXMLMovieParser.class)
+                .put(IMDB_JSON, IMDBJSONMovieParser.class)
+                .put(IMDB_HTML, IMDBHTMLMovieParser.class)
                 .build();
 
         classMap.forEach((format, clazz) -> {
@@ -34,6 +34,6 @@ public class MovieParsersTest {
 
     @Test
     public void fileParser() throws Exception {
-        assertTrue(FileMovieParser.class.isInstance(MovieParsers.fileParser()));
+        assertTrue(KinopoiskFileMovieParser.class.isInstance(MovieParsers.fileParser()));
     }
 }

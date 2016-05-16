@@ -4,7 +4,6 @@ import lombok.NonNull;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Connection;
 
-import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public interface ExchangeStrategy {
      * @param movie Movie which fields to use
      * @return Movie search URL
      */
-    URL buildSearchURL(@NonNull final Movie movie);
+    Connection.Request buildRequest(@NonNull final Movie movie);
 
     /**
      * Parses response, implementation specific to each Format
@@ -26,5 +25,5 @@ public interface ExchangeStrategy {
      * @param response Response
      * @return List of movies if data not an empty string, or {@link Collections#emptyList()} otherwise.
      */
-    List<Movie> parseSearchResult(@NonNull final Connection.Response response);
+    List<Movie> parseResponse(@NonNull final Connection.Response response);
 }

@@ -4,11 +4,9 @@ import com.typesafe.config.Config;
 import lombok.NonNull;
 import lombok.val;
 import org.f0w.k2i.core.DocumentSourceType;
-import org.f0w.k2i.core.exchange.ExchangeObject;
 import org.f0w.k2i.core.exchange.finder.strategy.ExchangeStrategy;
 import org.f0w.k2i.core.exchange.processor.ResponseProcessor;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.jsoup.helper.HttpConnection;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -38,12 +36,9 @@ final class BasicMovieFinder implements MovieFinder {
      */
     @Override
     public ExchangeObject<Deque<Movie>> prepare(@NonNull Movie movie) throws IOException {
-        val movieSearchLink = exchangeStrategy.buildSearchURL(movie);
-
-        val request = HttpConnection.connect(movieSearchLink)
-                .userAgent(config.getString("user_agent"))
-                .timeout(config.getInt("timeout"))
-                .request();
+        val request = exchangeStrategy.buildRequest(movie)
+                .header("User-Agent", config.getString("user_agent"))
+                .timeout(config.getInt("timeout"));
 
         return new ExchangeObject<>(request, getResponseProcessor());
     }
@@ -60,6 +55,6 @@ final class BasicMovieFinder implements MovieFinder {
      * @return Deque of parsed movies using current {@link ExchangeStrategy}
      */
     private ResponseProcessor<Deque<Movie>> getResponseProcessor() {
-        return response -> new ArrayDeque<>(exchangeStrategy.parseSearchResult(response));
+        return response -> new ArrayDeque<>(exchangeStrategy.parseResponse(response));
     }
 }

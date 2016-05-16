@@ -9,7 +9,7 @@ abstract class AbstractMovieParser implements MovieParser {
     /**
      * Parses title, and returns "null" string if not valid
      *
-     * @param title String to parseSearchResult
+     * @param title String to parseResponse
      * @return Parsed title
      */
     protected String parseTitle(final String title) {
@@ -47,13 +47,15 @@ abstract class AbstractMovieParser implements MovieParser {
      * @return Parsed Type or {@link Movie.Type#MOVIE}
      */
     protected Movie.Type parseType(final String type) {
-        if (type.contains("TV series") || type.contains("TV mini-series")) {
+        val safeType = String.valueOf(type);
+
+        if (safeType.contains("TV series") || safeType.contains("TV mini-series")) {
             return Movie.Type.SERIES;
-        } else if (type.contains("documentary")) {
+        } else if (safeType.contains("documentary")) {
             return Movie.Type.DOCUMENTARY;
-        } else if (type.contains("short")) {
+        } else if (safeType.contains("short")) {
             return Movie.Type.SHORT;
-        } else if (type.contains("video game")) {
+        } else if (safeType.contains("video game")) {
             return Movie.Type.VIDEO_GAME;
         }
 
@@ -63,7 +65,7 @@ abstract class AbstractMovieParser implements MovieParser {
     /**
      * Parses IMDB ID or returns null if it not valid
      *
-     * @param imdbId String to parseSearchResult
+     * @param imdbId String to parseResponse
      * @return Parsed IMDB ID or null
      */
     protected String parseIMDBId(final String imdbId) {
@@ -79,7 +81,7 @@ abstract class AbstractMovieParser implements MovieParser {
     /**
      * Parses rating or returns null if it not valid
      *
-     * @param rating String to parseSearchResult
+     * @param rating String to parseResponse
      * @return Parsed rating or null
      */
     protected Integer parseRating(final String rating) {

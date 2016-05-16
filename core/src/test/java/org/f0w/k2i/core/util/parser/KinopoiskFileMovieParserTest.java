@@ -1,6 +1,5 @@
 package org.f0w.k2i.core.util.parser;
 
-import com.google.common.io.Resources;
 import lombok.val;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.junit.Before;
@@ -10,9 +9,12 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static org.f0w.k2i.TestHelper.getResourceContents;
 import static org.junit.Assert.assertEquals;
 
-public class FileMovieParserTest extends BaseMovieParserTest {
+public class KinopoiskFileMovieParserTest extends BaseMovieParserTest {
+    private static final Charset FILE_CHARSET = Charset.forName("windows-1251");
+
     @Before
     public void setUp() throws Exception {
         parser = MovieParsers.fileParser();
@@ -20,24 +22,22 @@ public class FileMovieParserTest extends BaseMovieParserTest {
 
     @Test
     public void parseFromEmptyFile() throws Exception {
-        val resource = getClass().getClassLoader().getResource("parser/test_data_file_empty.xls");
-        val data = Resources.toString(resource, Charset.forName("windows-1251"));
-
-        assertEquals(Collections.emptyList(), parser.parse(data));
+        assertEquals(
+                Collections.emptyList(),
+                parser.parse(getResourceContents("parser/test_data_file_empty.xls", FILE_CHARSET))
+        );
     }
 
     @Test
     public void parseFromInvalidFile() throws Exception {
-        val resource = getClass().getClassLoader().getResource("parser/test_data_file_invalid.xls");
-        val data = Resources.toString(resource, Charset.forName("windows-1251"));
-
-        assertEquals(Collections.emptyList(), parser.parse(data));
+        assertEquals(
+                Collections.emptyList(),
+                parser.parse(getResourceContents("parser/test_data_file_invalid.xls", FILE_CHARSET))
+        );
     }
 
     @Test
     public void parseFromValidFileExportedFromLists() throws Exception {
-        val resource = getClass().getClassLoader().getResource("parser/test_data_file_exported_from_lists.xls");
-        val data = Resources.toString(resource, Charset.forName("windows-1251"));
         val expected = Arrays.asList(
                 new Movie("Kung Fury", 2015, Movie.Type.SHORT, 9, null),
                 new Movie("Jackass Number Two", 2006, Movie.Type.DOCUMENTARY, 8, null),
@@ -66,13 +66,14 @@ public class FileMovieParserTest extends BaseMovieParserTest {
                 new Movie("Law Abiding Citizen", 2009).setRating(10)
         );
 
-        assertEquals(expected, parser.parse(data));
+        assertEquals(
+                expected,
+                parser.parse(getResourceContents("parser/test_data_file_exported_from_lists.xls", FILE_CHARSET))
+        );
     }
 
     @Test
     public void parseFromValidFileExportedFromProfile() throws Exception {
-        val resource = getClass().getClassLoader().getResource("parser/test_data_file_exported_from_profile.xls");
-        val data = Resources.toString(resource, Charset.forName("windows-1251"));
         val expected = Arrays.asList(
                 new Movie("Standoff", 2015).setRating(6),
                 new Movie("The Trust", 2016).setRating(6),
@@ -101,6 +102,9 @@ public class FileMovieParserTest extends BaseMovieParserTest {
                 new Movie("Вакантна жизнь шеф-повара", 2015).setRating(5)
         );
 
-        assertEquals(expected, parser.parse(data));
+        assertEquals(
+                expected,
+                parser.parse(getResourceContents("parser/test_data_file_exported_from_profile.xls", FILE_CHARSET))
+        );
     }
 }

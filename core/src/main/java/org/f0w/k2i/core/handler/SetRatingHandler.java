@@ -1,10 +1,9 @@
 package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
-import com.typesafe.config.Config;
 import lombok.val;
 import org.f0w.k2i.core.exchange.MovieAuthStringFetcher;
-import org.f0w.k2i.core.exchange.MovieRatingChanger;
+import org.f0w.k2i.core.exchange.MovieRatingChangerFactory;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 
@@ -13,11 +12,13 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 public final class SetRatingHandler extends MovieHandler {
-    private final Config config;
+    private final MovieAuthStringFetcher authFetcher;
+    private final MovieRatingChangerFactory ratingChangerFactory;
 
     @Inject
-    public SetRatingHandler(Config config) {
-        this.config = config;
+    public SetRatingHandler(MovieAuthStringFetcher authFetcher, MovieRatingChangerFactory ratingChangerFactory) {
+        this.authFetcher = authFetcher;
+        this.ratingChangerFactory = ratingChangerFactory;
     }
 
     /**
@@ -47,15 +48,13 @@ public final class SetRatingHandler extends MovieHandler {
                 return;
             }
 
-            val authString = new MovieAuthStringFetcher(config)
-                    .prepare(movie)
-                    .getProcessedResponse();
+            val authString = authFetcher.prepare(movie).getProcessedResponse();
 
             if (authString == null) {
                 throw new IOException("Movie authorisation string is empty!");
             }
 
-            int statusCode = new MovieRatingChanger(config, authString)
+            int statusCode = ratingChangerFactory.create(authString)
                     .prepare(movie)
                     .getProcessedResponse();
 

@@ -13,6 +13,14 @@ public interface MovieRepository extends Repository<Movie, Long> {
     Movie findByTitleAndYear(final String title, final int year);
 
     /**
+     * If movie with such title and year exists - update it, else - saveAll.
+     *
+     * @param movie Movie to saveAll/update
+     * @return Saved/updated movie
+     */
+    Movie saveOrUpdate(Movie movie);
+
+    /**
      * {@inheritDoc}
      */
     @Override

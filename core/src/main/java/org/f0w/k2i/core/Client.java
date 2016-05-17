@@ -6,16 +6,17 @@ import com.google.inject.Injector;
 import com.google.inject.Stage;
 import com.google.inject.persist.PersistService;
 import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import lombok.NonNull;
 import org.f0w.k2i.core.event.ImportFinishedEvent;
 import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
 import org.f0w.k2i.core.event.ImportStartedEvent;
 import org.f0w.k2i.core.handler.MovieHandler;
+import org.f0w.k2i.core.ioc.ServiceModule;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.service.ImportProgressService;
-import org.f0w.k2i.core.providers.ConfigurationProvider;
-import org.f0w.k2i.core.providers.JpaRepositoryProvider;
-import org.f0w.k2i.core.providers.SystemProvider;
+import org.f0w.k2i.core.ioc.ConfigurationModule;
+import org.f0w.k2i.core.ioc.JpaRepositoryModule;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public final class Client implements Runnable {
     private final ImportProgressService importProgressService;
     private final PersistService persistService;
 
+    private final Path filePath;
+    private final boolean cleanRun;
+
     public Client(@NonNull Path filePath, @NonNull Config config) {
         this(filePath, config, false);
     }
@@ -43,11 +47,14 @@ public final class Client implements Runnable {
     }
 
     public Client(@NonNull Path filePath, @NonNull Config config, boolean cleanRun, @NonNull List<?> listeners) {
+        this.filePath = checkFile(filePath);
+        this.cleanRun = cleanRun;
+
         Injector injector = Guice.createInjector(
                 Stage.PRODUCTION,
-                new ConfigurationProvider(config),
-                new JpaRepositoryProvider(),
-                new SystemProvider()
+                new ConfigurationModule(ConfigValidator.checkValid(config.withFallback(ConfigFactory.load()))),
+                new JpaRepositoryModule(),
+                new ServiceModule()
         );
 
         persistService = injector.getInstance(PersistService.class);
@@ -55,8 +62,7 @@ public final class Client implements Runnable {
 
         handlerType = injector.getInstance(MovieHandler.Type.class);
         handlerChain = injector.getInstance(MovieHandler.class);
-        importProgressService = injector.getInstance(ImportProgressService.class)
-                .initialize(checkFile(filePath), cleanRun);
+        importProgressService = injector.getInstance(ImportProgressService.class);
 
         eventBus = new EventBus();
         listeners.forEach(eventBus::register);
@@ -64,7 +70,11 @@ public final class Client implements Runnable {
 
     @Override
     public void run() {
-        List<ImportProgress> importProgress = importProgressService.getNotHandledMovies(handlerType);
+        if (cleanRun) {
+            importProgressService.deleteAll(filePath);
+        }
+
+        List<ImportProgress> importProgress = importProgressService.findOrSaveAll(filePath);
 
         eventBus.post(new ImportStartedEvent(importProgress.size()));
 

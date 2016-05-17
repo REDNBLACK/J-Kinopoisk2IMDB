@@ -9,6 +9,7 @@ ext {
 dependencies {
     compile "com.google.inject:guice:$guiceVersion"
     compile "com.google.inject.extensions:guice-persist:$guiceVersion"
+    compile "com.google.inject.extensions:guice-assistedinject:$guiceVersion"
 
     compile "com.google.guava:guava:19.0"
     compile "org.apache.commons:commons-lang3:3.4"

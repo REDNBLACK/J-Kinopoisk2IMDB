@@ -1,6 +1,9 @@
 package org.f0w.k2i.core.exchange;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import com.typesafe.config.Config;
 import lombok.NonNull;
 import lombok.val;
@@ -19,7 +22,8 @@ public final class MovieRatingChanger implements Exchangeable<Movie, Integer> {
     private final Config config;
     private final String authString;
 
-    public MovieRatingChanger(@NonNull Config config, @NonNull String authString) {
+    @AssistedInject
+    private MovieRatingChanger(Config config, @Assisted @NonNull String authString) {
         this.config = config;
         this.authString = authString;
     }

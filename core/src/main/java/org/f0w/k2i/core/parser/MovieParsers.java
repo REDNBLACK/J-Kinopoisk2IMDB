@@ -1,11 +1,20 @@
-package org.f0w.k2i.core.util.parser;
+package org.f0w.k2i.core.parser;
 
 import org.f0w.k2i.core.DocumentSourceType;
 
+/**
+ * {@link MovieParser} factory
+ */
 public final class MovieParsers {
     private MovieParsers() {
     }
 
+    /**
+     * Returns instance of MovieParser based on {@link DocumentSourceType}.
+     *
+     * @param documentSourceType Which one to use
+     * @return MovieParser
+     */
     public static MovieParser ofSourceType(DocumentSourceType documentSourceType) {
         switch (documentSourceType) {
             case IMDB_XML: return new IMDBXMLMovieParser();
@@ -16,6 +25,10 @@ public final class MovieParsers {
         }
     }
 
+    /**
+     * Returns MovieParser for Kinopoisk files.
+     * @return Kinopoisk file MovieParser
+     */
     public static MovieParser fileParser() {
         return new KinopoiskFileMovieParser();
     }

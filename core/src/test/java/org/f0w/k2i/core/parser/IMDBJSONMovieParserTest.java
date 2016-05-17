@@ -1,33 +1,33 @@
-package org.f0w.k2i.core.util.parser;
+package org.f0w.k2i.core.parser;
 
-import lombok.val;
 import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.f0w.k2i.TestHelper.getResourceContents;
 import static org.junit.Assert.assertEquals;
 
-public class IMDBXMLMovieParserTest extends BaseMovieParserTest {
+public class IMDBJSONMovieParserTest extends JSONBasedMovieParserTest {
     @Before
     public void setUp() throws Exception {
-        parser = MovieParsers.ofSourceType(DocumentSourceType.IMDB_XML);
+        parser = MovieParsers.ofSourceType(DocumentSourceType.IMDB_JSON);
     }
 
     @Test
     public void parseWithValidData() throws Exception {
-        val expected = Arrays.asList(
-                new Movie("Inception: The IMAX Experience", 2010, Movie.Type.MOVIE, null, "tt1375666"),
+        List<Movie> expected = Arrays.asList(
+                new Movie("Inception", 2010, Movie.Type.MOVIE, null, "tt1375666"),
                 new Movie("Inception: Motion Comics", 2010, Movie.Type.SERIES, null, "tt1790736"),
                 new Movie("Inception: The Cobol Job", 2010, Movie.Type.SHORT, null, "tt5295894"),
                 new Movie("Inception: 4Movie Premiere Special", 2010, Movie.Type.DOCUMENTARY, null, "tt1686778"),
                 new Movie("Inception: In 60 Seconds", 2013, Movie.Type.SHORT, null, "tt3262402"),
                 new Movie("On Inception (TOI and MOI)", 2011, Movie.Type.SHORT, null, "tt4341988"),
                 new Movie("WWA: The Inception", 2001, Movie.Type.MOVIE, null, "tt0311992"),
-                new Movie("Fraud in the Inception", 2013, Movie.Type.DOCUMENTARY, null, "tt2278951"),
+                new Movie("Fraud in the Inception: Who killed Robert Hamlin and Dorothy Grega", 2013, Movie.Type.DOCUMENTARY, null, "tt2278951"),
                 new Movie("Inception: Jump Right Into the Action", 2010, Movie.Type.DOCUMENTARY, null, "tt5295990"),
                 new Movie("Inception of a lost Art", 2013, Movie.Type.MOVIE, null, "tt3563778"),
                 new Movie("Inception of Chaos", 2012, Movie.Type.SHORT, null, "tt2762020"),
@@ -42,6 +42,6 @@ public class IMDBXMLMovieParserTest extends BaseMovieParserTest {
                 new Movie("Immaculate Conception", 1992, Movie.Type.MOVIE, null, "tt0104489")
         );
 
-        assertEquals(expected, parser.parse(getResourceContents("parser/test_data_imdb.xml")));
+        assertEquals(expected, parser.parse(getResourceContents("parser/test_data_imdb.json")));
     }
 }

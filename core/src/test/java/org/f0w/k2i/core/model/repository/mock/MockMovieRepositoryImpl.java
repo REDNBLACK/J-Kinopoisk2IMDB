@@ -12,4 +12,21 @@ public class MockMovieRepositoryImpl extends BaseMockRepository<Movie> implement
                 .findFirst()
                 .orElse(null);
     }
+
+    @Override
+    public Movie saveOrUpdate(Movie movie) {
+        Movie oldMovie = findByTitleAndYear(movie.getTitle(), movie.getYear());
+
+        if (oldMovie == null) {
+            return save(movie);
+        }
+
+        if (oldMovie.getRating() == null && movie.getRating() != null) {
+            oldMovie.setRating(movie.getRating());
+
+            return save(oldMovie);
+        }
+
+        return oldMovie;
+    }
 }

@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.util.parser;
+package org.f0w.k2i.core.parser;
 
 import lombok.val;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -7,7 +7,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

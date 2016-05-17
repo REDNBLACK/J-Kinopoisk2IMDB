@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.exchange;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import lombok.NonNull;
 import lombok.val;
@@ -18,7 +19,8 @@ import java.net.URL;
 public final class MovieWatchlistAssigner implements Exchangeable<Movie, Integer> {
     private final Config config;
 
-    public MovieWatchlistAssigner(@NonNull Config config) {
+    @Inject
+    public MovieWatchlistAssigner(Config config) {
         this.config = config;
     }
 

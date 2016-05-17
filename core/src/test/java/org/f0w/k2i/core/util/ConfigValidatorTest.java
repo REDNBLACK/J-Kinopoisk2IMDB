@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static com.typesafe.config.ConfigFactory.parseMap;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.f0w.k2i.core.util.ConfigValidator.checkValid;
+import static org.f0w.k2i.core.ConfigValidator.checkValid;
 
 public class ConfigValidatorTest {
     private Map<String, Object> configMap;

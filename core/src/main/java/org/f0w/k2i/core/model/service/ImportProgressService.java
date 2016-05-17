@@ -1,116 +1,28 @@
 package org.f0w.k2i.core.model.service;
 
-import com.google.common.hash.Hashing;
-import com.google.common.io.Files;
-import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
-import lombok.val;
-import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.ImportProgress;
-import org.f0w.k2i.core.model.entity.KinopoiskFile;
-import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.model.repository.ImportProgressRepository;
-import org.f0w.k2i.core.model.repository.KinopoiskFileRepository;
-import org.f0w.k2i.core.model.repository.MovieRepository;
-import org.f0w.k2i.core.util.exception.ExceptionUtils;
-import org.f0w.k2i.core.util.parser.MovieParsers;
 
-import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static java.nio.file.Files.readAllBytes;
-import static org.f0w.k2i.core.util.IOUtils.checkFile;
+public interface ImportProgressService {
+    default List<ImportProgress> findOrSaveAll(Path filePath) {
+        List<ImportProgress> found = findAll(filePath);
 
-public final class ImportProgressService {
-    private final KinopoiskFileRepository kinopoiskFileRepository;
-    private final ImportProgressRepository importProgressRepository;
-    private final MovieRepository movieRepository;
+        if (found.isEmpty()) {
+            saveAll(filePath);
 
-    private Path filePath;
-    private KinopoiskFile kinopoiskFile;
-
-    @Inject
-    public ImportProgressService(
-            KinopoiskFileRepository kinopoiskFileRepository,
-            ImportProgressRepository importProgressRepository,
-            MovieRepository movieRepository
-    ) {
-        this.kinopoiskFileRepository = kinopoiskFileRepository;
-        this.importProgressRepository = importProgressRepository;
-        this.movieRepository = movieRepository;
-    }
-
-    public ImportProgressService initialize(Path filePath, boolean cleanRun) {
-        this.filePath = checkFile(filePath);
-
-        val fileHashCode = ExceptionUtils.uncheck(() -> Files.hash(filePath.toFile(), Hashing.sha256()).toString());
-
-        if (cleanRun) {
-            removeExistingFileData(fileHashCode);
+            return findAll(filePath);
         }
 
-        kinopoiskFile = Optional.ofNullable(kinopoiskFileRepository.findByHashCode(fileHashCode))
-                .orElseGet(() -> importNewFileData(fileHashCode));
-
-        return this;
+        return found;
     }
 
-    public List<ImportProgress> getNotHandledMovies(MovieHandler.Type type) {
-        switch (type) {
-            case SET_RATING:
-                return importProgressRepository.findNotRatedByFile(kinopoiskFile);
-            case ADD_TO_WATCHLIST:
-                return importProgressRepository.findNotImportedByFile(kinopoiskFile);
-            case COMBINED:
-                return importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile);
-            default:
-                return Collections.emptyList();
-        }
-    }
+    List<ImportProgress> findAll(Path filePath);
 
-    @Transactional
-    private KinopoiskFile importNewFileData(String fileHashCode) {
-        KinopoiskFile newFile = kinopoiskFileRepository.save(new KinopoiskFile(fileHashCode));
-        val data = ExceptionUtils.uncheck(() -> new String(readAllBytes(filePath), Charset.forName("windows-1251")));
+    ImportProgress save(ImportProgress importProgress);
 
-        List<Movie> movies = MovieParsers.fileParser()
-                .parse(data)
-                .stream()
-                .map(newMovie -> {
-                    Movie oldMovie = movieRepository.findByTitleAndYear(newMovie.getTitle(), newMovie.getYear());
+    void saveAll(Path filePath);
 
-                    if (oldMovie == null) {
-                        return movieRepository.save(newMovie);
-                    }
-
-                    if (oldMovie.getRating() == null && newMovie.getRating() != null) {
-                        oldMovie.setRating(newMovie.getRating());
-
-                        return movieRepository.save(oldMovie);
-                    }
-
-                    return oldMovie;
-                })
-                .collect(Collectors.toList());
-
-        importProgressRepository.saveAll(newFile, movies);
-
-        return newFile;
-    }
-
-    @Transactional
-    private void removeExistingFileData(String fileHashCode) {
-        KinopoiskFile existingFile = kinopoiskFileRepository.findByHashCode(fileHashCode);
-
-        if (existingFile == null) {
-            return;
-        }
-
-        importProgressRepository.deleteAll(existingFile);
-        kinopoiskFileRepository.delete(existingFile);
-    }
+    void deleteAll(Path filePath);
 }

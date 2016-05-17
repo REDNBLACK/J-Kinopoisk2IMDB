@@ -6,7 +6,7 @@ import lombok.val;
 import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.f0w.k2i.core.util.HttpUtils;
-import org.f0w.k2i.core.util.parser.MovieParsers;
+import org.f0w.k2i.core.parser.MovieParsers;
 import org.jsoup.Connection;
 import org.jsoup.helper.HttpConnection;
 

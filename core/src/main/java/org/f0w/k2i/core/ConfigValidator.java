@@ -1,10 +1,9 @@
-package org.f0w.k2i.core.util;
+package org.f0w.k2i.core;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException;
 import lombok.val;
 import org.apache.commons.lang3.EnumUtils;
-import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.handler.MovieHandler;
 

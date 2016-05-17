@@ -26,4 +26,24 @@ public class JpaMovieRepositoryImpl extends BaseJPARepository<Movie, Long> imple
             return null;
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Movie saveOrUpdate(Movie movie) {
+        Movie oldMovie = findByTitleAndYear(movie.getTitle(), movie.getYear());
+
+        if (oldMovie == null) {
+            return save(movie);
+        }
+
+        if (oldMovie.getRating() == null && movie.getRating() != null) {
+            oldMovie.setRating(movie.getRating());
+
+            return save(oldMovie);
+        }
+
+        return oldMovie;
+    }
 }

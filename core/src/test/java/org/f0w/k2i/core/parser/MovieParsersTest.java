@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.util.parser;
+package org.f0w.k2i.core.parser;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.val;

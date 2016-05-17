@@ -9,13 +9,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.f0w.k2i.core.util.IOUtils.checkFile;
+import static org.f0w.k2i.core.util.IOUtils.getFileHashCode;
+import static org.f0w.k2i.core.util.IOUtils.readFile;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class IOUtilsTest {
@@ -76,5 +80,15 @@ public class IOUtilsTest {
         expected.expect(IllegalArgumentException.class);
         expected.expectMessage("Not a file!");
         checkFile(temporaryDirectory);
+    }
+
+    @Test
+    public void checkReadFile() throws Exception {
+        assertFalse("".equals(readFile(temporaryFile, StandardCharsets.UTF_8)));
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void checkGetFileHashCodeThrowsOnVirtualFS() throws Exception {
+        getFileHashCode(temporaryFile);
     }
 }

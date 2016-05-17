@@ -2,7 +2,7 @@ package org.f0w.k2i.core.exchange.finder.strategy;
 
 import lombok.NonNull;
 import org.f0w.k2i.core.model.entity.Movie;
-import org.f0w.k2i.core.util.parser.MovieParser;
+import org.f0w.k2i.core.parser.MovieParser;
 import org.jsoup.Connection;
 
 import java.util.List;

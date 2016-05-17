@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.exchange;
 
+import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import lombok.NonNull;
 import lombok.val;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public final class MovieAuthStringFetcher implements Exchangeable<Movie, String> {
     private final Config config;
 
+    @Inject
     public MovieAuthStringFetcher(@NonNull Config config) {
         this.config = config;
     }

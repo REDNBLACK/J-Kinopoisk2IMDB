@@ -2,8 +2,11 @@ package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
 import lombok.NonNull;
+import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.comparator.MovieComparator;
+import org.f0w.k2i.core.comparator.MovieComparatorFactory;
 import org.f0w.k2i.core.exchange.finder.MovieFinder;
+import org.f0w.k2i.core.exchange.finder.MovieFinderFactory;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 
@@ -17,9 +20,14 @@ public final class ParseIDHandler extends MovieHandler {
     private final MovieComparator movieComparator;
 
     @Inject
-    public ParseIDHandler(MovieFinder movieFinder, MovieComparator movieComparator) {
-        this.movieFinder = movieFinder;
-        this.movieComparator = movieComparator;
+    public ParseIDHandler(
+            DocumentSourceType[] documentSourceTypes,
+            MovieFinderFactory movieFinderFactory,
+            MovieComparator.Type[] movieComparatorTypes,
+            MovieComparatorFactory movieComparatorFactory
+    ) {
+        this.movieFinder = movieFinderFactory.make(documentSourceTypes);
+        this.movieComparator = movieComparatorFactory.make(movieComparatorTypes);
     }
 
     /**

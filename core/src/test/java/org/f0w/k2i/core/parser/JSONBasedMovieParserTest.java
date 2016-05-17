@@ -1,4 +1,4 @@
-package org.f0w.k2i.core.util.parser;
+package org.f0w.k2i.core.parser;
 
 import org.junit.Test;
 

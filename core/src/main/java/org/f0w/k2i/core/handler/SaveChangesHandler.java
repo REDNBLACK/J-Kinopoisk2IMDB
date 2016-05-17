@@ -3,15 +3,16 @@ package org.f0w.k2i.core.handler;
 import com.google.inject.Inject;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.repository.ImportProgressRepository;
+import org.f0w.k2i.core.model.service.ImportProgressService;
 
 import java.util.List;
 
 public final class SaveChangesHandler extends MovieHandler {
-    private final ImportProgressRepository importProgressRepository;
+    private final ImportProgressService service;
 
     @Inject
-    public SaveChangesHandler(ImportProgressRepository importProgressRepository) {
-        this.importProgressRepository = importProgressRepository;
+    public SaveChangesHandler(ImportProgressService service) {
+        this.service = service;
     }
 
     /**
@@ -22,7 +23,7 @@ public final class SaveChangesHandler extends MovieHandler {
      */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
-        importProgressRepository.save(importProgress);
+        service.save(importProgress);
 
         LOG.info("Changes were successfully saved to storage");
     }

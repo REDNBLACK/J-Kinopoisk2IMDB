@@ -37,7 +37,7 @@ public interface Repository<T, ID extends Serializable> {
     /**
      * Delete entity
      *
-     * @param entity Entity to delete
+     * @param entity Entity to deleteAll
      */
     void delete(T entity);
 

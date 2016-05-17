@@ -11,11 +11,11 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 public final class AddToWatchlistHandler extends MovieHandler {
-    private final Config config;
+    private final MovieWatchlistAssigner assigner;
 
     @Inject
-    public AddToWatchlistHandler(Config config) {
-        this.config = config;
+    public AddToWatchlistHandler(MovieWatchlistAssigner assigner) {
+        this.assigner = assigner;
     }
 
     /**
@@ -40,9 +40,7 @@ public final class AddToWatchlistHandler extends MovieHandler {
                 return;
             }
             
-            int statusCode = new MovieWatchlistAssigner(config)
-                    .prepare(movie)
-                    .getProcessedResponse();
+            int statusCode = assigner.prepare(movie).getProcessedResponse();
 
             if (statusCode != HttpURLConnection.HTTP_OK) {
                 throw new IOException("Can't add movie to watchlist, error status code: " + statusCode);

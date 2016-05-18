@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
-public final class ImportProgressServiceImpl implements ImportProgressService {
+public class ImportProgressServiceImpl implements ImportProgressService {
     private final KinopoiskFileServiceImpl kinopoiskFileService;
     private final MovieServiceImpl movieService;
 

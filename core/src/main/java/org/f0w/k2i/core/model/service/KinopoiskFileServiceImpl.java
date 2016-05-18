@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 import static org.f0w.k2i.core.util.IOUtils.getFileHashCode;
 
-public final class KinopoiskFileServiceImpl implements KinopoiskFileService {
+public class KinopoiskFileServiceImpl implements KinopoiskFileService {
     private final KinopoiskFileRepository kinopoiskFileRepository;
 
     @Inject

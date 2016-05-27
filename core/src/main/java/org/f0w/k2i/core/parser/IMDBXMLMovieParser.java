@@ -2,41 +2,33 @@ package org.f0w.k2i.core.parser;
 
 import org.f0w.k2i.core.model.entity.Movie;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
-final class IMDBXMLMovieParser extends AbstractMovieParser {
+final class IMDBXMLMovieParser extends AbstractMovieParser<Element> {
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Movie> parse(final String data) {
-        if (data == null) {
-            return Collections.emptyList();
-        }
-
-        Document document = Jsoup.parse(data);
-
-        return document.getElementsByTag("ImdbEntity")
-                .stream()
-                .map(e -> new Movie(
-                        parseTitle(e.ownText()),
-                        parseYear(stringOrNull(e.getElementsByTag("Description").first())),
-                        parseType(stringOrNull(e.getElementsByTag("Description").first())),
-                        null,
-                        parseIMDBId(e.attr("id"))
-                ))
-                .collect(Collectors.toList());
+    protected Stream<Element> getStructureStream(final String data) {
+        return Jsoup.parse(data)
+                .getElementsByTag("ImdbEntity")
+                .stream();
     }
 
-    private String stringOrNull(Element element) {
-        return Optional.ofNullable(element)
-                .map(Element::text)
-                .orElse(null);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Function<Element, Movie> getDataMapper() {
+        return e -> new Movie(
+                parseTitle(e.ownText()),
+                parseYear(stringOrNull(e.getElementsByTag("Description").first(), Element::text)),
+                parseType(stringOrNull(e.getElementsByTag("Description").first(), Element::text)),
+                null,
+                parseIMDBId(e.attr("id"))
+        );
     }
 }

@@ -4,15 +4,73 @@ import lombok.val;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-abstract class AbstractMovieParser implements MovieParser {
+abstract class AbstractMovieParser<T> implements MovieParser {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Movie> parse(final String data) {
+        if (!isDataValid(data)) {
+            return Collections.emptyList();
+        }
+
+        return getStructureStream(data)
+                .map(getDataMapper())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns stream of parsed structure.
+     *
+     * @param data Data to use as stream
+     * @return Stream
+     */
+    protected abstract Stream<T> getStructureStream(final String data);
+
+    /**
+     * Returns the data mapper for structure.
+     *
+     * @return Data mapper
+     */
+    protected abstract Function<T, Movie> getDataMapper();
+
+    /**
+     * Checks that data is valid.
+     *
+     * @param data Data to check
+     * @return Is data valid or not
+     */
+    protected boolean isDataValid(final String data) {
+        return data != null;
+    }
+
+    /**
+     * Returns String representation of element using mapper or null
+     * @param element Element
+     * @param mapper Mapper
+     * @param <E> Type of element
+     * @return String representation of element or null
+     */
+    protected <E> String stringOrNull(E element, Function<E, String> mapper) {
+        return Optional.ofNullable(element)
+                .map(mapper)
+                .orElse(null);
+    }
+
     /**
      * Parses title, and returns "null" string if not valid
      *
      * @param title String to parseResponse
      * @return Parsed title
      */
-    protected String parseTitle(final String title) {
+    String parseTitle(final String title) {
         val resultTitle = String.valueOf(title).trim();
 
         if ("".equals(resultTitle)) {
@@ -28,7 +86,7 @@ abstract class AbstractMovieParser implements MovieParser {
      * @param year String containing year to parse
      * @return Parsed year or 0
      */
-    protected int parseYear(final String year) {
+    int parseYear(final String year) {
         val yearLength = 4;
 
         try {
@@ -46,7 +104,7 @@ abstract class AbstractMovieParser implements MovieParser {
      * @param type String containing type to parse
      * @return Parsed Type or {@link Movie.Type#MOVIE}
      */
-    protected Movie.Type parseType(final String type) {
+    Movie.Type parseType(final String type) {
         val safeType = String.valueOf(type);
 
         if (safeType.contains("TV series") || safeType.contains("TV mini-series")) {
@@ -68,7 +126,7 @@ abstract class AbstractMovieParser implements MovieParser {
      * @param imdbId String to parseResponse
      * @return Parsed IMDB ID or null
      */
-    protected String parseIMDBId(final String imdbId) {
+    String parseIMDBId(final String imdbId) {
         val resultImdbId = String.valueOf(imdbId).trim();
 
         if (!resultImdbId.startsWith("tt") || resultImdbId.length() < 3) {
@@ -84,7 +142,7 @@ abstract class AbstractMovieParser implements MovieParser {
      * @param rating String to parseResponse
      * @return Parsed rating or null
      */
-    protected Integer parseRating(final String rating) {
+    Integer parseRating(final String rating) {
         val resultRating = String.valueOf(rating).trim();
         val zeroValues = Arrays.asList("", "null", "zero", "0");
 

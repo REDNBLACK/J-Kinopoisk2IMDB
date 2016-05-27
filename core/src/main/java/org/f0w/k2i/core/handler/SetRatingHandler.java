@@ -33,19 +33,19 @@ public final class SetRatingHandler extends MovieHandler {
 
         LOG.info("Setting rating of movie: {}", movie);
 
+        if (importProgress.isRated()) {
+            LOG.info("Movie rating is already set!");
+            return;
+        }
+
+        if (movie.isEmptyRating()) {
+            LOG.info("Movie doesn't have rating!");
+            return;
+        }
+
         try {
             if (movie.isEmptyIMDBId()) {
                 throw new IOException("Can't change movie rating, IMDB ID is not set");
-            }
-
-            if (movie.isEmptyRating()) {
-                LOG.info("Movie doesn't have rating!");
-                return;
-            }
-
-            if (importProgress.isRated()) {
-                LOG.info("Movie rating is already set!");
-                return;
             }
 
             val authString = authFetcher.prepare(movie).getProcessedResponse();
@@ -66,8 +66,7 @@ public final class SetRatingHandler extends MovieHandler {
 
             LOG.info("Movie rating was successfully set");
         } catch (IOException e) {
-            LOG.info("Error setting rating of movie: {}", e);
-
+            LOG.error("Error setting rating of movie: {}", e);
             errors.add(new Error(importProgress.getMovie(), e.getMessage()));
         }
     }

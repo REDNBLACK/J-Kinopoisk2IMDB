@@ -2,6 +2,7 @@ package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
 import lombok.NonNull;
+import lombok.val;
 import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.comparator.MovieComparatorFactory;
@@ -48,15 +49,16 @@ public final class ParseIDHandler extends MovieHandler {
         }
 
         try {
-            Movie matchingMovie = findMatchingMovie(movie, movieFinder.prepare(movie).getProcessedResponse())
+            val foundMovies = movieFinder.prepare(movie).getProcessedResponse();
+            val matchingMovieIMDBId = findMatchingMovie(movie, foundMovies)
+                    .map(Movie::getImdbId)
                     .orElseThrow(() -> new IOException("Matching movie not found"));
 
-            movie.setImdbId(matchingMovie.getImdbId());
+            movie.setImdbId(matchingMovieIMDBId);
 
-            LOG.info("Movie IMDB id successfully found: {}", matchingMovie.getImdbId());
+            LOG.info("Movie IMDB id successfully found: {}", matchingMovieIMDBId);
         } catch (IOException e) {
-            LOG.info("Can't prepare movie: {}", e);
-
+            LOG.error("Can't prepare movie: {}", e);
             errors.add(new Error(importProgress.getMovie(), e.getMessage()));
         }
     }
@@ -73,6 +75,7 @@ public final class ParseIDHandler extends MovieHandler {
             Movie imdbMovie = movies.poll();
 
             if (movieComparator.areEqual(movie, imdbMovie)) {
+                movies.clear();
                 return Optional.of(imdbMovie);
             }
         }

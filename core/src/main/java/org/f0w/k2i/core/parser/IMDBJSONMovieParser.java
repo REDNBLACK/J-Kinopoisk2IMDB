@@ -1,47 +1,40 @@
 package org.f0w.k2i.core.parser;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.f0w.k2i.core.model.entity.Movie;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-final class IMDBJSONMovieParser extends AbstractMovieParser {
+final class IMDBJSONMovieParser extends AbstractJSONMovieParser<JsonObject> {
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Movie> parse(final String data) {
-        if (data == null || "".equals(data)) {
-            return Collections.emptyList();
-        }
-
-        JsonParser jsonParser = new JsonParser();
-
-        return jsonParser.parse(data)
+    protected Stream<JsonObject> getStructureStream(String data) {
+        return new JsonParser().parse(data)
                 .getAsJsonObject()
                 .entrySet()
                 .stream()
                 .map(e -> e.getValue().getAsJsonArray())
                 .flatMap(a -> StreamSupport.stream(a.spliterator(), false))
-                .map(JsonElement::getAsJsonObject)
-                .map(e -> new Movie(
-                        parseTitle(stringOrNull(e.get("title"))),
-                        parseYear(stringOrNull(e.get("description"))),
-                        parseType(stringOrNull(e.get("description"))),
-                        null,
-                        parseIMDBId(stringOrNull(e.get("id")))
-                ))
-                .collect(Collectors.toList());
+                .map(JsonElement::getAsJsonObject);
     }
 
-    private String stringOrNull(JsonElement element) {
-        return Optional.ofNullable(element)
-                .map(JsonElement::getAsString)
-                .orElse(null);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Function<JsonObject, Movie> getDataMapper() {
+        return e -> new Movie(
+                parseTitle(stringOrNull(e.get("title"), JsonElement::getAsString)),
+                parseYear(stringOrNull(e.get("description"), JsonElement::getAsString)),
+                parseType(stringOrNull(e.get("description"), JsonElement::getAsString)),
+                null,
+                parseIMDBId(stringOrNull(e.get("id"), JsonElement::getAsString))
+        );
     }
 }

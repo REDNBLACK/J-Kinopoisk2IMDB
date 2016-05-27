@@ -7,28 +7,23 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.StringUtils.replaceEachRepeatedly;
-import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
 
-final class KinopoiskFileMovieParser extends AbstractMovieParser {
+final class KinopoiskFileMovieParser extends AbstractMovieParser<Map<String, String>> {
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Movie> parse(final String data) {
-        if (data == null) {
-            return Collections.emptyList();
-        }
-
+    protected Stream<Map<String, String>> getStructureStream(final String data) {
         Elements content = Jsoup.parse(data).select("table tr");
 
         if (content.isEmpty()) {
-            return Collections.emptyList();
+            return Stream.empty();
         }
 
         val header = content.remove(0)
@@ -46,15 +41,21 @@ final class KinopoiskFileMovieParser extends AbstractMovieParser {
                 .map(e -> CollectionUtils.combineLists(header, e))
                 .collect(Collectors.toList());
 
-        return rows.stream()
-                .map(m -> new Movie(
-                        parseTitle(m.get("оригинальное название"), m.get("русскоязычное название")),
-                        parseYear(m.get("год")),
-                        parseType(m),
-                        parseRating(m.get("моя оценка")),
-                        null
-                ))
-                .collect(Collectors.toList());
+        return rows.stream();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Function<Map<String, String>, Movie> getDataMapper() {
+        return e -> new Movie(
+                parseTitle(e.get("оригинальное название"), e.get("русскоязычное название")),
+                parseYear(e.get("год")),
+                parseType(e),
+                parseRating(e.get("моя оценка")),
+                null
+        );
     }
 
     /**
@@ -64,7 +65,7 @@ final class KinopoiskFileMovieParser extends AbstractMovieParser {
      * @param fallback Fallback string
      * @return Parsed title or defaultTitle
      */
-    protected String parseTitle(final String title, final String fallback) {
+    private String parseTitle(final String title, final String fallback) {
         val resultTitle = parseTitle(title);
 
         if ("null".equals(resultTitle)) {
@@ -78,7 +79,7 @@ final class KinopoiskFileMovieParser extends AbstractMovieParser {
         return resultTitle;
     }
 
-    protected Movie.Type parseType(final Map<String, String> row) {
+    private Movie.Type parseType(final Map<String, String> row) {
         boolean isSeries = row.get("год").split("-|–").length == 2;
         if (isSeries) {
             return Movie.Type.SERIES;

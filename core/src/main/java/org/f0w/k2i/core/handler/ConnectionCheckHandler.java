@@ -2,18 +2,20 @@ package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
 import com.typesafe.config.Config;
-import lombok.val;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.util.HttpUtils;
 
 import java.util.List;
 
 public final class ConnectionCheckHandler extends MovieHandler {
-    private final Config config;
+    private static final String URL = "www.imdb.com";
+    private static final int PORT = 80;
+
+    private final int timeout;
 
     @Inject
     public ConnectionCheckHandler(Config config) {
-        this.config = config;
+        this.timeout = config.getInt("timeout");
     }
 
     /**
@@ -24,12 +26,8 @@ public final class ConnectionCheckHandler extends MovieHandler {
      */
     @Override
     protected void handleMovie(ImportProgress importProgress, List<Error> errors) {
-        val url = "www.imdb.com";
-        val port = 80;
-        val timeout = config.getInt("timeout");
-
-        while (!HttpUtils.isReachable(url, port, timeout)) {
-            LOG.info("IMDB url is not reachable, retrying...");
+        while (!HttpUtils.isReachable(URL, PORT, timeout)) {
+            LOG.info("IMDB URL is not reachable, retrying...");
 
             try {
                 Thread.sleep(timeout);
@@ -38,6 +36,6 @@ public final class ConnectionCheckHandler extends MovieHandler {
             }
         }
 
-        LOG.info("IMDB url is successfully reached!");
+        LOG.info("IMDB URL is successfully reached!");
     }
 }

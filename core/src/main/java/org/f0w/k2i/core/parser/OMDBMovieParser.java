@@ -6,44 +6,37 @@ import com.google.gson.JsonParser;
 import lombok.val;
 import org.f0w.k2i.core.model.entity.Movie;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
-final class OMDBMovieParser extends AbstractMovieParser {
-    /**
-     * {@inheritDoc}
-     */
+final class OMDBMovieParser extends AbstractJSONMovieParser<JsonObject> {
     @Override
-    public List<Movie> parse(String data) {
-        if (data == null || "".equals(data)) {
-            return Collections.emptyList();
-        }
-
-        JsonParser jsonParser = new JsonParser();
-
-        return Optional.of(jsonParser.parse(data))
+    protected Stream<JsonObject> getStructureStream(final String data) {
+        return Stream.of(new JsonParser().parse(data))
+                .filter(JsonElement::isJsonObject)
                 .map(JsonElement::getAsJsonObject)
                 .filter(e -> !e.entrySet().isEmpty())
-                .filter(e -> e.has("imdbID"))
-                .map(e -> new Movie(
-                        parseTitle(stringOrNull(e.get("Title"))),
-                        parseYear(stringOrNull(e.get("Year"))),
-                        parseType(e),
-                        null,
-                        parseIMDBId(stringOrNull(e.get("imdbID")))
-                ))
-                .map(Collections::singletonList)
-                .orElseGet(Collections::emptyList);
+                .filter(e -> e.has("imdbID"));
     }
 
-    protected Movie.Type parseType(JsonObject element) {
-        boolean isSeries = "series".equals(stringOrNull(element.get("Type")));
+    @Override
+    protected Function<JsonObject, Movie> getDataMapper() {
+        return e -> new Movie(
+                parseTitle(stringOrNull(e.get("Title"), JsonElement::getAsString)),
+                parseYear(stringOrNull(e.get("Year"), JsonElement::getAsString)),
+                parseType(e),
+                null,
+                parseIMDBId(stringOrNull(e.get("imdbID"), JsonElement::getAsString))
+        );
+    }
+
+    private Movie.Type parseType(JsonObject element) {
+        boolean isSeries = "series".equals(stringOrNull(element.get("Type"), JsonElement::getAsString));
         if (isSeries) {
             return Movie.Type.SERIES;
         }
 
-        val genres = String.valueOf(stringOrNull(element.get("Genre")));
+        val genres = String.valueOf(stringOrNull(element.get("Genre"), JsonElement::getAsString));
         if (genres.contains("Documentary")) {
             return Movie.Type.DOCUMENTARY;
         } else if (genres.contains("Short")) {
@@ -51,11 +44,5 @@ final class OMDBMovieParser extends AbstractMovieParser {
         }
 
         return Movie.Type.MOVIE;
-    }
-
-    private String stringOrNull(JsonElement element) {
-        return Optional.ofNullable(element)
-                .map(JsonElement::getAsString)
-                .orElse(null);
     }
 }

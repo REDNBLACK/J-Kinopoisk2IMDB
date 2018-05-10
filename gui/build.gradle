@@ -10,7 +10,7 @@ version = '1.1.1'
 dependencies {
     compile project(':k2i-core')
 
-    compile "org.controlsfx:controlsfx:8.40.10"
+    compile "org.controlsfx:controlsfx:8.40.11"
 }
 
 configurations {

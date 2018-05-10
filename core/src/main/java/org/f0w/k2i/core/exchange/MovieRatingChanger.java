@@ -38,7 +38,7 @@ public final class MovieRatingChanger implements Exchangeable<Movie, Integer> {
      */
     @Override
     public ExchangeObject<Integer> prepare(@NonNull Movie movie) throws IOException {
-        val movieRatingChangeLink = new URL("http://www.imdb.com/ratings/_ajax/title");
+        val movieRatingChangeLink = new URL("https://www.imdb.com/ratings/_ajax/title");
 
         val postData = new ImmutableMap.Builder<String, String>()
                 .put("tconst", movie.getImdbId())

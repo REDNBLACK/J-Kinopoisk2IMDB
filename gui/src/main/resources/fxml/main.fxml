@@ -76,17 +76,23 @@
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0" prefWidth="344.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
                                             </rowConstraints>
                                             <children>
-                                                <Label text="Тип запроса" />
-                                                <Label text="Сравнение" GridPane.rowIndex="1" />
-                                                <Label text="Чистый запуск" GridPane.rowIndex="2" />
-                                                <CheckComboBox fx:id="documentSourceBox" GridPane.columnIndex="1" />
-                                                <CheckComboBox fx:id="comparatorsBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <CheckBox fx:id="cleanRunCheckbox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label text="Тип запроса"/>
+                                                <CheckComboBox fx:id="documentSourceBox" GridPane.columnIndex="1"/>
+                                                <Label text="OMDB API key" GridPane.rowIndex="1"/>
+                                                <TextField fx:id="omdbApiKey" GridPane.rowIndex="1"
+                                                           GridPane.columnIndex="1"/>
+                                                <Label text="Сравнение" GridPane.rowIndex="2"/>
+                                                <CheckComboBox fx:id="comparatorsBox" GridPane.columnIndex="1"
+                                                               GridPane.rowIndex="2"/>
+                                                <Label text="Чистый запуск" GridPane.rowIndex="3"/>
+                                                <CheckBox fx:id="cleanRunCheckbox" GridPane.columnIndex="1"
+                                                          GridPane.rowIndex="3"/>
                                             </children>
                                         </GridPane>
                                     </children>

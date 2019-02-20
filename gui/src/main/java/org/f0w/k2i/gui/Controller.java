@@ -73,6 +73,9 @@ public class Controller {
     private Button selectFileBtn;
 
     @FXML
+    private TextField omdbApiKey;
+
+    @FXML
     private CheckBox cleanRunCheckbox;
 
     @FXML
@@ -133,6 +136,10 @@ public class Controller {
                 new Choice<>(IMDB_HTML, "IMDB HTML"),
                 new Choice<>(OMDB, "OMDB API")
         )));
+
+        omdbApiKey.focusedProperty().addListener(o -> configMap.put("omdbApiKey", omdbApiKey.getText()));
+        omdbApiKey.setText(config.getString("omdbApiKey"));
+
         documentSourceBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<Choice<DocumentSourceType, String>>) c -> {
             List<String> types = c.getList().stream()
                     .map(choice -> choice.getValue().toString())

@@ -41,7 +41,7 @@ public class MovieFinderFactory {
             case IMDB_HTML:
                 return new BasicMovieFinder(IMDB_HTML, new IMDBHTMLExchangeStrategy(), config);
             case OMDB:
-                return new BasicMovieFinder(OMDB, new OMDBExchangeStrategy(), config);
+                return new BasicMovieFinder(OMDB, new OMDBExchangeStrategy(config), config);
             default:
                 throw new IllegalArgumentException("Invalid movie finder type!");
         }

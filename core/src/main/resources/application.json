@@ -11,6 +11,7 @@
   "mode": "COMBINED",
   "list": "",
   "auth": "",
+  "omdbApiKey": "",
   "comparators": [
       "YEAR_DEVIATION",
       "TYPE_EQUALS",

@@ -121,6 +121,12 @@ public final class ConfigValidator {
         val message = "document_source_types is not valid!";
         val documentSourceTypes = config.getStringList("document_source_types");
 
+        if (documentSourceTypes.contains(DocumentSourceType.OMDB.name())) {
+            val omdbApiKey = config.getString("omdbApiKey");
+            checkArgument(!isNullOrEmpty(omdbApiKey), "OMDB API KEY must be set for using OMDB as source. \n" +
+                    "You can obtain one here: http://www.omdbapi.com/apikey.aspx");
+        }
+
         try {
             documentSourceTypes.forEach(DocumentSourceType::valueOf);
         } catch (IllegalArgumentException e) {

@@ -8,9 +8,13 @@
       "IMDB_JSON",
       "IMDB_HTML"
   ],
-  "mode": "COMBINED",
+  "mode": "ADD_TO_WATCHLIST",
   "list": "",
   "auth": "",
+  "authSid": "",
+  "authSessionId": "",
+  "authControlKey": "",
+  "authControlValue": "",
   "omdbApiKey": "",
   "comparators": [
       "YEAR_DEVIATION",

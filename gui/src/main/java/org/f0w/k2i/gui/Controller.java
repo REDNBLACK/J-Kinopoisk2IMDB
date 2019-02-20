@@ -67,6 +67,18 @@ public class Controller {
     private TextField authId;
 
     @FXML
+    private TextField authSid;
+
+    @FXML
+    private TextField authSessionId;
+
+    @FXML
+    private TextField authControlKey;
+
+    @FXML
+    private TextField authControlValue;
+
+    @FXML
     private TextField listId;
 
     @FXML
@@ -106,8 +118,8 @@ public class Controller {
     void initialize() {
         // Основные
         modeComboBox.setItems(FXCollections.observableList(Arrays.asList(
-                new Choice<>(COMBINED, "Добавить в список и выставить рейтинг"),
-                new Choice<>(SET_RATING, "Выставить рейтинг"),
+//                new Choice<>(COMBINED, "Добавить в список и выставить рейтинг"),
+//                new Choice<>(SET_RATING, "Выставить рейтинг"),
                 new Choice<>(ADD_TO_WATCHLIST, "Добавить в список")
         )));
         modeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -125,6 +137,18 @@ public class Controller {
 
         authId.focusedProperty().addListener(o -> configMap.put("auth", authId.getText()));
         authId.setText(config.getString("auth"));
+
+        authSid.focusedProperty().addListener(o -> configMap.put("authSid", authSid.getText()));
+        authSid.setText(config.getString("authSid"));
+
+        authSessionId.focusedProperty().addListener(o -> configMap.put("authSessionId", authSessionId.getText()));
+        authSessionId.setText(config.getString("authSessionId"));
+
+        authControlKey.focusedProperty().addListener(o -> configMap.put("authControlKey", authControlKey.getText()));
+        authControlKey.setText(config.getString("authControlKey"));
+
+        authControlValue.focusedProperty().addListener(o -> configMap.put("authControlValue", authControlValue.getText()));
+        authControlValue.setText(config.getString("authControlValue"));
 
         listId.focusedProperty().addListener(o -> configMap.put("list", listId.getText()));
         listId.setText(config.getString("list"));
@@ -308,7 +332,7 @@ public class Controller {
             }
 
             progressBar.setProgress((cur * 100 / maximum) * 0.01);
-            Platform.runLater(() -> progressStatus.setText(cur + "/" + maximum));
+            Platform.runLater(() -> progressStatus.setText(successful.get() + "/" + failed.get() + "/" + maximum));
         }
 
         @Subscribe

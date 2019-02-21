@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.f0w.k2i.core.exchange.processor.ResponseProcessor;
 import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 
@@ -64,17 +65,16 @@ public interface Exchangeable<IN, OUT> {
 
         public Connection.Response getResponse() {
             if (response == null && !request.equals(EMPTY_REQUEST)) {
-                log.debug(
-                        "Sending request, to url: {}, with headers: {}", getRequest().url(), getRequest().headers()
-                );
+                log.debug("Sending request, to url: {}, with headers: {}", getRequest().url(), getRequest().headers());
                 response = responseSupplier.get();
+                // This wont work for failed requests, because of exception happened above
                 log.debug("Got response, status code: {}, headers: {}", response.statusCode(), response.headers());
             }
 
             return response;
         }
 
-        public OUT getProcessedResponse() throws IOException {
+        public OUT getProcessedResponse() throws HttpStatusException {
             return responseProcessor.process(getResponse());
         }
 

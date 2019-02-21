@@ -1,4 +1,4 @@
-version = "1.2.1"
+version = "1.2.3"
 
 ext {
     guiceVersion = "4.0"
@@ -14,7 +14,7 @@ dependencies {
     compile "com.google.guava:guava:19.0"
     compile "org.apache.commons:commons-lang3:3.4"
 
-    runtime "com.h2database:h2:1.4.191"
+    runtime "com.h2database:h2:1.4.197"
     compile "org.hibernate:hibernate-core:$hibernateVersion"
     compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
 

@@ -2,6 +2,7 @@ package org.f0w.k2i.core.model.service;
 
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
+import com.typesafe.config.Config;
 import org.f0w.k2i.core.handler.MovieHandler;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
@@ -36,20 +37,22 @@ public class ImportProgressServiceImpl implements ImportProgressService {
      * {@inheritDoc}
      */
     @Override
-    public List<ImportProgress> findAll(Path filePath) {
+    public List<ImportProgress> findAll(Path filePath, Config config) {
         KinopoiskFile kinopoiskFile = kinopoiskFileService.find(filePath);
 
         if (kinopoiskFile == null) {
             return Collections.emptyList();
         }
 
+        String listId = config.getString("list");
+
         switch (movieHandlerType) {
             case SET_RATING:
-                return importProgressRepository.findNotRatedByFile(kinopoiskFile);
+                return importProgressRepository.findNotRatedByFile(kinopoiskFile, listId);
             case ADD_TO_WATCHLIST:
-                return importProgressRepository.findNotImportedByFile(kinopoiskFile);
+                return importProgressRepository.findNotImportedByFile(kinopoiskFile, listId);
             case COMBINED:
-                return importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile);
+                return importProgressRepository.findNotImportedOrNotRatedByFile(kinopoiskFile, listId);
             default:
                 return Collections.emptyList();
         }
@@ -60,11 +63,15 @@ public class ImportProgressServiceImpl implements ImportProgressService {
      */
     @Override
     @Transactional
-    public void saveAll(Path filePath) {
-        KinopoiskFile newFile = kinopoiskFileService.save(filePath);
+    public void saveAll(Path filePath, Config config) {
+        KinopoiskFile existingFile = kinopoiskFileService.find(filePath);
+
+        if (existingFile == null) {
+            existingFile = kinopoiskFileService.save(filePath);
+        }
         List<Movie> movies = movieService.saveOrUpdateAll(filePath);
 
-        importProgressRepository.saveAll(newFile, movies);
+        importProgressRepository.saveAll(existingFile, movies, config);
     }
 
     /**

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "IMPORT_PROGRESS", uniqueConstraints = @UniqueConstraint(columnNames = {"KINOPOISK_FILE_ID", "MOVIE_ID"}))
+@Table(name = "IMPORT_PROGRESS", uniqueConstraints = @UniqueConstraint(columnNames = {"KINOPOISK_FILE_ID", "MOVIE_ID", "LIST_ID"}))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,6 +20,9 @@ public class ImportProgress extends BaseEntity {
     @JoinColumn(name = "MOVIE_ID", nullable = false)
     private Movie movie;
 
+    @Column(name = "LIST_ID", nullable = false)
+    private String listId;
+
     @Column(name = "IMPORTED", nullable = false)
     private boolean imported;
 
@@ -27,6 +30,6 @@ public class ImportProgress extends BaseEntity {
     private boolean rated;
 
     public ImportProgress(ImportProgress ip) {
-        this(new KinopoiskFile(ip.getKinopoiskFile()), new Movie(ip.getMovie()), ip.isImported(), ip.isRated());
+        this(new KinopoiskFile(ip.getKinopoiskFile()), new Movie(ip.getMovie()), ip.getListId(), ip.isImported(), ip.isRated());
     }
 }

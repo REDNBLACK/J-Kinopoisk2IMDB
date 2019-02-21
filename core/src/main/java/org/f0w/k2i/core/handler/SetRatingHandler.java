@@ -66,7 +66,7 @@ public final class SetRatingHandler extends MovieHandler {
 
             LOG.info("Movie rating was successfully set");
         } catch (IOException e) {
-            LOG.error("Error setting rating of movie: {}", e);
+            LOG.error("Error setting rating of movie:", e);
             errors.add(new Error(importProgress.getMovie(), e.getMessage()));
         }
     }

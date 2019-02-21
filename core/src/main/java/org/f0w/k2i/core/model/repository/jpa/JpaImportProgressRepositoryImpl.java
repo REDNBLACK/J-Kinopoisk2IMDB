@@ -21,8 +21,20 @@ public class JpaImportProgressRepositoryImpl extends BaseJPARepository<ImportPro
         EntityManager em = entityManagerProvider.get();
         String listId = config.getString("list");
 
-        movies.forEach(m -> em.persist(new ImportProgress(kinopoiskFile, m, listId, false, false)));
+        movies.forEach(movie -> {
+            ImportProgress existingImportProgress = this.find(kinopoiskFile, movie, listId);
+            if (existingImportProgress == null) {
+                em.persist(this.save(kinopoiskFile, movie, listId));
+            }
+        });
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    public ImportProgress save(KinopoiskFile kinopoiskFile, Movie movie, String listId) {
+        return new ImportProgress(kinopoiskFile, movie, listId, false, false);
     }
 
     /**
@@ -35,6 +47,22 @@ public class JpaImportProgressRepositoryImpl extends BaseJPARepository<ImportPro
                 .createQuery("DELETE FROM ImportProgress WHERE kinopoiskFile.id = :kinopoiskFileId")
                 .setParameter("kinopoiskFileId", kinopoiskFile.getId())
                 .executeUpdate();
+    }
+
+    public ImportProgress find(KinopoiskFile kinopoiskFile, Movie movie, String listId) {
+        List<ImportProgress> resultList = entityManagerProvider.get()
+                .createQuery(
+                        "FROM ImportProgress WHERE movie.id = :movieId AND kinopoiskFile = :kinopoiskFile AND listId = :listId",
+                        ImportProgress.class
+                )
+                .setParameter("kinopoiskFile", kinopoiskFile)
+                .setParameter("movieId", movie.getId())
+                .setParameter("listId", listId)
+                .getResultList();
+
+        if (resultList.isEmpty()) return null;
+
+        return resultList.get(0);
     }
 
     /**

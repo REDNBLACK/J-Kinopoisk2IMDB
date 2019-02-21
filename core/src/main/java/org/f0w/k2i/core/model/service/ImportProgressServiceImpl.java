@@ -63,11 +63,15 @@ public class ImportProgressServiceImpl implements ImportProgressService {
      */
     @Override
     @Transactional
-    public void saveAll(Path filePath) {
-        KinopoiskFile newFile = kinopoiskFileService.save(filePath);
+    public void saveAll(Path filePath, Config config) {
+        KinopoiskFile existingFile = kinopoiskFileService.find(filePath);
+
+        if (existingFile == null) {
+            existingFile = kinopoiskFileService.save(filePath);
+        }
         List<Movie> movies = movieService.saveOrUpdateAll(filePath);
 
-        importProgressRepository.saveAll(newFile, movies, config);
+        importProgressRepository.saveAll(existingFile, movies, config);
     }
 
     /**

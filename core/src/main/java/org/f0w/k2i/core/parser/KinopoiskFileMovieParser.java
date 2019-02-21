@@ -86,6 +86,10 @@ final class KinopoiskFileMovieParser extends AbstractMovieParser<Map<String, Str
         }
 
         val genres = row.get("жанры");
+
+        // TODO temporary workaround; need to get genres from imdb/omdb parser result
+        if (genres == null) return Movie.Type.MOVIE;
+
         if (genres.contains("документальный")) {
             return Movie.Type.DOCUMENTARY;
         } else if (genres.contains("короткометражка")) {

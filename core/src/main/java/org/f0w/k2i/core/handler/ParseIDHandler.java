@@ -58,7 +58,7 @@ public final class ParseIDHandler extends MovieHandler {
 
             LOG.info("Movie IMDB id successfully found: {}", matchingMovieIMDBId);
         } catch (IOException e) {
-            LOG.error("Can't prepare movie: {}", e);
+            LOG.error("Can't prepare movie:", e);
             errors.add(new Error(importProgress.getMovie(), e.getMessage()));
         }
     }

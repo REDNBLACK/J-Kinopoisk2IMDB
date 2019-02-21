@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.f0w.k2i.core.exchange.processor.ResponseProcessor;
 import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 
@@ -74,7 +75,7 @@ public interface Exchangeable<IN, OUT> {
             return response;
         }
 
-        public OUT getProcessedResponse() throws IOException {
+        public OUT getProcessedResponse() throws HttpStatusException {
             return responseProcessor.process(getResponse());
         }
 

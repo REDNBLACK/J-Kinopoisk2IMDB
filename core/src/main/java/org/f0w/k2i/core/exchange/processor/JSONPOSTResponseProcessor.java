@@ -16,14 +16,16 @@ public class JSONPOSTResponseProcessor implements ResponseProcessor<Integer> {
      */
     @Override
     public Integer process(Connection.Response response) {
+        int statusCode = 0;
         try {
+            statusCode = response.statusCode();
             return Optional.ofNullable(new JsonParser().parse(response.body()))
                     .map(e -> e.isJsonObject() ? e.getAsJsonObject() : null)
                     .map(e -> e.get("status"))
                     .map(JsonElement::getAsInt)
                     .orElse(0);
         } catch (JsonParseException ignore) {
-            return 0;
+            return statusCode;
         }
     }
 }

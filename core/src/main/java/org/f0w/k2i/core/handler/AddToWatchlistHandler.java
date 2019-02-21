@@ -30,10 +30,13 @@ public final class AddToWatchlistHandler extends MovieHandler {
 
         LOG.info("Adding movie to watchlist: {}", movie);
 
-        if (importProgress.isImported()) {
-            LOG.info("Movie is already added to watchlist!");
-            return;
-        }
+        // This is never shown. To make it work we should not filter imported=false in
+        // findNotImportedByFile method
+
+//        if (importProgress.isImported()) {
+//            LOG.info("Movie is already added to watchlist!");
+//            return;
+//        }
 
         try {
             if (movie.isEmptyIMDBId()) {

@@ -37,6 +37,7 @@ public final class Client implements Runnable {
 
     private final Path filePath;
     private final boolean cleanRun;
+    private final Config config;
 
     public Client(@NonNull Path filePath, @NonNull Config config) {
         this(filePath, config, false);
@@ -49,6 +50,7 @@ public final class Client implements Runnable {
     public Client(@NonNull Path filePath, @NonNull Config config, boolean cleanRun, @NonNull List<?> listeners) {
         this.filePath = checkFile(filePath);
         this.cleanRun = cleanRun;
+        this.config = config;
 
         Injector injector = Guice.createInjector(
                 Stage.PRODUCTION,
@@ -74,7 +76,7 @@ public final class Client implements Runnable {
             importProgressService.deleteAll(filePath);
         }
 
-        List<ImportProgress> importProgress = importProgressService.findOrSaveAll(filePath);
+        List<ImportProgress> importProgress = importProgressService.findOrSaveAll(filePath, config);
 
         eventBus.post(new ImportStartedEvent(importProgress.size()));
 

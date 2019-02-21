@@ -1,6 +1,7 @@
 package org.f0w.k2i.core.model.repository.jpa;
 
 import com.google.inject.persist.Transactional;
+import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -16,10 +17,12 @@ public class JpaImportProgressRepositoryImpl extends BaseJPARepository<ImportPro
      */
     @Transactional
     @Override
-    public void saveAll(KinopoiskFile kinopoiskFile, List<Movie> movies) {
+    public void saveAll(KinopoiskFile kinopoiskFile, List<Movie> movies, Config config) {
         EntityManager em = entityManagerProvider.get();
+        String listId = config.getString("list");
 
-        movies.forEach(m -> em.persist(new ImportProgress(kinopoiskFile, m, false, false)));
+        movies.forEach(m -> em.persist(new ImportProgress(kinopoiskFile, m, listId, false, false)));
+
     }
 
     /**
@@ -38,16 +41,17 @@ public class JpaImportProgressRepositoryImpl extends BaseJPARepository<ImportPro
      * {@inheritDoc}
      */
     @Override
-    public List<ImportProgress> findNotImportedOrNotRatedByFile(KinopoiskFile kinopoiskFile) {
+    public List<ImportProgress> findNotImportedOrNotRatedByFile(KinopoiskFile kinopoiskFile, String listId) {
         return entityManagerProvider.get()
                 .createQuery(
                         "FROM ImportProgress WHERE (imported = :imported OR (rated = :rated AND movie.rating IS NOT NULL))"
-                                + "AND kinopoiskFile = :kinopoiskFile",
+                                + "AND kinopoiskFile = :kinopoiskFile AND listId = :listId",
                         ImportProgress.class
                 )
                 .setParameter("imported", false)
                 .setParameter("rated", false)
                 .setParameter("kinopoiskFile", kinopoiskFile)
+                .setParameter("listId", listId)
                 .getResultList();
     }
 
@@ -55,14 +59,15 @@ public class JpaImportProgressRepositoryImpl extends BaseJPARepository<ImportPro
      * {@inheritDoc}
      */
     @Override
-    public List<ImportProgress> findNotImportedByFile(KinopoiskFile kinopoiskFile) {
+    public List<ImportProgress> findNotImportedByFile(KinopoiskFile kinopoiskFile, String listId) {
         return entityManagerProvider.get()
                 .createQuery(
-                        "FROM ImportProgress WHERE imported = :imported AND kinopoiskFile = :kinopoiskFile",
+                        "FROM ImportProgress WHERE imported = :imported AND kinopoiskFile = :kinopoiskFile AND listId = :listId",
                         ImportProgress.class
                 )
                 .setParameter("imported", false)
                 .setParameter("kinopoiskFile", kinopoiskFile)
+                .setParameter("listId", listId)
                 .getResultList();
     }
 
@@ -70,15 +75,16 @@ public class JpaImportProgressRepositoryImpl extends BaseJPARepository<ImportPro
      * {@inheritDoc}
      */
     @Override
-    public List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile) {
+    public List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile, String listId) {
         return entityManagerProvider.get()
                 .createQuery(
                         "FROM ImportProgress WHERE rated = :rated"
-                                + " AND kinopoiskFile = :kinopoiskFile AND movie.rating IS NOT NULL",
+                                + " AND kinopoiskFile = :kinopoiskFile AND movie.rating IS NOT NULL AND listId = :listId",
                         ImportProgress.class
                 )
                 .setParameter("rated", false)
                 .setParameter("kinopoiskFile", kinopoiskFile)
+                .setParameter("listId", listId)
                 .getResultList();
     }
 }

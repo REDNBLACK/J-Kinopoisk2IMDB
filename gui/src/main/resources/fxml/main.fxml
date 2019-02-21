@@ -7,15 +7,15 @@
 <?import org.controlsfx.control.CheckComboBox?>
 
 <?import java.net.URL?>
-<FlowPane fx:controller="org.f0w.k2i.gui.Controller"
-          maxHeight="361"
+<FlowPane xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="org.f0w.k2i.gui.Controller"
+          maxHeight="521"
           maxWidth="600"
-          xmlns="http://javafx.com/javafx/8"
-          xmlns:fx="http://javafx.com/fxml/1">
+          xmlns="http://javafx.com/javafx/8">
 
     <!--Styles-->
     <stylesheets>
-        <URL value="@main.css" />
+        <URL value="@main.css"/>
     </stylesheets>
     <!--Styles-->
 
@@ -32,31 +32,82 @@
                                     <children>
                                         <GridPane hgap="10.0" layoutX="26.0" vgap="2.0">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="290.0" minWidth="10.0" prefWidth="172.0" />
-                                                <ColumnConstraints maxWidth="369.0" minWidth="10.0" prefWidth="365.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="290.0" minWidth="10.0"
+                                                                   prefWidth="172.0"/>
+                                                <ColumnConstraints maxWidth="369.0" minWidth="10.0" prefWidth="365.0"/>
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
                                             </rowConstraints>
                                             <children>
-                                                <Label text="Выбранный файл" />
-                                                <Label fx:id="selectedFile" text="Файл не выбран" GridPane.columnIndex="1" />
-                                                <Label text="Файл с кинопоиска" GridPane.rowIndex="1" />
+                                                <Label text="Выбранный файл"/>
+                                                <Label fx:id="selectedFile" text="Файл не выбран"
+                                                       GridPane.columnIndex="1"/>
+                                                <Label text="Файл с кинопоиска" GridPane.rowIndex="1"/>
                                                 <Button fx:id="selectFileBtn"
                                                         maxWidth="-Infinity" mnemonicParsing="false"
-                                                        text="Выберите файл..." GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                                        text="Выберите файл..." GridPane.columnIndex="1"
+                                                        GridPane.rowIndex="1"
                                                         onAction="#handleFileChoseAction"
                                                 />
-                                                <Label text="Режим работы" GridPane.rowIndex="2" />
-                                                <Label text="Строка авторизации IMDB" GridPane.rowIndex="3" />
-                                                <Label text="ID списка IMDB" GridPane.rowIndex="4" />
-                                                <ComboBox fx:id="modeComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <TextField fx:id="authId" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <TextField fx:id="listId" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <Label text="Режим работы" GridPane.rowIndex="2"/>
+                                                <ComboBox fx:id="modeComboBox" maxWidth="1.7976931348623157E308"
+                                                          GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                                <Label text="ID списка IMDB" GridPane.rowIndex="3"/>
+                                                <TextField fx:id="listId" GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="3"/>
+                                            </children>
+                                        </GridPane>
+                                        <GridPane hgap="10.0" layoutX="26.0" layoutY="170.0" vgap="2.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints maxWidth="600.0" minWidth="10.0"
+                                                                   prefWidth="600.0"/>
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="40.0"/>
+                                            </rowConstraints>
+                                            <children>
+                                                <Label text="Настройки авторизации IMDB"/>
+                                            </children>
+                                        </GridPane>
+                                        <GridPane hgap="10.0" layoutX="26.0" layoutY="210.0" vgap="2.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints maxWidth="290.0" minWidth="10.0" prefWidth="172.0"/>
+                                                <ColumnConstraints maxWidth="369.0" minWidth="10.0" prefWidth="365.0"/>
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
+                                            </rowConstraints>
+                                            <children>
+                                                <Label text="id"/>
+                                                <TextField fx:id="authId" GridPane.columnIndex="1"/>
+                                                <Label text="sid" GridPane.rowIndex="1"/>
+                                                <TextField fx:id="authSid" GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="1"/>
+                                                <Label text="session-id" GridPane.rowIndex="2"/>
+                                                <TextField fx:id="authSessionId" GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="2"/>
+                                            </children>
+                                        </GridPane>
+                                        <GridPane hgap="10.0" layoutX="26.0" layoutY="330.0" vgap="2.0">
+                                        <columnConstraints>
+                                            <ColumnConstraints maxWidth="280.0" minWidth="10.0" prefWidth="280.0"/>
+                                            <ColumnConstraints maxWidth="140.0" minWidth="10.0" prefWidth="123.0"/>
+                                            <ColumnConstraints maxWidth="140.0" minWidth="10.0" prefWidth="123.0"/>
+                                        </columnConstraints>
+                                        <rowConstraints>
+                                            <RowConstraints minHeight="40.0"/>
+                                        </rowConstraints>
+                                            <children>
+                                                <Label text="Пара ключ-значение в тестовом запросе"/>
+                                                <TextField fx:id="authControlKey"
+                                                           GridPane.columnIndex="1" />
+                                                <TextField fx:id="authControlValue"
+                                                           GridPane.columnIndex="2" />
                                             </children>
                                         </GridPane>
                                     </children>
@@ -72,21 +123,29 @@
                                     <children>
                                         <GridPane hgap="10.0" layoutX="26.0" vgap="2.0">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="193.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0" prefWidth="344.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0"
+                                                                   prefWidth="193.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0"
+                                                                   prefWidth="344.0"/>
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
                                             </rowConstraints>
                                             <children>
-                                                <Label text="Тип запроса" />
-                                                <Label text="Сравнение" GridPane.rowIndex="1" />
-                                                <Label text="Чистый запуск" GridPane.rowIndex="2" />
-                                                <CheckComboBox fx:id="documentSourceBox" GridPane.columnIndex="1" />
-                                                <CheckComboBox fx:id="comparatorsBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <CheckBox fx:id="cleanRunCheckbox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label text="Тип запроса"/>
+                                                <CheckComboBox fx:id="documentSourceBox" GridPane.columnIndex="1"/>
+                                                <Label text="OMDB API key" GridPane.rowIndex="1"/>
+                                                <TextField fx:id="omdbApiKey" GridPane.rowIndex="1"
+                                                           GridPane.columnIndex="1"/>
+                                                <Label text="Сравнение" GridPane.rowIndex="2"/>
+                                                <CheckComboBox fx:id="comparatorsBox" GridPane.columnIndex="1"
+                                                               GridPane.rowIndex="2"/>
+                                                <Label text="Чистый запуск" GridPane.rowIndex="3"/>
+                                                <CheckBox fx:id="cleanRunCheckbox" GridPane.columnIndex="1"
+                                                          GridPane.rowIndex="3"/>
                                             </children>
                                         </GridPane>
                                     </children>
@@ -102,24 +161,29 @@
                                     <children>
                                         <GridPane hgap="10.0" layoutX="26.0" vgap="2.0">
                                             <children>
-                                                <Label text="user_agent" />
-                                                <Label text="year_deviation" GridPane.rowIndex="1" />
-                                                <Label text="timeout" GridPane.rowIndex="2" />
-                                                <Label text="log_level" GridPane.rowIndex="3" />
-                                                <TextField fx:id="userAgentField" GridPane.columnIndex="1" />
-                                                <TextField fx:id="yearDeviationField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <TextField fx:id="timeoutField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <TextField fx:id="logLevelField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Label text="user_agent"/>
+                                                <Label text="year_deviation" GridPane.rowIndex="1"/>
+                                                <Label text="timeout" GridPane.rowIndex="2"/>
+                                                <Label text="log_level" GridPane.rowIndex="3"/>
+                                                <TextField fx:id="userAgentField" GridPane.columnIndex="1"/>
+                                                <TextField fx:id="yearDeviationField" GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="1"/>
+                                                <TextField fx:id="timeoutField" GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="2"/>
+                                                <TextField fx:id="logLevelField" GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="3"/>
                                             </children>
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="193.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0" prefWidth="344.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0"
+                                                                   prefWidth="193.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.0" minWidth="10.0"
+                                                                   prefWidth="344.0"/>
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
-                                                <RowConstraints minHeight="40.0" />
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
+                                                <RowConstraints minHeight="40.0"/>
                                             </rowConstraints>
                                         </GridPane>
                                     </children>
@@ -128,23 +192,27 @@
                         </TitledPane>
                         <!--End expert-->
                     </panes>
-                    <expandedPane><fx:reference source="basePane"/></expandedPane>
+                    <expandedPane>
+                        <fx:reference source="basePane"/>
+                    </expandedPane>
                 </Accordion>
                 <!--End Accordion row-->
 
                 <!--Start HBox row-->
-                <HBox alignment="BOTTOM_RIGHT" layoutY="311.0" prefHeight="50.0" prefWidth="600" spacing="40.0">
+                <HBox alignment="BOTTOM_RIGHT" layoutY="471.0" prefHeight="50.0" prefWidth="600" spacing="40.0">
                     <children>
                         <AnchorPane>
                             <children>
-                                <ProgressBar fx:id="progressBar" prefHeight="30.0" prefWidth="437.0" progress="0.0" />
-                                <Label fx:id="progressStatus" layoutX="198.0" layoutY="-1.0" prefHeight="30.0" text="0/0" />
+                                <ProgressBar fx:id="progressBar" prefHeight="30.0" prefWidth="437.0" progress="0.0"/>
+                                <Label fx:id="progressStatus" layoutX="198.0" layoutY="-1.0" prefHeight="30.0"
+                                       text="0/0"/>
                             </children>
                         </AnchorPane>
-                        <Button fx:id="runBtn" styleClass="primary" maxHeight="30.0" mnemonicParsing="false" onAction="#handleStartAction" text="Запустить" disable="true" />
+                        <Button fx:id="runBtn" styleClass="primary" maxHeight="30.0" mnemonicParsing="false"
+                                onAction="#handleStartAction" text="Запустить" disable="true"/>
                     </children>
                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
                 </HBox>
                 <!--End HBox row-->

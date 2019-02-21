@@ -1,5 +1,8 @@
 package org.f0w.k2i.core.exchange.finder.strategy;
 
+import com.google.common.collect.ImmutableMap;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.f0w.k2i.MovieTestData;
 import org.f0w.k2i.core.model.entity.Movie;
 import org.junit.Before;
@@ -14,7 +17,8 @@ import static org.junit.Assert.*;
 public class OMDBExchangeStrategyTest extends BaseExchangeStrategyTest {
     @Before
     public void setUp() throws Exception {
-        strategy = new OMDBExchangeStrategy();
+        Config config = ConfigFactory.parseMap(ImmutableMap.of("omdbApiKey", "testApiKey"));
+        strategy = new OMDBExchangeStrategy(config);
     }
 
     @Test

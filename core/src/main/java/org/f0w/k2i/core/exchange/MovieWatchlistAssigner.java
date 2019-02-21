@@ -13,6 +13,7 @@ import org.jsoup.helper.HttpConnection;
 import java.io.IOException;
 import java.net.URL;
 
+
 /**
  * Adds Movie to IMDB list.
  */
@@ -32,19 +33,30 @@ public final class MovieWatchlistAssigner implements Exchangeable<Movie, Integer
      */
     @Override
     public ExchangeObject<Integer> prepare(@NonNull Movie movie) throws IOException {
-        val movieAddToWatchlistLink = new URL("http://www.imdb.com/list/_ajax/edit");
+        val list = config.getString("list");
+        String url;
+        Connection.Method method = Connection.Method.POST;
+        if (list.equals("watchlist")) {
+            url = "https://www.imdb.com/watchlist/" + movie.getImdbId();
+            method = Connection.Method.PUT;
+        }
+        else {
+            url = "https://www.imdb.com/list/" + list + '/' + movie.getImdbId() + "/add";
+        }
+        val movieAddToWatchlistLink = new URL(url);
 
         val postData = new ImmutableMap.Builder<String, String>()
-                .put("const", movie.getImdbId())
-                .put("list_id", config.getString("list"))
-                .put("ref_tag", "title")
+                .put(config.getString("authControlKey"), config.getString("authControlValue"))
                 .build();
 
         val request = HttpConnection.connect(movieAddToWatchlistLink)
-                .method(Connection.Method.POST)
+                .method(method)
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"))
+                .cookie("session-id", config.getString("authSessionId"))
                 .cookie("id", config.getString("auth"))
+                .cookie("sid", config.getString("authSid"))
+                .header("Content-Type", "application/x-www-form-urlencoded")
                 .ignoreContentType(true)
                 .data(postData)
                 .request();

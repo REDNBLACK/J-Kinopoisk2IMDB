@@ -37,6 +37,9 @@ public final class ConfigValidator {
             validator.checkLogLevel();
 
             validator.checkAuth();
+            validator.checkAuthSid();
+            validator.checkAuthSessionId();
+            validator.checkAuthControl();
             validator.checkMode();
             validator.checkList();
 
@@ -121,6 +124,12 @@ public final class ConfigValidator {
         val message = "document_source_types is not valid!";
         val documentSourceTypes = config.getStringList("document_source_types");
 
+        if (documentSourceTypes.contains(DocumentSourceType.OMDB.name())) {
+            val omdbApiKey = config.getString("omdbApiKey");
+            checkArgument(!isNullOrEmpty(omdbApiKey), "OMDB API KEY must be set for using OMDB as source. \n" +
+                    "You can obtain one here: http://www.omdbapi.com/apikey.aspx");
+        }
+
         try {
             documentSourceTypes.forEach(DocumentSourceType::valueOf);
         } catch (IllegalArgumentException e) {
@@ -145,14 +154,49 @@ public final class ConfigValidator {
     }
 
     /**
-     * Checks the auth string
+     * Checks the auth id string
      *
      * @throws IllegalArgumentException If not valid
      */
     private void checkAuth() {
         val auth = config.getString("auth");
 
-        checkArgument(auth.length() > 10, "auth string length is less than or equal to 10!");
+        checkArgument(auth.length() > 10, "auth string (id) length is less than or equal to 10!");
+    }
+
+    /**
+     * Checks the auth sid string
+     *
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkAuthSid() {
+        val auth = config.getString("authSid");
+
+        checkArgument(auth.length() > 10, "auth string (sid) length is less than or equal to 10!");
+    }
+
+    /**
+     * Checks the auth session id string
+     *
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkAuthSessionId() {
+        val auth = config.getString("authSessionId");
+
+        checkArgument(auth.length() > 10, "auth string (sessionId) length is less than or equal to 10!");
+    }
+
+    /**
+     * Checks the auth control pair
+     *
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkAuthControl() {
+        val authKey = config.getString("authControlKey");
+        val authValue = config.getString("authControlValue");
+
+        checkArgument(authKey.length()  > 2, "auth string (control key) length is less than or equal to 10!");
+        checkArgument(authValue.length() > 2, "auth string (control value) length is less than or equal to 10!");
     }
 
     /**
@@ -171,7 +215,7 @@ public final class ConfigValidator {
                 throw new IllegalArgumentException("list is not set, but required for current mode!");
             }
         } else {
-            checkArgument(list.startsWith("ls"), "list doesn't start with ls prefix!");
+            checkArgument(list.startsWith("ls") || list.equals("watchlist"), "list doesn't start with ls prefix!");
             checkArgument(list.length() >= 3, "list string length less than 3!");
         }
     }

@@ -1,6 +1,8 @@
 package org.f0w.k2i.core.exchange.finder.strategy;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
+import com.typesafe.config.Config;
 import lombok.NonNull;
 import lombok.val;
 import org.f0w.k2i.core.DocumentSourceType;
@@ -11,8 +13,12 @@ import org.jsoup.Connection;
 import org.jsoup.helper.HttpConnection;
 
 public final class OMDBExchangeStrategy extends AbstractExchangeStrategy {
-    public OMDBExchangeStrategy() {
+    private final Config config;
+
+    @Inject
+    public OMDBExchangeStrategy(Config config) {
         super(MovieParsers.ofSourceType(DocumentSourceType.OMDB));
+        this.config = config;
     }
 
     @Override
@@ -22,6 +28,7 @@ public final class OMDBExchangeStrategy extends AbstractExchangeStrategy {
                 .put("t", movie.getTitle())
                 .put("plot", "short")
                 .put("r", "json")
+                .put("apikey", config.getString("omdbApiKey"))
                 .build();
 
         return HttpConnection.connect(HttpUtils.buildURL(searchLink, queryParams))

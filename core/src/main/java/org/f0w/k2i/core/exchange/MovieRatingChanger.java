@@ -1,7 +1,6 @@
 package org.f0w.k2i.core.exchange;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.typesafe.config.Config;
@@ -54,7 +53,10 @@ public final class MovieRatingChanger implements Exchangeable<Movie, Integer> {
                 .method(Connection.Method.POST)
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"))
+                // этот токен уникальный для каждого рейтинга и меняется каждую загрузку страницы
+                // это не `id`. Кроме того, сервер читает ещё что-то (видимо то, на основании чего сгенерирован токен)
                 .cookie("id", config.getString("auth"))
+                .header("Content-Type", "application/x-www-form-urlencoded")
                 .ignoreContentType(true)
                 .data(postData)
                 .request();

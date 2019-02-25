@@ -118,8 +118,8 @@ public class Controller {
     void initialize() {
         // Основные
         modeComboBox.setItems(FXCollections.observableList(Arrays.asList(
-//                new Choice<>(COMBINED, "Добавить в список и выставить рейтинг"),
-//                new Choice<>(SET_RATING, "Выставить рейтинг"),
+                new Choice<>(COMBINED, "Добавить в список и выставить рейтинг"),
+                new Choice<>(SET_RATING, "Выставить рейтинг"),
                 new Choice<>(ADD_TO_WATCHLIST, "Добавить в список")
         )));
         modeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

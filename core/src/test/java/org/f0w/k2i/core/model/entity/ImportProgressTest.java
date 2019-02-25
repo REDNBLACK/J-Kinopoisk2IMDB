@@ -16,24 +16,24 @@ import static org.junit.Assert.*;
 public class ImportProgressTest {
     @Test
     public void testEqualsAndHashCode() throws Exception {
-        val expected = new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, true, true);
-        val actual = new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, true, true);
+        val expected = new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, "listId",  true, true);
+        val actual = new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, "listId", true, true);
 
         assertEquals(expected, actual);
         assertEquals(expected.hashCode(), actual.hashCode());
 
         val notEqual = new ImmutableMap.Builder<ImportProgress, ImportProgress>()
-                .put(new ImportProgress(KINOPOISK_FILE_2, MOVIE_1, true, true),
-                        new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, true, true)
+                .put(new ImportProgress(KINOPOISK_FILE_2, MOVIE_1, "listId", true, true),
+                        new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, "listId", true, true)
                 )
-                .put(new ImportProgress(KINOPOISK_FILE_1, MOVIE_2, true, true),
-                        new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, true, true)
+                .put(new ImportProgress(KINOPOISK_FILE_1, MOVIE_2, "listId", true, true),
+                        new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, "listId", true, true)
                 )
-                .put(new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, false, true),
-                        new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, true, true)
+                .put(new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, "listId", false, true),
+                        new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, "listId", true, true)
                 )
-                .put(new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, true, false),
-                        new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, true, true)
+                .put(new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, "listId", true, false),
+                        new ImportProgress(KINOPOISK_FILE_1, MOVIE_1, "listId", true, true)
                 )
                 .build();
 

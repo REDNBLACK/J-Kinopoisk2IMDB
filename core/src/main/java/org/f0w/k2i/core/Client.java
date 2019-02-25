@@ -1,6 +1,7 @@
 package org.f0w.k2i.core;
 
 import com.google.common.eventbus.EventBus;
+import com.google.gson.JsonObject;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
@@ -12,23 +13,32 @@ import org.f0w.k2i.core.event.ImportFinishedEvent;
 import org.f0w.k2i.core.event.ImportProgressAdvancedEvent;
 import org.f0w.k2i.core.event.ImportStartedEvent;
 import org.f0w.k2i.core.handler.MovieHandler;
+import org.f0w.k2i.core.ioc.ConfigurationModule;
+import org.f0w.k2i.core.ioc.JpaRepositoryModule;
 import org.f0w.k2i.core.ioc.ServiceModule;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.service.ImportProgressService;
-import org.f0w.k2i.core.ioc.ConfigurationModule;
-import org.f0w.k2i.core.ioc.JpaRepositoryModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.nio.file.Paths;
+import java.util.*;
 
+import static org.f0w.k2i.core.handler.MovieHandler.Type.COMBINED;
+import static org.f0w.k2i.core.handler.MovieHandler.Type.SET_RATING;
 import static org.f0w.k2i.core.util.IOUtils.checkFile;
 
 /**
  * Main facade implemented as {@link Runnable} for working with core module.
  */
 public final class Client implements Runnable {
+    protected static final Logger LOG = LoggerFactory.getLogger(Client.class);
+
+    private final Path ratingsHelperPath = Paths.get(System.getProperty("user.home"), "K2IDB", "ratings.json");
+    private static final Set<MovieHandler.Type> RATING_MODES = Collections.unmodifiableSet(EnumSet.of(SET_RATING, COMBINED));
     private final MovieHandler.Type handlerType;
     private final MovieHandler handlerChain;
     private final EventBus eventBus;
@@ -82,11 +92,21 @@ public final class Client implements Runnable {
 
         final List<MovieHandler.Error> allErrors = new ArrayList<>();
 
+        String mode = config.getString("mode");
+        MovieHandler.Type type = MovieHandler.Type.valueOf(mode);
+        JsonObject json = new JsonObject();
+
         try {
             for (ImportProgress current : importProgress) {
                 List<MovieHandler.Error> currentErrors = new ArrayList<>();
 
                 handlerChain.handle(current, currentErrors, handlerType);
+
+                if (RATING_MODES.contains(type)) {
+                    if (current.getMovie().getImdbId() != null) {
+                        json.addProperty(current.getMovie().getImdbId(), current.getMovie().getRating());
+                    }
+                }
 
                 eventBus.post(new ImportProgressAdvancedEvent(current, currentErrors.isEmpty()));
 
@@ -100,6 +120,16 @@ public final class Client implements Runnable {
             Thread.currentThread().interrupt();
         } finally {
             eventBus.post(new ImportFinishedEvent(allErrors));
+
+            // update json file with json
+            try {
+                FileWriter fileWriter = new FileWriter(ratingsHelperPath.toString());
+                fileWriter.write(json.toString());
+                fileWriter.close();
+            }
+            catch (IOException e) {
+                LOG.error("Updating ratings helper file is failed: ", e);
+            }
 
             persistService.stop();
         }

@@ -48,7 +48,7 @@ public class ImportProgressServiceImpl implements ImportProgressService {
 
         switch (movieHandlerType) {
             case SET_RATING:
-                return importProgressRepository.findNotRatedByFile(kinopoiskFile, listId);
+                return importProgressRepository.findNotRatedByFile(kinopoiskFile);
             case ADD_TO_WATCHLIST:
                 return importProgressRepository.findNotImportedByFile(kinopoiskFile, listId);
             case COMBINED:

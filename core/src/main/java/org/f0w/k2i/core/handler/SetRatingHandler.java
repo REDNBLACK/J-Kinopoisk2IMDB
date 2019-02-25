@@ -1,8 +1,6 @@
 package org.f0w.k2i.core.handler;
 
 import com.google.inject.Inject;
-import lombok.val;
-import org.f0w.k2i.core.exchange.MovieAuthStringFetcher;
 import org.f0w.k2i.core.exchange.MovieRatingChangerFactory;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -12,12 +10,10 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 public final class SetRatingHandler extends MovieHandler {
-    private final MovieAuthStringFetcher authFetcher;
     private final MovieRatingChangerFactory ratingChangerFactory;
 
     @Inject
-    public SetRatingHandler(MovieAuthStringFetcher authFetcher, MovieRatingChangerFactory ratingChangerFactory) {
-        this.authFetcher = authFetcher;
+    public SetRatingHandler(MovieRatingChangerFactory ratingChangerFactory) {
         this.ratingChangerFactory = ratingChangerFactory;
     }
 
@@ -48,15 +44,8 @@ public final class SetRatingHandler extends MovieHandler {
                 throw new IOException("Can't change movie rating, IMDB ID is not set");
             }
 
-            val authString = authFetcher.prepare(movie).getProcessedResponse();
-
-            if (authString == null) {
-                throw new IOException("Movie authorisation string is empty!");
-            }
-
-            int statusCode = ratingChangerFactory.create(authString)
-                    .prepare(movie)
-                    .getProcessedResponse();
+            ratingChangerFactory.create();
+            int statusCode = 0;
 
             if (statusCode != HttpURLConnection.HTTP_OK) {
                 throw new IOException("Can't change movie rating, error status code: " + statusCode);

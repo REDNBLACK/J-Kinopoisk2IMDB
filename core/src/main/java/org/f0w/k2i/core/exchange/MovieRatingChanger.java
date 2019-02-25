@@ -1,7 +1,6 @@
 package org.f0w.k2i.core.exchange;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.typesafe.config.Config;
 import lombok.NonNull;
@@ -19,17 +18,14 @@ import java.net.URL;
  */
 public final class MovieRatingChanger implements Exchangeable<Movie, Integer> {
     private final Config config;
-    private final String authString;
 
     @AssistedInject
-    private MovieRatingChanger(Config config, @Assisted @NonNull String authString) {
+    private MovieRatingChanger(Config config) {
         this.config = config;
-        this.authString = authString;
     }
 
     /**
      * Sends POST request and changes Movie rating,
-     * using using {@link MovieAuthStringFetcher#getResponseProcessor()} authorization string
      * and {@link Movie#imdbId}
      *
      * @param movie Movie which rating to change
@@ -42,7 +38,6 @@ public final class MovieRatingChanger implements Exchangeable<Movie, Integer> {
         val postData = new ImmutableMap.Builder<String, String>()
                 .put("tconst", movie.getImdbId())
                 .put("rating", String.valueOf(movie.getRating()))
-                .put("auth", authString)
                 .put("pageId", movie.getImdbId())
                 .put("tracking_tag", "title-maindetails")
                 .put("pageType", "title")
@@ -53,8 +48,6 @@ public final class MovieRatingChanger implements Exchangeable<Movie, Integer> {
                 .method(Connection.Method.POST)
                 .userAgent(config.getString("user_agent"))
                 .timeout(config.getInt("timeout"))
-                // этот токен уникальный для каждого рейтинга и меняется каждую загрузку страницы
-                // это не `id`. Кроме того, сервер читает ещё что-то (видимо то, на основании чего сгенерирован токен)
                 .cookie("id", config.getString("auth"))
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .ignoreContentType(true)

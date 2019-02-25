@@ -46,10 +46,9 @@ public interface ImportProgressRepository extends Repository<ImportProgress, Lon
      * Find all entities using KinopoiskFile which {@link ImportProgress#rated} equals to false
      *
      * @param kinopoiskFile KinopoiskFile
-     * @param listId String
      * @return List of found entities
      */
-    List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile, String listId);
+    List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile);
 
     /**
      * {@inheritDoc}

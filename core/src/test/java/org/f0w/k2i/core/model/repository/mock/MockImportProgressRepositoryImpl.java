@@ -1,5 +1,6 @@
 package org.f0w.k2i.core.model.repository.mock;
 
+import com.typesafe.config.Config;
 import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.KinopoiskFile;
 import org.f0w.k2i.core.model.entity.Movie;
@@ -11,8 +12,8 @@ import java.util.stream.Collectors;
 public class MockImportProgressRepositoryImpl extends BaseMockRepository<ImportProgress>
         implements ImportProgressRepository {
     @Override
-    public void saveAll(KinopoiskFile kinopoiskFile, List<Movie> movies) {
-        movies.forEach(m -> save(new ImportProgress(kinopoiskFile, m, false, false)));
+    public void saveAll(KinopoiskFile kinopoiskFile, List<Movie> movies, Config config) {
+        movies.forEach(m -> save(new ImportProgress(kinopoiskFile, m, "listId", false, false)));
     }
 
     @Override
@@ -24,19 +25,21 @@ public class MockImportProgressRepositoryImpl extends BaseMockRepository<ImportP
     }
 
     @Override
-    public List<ImportProgress> findNotImportedOrNotRatedByFile(KinopoiskFile kinopoiskFile) {
+    public List<ImportProgress> findNotImportedOrNotRatedByFile(KinopoiskFile kinopoiskFile, String listId) {
         return storage.values()
                 .stream()
                 .filter(ip -> ip.getKinopoiskFile().equals(kinopoiskFile))
+                .filter(ip -> ip.getListId().equals(listId))
                 .filter(ip -> !ip.isRated() || !ip.isImported())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ImportProgress> findNotImportedByFile(KinopoiskFile kinopoiskFile) {
+    public List<ImportProgress> findNotImportedByFile(KinopoiskFile kinopoiskFile, String listId) {
         return storage.values()
                 .stream()
                 .filter(ip -> ip.getKinopoiskFile().equals(kinopoiskFile))
+                .filter(ip -> ip.getListId().equals(listId))
                 .filter(ip -> !ip.isImported())
                 .collect(Collectors.toList());
     }

@@ -103,16 +103,15 @@ public class JpaImportProgressRepositoryImpl extends BaseJPARepository<ImportPro
      * {@inheritDoc}
      */
     @Override
-    public List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile, String listId) {
+    public List<ImportProgress> findNotRatedByFile(KinopoiskFile kinopoiskFile) {
         return entityManagerProvider.get()
                 .createQuery(
                         "FROM ImportProgress WHERE rated = :rated"
-                                + " AND kinopoiskFile = :kinopoiskFile AND movie.rating IS NOT NULL AND listId = :listId",
+                                + " AND kinopoiskFile = :kinopoiskFile AND movie.rating IS NOT NULL",
                         ImportProgress.class
                 )
                 .setParameter("rated", false)
                 .setParameter("kinopoiskFile", kinopoiskFile)
-                .setParameter("listId", listId)
                 .getResultList();
     }
 }

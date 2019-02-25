@@ -7,8 +7,7 @@ public interface MovieRatingChangerFactory {
     /**
      * Create instance of {@link MovieRatingChanger}.
      *
-     * @param authString Auth string
      * @return {@link MovieRatingChanger} instance
      */
-    MovieRatingChanger create(final String authString);
+    MovieRatingChanger create();
 }

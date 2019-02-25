@@ -204,8 +204,10 @@
                         <AnchorPane>
                             <children>
                                 <ProgressBar fx:id="progressBar" prefHeight="30.0" prefWidth="437.0" progress="0.0"/>
-                                <Label fx:id="progressStatus" layoutX="198.0" layoutY="-1.0" prefHeight="30.0"
-                                       text="0/0"/>
+                                <Label fx:id="progressStatus" layoutX="10.0" layoutY="-3.0" prefHeight="34.0"
+                                       text="0/0/0"/>
+                                <Label fx:id="timeToProcessStatus" layoutX="365.0" layoutY="-3.0" prefHeight="34.0"
+                                       text="-00:00:00"/>
                             </children>
                         </AnchorPane>
                         <Button fx:id="runBtn" styleClass="primary" maxHeight="30.0" mnemonicParsing="false"

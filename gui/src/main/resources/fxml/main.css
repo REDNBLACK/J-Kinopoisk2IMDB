@@ -14,8 +14,11 @@
     );
 }
 
-#progressStatus {
-    -fx-text-fill: crimson;
+#progressStatus .text {
+    -fx-fill: #6d0a1d;
+}
+#timeToProcessStatus .text {
+    -fx-fill: #295c19;
 }
 
 .button {

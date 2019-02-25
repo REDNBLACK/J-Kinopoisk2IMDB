@@ -8,7 +8,7 @@
       "IMDB_JSON",
       "IMDB_HTML"
   ],
-  "mode": "ADD_TO_WATCHLIST",
+  "mode": "COMBINED",
   "list": "",
   "auth": "",
   "authSid": "",

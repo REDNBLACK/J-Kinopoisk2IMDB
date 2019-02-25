@@ -6,15 +6,14 @@ import org.f0w.k2i.core.model.entity.ImportProgress;
 import org.f0w.k2i.core.model.entity.Movie;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.List;
 
 public final class SetRatingHandler extends MovieHandler {
-    private final MovieRatingChangerFactory ratingChangerFactory;
+//    private final MovieRatingChangerFactory ratingChangerFactory;
 
     @Inject
     public SetRatingHandler(MovieRatingChangerFactory ratingChangerFactory) {
-        this.ratingChangerFactory = ratingChangerFactory;
+//        this.ratingChangerFactory = ratingChangerFactory;
     }
 
     /**
@@ -44,14 +43,14 @@ public final class SetRatingHandler extends MovieHandler {
                 throw new IOException("Can't change movie rating, IMDB ID is not set");
             }
 
-            ratingChangerFactory.create();
-            int statusCode = 0;
+//            ratingChangerFactory.create();
+//            int statusCode = 0;
 
-            if (statusCode != HttpURLConnection.HTTP_OK) {
-                throw new IOException("Can't change movie rating, error status code: " + statusCode);
-            }
+//            if (statusCode != HttpURLConnection.HTTP_OK) {
+//                throw new IOException("Can't change movie rating, error status code: " + statusCode);
+//            }
 
-            importProgress.setRated(true);
+//            importProgress.setRated(true);
 
             LOG.info("Movie rating was successfully set");
         } catch (IOException e) {

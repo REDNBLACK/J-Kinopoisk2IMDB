@@ -33,12 +33,14 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static org.f0w.k2i.core.comparator.MovieComparator.Type.*;
 import static org.f0w.k2i.core.DocumentSourceType.*;
+import static org.f0w.k2i.core.comparator.MovieComparator.Type.*;
 import static org.f0w.k2i.core.handler.MovieHandler.Type.*;
 
 public class Controller {
@@ -53,6 +55,8 @@ public class Controller {
     private final Map<String, Object> configMap = config.entrySet()
             .stream()
             .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().unwrapped()));
+
+    private final LinkedList<Long> timestamps = new LinkedList<>();
 
     @FXML
     private ComboBox<Choice<MovieHandler.Type, String>> modeComboBox;
@@ -95,6 +99,9 @@ public class Controller {
 
     @FXML
     private Label progressStatus;
+
+    @FXML
+    private Label timeToProcessStatus;
 
     @FXML
     private ProgressBar progressBar;
@@ -315,14 +322,22 @@ public class Controller {
         public void handleStart(ImportStartedEvent event) {
             progressBar.setProgress(0);
             max.set(event.listSize);
+            timestamps.clear();
 
             Platform.runLater(() -> {
-                progressStatus.setText("0/" + max.get());
+                progressStatus.setText("0/0/" + max.get());
             });
         }
 
         @Subscribe
         public void handleAdvance(ImportProgressAdvancedEvent event) {
+            if (timestamps.size() == 200) {
+                timestamps.removeFirst();
+            }
+            timestamps.addLast(System.currentTimeMillis());
+
+            long averageMsPerRequest = (timestamps.getLast() - timestamps.getFirst()) / timestamps.size();
+
             int maximum = max.get();
             int cur = current.incrementAndGet();
             if (event.successful) {
@@ -331,8 +346,18 @@ public class Controller {
                 failed.incrementAndGet();
             }
 
+            int leftToProcess = maximum - (successful.get() + failed.get());
+
+            long timeToProcess = averageMsPerRequest * leftToProcess;
+
+            Date date = new Date(timeToProcess);
+            DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            String dateFormatted = formatter.format(date);
+
             progressBar.setProgress((cur * 100 / maximum) * 0.01);
             Platform.runLater(() -> progressStatus.setText(successful.get() + "/" + failed.get() + "/" + maximum));
+            Platform.runLater(() -> timeToProcessStatus.setText('-' + dateFormatted));
         }
 
         @Subscribe

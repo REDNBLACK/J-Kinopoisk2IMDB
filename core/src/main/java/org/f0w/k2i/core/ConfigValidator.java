@@ -195,8 +195,8 @@ public final class ConfigValidator {
         val authKey = config.getString("authControlKey");
         val authValue = config.getString("authControlValue");
 
-        checkArgument(authKey.length()  > 2, "auth string (control key) length is less than or equal to 10!");
-        checkArgument(authValue.length() > 2, "auth string (control value) length is less than or equal to 10!");
+        checkArgument(authKey.length()  > 2, "auth string (control key) length is less than or equal to 2!");
+        checkArgument(authValue.length() > 2, "auth string (control value) length is less than or equal to 2!");
     }
 
     /**

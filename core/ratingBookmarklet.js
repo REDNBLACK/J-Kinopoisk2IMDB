@@ -73,7 +73,7 @@ class Kinopoisk2IMDb {
         const div = document.createElement('div')
         div.innerHTML = html;
         try {
-          const films = parent.querySelectorAll('.lister-list > .lister-item')
+          const films = div.querySelectorAll('.lister-list > .lister-item')
           this.setRatings(films)
         } catch (e) {
           console.error(e)

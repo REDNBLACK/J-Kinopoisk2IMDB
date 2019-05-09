@@ -37,6 +37,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.f0w.k2i.core.DocumentSourceType.*;
@@ -66,6 +68,9 @@ public class Controller {
 
     @FXML
     private Label selectedFile;
+
+    @FXML
+    private TextArea curlText;
 
     @FXML
     private TextField authId;
@@ -141,6 +146,14 @@ public class Controller {
             configMap.put("mode", newValue.getValue().toString());
         });
         modeComboBox.getSelectionModel().select(new Choice<>(MovieHandler.Type.valueOf(config.getString("mode"))));
+
+        curlText.focusedProperty().addListener(o -> {
+            String plainCurlText = curlText.getText();
+            configMap.put("curlText", plainCurlText);
+            parseCurlText(plainCurlText);
+        });
+
+        curlText.setText(config.getString("curlText"));
 
         authId.focusedProperty().addListener(o -> configMap.put("auth", authId.getText()));
         authId.setText(config.getString("auth"));
@@ -222,6 +235,34 @@ public class Controller {
 
         logLevelField.focusedProperty().addListener(o -> configMap.put("log_level", logLevelField.getText()));
         logLevelField.setText(config.getString("log_level"));
+    }
+
+    private void parseCurlText(String plainCurlText) {
+        Pattern p = Pattern.compile(".*-H 'cookie: ([^']+)'.*--data '(\\w+)=(\\w+)'.*");
+        Matcher m = p.matcher(plainCurlText);
+        while (m.find()) {
+            String cookies = m.group(1);
+            String authControlKeyString = m.group(2);
+            String authControlValueString = m.group(3);
+
+            ArrayList<String> cookiesList = new ArrayList<>(Arrays.asList(cookies.split("; ")));
+            HashMap<String, String> cookiesMap = new HashMap<>();
+            for (String cookie : cookiesList) {
+                String[] cookieMap = cookie.split("=");
+                cookiesMap.put(cookieMap[0], cookieMap[1]);
+            }
+
+            authId.setText(cookiesMap.get("id"));
+            configMap.put("auth", cookiesMap.get("id"));
+            authSid.setText(cookiesMap.get("sid"));
+            configMap.put("authSid", cookiesMap.get("sid"));
+            authSessionId.setText(cookiesMap.get("session-id"));
+            configMap.put("authSessionId", cookiesMap.get("session-id"));
+            authControlKey.setText(authControlKeyString);
+            configMap.put("authControlKey", authControlKeyString);
+            authControlValue.setText(authControlValueString);
+            configMap.put("authControlValue", authControlValueString);
+        }
     }
 
     boolean destroy() {

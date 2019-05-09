@@ -1,4 +1,4 @@
-version = "1.2.5"
+version = "1.2.6"
 
 ext {
     guiceVersion = "4.0"

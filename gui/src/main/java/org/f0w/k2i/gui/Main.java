@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     private static final int WIDTH = 600;
-    private static final int HEIGHT = 581;
+    private static final int HEIGHT = 621;
 
     public static void main(String[] args) {
         Application.launch(Main.class, args);

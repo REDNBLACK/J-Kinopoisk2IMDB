@@ -31,8 +31,6 @@ public class ConfigValidatorTest {
                 .put("log_level", Level.INFO.toString())
                 .put("timeout", 3000)
                 .put("document_source_types", Arrays.asList(
-                        DocumentSourceType.IMDB_XML.toString(),
-                        DocumentSourceType.IMDB_JSON.toString(),
                         DocumentSourceType.IMDB_HTML.toString()
                 ))
                 .put("comparators", Arrays.asList(
@@ -104,9 +102,6 @@ public class ConfigValidatorTest {
 
     @Test
     public void checkDocumentSourceTypes() throws Exception {
-        checkValid(parseMap(configMap));
-
-        configMap.replace("document_source_types", Collections.singletonList(DocumentSourceType.IMDB_XML.toString()));
         checkValid(parseMap(configMap));
 
         configMap.replace("document_source_types", Collections.singletonList("not existing document_source_type"));

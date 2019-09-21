@@ -39,6 +39,7 @@ public final class ConfigValidator {
             validator.checkAuth();
             validator.checkAuthSid();
             validator.checkAuthSessionId();
+            validator.checkAuthUbidMain();
             validator.checkAuthControl();
             validator.checkMode();
             validator.checkList();
@@ -184,6 +185,17 @@ public final class ConfigValidator {
         val auth = config.getString("authSessionId");
 
         checkArgument(auth.length() > 10, "auth string (sessionId) length is less than or equal to 10!");
+    }
+
+    /**
+     * Checks the auth ubid-main string
+     *
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkAuthUbidMain() {
+        val auth = config.getString("authUbidMain");
+
+        checkArgument(auth.length() > 10, "auth string (ubid-main) length is less than or equal to 10!");
     }
 
     /**

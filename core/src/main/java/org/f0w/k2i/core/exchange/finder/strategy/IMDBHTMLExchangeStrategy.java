@@ -20,7 +20,7 @@ public final class IMDBHTMLExchangeStrategy extends AbstractExchangeStrategy {
      */
     @Override
     public Connection.Request buildRequest(@NonNull final Movie movie) {
-        val searchLink = "http://www.imdb.com/find";
+        val searchLink = "http://imdb.com/find";
         val queryParams = new ImmutableMap.Builder<String, String>()
                 .put("q", movie.getTitle())
                 .put("s", "tt")

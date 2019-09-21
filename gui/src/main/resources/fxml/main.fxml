@@ -9,7 +9,7 @@
 <?import java.net.URL?>
 <FlowPane xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="org.f0w.k2i.gui.Controller"
-          maxHeight="581"
+          maxHeight="621"
           maxWidth="600"
           xmlns="http://javafx.com/javafx/8">
 
@@ -73,14 +73,14 @@
                         <Label text="Настройки авторизации IMDB"/>
                       </children>
                     </GridPane>
-                    <Accordion prefWidth="550.0" layoutX="20.0" layoutY="210.0" prefHeight="225.0">
+                    <Accordion prefWidth="550.0" layoutX="20.0" layoutY="210.0" prefHeight="265.0">
                       <panes>
                         <!--Start basic-->
                         <TitledPane fx:id="nestedBasePane" animated="false" text="Генерация из cURL">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0">
                               <children>
-                                    <TextArea fx:id="curlText" layoutX="10.0" layoutY="10.0" prefWidth="530.0" prefHeight="150.0"
+                                    <TextArea fx:id="curlText" layoutX="10.0" layoutY="10.0" prefWidth="530.0" prefHeight="190.0"
                                               wrapText="true" />
                               </children>
                             </AnchorPane>
@@ -99,6 +99,7 @@
                                     <RowConstraints prefHeight="40.0"/>
                                     <RowConstraints prefHeight="40.0"/>
                                     <RowConstraints prefHeight="40.0"/>
+                                    <RowConstraints prefHeight="40.0"/>
                                   </rowConstraints>
                                   <children>
                                     <Label text="id"/>
@@ -110,9 +111,13 @@
                                     <TextField fx:id="authSessionId"
                                                GridPane.columnIndex="1"
                                                GridPane.rowIndex="2"/>
+                                    <Label text="ubid-main" GridPane.rowIndex="3"/>
+                                    <TextField fx:id="authUbidMain"
+                                               GridPane.columnIndex="1"
+                                               GridPane.rowIndex="3"/>
                                   </children>
                                 </GridPane>
-                                <GridPane hgap="10.0" layoutX="16.0" layoutY="125.0">
+                                <GridPane hgap="10.0" layoutX="16.0" layoutY="165.0">
                                   <columnConstraints>
                                     <ColumnConstraints prefWidth="290.0"/>
                                     <ColumnConstraints prefWidth="103.0"/>
@@ -227,7 +232,7 @@
         <!--End Accordion row-->
 
         <!--Start HBox row-->
-        <HBox alignment="BOTTOM_RIGHT" layoutY="531.0" prefHeight="50.0" prefWidth="600" spacing="40.0">
+        <HBox alignment="BOTTOM_RIGHT" layoutY="571.0" prefHeight="50.0" prefWidth="600" spacing="40.0">
           <children>
             <AnchorPane>
               <children>

@@ -15,8 +15,6 @@ public class MovieFinderFactoryTest {
     @Test
     public void makeSingle() throws Exception {
         val classMap = new ImmutableMap.Builder<DocumentSourceType, Class<? extends MovieFinder>>()
-                .put(IMDB_XML, BasicMovieFinder.class)
-                .put(IMDB_JSON, BasicMovieFinder.class)
                 .put(IMDB_HTML, BasicMovieFinder.class)
                 .build();
 
@@ -30,8 +28,6 @@ public class MovieFinderFactoryTest {
 
     @Test
     public void makeMultiple() throws Exception {
-        assertTrue(factory.make(IMDB_XML, IMDB_JSON, IMDB_HTML) instanceof MixedMovieFinder);
-
-        assertTrue(factory.make(new DocumentSourceType[]{IMDB_XML}) instanceof BasicMovieFinder);
+        assertTrue(factory.make(IMDB_HTML) instanceof MixedMovieFinder);
     }
 }

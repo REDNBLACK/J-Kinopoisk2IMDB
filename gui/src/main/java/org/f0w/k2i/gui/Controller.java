@@ -82,6 +82,9 @@ public class Controller {
     private TextField authSessionId;
 
     @FXML
+    private TextField authUbidMain;
+
+    @FXML
     private TextField authControlKey;
 
     @FXML
@@ -164,6 +167,9 @@ public class Controller {
         authSessionId.focusedProperty().addListener(o -> configMap.put("authSessionId", authSessionId.getText()));
         authSessionId.setText(config.getString("authSessionId"));
 
+        authUbidMain.focusedProperty().addListener(o -> configMap.put("authUbidMain", authUbidMain.getText()));
+        authUbidMain.setText(config.getString("authUbidMain"));
+
         authControlKey.focusedProperty().addListener(o -> configMap.put("authControlKey", authControlKey.getText()));
         authControlKey.setText(config.getString("authControlKey"));
 
@@ -175,8 +181,6 @@ public class Controller {
 
         // Дополнительные
         documentSourceBox.getItems().addAll(FXCollections.observableList(Arrays.asList(
-                new Choice<>(IMDB_XML, "IMDB XML"),
-                new Choice<>(IMDB_JSON, "IMDB JSON"),
                 new Choice<>(IMDB_HTML, "IMDB HTML"),
                 new Choice<>(OMDB, "OMDB API")
         )));
@@ -258,6 +262,8 @@ public class Controller {
             configMap.put("authSid", cookiesMap.get("sid"));
             authSessionId.setText(cookiesMap.get("session-id"));
             configMap.put("authSessionId", cookiesMap.get("session-id"));
+            authUbidMain.setText(cookiesMap.get("ubid-main"));
+            configMap.put("authUbidMain", cookiesMap.get("ubid-main"));
             authControlKey.setText(authControlKeyString);
             configMap.put("authControlKey", authControlKeyString);
             authControlValue.setText(authControlValueString);

@@ -56,6 +56,7 @@ public final class MovieWatchlistAssigner implements Exchangeable<Movie, Integer
                 .cookie("session-id", config.getString("authSessionId"))
                 .cookie("id", config.getString("auth"))
                 .cookie("sid", config.getString("authSid"))
+                .cookie("ubid-main", config.getString("authUbidMain"))
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .ignoreContentType(true)
                 .data(postData)

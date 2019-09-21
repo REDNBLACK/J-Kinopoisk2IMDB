@@ -20,8 +20,8 @@ public class MovieParsersTest {
     @Test
     public void ofSourceType() throws Exception {
         val classMap = new ImmutableMap.Builder<DocumentSourceType, Class<? extends MovieParser>>()
-                .put(IMDB_XML, IMDBXMLMovieParser.class)
-                .put(IMDB_JSON, IMDBJSONMovieParser.class)
+//                .put(IMDB_XML, IMDBXMLMovieParser.class)
+//                .put(IMDB_JSON, IMDBJSONMovieParser.class)
                 .put(IMDB_HTML, IMDBHTMLMovieParser.class)
                 .build();
 

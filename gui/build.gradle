@@ -1,7 +1,7 @@
 plugins {
     id 'application'
-    id 'edu.sc.seis.launch4j' version '1.6.1'
-    id 'com.github.johnrengelman.shadow' version '1.2.3'
+    id 'edu.sc.seis.launch4j' version '2.4.6'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
 }
 
 mainClassName = 'org.f0w.k2i.gui.Main'
@@ -17,25 +17,19 @@ configurations {
     runtime.exclude module: 'junit'
 }
 
-copyL4jLib.dependsOn shadowJar
-
-task copyIcon(type: Copy) {
-    from 'src/main/resources/icon.ico'
-    into 'build/launch4j'
+shadowJar {
+    baseName = 'Kinopoisk2IMDB'
+    classifier = ''
 }
 
-afterEvaluate {
-    copyL4jLib.dependsOn copyIcon
-}
-
-launch4j {
+createExe {
     mainClassName
     productName = 'Kinopoisk2IMDB GUI'
     internalName = 'k2i-gui'
     copyright = 'REDNBLACK'
     companyName = 'f0w.org'
-    outfile = 'Kinopoisk2IMDB.exe'
-    icon = 'icon.ico'
+    outfile = "Kinopoisk2IMDB-${project.version}.exe"
+    icon = "${projectDir}/src/main/resources/icon.ico"
     copyConfigurable = project.tasks.shadowJar.outputs.files
     jar = "lib/${project.tasks.shadowJar.archiveName}"
 }

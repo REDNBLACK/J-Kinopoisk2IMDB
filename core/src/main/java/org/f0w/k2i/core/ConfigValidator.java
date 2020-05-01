@@ -36,8 +36,7 @@ public final class ConfigValidator {
 
             validator.checkLogLevel();
 
-            validator.checkAuth();
-            validator.checkAuthSid();
+            validator.checkAuthAtMain();
             validator.checkAuthSessionId();
             validator.checkAuthUbidMain();
             validator.checkAuthControl();
@@ -155,25 +154,14 @@ public final class ConfigValidator {
     }
 
     /**
-     * Checks the auth id string
+     * Checks the auth at-main string
      *
      * @throws IllegalArgumentException If not valid
      */
-    private void checkAuth() {
-        val auth = config.getString("auth");
+    private void checkAuthAtMain() {
+        val auth = config.getString("authAtMain");
 
-        checkArgument(auth.length() > 10, "auth string (id) length is less than or equal to 10!");
-    }
-
-    /**
-     * Checks the auth sid string
-     *
-     * @throws IllegalArgumentException If not valid
-     */
-    private void checkAuthSid() {
-        val auth = config.getString("authSid");
-
-        checkArgument(auth.length() > 10, "auth string (sid) length is less than or equal to 10!");
+        checkArgument(auth.length() > 10, "auth string (at-main) length is less than or equal to 10!");
     }
 
     /**

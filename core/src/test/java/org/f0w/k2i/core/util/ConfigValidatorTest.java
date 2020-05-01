@@ -4,7 +4,6 @@ import ch.qos.logback.classic.Level;
 import com.google.common.collect.ImmutableMap;
 import com.typesafe.config.ConfigException;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.f0w.k2i.core.DocumentSourceType;
 import org.f0w.k2i.core.comparator.MovieComparator;
 import org.f0w.k2i.core.handler.MovieHandler;
@@ -39,7 +38,6 @@ public class ConfigValidatorTest {
                         MovieComparator.Type.TITLE_SMART.toString()
                 ))
                 .put("mode", MovieHandler.Type.COMBINED.toString())
-                .put("auth", "BCYnIhDSKm7sIoiawZ6TVKs5htuaGRHpT")
                 .put("list", "ls032387067")
                 .put("db", new ImmutableMap.Builder<String, Object>()
                         .put("driver", "org.h2.Driver")
@@ -109,19 +107,6 @@ public class ConfigValidatorTest {
                 .isInstanceOf(ConfigException.class);
 
         configMap.remove("document_source_types");
-        assertThatThrownBy(() -> checkValid(parseMap(configMap)))
-                .isInstanceOf(ConfigException.class);
-    }
-
-    @Test
-    public void checkAuth() throws Exception {
-        checkValid(parseMap(configMap));
-
-        configMap.replace("auth", StringUtils.repeat("S", 10));
-        assertThatThrownBy(() -> checkValid(parseMap(configMap)))
-                .isInstanceOf(ConfigException.class);
-
-        configMap.remove("auth");
         assertThatThrownBy(() -> checkValid(parseMap(configMap)))
                 .isInstanceOf(ConfigException.class);
     }

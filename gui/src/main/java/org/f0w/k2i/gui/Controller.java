@@ -76,7 +76,7 @@ public class Controller {
     private TextField authId;
 
     @FXML
-    private TextField authSid;
+    private TextField authAtMain;
 
     @FXML
     private TextField authSessionId;
@@ -158,11 +158,8 @@ public class Controller {
 
         curlText.setText(config.getString("curlText"));
 
-        authId.focusedProperty().addListener(o -> configMap.put("auth", authId.getText()));
-        authId.setText(config.getString("auth"));
-
-        authSid.focusedProperty().addListener(o -> configMap.put("authSid", authSid.getText()));
-        authSid.setText(config.getString("authSid"));
+        authAtMain.focusedProperty().addListener(o -> configMap.put("authAtMain", authAtMain.getText()));
+        authAtMain.setText(config.getString("authAtMain"));
 
         authSessionId.focusedProperty().addListener(o -> configMap.put("authSessionId", authSessionId.getText()));
         authSessionId.setText(config.getString("authSessionId"));
@@ -243,7 +240,7 @@ public class Controller {
 
     private void parseCurlText(String plainCurlText) {
         Pattern p = Pattern.compile(".*-H 'cookie: ([^']+)'.*--data '(\\w+)=(\\w+)'.*");
-        Matcher m = p.matcher(plainCurlText);
+        Matcher m = p.matcher(plainCurlText.replace("\n", ""));
         while (m.find()) {
             String cookies = m.group(1);
             String authControlKeyString = m.group(2);
@@ -256,10 +253,8 @@ public class Controller {
                 cookiesMap.put(cookieMap[0], cookieMap[1]);
             }
 
-            authId.setText(cookiesMap.get("id"));
-            configMap.put("auth", cookiesMap.get("id"));
-            authSid.setText(cookiesMap.get("sid"));
-            configMap.put("authSid", cookiesMap.get("sid"));
+            authAtMain.setText(cookiesMap.get("at-main"));
+            configMap.put("authAtMain", cookiesMap.get("at-main"));
             authSessionId.setText(cookiesMap.get("session-id"));
             configMap.put("authSessionId", cookiesMap.get("session-id"));
             authUbidMain.setText(cookiesMap.get("ubid-main"));

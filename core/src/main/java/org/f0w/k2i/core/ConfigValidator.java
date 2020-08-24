@@ -37,7 +37,9 @@ public final class ConfigValidator {
             validator.checkLogLevel();
 
             validator.checkAuthAtMain();
+            validator.checkAuthXMain();
             validator.checkAuthSessionId();
+            validator.checkAuthSessionToken();
             validator.checkAuthUbidMain();
             validator.checkAuthControl();
             validator.checkMode();
@@ -165,6 +167,17 @@ public final class ConfigValidator {
     }
 
     /**
+     * Checks the auth x-main string
+     *
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkAuthXMain() {
+        val auth = config.getString("authXMain");
+
+        checkArgument(auth.length() > 10, "auth string (x-main) length is less than or equal to 10!");
+    }
+
+    /**
      * Checks the auth session id string
      *
      * @throws IllegalArgumentException If not valid
@@ -173,6 +186,17 @@ public final class ConfigValidator {
         val auth = config.getString("authSessionId");
 
         checkArgument(auth.length() > 10, "auth string (sessionId) length is less than or equal to 10!");
+    }
+
+    /**
+     * Checks the auth session token string
+     *
+     * @throws IllegalArgumentException If not valid
+     */
+    private void checkAuthSessionToken() {
+        val auth = config.getString("authSessionToken");
+
+        checkArgument(auth.length() > 10, "auth string (sessionToken) length is less than or equal to 10!");
     }
 
     /**

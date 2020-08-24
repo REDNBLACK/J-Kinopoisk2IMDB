@@ -70,75 +70,19 @@
                         <RowConstraints minHeight="40.0"/>
                       </rowConstraints>
                       <children>
-                        <Label text="Настройки авторизации IMDB"/>
+                        <Label text="Настройки авторизации IMDB (cURL)"/>
                       </children>
                     </GridPane>
-                    <Accordion prefWidth="550.0" layoutX="20.0" layoutY="210.0" prefHeight="185.0">
-                      <panes>
-                        <!--Start basic-->
-                        <TitledPane fx:id="nestedBasePane" animated="false" text="Генерация из cURL">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0">
-                              <children>
-                                    <TextArea fx:id="curlText" layoutX="10.0" layoutY="10.0" prefWidth="530.0" prefHeight="110.0"
-                                              wrapText="true" />
-                              </children>
-                            </AnchorPane>
-                          </content>
-                        </TitledPane>
-                        <TitledPane animated="false" text="Установить вручную">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0">
-                              <children>
-                                <GridPane hgap="10.0" layoutX="16.0" vgap="2.0">
-                                  <columnConstraints>
-                                    <ColumnConstraints prefWidth="162.0"/>
-                                    <ColumnConstraints prefWidth="345.0"/>
-                                  </columnConstraints>
-                                  <rowConstraints>
-                                    <RowConstraints prefHeight="40.0"/>
-                                    <RowConstraints prefHeight="40.0"/>
-                                    <RowConstraints prefHeight="40.0"/>
-                                  </rowConstraints>
-                                  <children>
-                                    <Label text="at-main"/>
-                                    <TextField fx:id="authAtMain" GridPane.columnIndex="1"/>
-                                    <Label text="session-id" GridPane.rowIndex="1"/>
-                                    <TextField fx:id="authSessionId"
-                                               GridPane.columnIndex="1"
-                                               GridPane.rowIndex="1"/>
-                                    <Label text="ubid-main" GridPane.rowIndex="2"/>
-                                    <TextField fx:id="authUbidMain"
-                                               GridPane.columnIndex="1"
-                                               GridPane.rowIndex="2"/>
-                                  </children>
-                                </GridPane>
-                                <GridPane hgap="10.0" layoutX="16.0" layoutY="165.0">
-                                  <columnConstraints>
-                                    <ColumnConstraints prefWidth="290.0"/>
-                                    <ColumnConstraints prefWidth="103.0"/>
-                                    <ColumnConstraints prefWidth="103.0"/>
-                                  </columnConstraints>
-                                  <rowConstraints>
-                                    <RowConstraints minHeight="40.0"/>
-                                  </rowConstraints>
-                                  <children>
-                                    <Label text="Пара ключ-значение в тестовом запросе"/>
-                                    <TextField fx:id="authControlKey"
-                                               GridPane.columnIndex="1"/>
-                                    <TextField fx:id="authControlValue"
-                                               GridPane.columnIndex="2"/>
-                                  </children>
-                                </GridPane>
-                              </children>
-                            </AnchorPane>
-                          </content>
-                        </TitledPane>
-                      </panes>
-                      <expandedPane>
-                        <fx:reference source="nestedBasePane"/>
-                      </expandedPane>
-                    </Accordion>
+                    <GridPane hgap="10.0" vgap="2.0" layoutX="20.0" layoutY="210.0" prefHeight="225.0">
+                      <children>
+                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                          <children>
+                                <TextArea fx:id="curlText" layoutX="10.0" layoutY="10.0" prefWidth="530.0" prefHeight="200.0"
+                                          wrapText="true" />
+                          </children>
+                        </AnchorPane>
+                      </children>
+                    </GridPane>
                   </children>
                 </AnchorPane>
               </content>

@@ -73,24 +73,6 @@ public class Controller {
     private TextArea curlText;
 
     @FXML
-    private TextField authId;
-
-    @FXML
-    private TextField authAtMain;
-
-    @FXML
-    private TextField authSessionId;
-
-    @FXML
-    private TextField authUbidMain;
-
-    @FXML
-    private TextField authControlKey;
-
-    @FXML
-    private TextField authControlValue;
-
-    @FXML
     private TextField listId;
 
     @FXML
@@ -158,21 +140,6 @@ public class Controller {
 
         curlText.setText(config.getString("curlText"));
 
-        authAtMain.focusedProperty().addListener(o -> configMap.put("authAtMain", authAtMain.getText()));
-        authAtMain.setText(config.getString("authAtMain"));
-
-        authSessionId.focusedProperty().addListener(o -> configMap.put("authSessionId", authSessionId.getText()));
-        authSessionId.setText(config.getString("authSessionId"));
-
-        authUbidMain.focusedProperty().addListener(o -> configMap.put("authUbidMain", authUbidMain.getText()));
-        authUbidMain.setText(config.getString("authUbidMain"));
-
-        authControlKey.focusedProperty().addListener(o -> configMap.put("authControlKey", authControlKey.getText()));
-        authControlKey.setText(config.getString("authControlKey"));
-
-        authControlValue.focusedProperty().addListener(o -> configMap.put("authControlValue", authControlValue.getText()));
-        authControlValue.setText(config.getString("authControlValue"));
-
         listId.focusedProperty().addListener(o -> configMap.put("list", listId.getText()));
         listId.setText(config.getString("list"));
 
@@ -239,7 +206,7 @@ public class Controller {
     }
 
     private void parseCurlText(String plainCurlText) {
-        Pattern p = Pattern.compile(".*-H 'cookie: ([^']+)'.*--data '(\\w+)=(\\w+)'.*");
+        Pattern p = Pattern.compile(".*-H 'cookie: ([^']+)'.*--data-raw '(\\w+)=(\\w+)'.*");
         Matcher m = p.matcher(plainCurlText.replace("\n", ""));
         while (m.find()) {
             String cookies = m.group(1);
@@ -253,15 +220,12 @@ public class Controller {
                 cookiesMap.put(cookieMap[0], cookieMap[1]);
             }
 
-            authAtMain.setText(cookiesMap.get("at-main"));
+            configMap.put("authXMain", cookiesMap.get("x-main"));
             configMap.put("authAtMain", cookiesMap.get("at-main"));
-            authSessionId.setText(cookiesMap.get("session-id"));
             configMap.put("authSessionId", cookiesMap.get("session-id"));
-            authUbidMain.setText(cookiesMap.get("ubid-main"));
+            configMap.put("authSessionToken", cookiesMap.get("session-token"));
             configMap.put("authUbidMain", cookiesMap.get("ubid-main"));
-            authControlKey.setText(authControlKeyString);
             configMap.put("authControlKey", authControlKeyString);
-            authControlValue.setText(authControlValueString);
             configMap.put("authControlValue", authControlValueString);
         }
     }
